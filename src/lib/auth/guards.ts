@@ -59,6 +59,26 @@ export function isAdminAllowlistEnforced(): boolean {
   return allowedAdminEmail() !== null;
 }
 
+/**
+ * L'utilisateur courant est-il **l'**administrateur ?
+ *
+ * Variante non bloquante de `requireAdmin` : elle rend un booléen au lieu de
+ * répondre 404. Utile là où le privilège modifie un comportement sans
+ * conditionner l'accès — coffres illimités, outils de développement — et où
+ * un `notFound()` serait absurde.
+ *
+ * Elle applique **exactement** les mêmes contrôles : rôle en base *et* liste
+ * d'autorisation. Deux règles différentes pour la même question finiraient par
+ * diverger, et la plus permissive gagnerait.
+ */
+export async function isAllowedAdmin(): Promise<boolean> {
+  const session = await getAuthenticatedSession();
+  if (!session || session.role !== 'ADMIN') return false;
+
+  const allowed = allowedAdminEmail();
+  return !allowed || session.email.trim().toLowerCase() === allowed;
+}
+
 export async function requireAdmin(): Promise<AuthenticatedSession> {
   const session = await getAuthenticatedSession();
   if (!session || session.role !== 'ADMIN') notFound();

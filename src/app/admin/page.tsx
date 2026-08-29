@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { AppearanceImportForm } from '@/components/AppearanceImportForm';
 import { ChapterCorrection } from '@/components/ChapterCorrection';
 import { ChapterSimulator } from '@/components/ChapterSimulator';
@@ -45,6 +46,16 @@ export default async function AdminPage() {
           One Piece Quest
         </p>
         <h1 className="font-display text-3xl text-parchment">Chapter HQ</h1>
+
+      <nav className="mt-4 flex gap-3 text-sm">
+        <Link href="/admin/stats" className="text-turquoise underline">Statistiques</Link>
+        <Link href="/admin/fraude" className="text-turquoise underline">Fraude</Link>
+      </nav>
+
+        <nav className="mt-4 flex gap-3 text-sm">
+          <Link href="/admin/stats" className="text-turquoise underline">Statistiques</Link>
+          <Link href="/admin/fraude" className="text-turquoise underline">Fraude</Link>
+        </nav>
 
         <p className="mt-4 rounded-lg border border-turquoise/25 bg-navy/50 p-3 text-sm text-parchment/70">
           Connecté en administrateur —{' '}

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useLinkStatus } from 'next/link';
 import { usePathname } from 'next/navigation';
+import { StrawHat } from './StrawHat';
 
 /**
  * Navigation principale (cahier §55, §109).
@@ -35,6 +36,7 @@ const LINKS = [
   { href: '/classement', label: 'Classement', icon: '🏆' },
   { href: '/collection', label: 'Collection', icon: '🗺️' },
   { href: '/market', label: 'Market', icon: '⚓' },
+  { href: '/boutique', label: 'Boutique', icon: '💎' },
   { href: '/profil', label: 'Profil', icon: '📜' },
 ] as const;
 
@@ -57,6 +59,9 @@ export function MainNav() {
 
   return (
     <nav aria-label="Navigation principale" className="hb-nav">
+      {/* Le chapeau est posé sur le bois, débordant vers le haut. Purement
+          décoratif : il ne recouvre aucun bouton et ne capte aucun clic. */}
+      <StrawHat className="hb-nav__hat" />
       <ul>
         {LINKS.map((link) => {
           const active =

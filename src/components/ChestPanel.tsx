@@ -39,6 +39,7 @@ import { CHEST_PRICE_BERRIES } from '@/domain/collection/rewards';
  */
 export function ChestPanel({
   starterAvailable,
+  unlimited,
   unopenedChests,
   pityCounter,
   berries,
@@ -46,6 +47,14 @@ export function ChestPanel({
 }: {
   /** Le coffre d'inscription n'a pas encore été ouvert (§27). */
   starterAvailable: boolean;
+  /**
+   * Ouverture illimitée (compte administrateur).
+   *
+   * Ce n'est qu'un affichage : le serveur revérifie le privilège à chaque
+   * ouverture. Un joueur qui forcerait ce booléen dans son navigateur ne
+   * gagnerait qu'un bouton actif et un refus.
+   */
+  unlimited: boolean;
   unopenedChests: number;
   pityCounter: number;
   berries: number;
@@ -109,7 +118,9 @@ export function ChestPanel({
           <p className="mt-2 text-sm hb-ink-soft">
             {unopenedChests > 0
               ? `${unopenedChests} coffre${unopenedChests > 1 ? 's' : ''} à ouvrir.`
-              : 'Aucun coffre en réserve.'}
+              : unlimited
+                ? 'Réserve illimitée — compte administrateur.'
+                : 'Aucun coffre en réserve.'}
           </p>
 
           {/* §31 : la garantie est annoncée, jamais découverte après coup. */}
@@ -153,7 +164,7 @@ export function ChestPanel({
             <button
               type="button"
               onClick={() => run(openOwnedChestAction)}
-              disabled={pending || unopenedChests === 0}
+              disabled={pending || (!unlimited && unopenedChests === 0)}
               className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
             >
               {pending ? 'Un instant…' : 'Ouvrir un coffre'}

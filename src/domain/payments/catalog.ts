@@ -10,7 +10,12 @@
  * Un montant transmis par le client serait un montant négociable par lui.
  */
 
-export type ProductId = 'chest_pack_small' | 'chest_pack_large' | 'berries_pouch';
+export type ProductId =
+  | 'chest_pack_small'
+  | 'chest_pack_large'
+  | 'legendary_chest'
+  | 'berries_pouch'
+  | 'berries_hold';
 
 export interface Product {
   id: ProductId;
@@ -41,6 +46,27 @@ export const CATALOG: Record<ProductId, Product> = {
     grants: { berries: 0, chests: 12 },
     description: '12 coffres. Composition et probabilités identiques aux coffres gagnés en jeu.',
   },
+  /**
+   * Coffre à légendaire garanti.
+   *
+   * C'est la lecture honnête de « acheter un personnage légendaire » : on
+   * vend une **rareté garantie**, pas un personnage nommé. Vendre Luffy à
+   * l'unité supposerait un prix par personnage, donc un classement marchand
+   * des personnages de l'œuvre — et transformerait la collection en catalogue.
+   *
+   * Le §25 tient toujours : un légendaire est une carte de collection, il ne
+   * donne aucun point de plus. On vend de la rareté, jamais de la victoire
+   * (§48).
+   */
+  legendary_chest: {
+    id: 'legendary_chest',
+    label: 'Coffre du Yonko',
+    priceCents: 1_499,
+    currency: 'EUR',
+    grants: { berries: 0, chests: 1 },
+    description:
+      '1 coffre avec un Légendaire ou mieux garanti. La rareté est une valeur de collection : elle ne donne aucun point au classement.',
+  },
   berries_pouch: {
     id: 'berries_pouch',
     label: 'Bourse de Berries',
@@ -48,6 +74,15 @@ export const CATALOG: Record<ProductId, Product> = {
     currency: 'EUR',
     grants: { berries: 6_000, chests: 0 },
     description: '6 000 Berries. Les Berries n’achètent que de la collection, jamais un avantage de score.',
+  },
+  berries_hold: {
+    id: 'berries_hold',
+    label: 'Cale pleine',
+    priceCents: 1_999,
+    currency: 'EUR',
+    grants: { berries: 30_000, chests: 0 },
+    description:
+      '30 000 Berries, soit 20 coffres à la boutique du jeu. Les Berries n’achètent que de la collection.',
   },
 };
 

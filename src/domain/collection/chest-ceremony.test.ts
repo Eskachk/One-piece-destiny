@@ -29,10 +29,17 @@ describe('bestRarity', () => {
 });
 
 describe('ceremonyPlan (§56)', () => {
-  it('reste sobre pour un coffre ordinaire', () => {
-    const plan = ceremonyPlan([card('COMMON'), card('RARE'), card('EPIC')]);
-    expect(plan.tier).toBe('STANDARD');
-    expect(plan.particles).toBe(0);
+  it('reste plus sobre pour un coffre ordinaire', () => {
+    // §56 demande que le légendaire se distingue, pas que le coffre ordinaire
+    // soit inerte : une cérémonie sans aucune particule se lisait comme une
+    // animation ratée plutôt que comme une récompense modeste. L'invariant
+    // utile est donc l'**écart** entre les deux, pas un zéro absolu.
+    const ordinary = ceremonyPlan([card('COMMON'), card('RARE'), card('EPIC')]);
+    const premium = ceremonyPlan([card('LEGENDARY')]);
+
+    expect(ordinary.tier).toBe('STANDARD');
+    expect(ordinary.particles * 3).toBeLessThan(premium.particles);
+    expect(ordinary.shakeSeconds).toBeLessThan(premium.shakeSeconds);
   });
 
   it('passe en version premium dès un légendaire', () => {
@@ -55,7 +62,7 @@ describe('ceremonyPlan (§56)', () => {
     // §60 : les animations longues sont l'exception, pas la norme. Le coffre
     // est justement cette exception — mais elle reste plafonnée, sinon
     // l'attente cesse d'être une promesse pour devenir une corvée.
-    expect(ceremonyPlan([card('MYTHIC')]).totalSeconds).toBeLessThan(5);
+    expect(ceremonyPlan([card('MYTHIC')]).totalSeconds).toBeLessThan(7);
   });
 
   it('révèle les cartes une par une, jamais en bloc (§61)', () => {

@@ -15,9 +15,10 @@ import {
   evaluateCraft,
 } from '@/domain/collection/crafting';
 import { CHEST_PRICE_BERRIES } from '@/domain/collection/rewards';
-import { requireSession } from '@/lib/auth/guards';
+import { isAllowedAdmin, requireSession } from '@/lib/auth/guards';
 import { assertSameOrigin } from '@/lib/auth/request-guard';
 import { getRepository } from '@/lib/repository';
+import { recordEvent } from '@/lib/antiabuse/events';
 
 /**
  * Ouverture du coffre d'inscription (cahier §27).
@@ -118,6 +119,10 @@ export async function openStarterChestAction(): Promise<OpenStarterResult> {
   // en base ; le joueur, lui, n'avait rien vu.
   //
   // Le rafraîchissement est demandé par le client, à la fin de la révélation.
+  await recordEvent(session.playerId, 'WELCOME_CHEST_OPENED', {
+    cards: result.cards.length,
+  });
+
   return { ok: true, cards: reveal(result.cards) };
 }
 
@@ -134,7 +139,16 @@ export async function openOwnedChestAction(): Promise<OpenStarterResult> {
 
   const repository = getRepository();
 
-  if (!(await repository.consumeChest(session.playerId))) {
+  // Ouverture illimitée pour l'administrateur.
+  //
+  // Le privilège est décidé **côté serveur**, à partir de la session et de la
+  // liste d'autorisation — jamais d'un paramètre de requête. Sans cela, un
+  // joueur pourrait se déclarer administrateur et ouvrir des coffres à
+  // volonté. C'est aussi pour cela qu'on ne se contente pas du rôle en base :
+  // `isAllowedAdmin` exige en plus l'adresse déclarée dans l'environnement.
+  const unlimited = await isAllowedAdmin();
+
+  if (!unlimited && !(await repository.consumeChest(session.playerId))) {
     return { ok: false, error: 'Tu n\'as aucun coffre à ouvrir.' };
   }
 
@@ -167,6 +181,10 @@ export async function openOwnedChestAction(): Promise<OpenStarterResult> {
   // en base ; le joueur, lui, n'avait rien vu.
   //
   // Le rafraîchissement est demandé par le client, à la fin de la révélation.
+  await recordEvent(session.playerId, 'CHEST_OPENED', {
+    cards: result.cards.length,
+  });
+
   return { ok: true, cards: reveal(result.cards) };
 }
 

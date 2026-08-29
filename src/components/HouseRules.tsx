@@ -19,11 +19,11 @@
 
 const RULES: { title: string; body: string; sanction: string }[] = [
   {
-    title: 'Un joueur, un compte',
+    title: 'Deux comptes au maximum',
     body:
-      'Créer plusieurs comptes pour multiplier les coffres d’inscription, se parrainer soi-même, ou occuper plusieurs places au classement fausse la semaine de tout le monde. Les comptes ouverts depuis la même connexion sont rapprochés.',
+      'Tu peux avoir un second compte — pour tester une autre stratégie, ou parce que vous êtes deux à jouer sur la même connexion. Au-delà, c’est une ferme : multiplier les coffres d’arrivée, se parrainer soi-même ou occuper plusieurs places au classement fausse la semaine de tout le monde. Partager une connexion n’est jamais reproché en soi ; c’est le fait de faire remonter la valeur de plusieurs comptes vers un seul qui l’est.',
     sanction:
-      'Les comptes secondaires sont fermés et leurs gains annulés. Le compte principal perd ses récompenses de parrainage.',
+      'Les comptes au-delà du deuxième sont fermés et leurs gains annulés. Le compte bénéficiaire perd ses récompenses de parrainage.',
   },
   {
     title: 'Le parrainage récompense un joueur, pas une inscription',
@@ -76,6 +76,19 @@ export function HouseRules() {
         Le jeu se joue à la loyale. Ces règles existent pour que ta place au
         classement veuille dire quelque chose.
       </p>
+
+      {/* Deux protections s'appliquent à tout le monde, en permanence. Les
+          annoncer ici évite qu'un joueur les découvre en butant dessus — et
+          c'est ce que demande le §113. */}
+      <ul className="hb-muted mt-3 space-y-1 text-xs">
+        <li>
+          • Les personnages du coffre d’arrivée ne s’échangent qu’après{' '}
+          <strong>7 jours</strong>.
+        </li>
+        <li>
+          • Le Market s’ouvre <strong>24 h</strong> après l’inscription.
+        </li>
+      </ul>
 
       <ul className="mt-4 space-y-2">
         {RULES.map((rule) => (

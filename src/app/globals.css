@@ -758,7 +758,7 @@ body {
 
 .hb-nav ul {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 0.35rem;
   padding: 0.4rem;
   border-radius: 1rem;
@@ -1541,4 +1541,162 @@ body {
   .hb-rule__title::after {
     transition: none;
   }
+}
+
+/* ===========================================================================
+   Barre de navigation ancrée — désormais sur tous les écrans.
+   =========================================================================== */
+
+/* La barre était fixe en dessous de 640 px et reprenait sa place dans le flux
+   au-delà. Résultat : sur un ordinateur, il fallait faire défiler jusqu'en bas
+   pour changer d'onglet — la navigation d'un jeu se cherchait. Elle est
+   maintenant ancrée partout, avec une largeur bornée pour ne pas s'étirer sur
+   toute la largeur d'un écran large. */
+.hb-nav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  margin-top: 0;
+  padding: 0.35rem 0.6rem;
+  padding-bottom: calc(0.35rem + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(
+    180deg,
+    rgba(7, 28, 44, 0) 0%,
+    rgba(7, 28, 44, 0.32) 100%
+  );
+  /* Le chapeau déborde vers le haut : sans cette marge, il serait rogné. */
+  padding-top: 1.9rem;
+}
+
+.hb-nav ul {
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+/* Réserve d'espace sous le contenu, sur tous les écrans. Sans elle, le dernier
+   paragraphe de chaque page passerait sous la barre. */
+.harbor--page .harbor__content {
+  padding-bottom: calc(7.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* --- Chapeau de paille ---------------------------------------------------- */
+
+.hb-nav__hat {
+  position: absolute;
+  /* Aligné sur le bord gauche de la barre de boutons, pas sur celui de
+     l'écran : il doit poser sur le bois, pas flotter à côté. */
+  left: 50%;
+  translate: -16.4rem 0;
+  /* Le chapeau repose **au-dessus** de la rangée de boutons, dans la marge
+     haute de la barre. Posé plus bas, il masquait l'icône du premier onglet :
+     décoratif ou non, un élément qui recouvre un bouton est un défaut. */
+  bottom: calc(100% - 2.05rem);
+  width: 4.4rem;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 5px rgba(12, 45, 80, 0.35));
+  /* Légèrement incliné : posé à plat, il ressemblait à un logo centré. */
+  rotate: -13deg;
+}
+
+/* Sur un écran étroit, la barre occupe toute la largeur : le chapeau se cale
+   à gauche plutôt qu'à une distance calculée du centre, qui le sortirait du
+   cadre. */
+@media (max-width: 36rem) {
+  .hb-nav__hat {
+    left: 0.4rem;
+    translate: 0 0;
+    width: 3.4rem;
+    bottom: calc(100% - 1.9rem);
+  }
+}
+
+/* Six onglets tiennent, mais les libellés doivent rétrécir sous 380 px. */
+@media (max-width: 380px) {
+  .hb-nav__item span:last-child {
+    font-size: 0.54rem;
+    letter-spacing: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-nav__hat {
+    rotate: -13deg;
+  }
+}
+
+/* --- Visite guidée d'arrivée ---------------------------------------------- */
+
+.hb-tuto {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  background: rgba(7, 28, 44, 0.62);
+  backdrop-filter: blur(3px);
+}
+
+.hb-tuto__card {
+  width: 100%;
+  max-width: 25rem;
+  padding: 1.4rem 1.3rem;
+  border-radius: 1.1rem;
+  color: var(--color-ink);
+  background:
+    repeating-linear-gradient(
+      92deg,
+      rgba(155, 118, 66, 0.05) 0 2px,
+      transparent 2px 23px
+    ),
+    linear-gradient(180deg, #fbf1dc 0%, #f1dfbf 100%);
+  border: 2px solid rgba(109, 68, 35, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 18px 40px rgba(4, 18, 32, 0.45);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hb-tuto__card {
+    animation: hb-tuto-in 220ms cubic-bezier(0.2, 0.9, 0.25, 1) both;
+  }
+}
+
+@keyframes hb-tuto-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+}
+
+/* Progression : des points plutôt qu'une barre. On voit d'un coup d'œil qu'il
+   reste peu d'étapes — une barre à 20 % se lit comme un chargement. */
+.hb-tuto__dots {
+  display: flex;
+  gap: 0.3rem;
+  margin-bottom: 0.9rem;
+}
+
+.hb-tuto__dots span {
+  height: 0.32rem;
+  flex: 1;
+  border-radius: 999px;
+  background: rgba(20, 41, 79, 0.16);
+}
+
+.hb-tuto__dots span.is-current {
+  background: var(--color-gold);
+}
+
+/* Le bouton « Passer » reste secondaire sans être caché : il ne prend pas la
+   largeur, mais il est au même niveau et à la même hauteur que l'action
+   principale. */
+.hb-tuto__skip {
+  width: auto;
+  padding: 0.8rem 1rem;
+  white-space: nowrap;
 }

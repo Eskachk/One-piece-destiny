@@ -8,6 +8,7 @@ import { requireSession } from '@/lib/auth/guards';
 import { assertSameOrigin } from '@/lib/auth/request-guard';
 import { getRepository } from '@/lib/repository';
 import { payReferrerOnFirstCrew } from '@/lib/social/referral-payout';
+import { recordEvent } from '@/lib/antiabuse/events';
 
 /**
  * Enregistrement de l'équipage.
@@ -85,6 +86,10 @@ export async function saveCrew(characterIds: unknown): Promise<SaveCrewResult> {
   // fera pas : c'est donc le bon moment pour récompenser celui qui l'a amené.
   // L'échec de ce versement n'a rien à voir avec l'enregistrement de
   // l'équipage, qui est déjà acquis — il ne doit pas le faire échouer.
+  await recordEvent(session.playerId, 'FIRST_CREW_LOCKED', {
+    chapterId: chapter.id,
+  });
+
   try {
     await payReferrerOnFirstCrew(session.playerId);
   } catch (error) {

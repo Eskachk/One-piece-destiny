@@ -4,6 +4,7 @@ import { Countdown } from '@/components/Countdown';
 import { CrewSelector } from '@/components/CrewSelector';
 import { HarborScene } from '@/components/HarborScene';
 import { MainNav } from '@/components/MainNav';
+import { Tutorial } from '@/components/Tutorial';
 import { CHARACTER_INDEX } from '@/data/characters';
 import type { Character } from '@/domain/types';
 import { isTeamEditable, msUntilLock, spoilerState } from '@/domain/chapter/lock';
@@ -77,6 +78,7 @@ export default async function HomePage() {
           Reviens quand le prochain sera annoncé.
         </p>
         <MainNav />
+        <Tutorial />
       </HarborScene>
     );
   }
@@ -152,6 +154,11 @@ export default async function HomePage() {
         chapterNumber={chapter.chapterNumber}
         owned={ownedCharacters}
       />
+
+      {/* Visite guidée d'arrivée. Elle décide seule si elle doit s'afficher —
+          une seule fois, à la première visite — et se saute dès le premier
+          écran. */}
+      <Tutorial />
     </HarborScene>
   );
 }

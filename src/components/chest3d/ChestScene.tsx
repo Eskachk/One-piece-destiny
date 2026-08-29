@@ -7,6 +7,7 @@ import {
   hakiColorAt,
   type CeremonyPlan,
 } from '@/domain/collection/chest-ceremony';
+import { ChestModel } from './ChestModel';
 
 /**
  * Ouverture de coffre en 3D (cahier §56, §57, §61).
@@ -25,12 +26,6 @@ import {
  *        planches distinctes légèrement désaccordées en teinte — c'est ce qui
  *        lui donne du relief sans la moindre image.
  */
-
-const GOLD = '#f0be3f';
-const GOLD_DARK = '#a97c1c';
-
-/** Teintes des planches. L'écart entre elles **est** la texture du bois. */
-const PLANKS = ['#7a4d24', '#6b4321', '#84552a', '#5f3a1c', '#784a22'];
 
 type Phase = 'charge' | 'hold' | 'burst';
 
@@ -55,24 +50,6 @@ function useCeremonyClock(plan: CeremonyPlan) {
   });
 
   return { phase, elapsed };
-}
-
-/** Une planche du coffre, avec ses arêtes chanfreinées par la lumière. */
-function Plank({
-  position,
-  size,
-  color,
-}: {
-  position: [number, number, number];
-  size: [number, number, number];
-  color: string;
-}) {
-  return (
-    <mesh position={position} castShadow receiveShadow>
-      <boxGeometry args={size} />
-      <meshStandardMaterial color={color} roughness={0.92} metalness={0.02} />
-    </mesh>
-  );
 }
 
 /**
@@ -199,34 +176,49 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
     }
 
     const t = elapsed.current;
+    const progress = plan.shakeSeconds > 0 ? Math.min(1, t / plan.shakeSeconds) : 1;
 
     if (group.current) {
-      if (phase === 'charge' && plan.shakeSeconds > 0) {
-        // Tremblement **croissant**, à l'inverse de la version précédente qui
+      if (phase === 'charge') {
+        // Tremblement **croissant**, à l'inverse d'une version précédente qui
         // s'éteignait en avançant. Quelque chose qui pousse de l'intérieur
-        // force de plus en plus fort ; l'amplitude doit donc monter jusqu'à la
+        // force de plus en plus fort ; l'amplitude doit monter jusqu'à la
         // rupture, sans quoi la scène raconte un coffre qui se calme.
-        const intensity = 0.012 + 0.05 * (t / plan.shakeSeconds) ** 2;
-        group.current.rotation.z = Math.sin(t * 46) * intensity;
-        group.current.position.x = Math.sin(t * 37) * intensity * 0.5;
-        group.current.position.y = Math.abs(Math.sin(t * 23)) * intensity * 0.6;
+        const intensity = 0.014 + 0.075 * progress ** 2;
+        group.current.rotation.z = Math.sin(t * 44) * intensity;
+        group.current.rotation.y = Math.sin(t * 17) * intensity * 0.7;
+        group.current.position.x = Math.sin(t * 37) * intensity * 0.6;
+
+        // Sursauts : le coffre décolle par à-coups, de plus en plus haut. Un
+        // tremblement seul reste plat ; c'est le saut qui donne l'impression
+        // que quelque chose force pour sortir.
+        const hop = Math.max(0, Math.sin(t * 8.5));
+        group.current.position.y = hop ** 3 * (0.03 + 0.16 * progress);
       } else if (phase === 'hold') {
         // Immobilité franche. C'est le §61 : le silence avant la révélation.
         group.current.rotation.z *= 0.7;
+        group.current.rotation.y *= 0.7;
         group.current.position.x *= 0.7;
         group.current.position.y *= 0.7;
       } else {
         group.current.rotation.z *= 0.85;
+        group.current.rotation.y *= 0.85;
         group.current.position.x *= 0.85;
         group.current.position.y *= 0.85;
       }
     }
 
-    // Le couvercle ne bouge pas d'un millimètre avant l'ouverture : le
-    // laisser s'entrouvrir pendant la charge vendrait la mèche.
     if (lid.current) {
-      const target = phase === 'burst' ? -Math.PI * 0.66 : 0;
-      lid.current.rotation.x += (target - lid.current.rotation.x) * 0.16;
+      if (phase === 'charge') {
+        // Le couvercle claque contre la serrure, de plus en plus fort, sans
+        // jamais s'ouvrir. Il ne doit rien laisser voir : entrouvert, il
+        // vendrait la mèche avant le silence.
+        const rattle = Math.max(0, Math.sin(t * 13)) ** 2;
+        lid.current.rotation.x = -rattle * 0.05 * progress;
+      } else {
+        const target = phase === 'burst' ? -Math.PI * 0.7 : 0;
+        lid.current.rotation.x += (target - lid.current.rotation.x) * 0.14;
+      }
     }
 
     // Lumière : une lueur retenue pendant la charge, éteinte au silence, puis
@@ -234,121 +226,46 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
     if (glow.current) {
       const target =
         phase === 'charge'
-          ? 1.2 + (plan.shakeSeconds ? t / plan.shakeSeconds : 1) * 2.5
+          ? 1.2 + progress * 3.5
           : phase === 'hold'
             ? 0.2
             : premium
-              ? 16
-              : 6;
+              ? 20
+              : 8;
       glow.current.intensity += (target - glow.current.intensity) * 0.14;
     }
 
-    // Rai de lumière au niveau du joint : il grandit avec la pression.
+    // Rai de lumière au joint : il grandit avec la pression, et pulse au
+    // rythme des claquements du couvercle.
     if (seam.current) {
       const material = seam.current.material as THREE.MeshBasicMaterial;
       material.opacity =
         phase === 'charge'
-          ? Math.min(0.85, (plan.shakeSeconds ? t / plan.shakeSeconds : 1) * 0.9)
+          ? Math.min(0.95, progress * (0.55 + 0.45 * Math.max(0, Math.sin(t * 13))))
           : phase === 'hold'
-            ? 0.08
+            ? 0.06
             : 0;
     }
 
     // Caméra : elle se rapproche pendant la charge, se fige au silence, puis
     // recule à l'ouverture pour laisser voir le jaillissement.
     const distance =
-      phase === 'charge' ? 2.9 - Math.min(0.45, t * 0.3) : phase === 'hold' ? 2.45 : 3.05;
+      phase === 'charge'
+        ? 3.6 - 0.55 * progress
+        : phase === 'hold'
+          ? 2.95
+          : 3.75;
     state.camera.position.z += (distance - state.camera.position.z) * 0.06;
 
     if (premium && phase === 'burst') {
       state.camera.position.x = Math.sin(state.clock.elapsedTime * 0.45) * 0.5;
     }
-    state.camera.lookAt(0, 0.1, 0);
+    state.camera.lookAt(0, 0.05, 0);
   });
 
   return (
-    <group ref={group}>
-      {/* Caisse : cinq planches verticales, teintes légèrement décalées. */}
-      {PLANKS.map((color, index) => (
-        <Plank
-          key={index}
-          position={[-0.6 + index * 0.3, -0.25, 0]}
-          size={[0.29, 0.9, 1.1]}
-          color={color}
-        />
-      ))}
-
-      {/* Ferrures d'angle */}
-      {[-0.68, 0.68].map((x) => (
-        <mesh key={x} position={[x, -0.25, 0]}>
-          <boxGeometry args={[0.1, 0.94, 1.14]} />
-          <meshStandardMaterial color={GOLD} metalness={0.9} roughness={0.28} />
-        </mesh>
-      ))}
-
-      {/* Cerclage horizontal bas : il assoit le coffre au sol. */}
-      <mesh position={[0, -0.62, 0]}>
-        <boxGeometry args={[1.66, 0.12, 1.16]} />
-        <meshStandardMaterial color={GOLD_DARK} metalness={0.8} roughness={0.4} />
-      </mesh>
-
-      {/* Rivets. Six points de lumière qui accrochent l'œil et donnent
-          l'échelle du coffre — sans eux la caisse paraît lisse et vide. */}
-      {[-0.45, 0, 0.45].map((x) =>
-        [-0.45, -0.05].map((y) => (
-          <mesh key={`${x}:${y}`} position={[x, y, 0.56]}>
-            <sphereGeometry args={[0.035, 10, 10]} />
-            <meshStandardMaterial color={GOLD} metalness={0.95} roughness={0.2} />
-          </mesh>
-        )),
-      )}
-
-      {/* Serrure et trou de clé */}
-      <mesh position={[0, -0.22, 0.58]}>
-        <boxGeometry args={[0.26, 0.32, 0.06]} />
-        <meshStandardMaterial color={GOLD} metalness={0.92} roughness={0.22} />
-      </mesh>
-      <mesh position={[0, -0.2, 0.62]}>
-        <cylinderGeometry args={[0.045, 0.045, 0.03, 12]} />
-        <meshStandardMaterial color="#2a1a0a" roughness={0.9} />
-      </mesh>
-
-      {/* Rai de lumière au joint du couvercle.
-          Posé à z = 0.56, il était exactement coplanaire avec la face avant du
-          couvercle : les deux surfaces se disputaient le même plan et le rai
-          ne s'affichait pas. Quelques centièmes devant suffisent. */}
-      <mesh ref={seam} position={[0, 0.2, 0.6]}>
-        <planeGeometry args={[1.52, 0.06]} />
-        <meshBasicMaterial
-          color="#fff2c4"
-          transparent
-          opacity={0}
-          depthWrite={false}
-        />
-      </mesh>
-
-      {/* Couvercle bombé, pivotant sur l'arête arrière. Trois lattes de
-          hauteurs différentes suffisent à suggérer la courbe : un vrai
-          demi-cylindre coûterait bien plus de triangles pour un galbe que
-          personne ne regarde de près. */}
-      <group ref={lid} position={[0, 0.24, -0.55]}>
-        <mesh position={[0, 0.06, 0.55]} castShadow>
-          <boxGeometry args={[1.6, 0.2, 1.12]} />
-          <meshStandardMaterial color="#5a3619" roughness={0.9} />
-        </mesh>
-        <mesh position={[0, 0.19, 0.55]} castShadow>
-          <boxGeometry args={[1.5, 0.16, 0.92]} />
-          <meshStandardMaterial color="#6b4321" roughness={0.88} />
-        </mesh>
-        <mesh position={[0, 0.28, 0.55]} castShadow>
-          <boxGeometry args={[1.32, 0.12, 0.66]} />
-          <meshStandardMaterial color="#7a4d24" roughness={0.86} />
-        </mesh>
-        <mesh position={[0, 0.24, 0.55]}>
-          <boxGeometry args={[1.66, 0.08, 1.16]} />
-          <meshStandardMaterial color={GOLD} metalness={0.88} roughness={0.3} />
-        </mesh>
-      </group>
+    <>
+      <ChestModel ref={group} lidRef={lid} seamRef={seam} />
 
       {/* Lumière intérieure. Sa couleur est celle de la rareté obtenue : le
           coffre s'éclaire de ce qu'il contient. */}
@@ -369,13 +286,13 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
           <meshBasicMaterial
             color={plan.hakiColors.at(-1)}
             transparent
-            opacity={0.2}
+            opacity={0.22}
             side={THREE.DoubleSide}
             depthWrite={false}
           />
         </mesh>
       )}
-    </group>
+    </>
   );
 }
 
@@ -440,7 +357,7 @@ export default function ChestScene({
 
   return (
     <Canvas
-      camera={{ position: [0, 0.7, 2.9], fov: 44 }}
+      camera={{ position: [0, 0.55, 3.6], fov: 44 }}
       // `dpr` plafonné : un écran très dense ne doit pas quadrupler le coût
       // de rendu sur mobile (§107).
       dpr={[1, 1.8]}

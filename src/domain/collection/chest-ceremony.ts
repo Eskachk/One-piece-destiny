@@ -1,5 +1,5 @@
 import type { Rarity } from '../types';
-import { RARITY_COLOR, rarityRank } from './rarity';
+import { RARITY_COLOR, RARITY_ORDER, rarityRank } from './rarity';
 import type { ChestCard } from './chest';
 
 /**
@@ -60,37 +60,51 @@ const PREMIUM_FROM: Rarity = 'LEGENDARY';
 /**
  * Rampe de couleurs du Haki.
  *
- * Elle monte en énergie — violet, magenta, braise, or — ce qui donne au
- * dégradé une raison d'être autre que décorative. La couleur de la rareté est
- * ajoutée par `ceremonyPlan`.
+ * Les éclairs **traversent toutes les raretés**, du Commun au Mythique, avant
+ * de se fixer sur celle que contient réellement le coffre. Le joueur reconnaît
+ * chaque palier — ce sont exactement les couleurs de ses cartes — et l'attente
+ * devient une question : jusqu'où la montée va-t-elle aller ?
+ *
+ * C'est aussi ce qui rend le coffre ordinaire supportable : la charge passe
+ * par l'or et par la braise avant de retomber sur le turquoise. On a eu peur,
+ * et c'est le but.
  *
  * **Toutes les teintes sont vives, et ce n'est pas un choix esthétique.** Les
  * éclairs sont rendus en fusion additive : à l'écran, leur couleur s'ajoute à
- * celle du fond. Une première version partait d'un violet presque noir
- * (#180f2e) pour figurer le Haki de l'armement — et n'ajoutait donc
- * rigoureusement rien à un fond sombre. Les éclairs existaient, tournaient,
- * changeaient de couleur, et restaient parfaitement invisibles.
+ * celle du fond. Une première version partait d'un violet presque noir pour
+ * figurer le Haki de l'armement — et n'ajoutait donc rigoureusement rien à un
+ * fond sombre. Les éclairs existaient, tournaient, changeaient de couleur, et
+ * restaient parfaitement invisibles.
  */
-const HAKI_RAMP_STANDARD = ['#3f57e0', '#2fd2c8'];
-const HAKI_RAMP_PREMIUM = ['#4b2ee0', '#a02ee0', '#ff3a2f', '#ffd23f'];
+const RARITY_RAMP = RARITY_ORDER.map((rarity) => RARITY_COLOR[rarity]);
+
+/**
+ * Un coffre premium fait **deux tours** de rampe avant de se fixer.
+ *
+ * La répétition est délibérée : au premier passage on lit les couleurs, au
+ * second on comprend qu'elles montent — et qu'elles sont allées plus haut que
+ * la fois d'avant.
+ */
+const HAKI_RAMP_STANDARD = RARITY_RAMP;
+const HAKI_RAMP_PREMIUM = [...RARITY_RAMP, ...RARITY_RAMP];
 
 const STANDARD = {
-  shakeSeconds: 1.1,
-  suspenseSeconds: 0.45,
-  burstSeconds: 0.6,
-  particles: 0,
-  bolts: 5,
-  cardIntervalSeconds: 0.26,
+  shakeSeconds: 2.2,
+  suspenseSeconds: 0.8,
+  burstSeconds: 0.8,
+  particles: 40,
+  bolts: 8,
+  cardIntervalSeconds: 0.34,
   ramp: HAKI_RAMP_STANDARD,
 };
 
 const PREMIUM = {
-  shakeSeconds: 1.9,
-  suspenseSeconds: 1.2,
-  burstSeconds: 0.8,
-  particles: 180,
-  bolts: 11,
-  cardIntervalSeconds: 0.42,
+  shakeSeconds: 3.2,
+  suspenseSeconds: 1.6,
+  burstSeconds: 1,
+  particles: 220,
+  bolts: 14,
+  cardIntervalSeconds: 0.5,
   ramp: HAKI_RAMP_PREMIUM,
 };
 

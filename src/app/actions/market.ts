@@ -18,6 +18,13 @@ import { requireSession } from '@/lib/auth/guards';
 import { assertSameOrigin } from '@/lib/auth/request-guard';
 import * as market from '@/lib/market/repository';
 import { audit } from '@/lib/audit';
+import {
+  canBuyOnMarket,
+  canEnterMarket,
+} from '@/lib/antiabuse/restrictions';
+import { recordEvent } from '@/lib/antiabuse/events';
+import { recordTransfer } from '@/lib/antiabuse/provenance';
+import { evaluatePlayer } from '@/lib/antiabuse/signals';
 import { db } from '@/lib/supabase-admin';
 
 /**
@@ -85,6 +92,21 @@ export async function createListingAction(
   const price = validatePrice(parsed.data.price, character.rarity);
   if (!price.valid) return { ok: false, error: describePriceRefusal(price) };
 
+  // Verrous anti-abus, **avant** les cooldowns : ils portent sur des faits
+  // — l'origine de la carte, l'âge du compte — là où `canList` traite du
+  // rythme. Un compte de dix minutes doit être refusé pour ce qu’il est,
+  // pas pour la vitesse à laquelle il enchaîne.
+  const gate = await canEnterMarket(session.playerId, character.id);
+  if (!gate.allowed) {
+    await audit({
+      playerId: session.playerId,
+      action: 'market.list',
+      status: 'REFUSED',
+      metadata: { reason: gate.reason, characterId: character.id },
+    });
+    return { ok: false, error: gate.message };
+  }
+
   const context = await market.listingContext(session.playerId, character.id);
   const decision = canList({ ...context, now: new Date() });
   if (!decision.allowed) {
@@ -99,6 +121,11 @@ export async function createListingAction(
   if (created === 'duplicate') {
     return { ok: false, error: 'Ce personnage est déjà en vente.' };
   }
+
+  await recordEvent(session.playerId, 'MARKET_LISTED', {
+    characterId: character.id,
+    price: parsed.data.price,
+  });
 
   revalidatePath('/market');
   return { ok: true };
@@ -141,6 +168,20 @@ export async function buyListingAction(
 
   const listing = await market.getListing(parsed.data);
   if (!listing) return { ok: false, error: 'Annonce introuvable ou déjà vendue.' };
+
+  // Un compte restreint ne peut pas acheter non plus : sans cela, la
+  // restriction n'empêcherait que le sens sortant du transfert, et la
+  // valeur continuerait de se concentrer — dans l’autre sens.
+  const buyGate = await canBuyOnMarket(session.playerId);
+  if (!buyGate.allowed) {
+    await audit({
+      playerId: session.playerId,
+      action: 'market.purchase',
+      status: 'REFUSED',
+      metadata: { reason: buyGate.reason },
+    });
+    return { ok: false, error: buyGate.message };
+  }
 
   const [owns, trades, linked] = await Promise.all([
     market.ownsCharacter(session.playerId, listing.characterId),
@@ -187,6 +228,35 @@ export async function buyListingAction(
     status: 'SUCCESS',
     metadata: { listingId: listing.id, price: listing.price, fee },
   });
+
+  // Nouveau maillon de la chaîne de propriété : la carte a changé de mains,
+  // son code de série la suit, et l'on saura dans six mois d'où elle venait.
+  await recordTransfer({
+    playerId: session.playerId,
+    characterId: listing.characterId,
+    source: 'MARKET',
+  });
+
+  await recordEvent(session.playerId, 'MARKET_BOUGHT', {
+    characterId: listing.characterId,
+    from: listing.sellerId,
+  });
+  await recordEvent(listing.sellerId, 'MARKET_SOLD', {
+    characterId: listing.characterId,
+    to: session.playerId,
+  });
+
+  // Réévaluation **après** la transaction, jamais avant : le moteur ne
+  // doit pas s’insérer dans le chemin critique d’un achat (§35). Un échec
+  // ici ne remet pas en cause une vente déjà réglée en base.
+  try {
+    await Promise.all([
+      evaluatePlayer(listing.sellerId),
+      evaluatePlayer(session.playerId),
+    ]);
+  } catch (error) {
+    console.warn('[antiabuse] évaluation impossible', (error as Error).message);
+  }
 
   revalidatePath('/market');
   revalidatePath('/collection');

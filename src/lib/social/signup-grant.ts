@@ -6,6 +6,7 @@ import {
   SIGNUP_BERRIES_REFERRED,
 } from '@/domain/social/referral';
 import { getRepository } from '@/lib/repository';
+import { recordEvent } from '@/lib/antiabuse/events';
 import { REFERRAL_COOKIE } from './referral-cookie';
 import {
   findPlayerByReferralCode,
@@ -52,7 +53,17 @@ export async function grantSignupBonus(playerId: string): Promise<void> {
     0,
   );
 
+  // Le parcours est tracé dès l'arrivée : c'est l'écart entre ces instants,
+  // et non leur contenu, qui distinguera plus tard un joueur d'un compte
+  // fabriqué (§6 du cadrage anti-abus).
+  await recordEvent(playerId, 'ACCOUNT_CREATED');
+  await recordEvent(playerId, 'WELCOME_BALANCE_GRANTED', {
+    source: referred ? 'REFERRAL' : 'DIRECT',
+    berries: referred ? SIGNUP_BERRIES_REFERRED : SIGNUP_BERRIES,
+  });
+
   if (referred) {
     await recordReferral(referrerId!, playerId, false);
+    await recordEvent(playerId, 'REFERRAL_SIGNUP', { referrerId });
   }
 }

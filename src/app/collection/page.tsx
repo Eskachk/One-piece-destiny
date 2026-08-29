@@ -10,7 +10,7 @@ import { CHARACTERS, CHARACTER_INDEX } from '@/data/characters';
 import { allSetsProgress, collectionSummary } from '@/domain/collection/sets';
 import { RARITY_COLOR, RARITY_LABEL, rarityRank } from '@/domain/collection/rarity';
 import { CRAFT_COST } from '@/domain/collection/crafting';
-import { requireSession } from '@/lib/auth/guards';
+import { isAllowedAdmin, requireSession } from '@/lib/auth/guards';
 import { getRepository } from '@/lib/repository';
 
 export const dynamic = 'force-dynamic';
@@ -40,11 +40,12 @@ export default async function CollectionPage() {
   // `getCardIdentities` porte déjà l'identifiant de chaque carte : on en dérive
   // la liste des personnages possédés au lieu d'interroger `inventory` une
   // seconde fois pour la même information.
-  const [cards, shards, progress, wallet] = await Promise.all([
+  const [cards, shards, progress, wallet, unlimited] = await Promise.all([
     repository.getCardIdentities(session.playerId),
     repository.getShards(session.playerId),
     repository.getProgress(session.playerId),
     repository.getWallet(session.playerId),
+    isAllowedAdmin(),
   ]);
 
   const ownedIds = cards.map((card) => card.characterId);
@@ -77,6 +78,7 @@ export default async function CollectionPage() {
       <div className="mt-6">
         <ChestPanel
           starterAvailable={!progress.starterChestOpened}
+          unlimited={unlimited}
           unopenedChests={progress.unopenedChests}
           pityCounter={progress.pityCounter}
           berries={wallet.berries}

@@ -36,6 +36,23 @@ const securityHeaders = [
 export default function config(phase: string): NextConfig {
   return {
     poweredByHeader: false, // §84.2 : supprimer X-Powered-By
+
+    /**
+     * Pastille d'outils de développement de Next, retirée.
+     *
+     * Elle flottait en bas à gauche de chaque page et se retrouvait sur les
+     * captures d'écran. Deux précisions honnêtes :
+     *
+     *   — elle **n'apparaissait déjà pas en production** : c'est une pastille
+     *     du serveur de développement, invisible pour les joueurs ;
+     *   — elle **ne peut pas être réservée à l'administrateur.** Next la pose
+     *     à la compilation, sans rien savoir de la session : il n'existe
+     *     aucun réglage « visible pour ce compte seulement ».
+     *
+     * Les outils réservés à l'administrateur sont donc ailleurs, dans le
+     * Chapter HQ (`/admin`), où le contrôle d'accès est réel.
+     */
+    devIndicators: false,
     distDir:
       process.env.VERCEL || phase === PHASE_DEVELOPMENT_SERVER
         ? '.next'

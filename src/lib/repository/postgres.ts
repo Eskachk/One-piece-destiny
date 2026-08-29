@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { db } from '@/lib/supabase-admin';
+import { STARTER_CARD_LOCK_MS } from '@/domain/antiabuse/config';
 import { nextSundayLockInstant } from '@/domain/chapter/lock';
 import { CURRENT_SCORING_VERSION } from '@/domain/scoring';
 import type {
@@ -418,6 +419,19 @@ export const postgresRepository: Repository = {
     if (fresh.length > 0) {
       // `ignoreDuplicates` protège d'une course : deux coffres simultanés
       // ne doivent pas produire deux lignes pour le même personnage.
+      // Verrou des cartes d'inscription (§43, anti-abus).
+      //
+      // Les cartes du coffre offert à l'arrivée ne sont pas échangeables
+      // pendant une période fixée. C'est la protection la plus efficace du
+      // dispositif, et la seule qui ne se trompe sur personne : elle ne
+      // détecte rien, elle rend simplement immobile la valeur qu'une ferme de
+      // comptes chercherait à concentrer. Un joueur légitime, lui, n'a aucune
+      // raison de revendre sa dotation de départ dans l'heure.
+      const tradableFrom =
+        input.kind === 'STARTER'
+          ? new Date(Date.now() + STARTER_CARD_LOCK_MS).toISOString()
+          : null;
+
       const { data: inserted, error } = await db()
         .from('inventory')
         .upsert(
@@ -425,16 +439,33 @@ export const postgresRepository: Repository = {
             player_id: input.playerId,
             character_id: card.characterId,
             obtained_from: input.kind === 'STARTER' ? 'Coffre d\'inscription' : 'Coffre',
+            source: input.kind === 'STARTER' ? 'STARTER_CHEST' : 'CHEST',
+            acquired_at: new Date().toISOString(),
+            tradable_from: tradableFrom,
           })),
           { onConflict: 'player_id,character_id', ignoreDuplicates: true },
         )
-        .select('id');
+        .select('id, character_id');
       if (error) throw new Error(`inventory.upsert : ${error.message}`);
 
       // Frappe : chaque carte neuve reçoit son code unique et son numéro
       // d'émission. Le tirage du code a lieu en base, jamais côté client (§97).
       for (const row of inserted ?? []) {
-        await db().rpc('mint_card', { p_inventory_id: row.id });
+        const { data: serial } = await db().rpc('mint_card', {
+          p_inventory_id: row.id,
+        });
+
+        // Premier maillon de la chaîne de propriété. Il porte la **source**,
+        // ce qui rend traçable, des mois plus tard, qu'une carte trouvée sur
+        // le compte principal venait du coffre d'inscription d'un autre.
+        if (serial) {
+          await db().from('card_ownership').insert({
+            serial_code: serial,
+            character_id: row.character_id,
+            player_id: input.playerId,
+            source: input.kind === 'STARTER' ? 'STARTER_CHEST' : 'CHEST',
+          });
+        }
       }
     }
 
