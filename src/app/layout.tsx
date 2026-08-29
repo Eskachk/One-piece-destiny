@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Anton, Caveat } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 /** SEO : titres uniques, Open Graph, canonical (cahier §106). */
@@ -52,7 +53,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className={`${anton.variable} ${caveat.variable}`}>
-      <body className="chart-grid">{children}</body>
+      <body className="chart-grid">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
