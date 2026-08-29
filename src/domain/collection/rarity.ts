@@ -34,8 +34,13 @@ export const RARITY_WEIGHTS: Record<Rarity, number> = {
   COMMON: 600,
   RARE: 280,
   EPIC: 95,
-  LEGENDARY: 22,
-  MYTHIC: 3,
+  // Relevés en même temps que la réévaluation des raretés : le référentiel
+  // ne compte plus quelques centaines de légendaires hérités des primes, mais
+  // une quarantaine de personnages réellement omniprésents dans l'œuvre. À
+  // poids constants, la chance annoncée d'en tirer un aurait été divisée par
+  // cinq du jour au lendemain, sans que le joueur ait rien demandé.
+  LEGENDARY: 45,
+  MYTHIC: 9,
 };
 
 /**
@@ -57,4 +62,33 @@ export const RARITY_LABEL: Record<Rarity, string> = {
   EPIC: 'Épique',
   LEGENDARY: 'Légendaire',
   MYTHIC: 'Mythique',
+};
+
+/**
+ * Couleur de chaque rareté (cahier §24).
+ *
+ * **Une seule source pour toute l'application** : carte de collection,
+ * cérémonie d'ouverture, Market. Recopiée à trois endroits, la teinte du
+ * Légendaire finirait par différer d'un écran à l'autre et le joueur perdrait
+ * le repère le plus rapide dont il dispose.
+ *
+ * Les couleurs viennent de la palette du port. Elles ne portent jamais
+ * l'information **seules** : chaque affichage montre aussi le libellé, faute
+ * de quoi la rareté serait invisible pour un joueur daltonien.
+ */
+export const RARITY_COLOR: Record<Rarity, string> = {
+  COMMON: '#8ea3bd', // cordage gris-bleu
+  RARE: '#2fa8a4', // turquoise du lagon
+  EPIC: '#9a5cd8', // améthyste
+  LEGENDARY: '#f5c542', // or du trésor
+  MYTHIC: '#ff5d47', // braise
+};
+
+/** Encre lisible **sur** la couleur de rareté (contraste vérifié). */
+export const RARITY_INK: Record<Rarity, string> = {
+  COMMON: '#16283d',
+  RARE: '#04302f',
+  EPIC: '#ffffff',
+  LEGENDARY: '#3a2a05',
+  MYTHIC: '#ffffff',
 };

@@ -5,27 +5,47 @@ import { useState, useTransition } from 'react';
 import {
   buyChestAction,
   openOwnedChestAction,
+  openStarterChestAction,
   type OpenStarterResult,
 } from '@/app/actions/collection';
 import { ChestOpening } from '@/components/chest3d/ChestOpening';
 import { ChestOdds } from '@/components/ChestOdds';
 import type { RarityOdds } from '@/domain/collection/odds';
-import { PITY_THRESHOLD } from '@/domain/collection/chest';
+import {
+  PITY_THRESHOLD,
+  STARTER_CHEST_SLOTS,
+} from '@/domain/collection/chest';
 import { CHEST_PRICE_BERRIES } from '@/domain/collection/rewards';
 
 /**
- * Coffres possédés et boutique (cahier §26, §31, §36, §113).
+ * Coffres : inscription, réserve et boutique (cahier §26, §27, §31, §36, §113).
  *
- * La règle de pitié est affichée en permanence, pas cachée dans des
- * conditions générales : le cahier §31 demande qu'elle soit transparente
- * avant l'ouverture.
+ * **Un seul composant pour le coffre d'inscription et les suivants**, et c'est
+ * la condition pour que la cérémonie existe.
+ *
+ * Ils étaient séparés : la page rendait `StarterChest` tant que le coffre
+ * d'inscription n'était pas ouvert, puis `ChestPanel`. Or toute action serveur
+ * rafraîchit la route courante — c'est le comportement de Next, indépendamment
+ * de `revalidatePath`. L'ouverture faisait donc basculer la page d'un composant
+ * à l'autre, et le composant qui jouait l'animation était démonté à la seconde
+ * même où elle commençait. Les cinq cartes étaient bien en base ; le joueur ne
+ * voyait qu'un panneau changer.
+ *
+ * Un composant unique reste monté à travers le rafraîchissement : seules ses
+ * données changent, son état — donc la révélation en cours — survit.
+ *
+ * La règle de pitié et les probabilités sont affichées en permanence, jamais
+ * enfouies dans des conditions générales (§31, §113).
  */
 export function ChestPanel({
+  starterAvailable,
   unopenedChests,
   pityCounter,
   berries,
   odds,
 }: {
+  /** Le coffre d'inscription n'a pas encore été ouvert (§27). */
+  starterAvailable: boolean;
   unopenedChests: number;
   pityCounter: number;
   berries: number;
@@ -36,10 +56,10 @@ export function ChestPanel({
   const [shopError, setShopError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
-  const open = () => {
+  const run = (action: () => Promise<OpenStarterResult>) => {
     startTransition(async () => {
       setShopError(null);
-      setResult(await attempt(openOwnedChestAction()));
+      setResult(await attempt(action()));
     });
   };
 
@@ -53,25 +73,53 @@ export function ChestPanel({
 
   const remainingToPity = Math.max(0, PITY_THRESHOLD - pityCounter);
 
+  // Le coffre d'inscription reste affiché tant qu'il n'a pas été ouvert. Une
+  // fois la cérémonie lancée, on passe au panneau ordinaire — mais sans
+  // démonter quoi que ce soit, donc sans interrompre la révélation.
+  const showStarter = starterAvailable && result === null;
+
   return (
     <section className="rounded-xl hb-surface p-5">
       <div className="flex items-baseline justify-between">
-        <h2 className="font-display text-xl hb-ink">Coffres</h2>
+        <h2 className="font-display text-xl hb-ink">
+          {showStarter ? 'Coffre d’inscription' : 'Coffres'}
+        </h2>
         <span className="font-mono text-sm hb-gold">🪙 {berries}</span>
       </div>
 
-      <p className="mt-2 text-sm hb-ink-soft">
-        {unopenedChests > 0
-          ? `${unopenedChests} coffre${unopenedChests > 1 ? 's' : ''} à ouvrir.`
-          : 'Aucun coffre en réserve.'}
-      </p>
+      {showStarter ? (
+        <>
+          {/* Contenu annoncé **avant** ouverture (§113). Le nombre est dérivé
+              des emplacements, pas écrit à la main : c'est la seule façon
+              qu'il ne mente jamais. Il a déjà annoncé cinq personnages pour un
+              coffre qui en donnait trois. */}
+          <ul className="mt-3 space-y-1 text-sm hb-ink-soft">
+            <li>• {STARTER_CHEST_SLOTS.length} personnages, tous différents</li>
+            <li>• au moins un Rare ou mieux</li>
+            <li>• un doublon rapporte toujours des fragments</li>
+          </ul>
 
-      {/* §31 : la garantie est annoncée, jamais découverte après coup. */}
-      <p className="mt-1 text-xs hb-ink-soft">
-        {remainingToPity === 0
-          ? '✨ Ton prochain coffre garantit un légendaire.'
-          : `Légendaire garanti dans ${remainingToPity} coffre${remainingToPity > 1 ? 's' : ''} au plus tard.`}
-      </p>
+          <p className="mt-3 text-xs hb-ink-soft">
+            La rareté détermine la valeur de collection, pas la puissance en
+            jeu : un personnage commun peut être excellent pour une stratégie.
+          </p>
+        </>
+      ) : (
+        <>
+          <p className="mt-2 text-sm hb-ink-soft">
+            {unopenedChests > 0
+              ? `${unopenedChests} coffre${unopenedChests > 1 ? 's' : ''} à ouvrir.`
+              : 'Aucun coffre en réserve.'}
+          </p>
+
+          {/* §31 : la garantie est annoncée, jamais découverte après coup. */}
+          <p className="mt-1 text-xs hb-ink-soft">
+            {remainingToPity === 0
+              ? '✨ Ton prochain coffre garantit un légendaire.'
+              : `Légendaire garanti dans ${remainingToPity} coffre${remainingToPity > 1 ? 's' : ''} au plus tard.`}
+          </p>
+        </>
+      )}
 
       {result?.ok && (
         <div className="mt-4">
@@ -91,23 +139,36 @@ export function ChestPanel({
       )}
 
       <div className="mt-4 space-y-2">
-        <button
-          type="button"
-          onClick={open}
-          disabled={pending || unopenedChests === 0}
-          className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
-        >
-          {pending ? 'Un instant…' : 'Ouvrir un coffre'}
-        </button>
+        {showStarter ? (
+          <button
+            type="button"
+            onClick={() => run(openStarterChestAction)}
+            disabled={pending}
+            className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50"
+          >
+            {pending ? 'Ouverture…' : 'Ouvrir le coffre'}
+          </button>
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={() => run(openOwnedChestAction)}
+              disabled={pending || unopenedChests === 0}
+              className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
+            >
+              {pending ? 'Un instant…' : 'Ouvrir un coffre'}
+            </button>
 
-        <button
-          type="button"
-          onClick={buy}
-          disabled={pending || berries < CHEST_PRICE_BERRIES}
-          className="transition-quick w-full rounded-xl border hb-border px-4 py-2 text-sm hb-accent disabled:opacity-40"
-        >
-          Acheter un coffre — {CHEST_PRICE_BERRIES} 🪙
-        </button>
+            <button
+              type="button"
+              onClick={buy}
+              disabled={pending || berries < CHEST_PRICE_BERRIES}
+              className="transition-quick w-full rounded-xl border hb-border px-4 py-2 text-sm hb-accent disabled:opacity-40"
+            >
+              Acheter un coffre — {CHEST_PRICE_BERRIES} 🪙
+            </button>
+          </>
+        )}
       </div>
 
       <p className="mt-3 text-[11px] hb-ink-soft">

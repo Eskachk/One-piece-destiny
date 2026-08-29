@@ -7,6 +7,7 @@ import { isTeamEditable } from '@/domain/chapter/lock';
 import { requireSession } from '@/lib/auth/guards';
 import { assertSameOrigin } from '@/lib/auth/request-guard';
 import { getRepository } from '@/lib/repository';
+import { payReferrerOnFirstCrew } from '@/lib/social/referral-payout';
 
 /**
  * Enregistrement de l'équipage.
@@ -78,6 +79,17 @@ export async function saveCrew(characterIds: unknown): Promise<SaveCrewResult> {
   }
 
   await repository.saveTeam(session.playerId, chapter.id, ids);
+
+  // Le parrain est payé **ici**, pas à l'inscription (§71). Verrouiller un
+  // équipage est la première chose qu'un joueur fait qu'un compte fabriqué ne
+  // fera pas : c'est donc le bon moment pour récompenser celui qui l'a amené.
+  // L'échec de ce versement n'a rien à voir avec l'enregistrement de
+  // l'équipage, qui est déjà acquis — il ne doit pas le faire échouer.
+  try {
+    await payReferrerOnFirstCrew(session.playerId);
+  } catch (error) {
+    console.warn('[referral] PAYOUT_FAILED', (error as Error).message);
+  }
 
   revalidatePath('/');
   return { ok: true, lockedAt: now.toISOString() };

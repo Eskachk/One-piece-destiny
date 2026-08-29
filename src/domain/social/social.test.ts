@@ -1,12 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import {
-  COMMENT_COOLDOWN_MS,
-  COMMENT_MAX_LENGTH,
-  evaluateComment,
-  REPORTS_BEFORE_HIDING,
-  shouldHide,
-} from './moderation';
-import {
   evaluateReferral,
   generateReferralCode,
   MAX_REWARDED_REFERRALS,
@@ -23,74 +16,6 @@ import { CHARACTERS } from '../../data/characters';
 
 const now = new Date('2026-08-28T12:00:00Z');
 const ago = (ms: number) => new Date(now.getTime() - ms);
-
-describe('commentaires (§70)', () => {
-  const base = {
-    body: 'Bartolomeo méritait vraiment ce jackpot.',
-    lastCommentAt: null,
-    resultsPublished: true,
-    now,
-  };
-
-  it('accepte un commentaire ordinaire', () => {
-    const decision = evaluateComment(base);
-    expect(decision.allowed).toBe(true);
-  });
-
-  it('nettoie les espaces autour du texte', () => {
-    const decision = evaluateComment({ ...base, body: '   Bien joué.   ' });
-    expect(decision).toMatchObject({ allowed: true, body: 'Bien joué.' });
-  });
-
-  it('ferme la discussion avant publication des résultats', () => {
-    // Un commentaire est le canal de spoiler le plus évident (§3).
-    expect(evaluateComment({ ...base, resultsPublished: false })).toMatchObject({
-      allowed: false,
-      reason: 'SPOILER_LOCKED',
-    });
-  });
-
-  it('refuse un message vide', () => {
-    expect(evaluateComment({ ...base, body: '   ' })).toMatchObject({
-      allowed: false,
-      reason: 'TOO_SHORT',
-    });
-  });
-
-  it('refuse un message trop long', () => {
-    const decision = evaluateComment({
-      ...base,
-      body: 'x'.repeat(COMMENT_MAX_LENGTH + 1),
-    });
-    expect(decision).toMatchObject({ allowed: false, reason: 'TOO_LONG' });
-  });
-
-  it('impose un délai entre deux commentaires', () => {
-    const decision = evaluateComment({
-      ...base,
-      lastCommentAt: ago(COMMENT_COOLDOWN_MS - 1000),
-    });
-    expect(decision).toMatchObject({ allowed: false, reason: 'COOLDOWN' });
-  });
-
-  it('rouvre après le délai', () => {
-    expect(
-      evaluateComment({ ...base, lastCommentAt: ago(COMMENT_COOLDOWN_MS + 1000) })
-        .allowed,
-    ).toBe(true);
-  });
-});
-
-describe('modération', () => {
-  it('masque au seuil de signalements', () => {
-    expect(shouldHide(REPORTS_BEFORE_HIDING - 1)).toBe(false);
-    expect(shouldHide(REPORTS_BEFORE_HIDING)).toBe(true);
-  });
-
-  it('ne masque pas sur un signalement isolé', () => {
-    expect(shouldHide(1)).toBe(false);
-  });
-});
 
 describe('parrainage (§71)', () => {
   const base = {

@@ -210,14 +210,19 @@ export function openChest(input: OpenChestInput): ChestResult {
 /**
  * Emplacements du coffre d'inscription (cahier §27).
  *
- * Trois personnages, dont un Rare garanti. C'est exactement le nombre
- * d'emplacements d'un équipage : le nouveau joueur peut donc jouer sa
- * première semaine immédiatement — mais sans choix tant qu'il n'a pas ouvert
- * d'autres coffres, ce que l'interface lui dit explicitement.
+ * **Cinq** personnages, dont un Rare garanti — même composition qu'un coffre
+ * ordinaire, à ceci près qu'ils sont tous distincts.
+ *
+ * Il en donnait trois, soit exactement la taille d'un équipage : le nouveau
+ * joueur pouvait jouer sa première semaine, mais sans le moindre choix, sa
+ * seule composition possible étant sa seule dotation. Cinq cartes lui laissent
+ * une vraie décision dès le premier chapitre, ce qui est tout l'intérêt du jeu.
  */
 export const STARTER_CHEST_SLOTS: readonly Rarity[] = [
   'COMMON',
+  'COMMON',
   'RARE', // au moins une carte qui donne envie de continuer
+  'COMMON',
   'COMMON',
 ] as const;
 

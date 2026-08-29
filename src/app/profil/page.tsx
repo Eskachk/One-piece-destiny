@@ -11,8 +11,16 @@ import {
   ReferralPanel,
 } from '@/components/ProfileSocial';
 import { AccountStatus } from '@/components/AccountStatus';
+import { HouseRules } from '@/components/HouseRules';
 import { NotificationPreferences } from '@/components/NotificationPreferences';
 import { restrictionsForBirthDate } from '@/domain/compliance/age';
+import {
+  MAX_REWARDED_REFERRALS,
+  REFERRAL_BERRIES_REFERRER,
+  SIGNUP_BERRIES_REFERRED,
+  referralLink,
+} from '@/domain/social/referral';
+import { baseUrl } from '@/lib/email/templates';
 import { db } from '@/lib/supabase-admin';
 import { preferencesOf } from '@/lib/notifications/dispatch';
 import { requireSession } from '@/lib/auth/guards';
@@ -70,8 +78,10 @@ export default async function ProfilePage() {
         createdAt: n.createdAt.toLocaleDateString('fr-FR'),
       }))
     : [];
+  // Le code est créé au premier affichage : le joueur ne doit pas avoir à
+  // demander son propre lien d'invitation pour l'obtenir.
   const referralCode = available
-    ? await social.getReferralCode(session.playerId)
+    ? await social.ensureReferralCode(session.playerId)
     : null;
   const referralState = available
     ? await social.getReferralState(session.playerId)
@@ -260,9 +270,11 @@ export default async function ProfilePage() {
         <>
           <NotificationCenter notifications={notifications} />
           <ReferralPanel
-            code={referralCode}
+            link={referralCode ? referralLink(baseUrl(), referralCode) : null}
             referredCount={referralState.referredCount}
-            alreadyReferred={referralState.alreadyReferred}
+            referrerBerries={REFERRAL_BERRIES_REFERRER}
+            referredBerries={SIGNUP_BERRIES_REFERRED}
+            maxRewarded={MAX_REWARDED_REFERRALS}
           />
         </>
       )}
@@ -278,6 +290,8 @@ export default async function ProfilePage() {
       <div className="mt-6">
         <NotificationPreferences initial={preferences} />
       </div>
+
+      <HouseRules />
       <MainNav />
     </HarborScene>
   );

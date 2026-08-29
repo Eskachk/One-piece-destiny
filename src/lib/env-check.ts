@@ -113,6 +113,18 @@ export function inspectEnvironment(options: { mfaInUse: boolean }): EnvIssue[] {
       });
     }
 
+    // Second verrou du Chapter HQ (§86). Sans cette variable, le rôle `ADMIN`
+    // décide seul — et il vit dans une colonne, donc à portée de toute
+    // écriture malencontreuse en base.
+    if (!process.env.ADMIN_EMAIL) {
+      issues.push({
+        variable: 'ADMIN_EMAIL',
+        severity: 'WARNING',
+        message:
+          'Absente : tout compte portant le rôle ADMIN ouvre le Chapter HQ, sans second contrôle hors base.',
+      });
+    }
+
     // Un paiement de test ne doit jamais créditer la production (§29).
     if (process.env.PAYMENTS_ENABLED === 'true' && process.env.PAYMENT_MODE !== 'live') {
       issues.push({

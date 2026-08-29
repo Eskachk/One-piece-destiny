@@ -36,9 +36,38 @@ export async function requireSession(): Promise<AuthenticatedSession> {
  * au second facteur : le refuser sèchement le laisserait sans aucun moyen de
  * se mettre en conformité.
  */
+/**
+ * Adresse du **seul** compte autorisé au Chapter HQ.
+ *
+ * Deuxième verrou, indépendant de la base. Le rôle `ADMIN` reste la condition
+ * principale, mais il vit dans une colonne : une injection, une restauration
+ * d'ancienne sauvegarde, un `update` maladroit en console Supabase suffisent à
+ * en accorder un. `ADMIN_EMAIL` vit dans l'environnement de déploiement, hors
+ * d'atteinte de tout ce qui passe par l'application — il faut donc compromettre
+ * les deux, et par deux chemins différents.
+ *
+ * Non renseignée, la variable ne bloque rien : le rôle décide seul. C'est
+ * délibéré — un développement local sans variables d'environnement doit rester
+ * utilisable — mais `assertEnvironment` le signale en production.
+ */
+function allowedAdminEmail(): string | null {
+  const value = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  return value ? value : null;
+}
+
+export function isAdminAllowlistEnforced(): boolean {
+  return allowedAdminEmail() !== null;
+}
+
 export async function requireAdmin(): Promise<AuthenticatedSession> {
   const session = await getAuthenticatedSession();
   if (!session || session.role !== 'ADMIN') notFound();
+
+  // Même réponse qu'un compte sans rôle : un 404 pour les uns et un 403 pour
+  // les autres indiquerait à un administrateur déchu que la page existe encore.
+  const allowed = allowedAdminEmail();
+  if (allowed && session.email.trim().toLowerCase() !== allowed) notFound();
+
   if (!session.mfaEnabled) redirect('/admin/mfa');
   return session;
 }
@@ -51,5 +80,12 @@ export async function requireAdmin(): Promise<AuthenticatedSession> {
 export async function requireAdminForEnrollment(): Promise<AuthenticatedSession> {
   const session = await getAuthenticatedSession();
   if (!session || session.role !== 'ADMIN') notFound();
+
+  // La liste d'autorisation s'applique aussi ici : sans cela, un compte au
+  // rôle `ADMIN` mais hors liste pourrait quand même s'inscrire à la double
+  // authentification, et cette page deviendrait le trou dans le filet.
+  const allowed = allowedAdminEmail();
+  if (allowed && session.email.trim().toLowerCase() !== allowed) notFound();
+
   return session;
 }

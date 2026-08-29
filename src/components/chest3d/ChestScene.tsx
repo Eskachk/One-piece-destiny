@@ -3,48 +3,188 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
-import type { CeremonyPlan } from '@/domain/collection/chest-ceremony';
+import {
+  hakiColorAt,
+  type CeremonyPlan,
+} from '@/domain/collection/chest-ceremony';
 
 /**
- * Ouverture de coffre en 3D (cahier §56, §57).
+ * Ouverture de coffre en 3D (cahier §56, §57, §61).
  *
  * Contraintes tenues :
  *
  *   §57  la 3D est réservée aux moments forts. Ce module est chargé
  *        dynamiquement, uniquement quand un coffre s'ouvre — les pages
  *        courantes ne portent pas son poids.
- *   §56  coffre commun : tremblement, ouverture, lumière.
- *        coffre légendaire : caméra mobile, particules, rayon lumineux.
+ *   §61  la mise en scène est découpée en trois temps **séparés** :
+ *        `charge` (le coffre encaisse), `hold` (tout se fige — c'est le
+ *        silence qui fait la promesse), `burst` (le couvercle cède). Une
+ *        animation continue n'aurait pas de suspense, seulement une durée.
  *   §107 aucune texture ni modèle externe : tout est géométrie procédurale,
- *        donc rien à télécharger et rien à décoder.
+ *        donc rien à télécharger et rien à décoder. Le bois est fait de
+ *        planches distinctes légèrement désaccordées en teinte — c'est ce qui
+ *        lui donne du relief sans la moindre image.
  */
 
-const WOOD = '#6b4423';
-const WOOD_DARK = '#4a2f18';
-const GOLD = '#f4c84a';
-const TURQUOISE = '#25c7c5';
+const GOLD = '#f0be3f';
+const GOLD_DARK = '#a97c1c';
 
-/** Phases de la cérémonie, dérivées du plan. */
-function usePhase(plan: CeremonyPlan) {
+/** Teintes des planches. L'écart entre elles **est** la texture du bois. */
+const PLANKS = ['#7a4d24', '#6b4321', '#84552a', '#5f3a1c', '#784a22'];
+
+type Phase = 'charge' | 'hold' | 'burst';
+
+/**
+ * Découpe temporelle de la cérémonie.
+ *
+ * Un seul endroit lit l'horloge et décide de la phase : les composants
+ * n'ont plus qu'à consulter le résultat, et ne peuvent pas diverger sur
+ * « où en est-on ».
+ */
+function useCeremonyClock(plan: CeremonyPlan) {
   const elapsed = useRef(0);
-  const [phase, setPhase] = useState<'shake' | 'opening' | 'revealed'>('shake');
+  const [phase, setPhase] = useState<Phase>('charge');
 
   useFrame((_, delta) => {
     elapsed.current += delta;
-    const openAt = plan.shakeSeconds + plan.suspenseSeconds;
+    const holdAt = plan.shakeSeconds;
+    const burstAt = holdAt + plan.suspenseSeconds;
 
-    if (elapsed.current >= openAt + 0.8) setPhase('revealed');
-    else if (elapsed.current >= openAt) setPhase('opening');
+    if (elapsed.current >= burstAt) setPhase('burst');
+    else if (elapsed.current >= holdAt) setPhase('hold');
   });
 
   return { phase, elapsed };
+}
+
+/** Une planche du coffre, avec ses arêtes chanfreinées par la lumière. */
+function Plank({
+  position,
+  size,
+  color,
+}: {
+  position: [number, number, number];
+  size: [number, number, number];
+  color: string;
+}) {
+  return (
+    <mesh position={position} castShadow receiveShadow>
+      <boxGeometry args={size} />
+      <meshStandardMaterial color={color} roughness={0.92} metalness={0.02} />
+    </mesh>
+  );
+}
+
+/**
+ * Éclairs de Haki.
+ *
+ * Chaque éclair est une ligne brisée qui part du coffre et se perd vers le
+ * haut. Les sommets sont **retirés au sort à intervalle fixe**, pas à chaque
+ * image : un éclair qui change soixante fois par seconde se lit comme du
+ * bruit, alors qu'à douze fois par seconde on voit un crépitement.
+ *
+ * La couleur vient du plan (`hakiColorAt`) et progresse avec la charge : le
+ * dernier palier est la couleur de la meilleure carte du coffre.
+ */
+function HakiBolts({
+  plan,
+  elapsed,
+  active,
+}: {
+  plan: CeremonyPlan;
+  elapsed: { current: number };
+  active: boolean;
+}) {
+  const SEGMENTS = 7;
+  const lines = useRef<THREE.LineSegments>(null);
+  const material = useRef<THREE.LineBasicMaterial>(null);
+  const lastRedraw = useRef(0);
+
+  // Deux sommets par segment : `LineSegments` dessine des tronçons
+  // indépendants, ce qui évite de relier la fin d'un éclair au début du
+  // suivant — un trait parasite qui traverserait toute la scène.
+  const positions = useMemo(
+    () => new Float32Array(plan.bolts * SEGMENTS * 2 * 3),
+    [plan.bolts],
+  );
+
+  useFrame(() => {
+    if (!lines.current || !material.current) return;
+
+    const t = elapsed.current;
+    const progress = plan.shakeSeconds > 0 ? t / plan.shakeSeconds : 1;
+
+    // Intensité : les éclairs naissent, montent, puis s'éteignent d'un coup
+    // au silence. Leur disparition est ce qui rend le silence audible.
+    material.current.opacity = active ? Math.min(1, progress * 1.6) : 0;
+    material.current.color.set(hakiColorAt(plan, progress));
+
+    if (!active || t - lastRedraw.current < 0.08) return;
+    lastRedraw.current = t;
+
+    const attribute = lines.current.geometry.attributes.position;
+    const array = attribute.array as Float32Array;
+
+    for (let bolt = 0; bolt < plan.bolts; bolt += 1) {
+      const angle = (bolt / plan.bolts) * Math.PI * 2 + Math.random() * 0.5;
+      const reach = 1.2 + Math.random() * 1.4;
+
+      // Les éclairs naissent **au niveau du joint**, pas au centre de la
+      // caisse : partis d'en dessous, leurs premiers segments étaient à
+      // l'intérieur du coffre, donc masqués par le bois.
+      let x = Math.cos(angle) * 0.45;
+      let y = 0.18;
+      let z = Math.sin(angle) * 0.45;
+
+      for (let segment = 0; segment < SEGMENTS; segment += 1) {
+        const base = (bolt * SEGMENTS + segment) * 6;
+        const step = reach / SEGMENTS;
+
+        array[base] = x;
+        array[base + 1] = y;
+        array[base + 2] = z;
+
+        x += Math.cos(angle) * step * 0.6 + (Math.random() - 0.5) * 0.34;
+        y += step + (Math.random() - 0.5) * 0.2;
+        z += Math.sin(angle) * step * 0.6 + (Math.random() - 0.5) * 0.34;
+
+        array[base + 3] = x;
+        array[base + 4] = y;
+        array[base + 5] = z;
+      }
+    }
+
+    attribute.needsUpdate = true;
+  });
+
+  if (plan.bolts === 0) return null;
+
+  return (
+    <lineSegments ref={lines}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[positions, 3]}
+          count={positions.length / 3}
+        />
+      </bufferGeometry>
+      <lineBasicMaterial
+        ref={material}
+        transparent
+        opacity={0}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </lineSegments>
+  );
 }
 
 function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) {
   const group = useRef<THREE.Group>(null);
   const lid = useRef<THREE.Group>(null);
   const glow = useRef<THREE.PointLight>(null);
-  const { phase, elapsed } = usePhase(plan);
+  const seam = useRef<THREE.Mesh>(null);
+  const { phase, elapsed } = useCeremonyClock(plan);
   const announced = useRef(false);
 
   const premium = plan.tier === 'PREMIUM';
@@ -61,88 +201,175 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
     const t = elapsed.current;
 
     if (group.current) {
-      // Tremblement : amplitude décroissante, pour donner l'impression que
-      // quelque chose pousse de l'intérieur.
-      if (phase === 'shake' && plan.shakeSeconds > 0) {
-        const intensity = 0.035 * (1 - t / Math.max(plan.shakeSeconds, 0.001));
-        group.current.rotation.z = Math.sin(t * 40) * Math.max(0, intensity);
-        group.current.position.x = Math.sin(t * 33) * Math.max(0, intensity) * 0.4;
+      if (phase === 'charge' && plan.shakeSeconds > 0) {
+        // Tremblement **croissant**, à l'inverse de la version précédente qui
+        // s'éteignait en avançant. Quelque chose qui pousse de l'intérieur
+        // force de plus en plus fort ; l'amplitude doit donc monter jusqu'à la
+        // rupture, sans quoi la scène raconte un coffre qui se calme.
+        const intensity = 0.012 + 0.05 * (t / plan.shakeSeconds) ** 2;
+        group.current.rotation.z = Math.sin(t * 46) * intensity;
+        group.current.position.x = Math.sin(t * 37) * intensity * 0.5;
+        group.current.position.y = Math.abs(Math.sin(t * 23)) * intensity * 0.6;
+      } else if (phase === 'hold') {
+        // Immobilité franche. C'est le §61 : le silence avant la révélation.
+        group.current.rotation.z *= 0.7;
+        group.current.position.x *= 0.7;
+        group.current.position.y *= 0.7;
       } else {
         group.current.rotation.z *= 0.85;
         group.current.position.x *= 0.85;
+        group.current.position.y *= 0.85;
       }
     }
 
-    // Le couvercle bascule vers l'arrière, puis reste ouvert.
+    // Le couvercle ne bouge pas d'un millimètre avant l'ouverture : le
+    // laisser s'entrouvrir pendant la charge vendrait la mèche.
     if (lid.current) {
-      const target = phase === 'shake' ? 0 : -Math.PI * 0.62;
-      lid.current.rotation.x += (target - lid.current.rotation.x) * 0.12;
+      const target = phase === 'burst' ? -Math.PI * 0.66 : 0;
+      lid.current.rotation.x += (target - lid.current.rotation.x) * 0.16;
     }
 
-    // La lumière monte à l'ouverture ; plus forte pour un légendaire.
+    // Lumière : une lueur retenue pendant la charge, éteinte au silence, puis
+    // pleine à l'ouverture.
     if (glow.current) {
-      const target = phase === 'shake' ? 0 : premium ? 14 : 5;
-      glow.current.intensity += (target - glow.current.intensity) * 0.09;
+      const target =
+        phase === 'charge'
+          ? 1.2 + (plan.shakeSeconds ? t / plan.shakeSeconds : 1) * 2.5
+          : phase === 'hold'
+            ? 0.2
+            : premium
+              ? 16
+              : 6;
+      glow.current.intensity += (target - glow.current.intensity) * 0.14;
     }
 
-    // Caméra légèrement mobile, réservée aux coffres premium (§56).
-    if (premium) {
-      state.camera.position.x = Math.sin(state.clock.elapsedTime * 0.4) * 0.55;
-      state.camera.lookAt(0, 0.1, 0);
+    // Rai de lumière au niveau du joint : il grandit avec la pression.
+    if (seam.current) {
+      const material = seam.current.material as THREE.MeshBasicMaterial;
+      material.opacity =
+        phase === 'charge'
+          ? Math.min(0.85, (plan.shakeSeconds ? t / plan.shakeSeconds : 1) * 0.9)
+          : phase === 'hold'
+            ? 0.08
+            : 0;
     }
+
+    // Caméra : elle se rapproche pendant la charge, se fige au silence, puis
+    // recule à l'ouverture pour laisser voir le jaillissement.
+    const distance =
+      phase === 'charge' ? 2.9 - Math.min(0.45, t * 0.3) : phase === 'hold' ? 2.45 : 3.05;
+    state.camera.position.z += (distance - state.camera.position.z) * 0.06;
+
+    if (premium && phase === 'burst') {
+      state.camera.position.x = Math.sin(state.clock.elapsedTime * 0.45) * 0.5;
+    }
+    state.camera.lookAt(0, 0.1, 0);
   });
 
   return (
     <group ref={group}>
-      {/* Caisse */}
-      <mesh position={[0, -0.25, 0]} castShadow receiveShadow>
-        <boxGeometry args={[1.6, 0.9, 1.1]} />
-        <meshStandardMaterial color={WOOD} roughness={0.85} />
-      </mesh>
+      {/* Caisse : cinq planches verticales, teintes légèrement décalées. */}
+      {PLANKS.map((color, index) => (
+        <Plank
+          key={index}
+          position={[-0.6 + index * 0.3, -0.25, 0]}
+          size={[0.29, 0.9, 1.1]}
+          color={color}
+        />
+      ))}
 
-      {/* Ferrures */}
-      {[-0.55, 0.55].map((x) => (
+      {/* Ferrures d'angle */}
+      {[-0.68, 0.68].map((x) => (
         <mesh key={x} position={[x, -0.25, 0]}>
-          <boxGeometry args={[0.12, 0.94, 1.14]} />
-          <meshStandardMaterial color={GOLD} metalness={0.85} roughness={0.3} />
+          <boxGeometry args={[0.1, 0.94, 1.14]} />
+          <meshStandardMaterial color={GOLD} metalness={0.9} roughness={0.28} />
         </mesh>
       ))}
 
-      {/* Serrure */}
-      <mesh position={[0, -0.22, 0.57]}>
-        <boxGeometry args={[0.26, 0.3, 0.06]} />
-        <meshStandardMaterial color={GOLD} metalness={0.9} roughness={0.25} />
+      {/* Cerclage horizontal bas : il assoit le coffre au sol. */}
+      <mesh position={[0, -0.62, 0]}>
+        <boxGeometry args={[1.66, 0.12, 1.16]} />
+        <meshStandardMaterial color={GOLD_DARK} metalness={0.8} roughness={0.4} />
       </mesh>
 
-      {/* Couvercle, pivotant sur l'arête arrière */}
-      <group ref={lid} position={[0, 0.2, -0.55]}>
-        <mesh position={[0, 0.12, 0.55]} castShadow>
-          <boxGeometry args={[1.6, 0.34, 1.1]} />
-          <meshStandardMaterial color={WOOD_DARK} roughness={0.8} />
+      {/* Rivets. Six points de lumière qui accrochent l'œil et donnent
+          l'échelle du coffre — sans eux la caisse paraît lisse et vide. */}
+      {[-0.45, 0, 0.45].map((x) =>
+        [-0.45, -0.05].map((y) => (
+          <mesh key={`${x}:${y}`} position={[x, y, 0.56]}>
+            <sphereGeometry args={[0.035, 10, 10]} />
+            <meshStandardMaterial color={GOLD} metalness={0.95} roughness={0.2} />
+          </mesh>
+        )),
+      )}
+
+      {/* Serrure et trou de clé */}
+      <mesh position={[0, -0.22, 0.58]}>
+        <boxGeometry args={[0.26, 0.32, 0.06]} />
+        <meshStandardMaterial color={GOLD} metalness={0.92} roughness={0.22} />
+      </mesh>
+      <mesh position={[0, -0.2, 0.62]}>
+        <cylinderGeometry args={[0.045, 0.045, 0.03, 12]} />
+        <meshStandardMaterial color="#2a1a0a" roughness={0.9} />
+      </mesh>
+
+      {/* Rai de lumière au joint du couvercle.
+          Posé à z = 0.56, il était exactement coplanaire avec la face avant du
+          couvercle : les deux surfaces se disputaient le même plan et le rai
+          ne s'affichait pas. Quelques centièmes devant suffisent. */}
+      <mesh ref={seam} position={[0, 0.2, 0.6]}>
+        <planeGeometry args={[1.52, 0.06]} />
+        <meshBasicMaterial
+          color="#fff2c4"
+          transparent
+          opacity={0}
+          depthWrite={false}
+        />
+      </mesh>
+
+      {/* Couvercle bombé, pivotant sur l'arête arrière. Trois lattes de
+          hauteurs différentes suffisent à suggérer la courbe : un vrai
+          demi-cylindre coûterait bien plus de triangles pour un galbe que
+          personne ne regarde de près. */}
+      <group ref={lid} position={[0, 0.24, -0.55]}>
+        <mesh position={[0, 0.06, 0.55]} castShadow>
+          <boxGeometry args={[1.6, 0.2, 1.12]} />
+          <meshStandardMaterial color="#5a3619" roughness={0.9} />
         </mesh>
-        <mesh position={[0, 0.12, 0.55]}>
-          <boxGeometry args={[1.64, 0.1, 1.14]} />
-          <meshStandardMaterial color={GOLD} metalness={0.85} roughness={0.3} />
+        <mesh position={[0, 0.19, 0.55]} castShadow>
+          <boxGeometry args={[1.5, 0.16, 0.92]} />
+          <meshStandardMaterial color="#6b4321" roughness={0.88} />
+        </mesh>
+        <mesh position={[0, 0.28, 0.55]} castShadow>
+          <boxGeometry args={[1.32, 0.12, 0.66]} />
+          <meshStandardMaterial color="#7a4d24" roughness={0.86} />
+        </mesh>
+        <mesh position={[0, 0.24, 0.55]}>
+          <boxGeometry args={[1.66, 0.08, 1.16]} />
+          <meshStandardMaterial color={GOLD} metalness={0.88} roughness={0.3} />
         </mesh>
       </group>
 
-      {/* Lumière intérieure */}
+      {/* Lumière intérieure. Sa couleur est celle de la rareté obtenue : le
+          coffre s'éclaire de ce qu'il contient. */}
       <pointLight
         ref={glow}
         position={[0, 0.1, 0]}
-        color={premium ? GOLD : TURQUOISE}
+        color={plan.hakiColors.at(-1)}
         intensity={0}
-        distance={6}
+        distance={7}
       />
 
+      <HakiBolts plan={plan} elapsed={elapsed} active={phase === 'charge'} />
+
       {/* Rayon lumineux, uniquement pour un légendaire (§56) */}
-      {premium && phase !== 'shake' && (
-        <mesh position={[0, 1.6, 0]}>
-          <cylinderGeometry args={[0.12, 0.75, 3.2, 24, 1, true]} />
+      {premium && phase === 'burst' && (
+        <mesh position={[0, 1.7, 0]}>
+          <cylinderGeometry args={[0.14, 0.8, 3.4, 24, 1, true]} />
           <meshBasicMaterial
-            color={GOLD}
+            color={plan.hakiColors.at(-1)}
             transparent
-            opacity={0.16}
+            opacity={0.2}
             side={THREE.DoubleSide}
             depthWrite={false}
           />
@@ -153,7 +380,7 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
 }
 
 /** Particules montantes, réservées aux coffres premium. */
-function Particles({ count }: { count: number }) {
+function Particles({ count, color }: { count: number; color: string }) {
   const points = useRef<THREE.Points>(null);
 
   const { positions, speeds } = useMemo(() => {
@@ -164,7 +391,7 @@ function Particles({ count }: { count: number }) {
       positions[i * 3] = (Math.random() - 0.5) * 1.5;
       positions[i * 3 + 1] = Math.random() * 0.4 - 0.2;
       positions[i * 3 + 2] = (Math.random() - 0.5) * 1;
-      speeds[i] = 0.3 + Math.random() * 0.8;
+      speeds[i] = 0.3 + Math.random() * 0.9;
     }
     return { positions, speeds };
   }, [count]);
@@ -177,7 +404,7 @@ function Particles({ count }: { count: number }) {
     for (let i = 0; i < count; i += 1) {
       array[i * 3 + 1] += speeds[i] * delta;
       // Recyclage : une particule sortie du cadre repart du coffre.
-      if (array[i * 3 + 1] > 2.6) array[i * 3 + 1] = -0.2;
+      if (array[i * 3 + 1] > 2.8) array[i * 3 + 1] = -0.2;
     }
     geometry.attributes.position.needsUpdate = true;
   });
@@ -192,8 +419,8 @@ function Particles({ count }: { count: number }) {
         />
       </bufferGeometry>
       <pointsMaterial
-        color={GOLD}
-        size={0.045}
+        color={color}
+        size={0.05}
         transparent
         opacity={0.9}
         depthWrite={false}
@@ -209,21 +436,27 @@ export default function ChestScene({
   plan: CeremonyPlan;
   onReady?: () => void;
 }) {
+  const highlight = plan.hakiColors.at(-1) ?? '#f5c542';
+
   return (
     <Canvas
-      camera={{ position: [0, 0.9, 3.4], fov: 42 }}
+      camera={{ position: [0, 0.7, 2.9], fov: 44 }}
       // `dpr` plafonné : un écran très dense ne doit pas quadrupler le coût
       // de rendu sur mobile (§107).
       dpr={[1, 1.8]}
       gl={{ antialias: true, alpha: true }}
       style={{ width: '100%', height: '100%' }}
     >
-      <ambientLight intensity={0.35} />
-      <directionalLight position={[3, 5, 4]} intensity={1.1} />
-      <directionalLight position={[-3, 2, -2]} intensity={0.3} color={TURQUOISE} />
+      <ambientLight intensity={0.4} />
+      <directionalLight position={[3, 5, 4]} intensity={1.2} />
+      {/* Contre-jour teinté de la rareté : il détache le coffre du fond et
+          colore ses arêtes du côté opposé à la lumière principale. */}
+      <directionalLight position={[-3, 2, -2]} intensity={0.5} color={highlight} />
 
       <Chest plan={plan} onReady={onReady} />
-      {plan.particles > 0 && <Particles count={plan.particles} />}
+      {plan.particles > 0 && (
+        <Particles count={plan.particles} color={highlight} />
+      )}
     </Canvas>
   );
 }

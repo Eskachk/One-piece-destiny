@@ -9,6 +9,7 @@ import {
 } from '@/domain/auth/rate-limit';
 import { checkPassword, describePasswordIssue } from '@/domain/auth/password-policy';
 import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
+import { grantSignupBonus } from '@/lib/social/signup-grant';
 import { getDummyHash, hashPassword, verifyPassword } from './password';
 import { createSession, revokeAllSessions } from './session-store';
 import { sendVerificationEmail } from './email-verification';
@@ -133,6 +134,10 @@ export async function register(
       error: 'Impossible de créer ce compte. Essaie une autre adresse.',
     };
   }
+
+  // Dotation d'arrivee et parrainage eventuel (§71). Le compte existe deja :
+  // un echec ici prive du bonus, il ne doit pas annuler l'inscription.
+  await grantSignupBonus(player.data.id);
 
   // Message de confirmation mis en file. Il ne bloque pas l'entree : le joueur
   // accede au jeu immediatement, et la verification conditionne les operations

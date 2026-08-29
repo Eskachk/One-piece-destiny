@@ -9,7 +9,8 @@
  * ⚠️ **Aucun visuel, aucune planche, aucune illustration** (cahier §122) : ce
  * fichier ne contient que du texte factuel — noms, équipages, fruits, postes.
  *
- * `rarity` est dérivée de la prime et du statut d'équipage. Elle sert
+ * `rarity` est dérivée de la notoriété du personnage — de sa présence dans
+ * l'œuvre — via src/data/prominence.json. Elle sert
  * uniquement la collection, **jamais le score** (§25) : le moteur de scoring
  * ne lit pas ce champ.
  *
@@ -22,7 +23,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'luffy',
     name: 'Monkey D. Luffy',
-    rarity: 'LEGENDARY',
+    rarity: 'MYTHIC',
     affiliations: ['Mugiwara', 'Worst Generation'],
     relations: [{ to: 'zoro', kind: 'CREW' }, { to: 'nami', kind: 'CREW' }, { to: 'sanji', kind: 'CREW' }, { to: 'law', kind: 'ALLIANCE' }, { to: 'koby', kind: 'FAMILY' }],
     abilities: ['Haki des Rois', 'Fruit du démon'],
@@ -31,7 +32,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'zoro',
     name: 'Roronoa Zoro',
-    rarity: 'LEGENDARY',
+    rarity: 'MYTHIC',
     affiliations: ['Mugiwara', 'Worst Generation'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'sanji', kind: 'RIVALRY' }, { to: 'mihawk', kind: 'MENTOR' }],
     abilities: ['Haki armement', 'Trois sabres'],
@@ -40,7 +41,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'nami',
     name: 'Nami',
-    rarity: 'EPIC',
+    rarity: 'MYTHIC',
     affiliations: ['Mugiwara'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'robin', kind: 'CREW' }],
     abilities: ['Navigation', 'Climat'],
@@ -49,7 +50,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sanji',
     name: 'Vinsmoke Sanji',
-    rarity: 'EPIC',
+    rarity: 'MYTHIC',
     affiliations: ['Mugiwara', 'Germa'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'zoro', kind: 'RIVALRY' }],
     abilities: ['Haki observation', 'Combat'],
@@ -58,7 +59,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'robin',
     name: 'Nico Robin',
-    rarity: 'EPIC',
+    rarity: 'MYTHIC',
     affiliations: ['Mugiwara'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'nami', kind: 'CREW' }],
     abilities: ['Fruit du démon', 'Archéologie'],
@@ -67,7 +68,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'chopper',
     name: 'Tony Tony Chopper',
-    rarity: 'RARE',
+    rarity: 'MYTHIC',
     affiliations: ['Mugiwara'],
     relations: [{ to: 'luffy', kind: 'CREW' }],
     abilities: ['Médecine', 'Fruit du démon'],
@@ -76,7 +77,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'usopp',
     name: 'Usopp',
-    rarity: 'RARE',
+    rarity: 'MYTHIC',
     affiliations: ['Mugiwara', 'Grand Fleet'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'bartolomeo', kind: 'ALLIANCE' }],
     abilities: ['Haki observation', 'Tir'],
@@ -85,7 +86,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'jinbe',
     name: 'Jinbe',
-    rarity: 'EPIC',
+    rarity: 'MYTHIC',
     affiliations: ['Mugiwara'],
     relations: [{ to: 'luffy', kind: 'CREW' }],
     abilities: ['Haki armement', 'Combat'],
@@ -103,7 +104,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kid',
     name: 'Eustass Kid',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['Kid Pirates', 'Worst Generation'],
     relations: [{ to: 'law', kind: 'RIVALRY' }],
     abilities: ['Haki armement', 'Fruit du démon'],
@@ -112,7 +113,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bonney',
     name: 'Jewelry Bonney',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['Worst Generation'],
     relations: [{ to: 'kuma', kind: 'FAMILY' }],
     abilities: ['Fruit du démon'],
@@ -139,7 +140,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sabo',
     name: 'Sabo',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['Révolutionnaires'],
     relations: [{ to: 'luffy', kind: 'FAMILY' }, { to: 'dragon', kind: 'FACTION' }],
     abilities: ['Haki des Rois', 'Fruit du démon'],
@@ -148,7 +149,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'koby',
     name: 'Koby',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['Marine', 'SWORD'],
     relations: [{ to: 'luffy', kind: 'FAMILY' }, { to: 'garp', kind: 'MENTOR' }, { to: 'helmeppo', kind: 'CREW' }],
     abilities: ['Haki observation'],
@@ -157,7 +158,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'helmeppo',
     name: 'Helmeppo',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine', 'SWORD'],
     relations: [{ to: 'koby', kind: 'CREW' }],
     abilities: ['Combat'],
@@ -193,7 +194,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'buggy',
     name: 'Buggy',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['Cross Guild'],
     relations: [{ to: 'mihawk', kind: 'ALLIANCE' }, { to: 'crocodile', kind: 'ALLIANCE' }],
     abilities: ['Fruit du démon'],
@@ -202,7 +203,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'crocodile',
     name: 'Crocodile',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['Cross Guild'],
     relations: [{ to: 'mihawk', kind: 'ALLIANCE' }, { to: 'buggy', kind: 'ALLIANCE' }],
     abilities: ['Fruit du démon'],
@@ -211,7 +212,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bartolomeo',
     name: 'Bartolomeo',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['Grand Fleet'],
     relations: [{ to: 'usopp', kind: 'ALLIANCE' }, { to: 'luffy', kind: 'ALLIANCE' }],
     abilities: ['Fruit du démon'],
@@ -220,7 +221,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'shanks',
     name: 'Shanks',
-    rarity: 'MYTHIC',
+    rarity: 'LEGENDARY',
     affiliations: ['Red Hair Pirates', 'Yonko'],
     relations: [{ to: 'luffy', kind: 'MENTOR' }],
     abilities: ['Haki des Rois', 'Escrime'],
@@ -229,7 +230,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'perona',
     name: 'Perona',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['Cross Guild'],
     relations: [{ to: 'mihawk', kind: 'FACTION' }],
     abilities: ['Fruit du démon'],
@@ -238,7 +239,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'franky',
     name: 'Franky',
-    rarity: 'LEGENDARY',
+    rarity: 'MYTHIC',
     affiliations: ['The Chapeau de Paille crew'],
     relations: [{ to: 'brook', kind: 'CREW' }, { to: 'zeus', kind: 'CREW' }],
     abilities: ['Carpenter'],
@@ -247,7 +248,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'brook',
     name: 'Brook',
-    rarity: 'LEGENDARY',
+    rarity: 'MYTHIC',
     affiliations: ['The Chapeau de Paille crew', 'Paramecia'],
     relations: [{ to: 'franky', kind: 'CREW' }, { to: 'zeus', kind: 'CREW' }],
     abilities: ['Fruit of the Resurrection', 'Musician'],
@@ -256,7 +257,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'zeus',
     name: 'Zeus',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The Chapeau de Paille crew'],
     relations: [{ to: 'franky', kind: 'CREW' }, { to: 'brook', kind: 'CREW' }],
     abilities: ['Nami Arme'],
@@ -265,7 +266,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'cavendish',
     name: 'Cavendish',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }, { to: 'baby-5', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -301,7 +302,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'boo',
     name: 'Boo',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'baby-5', kind: 'CREW' }],
     abilities: ['second-in-command'],
@@ -310,7 +311,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'baby-5',
     name: 'Baby 5',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Armarda du Chapeau de Paille', 'Paramecia'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Armo-Fruit'],
@@ -319,7 +320,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ideo',
     name: 'Ideo',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -328,7 +329,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'blue-gilly',
     name: 'Blue Gilly',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: [],
@@ -355,7 +356,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'leo',
     name: 'Léo',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Armarda du Chapeau de Paille', 'Paramecia'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Fruit de la Couture', 'Captain'],
@@ -364,7 +365,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kabu',
     name: 'Kabu',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Armarda du Chapeau de Paille', 'Zoan'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Fruit of the Insect, Scarab-Rhinoceros version'],
@@ -373,7 +374,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bee-anne',
     name: 'Bee Anne',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Armarda du Chapeau de Paille', 'Zoan'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Fruit of the Insect, Wasp version'],
@@ -382,7 +383,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hajrudin',
     name: 'Hajrudin',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -418,7 +419,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'gerd',
     name: 'Gerd',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Doctor'],
@@ -436,7 +437,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'baggy-le-clown',
     name: 'Baggy / Le Clown',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['Baggy\'s Delivery', 'Paramecia'],
     relations: [{ to: 'galdino', kind: 'CREW' }, { to: 'alvida', kind: 'CREW' }, { to: 'morge', kind: 'CREW' }, { to: 'cabaji', kind: 'CREW' }],
     abilities: ['Fruit of Fragmentation', 'Chairman'],
@@ -445,7 +446,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'alvida',
     name: 'Alvida',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Baggy\'s Delivery', 'Paramecia'],
     relations: [{ to: 'baggy-le-clown', kind: 'CREW' }, { to: 'galdino', kind: 'CREW' }, { to: 'morge', kind: 'CREW' }, { to: 'cabaji', kind: 'CREW' }],
     abilities: ['Fruit Glisse-Glisse'],
@@ -454,7 +455,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'galdino',
     name: 'Galdino',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Baggy\'s Delivery', 'Paramecia'],
     relations: [{ to: 'baggy-le-clown', kind: 'CREW' }, { to: 'alvida', kind: 'CREW' }, { to: 'morge', kind: 'CREW' }, { to: 'cabaji', kind: 'CREW' }],
     abilities: ['Ciro-Fruit'],
@@ -472,7 +473,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'cabaji',
     name: 'Cabaji',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Baggy\'s Delivery'],
     relations: [{ to: 'baggy-le-clown', kind: 'CREW' }, { to: 'galdino', kind: 'CREW' }, { to: 'alvida', kind: 'CREW' }, { to: 'morge', kind: 'CREW' }],
     abilities: [],
@@ -481,7 +482,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kuro',
     name: 'Kuro',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The Black Cat crew'],
     relations: [{ to: 'sham', kind: 'CREW' }, { to: 'buchi', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -508,7 +509,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'krieg-don-krieg',
     name: 'Krieg / Don Krieg',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Don Krieg\'s Pirate Armada'],
     relations: [{ to: 'gyn', kind: 'CREW' }, { to: 'pearl', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -526,7 +527,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'pearl',
     name: 'Pearl',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Don Krieg\'s Pirate Armada'],
     relations: [{ to: 'krieg-don-krieg', kind: 'CREW' }, { to: 'gyn', kind: 'CREW' }],
     abilities: ['Captain (2nd Battalion)'],
@@ -535,7 +536,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'montblanc-cricket',
     name: 'Montblanc Cricket',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Primate League'],
     relations: [{ to: 'shojo', kind: 'CREW' }, { to: 'masira', kind: 'CREW' }],
     abilities: ['Commander-in-Chief'],
@@ -544,7 +545,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'masira',
     name: 'Masira',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Primate League'],
     relations: [{ to: 'shojo', kind: 'CREW' }, { to: 'montblanc-cricket', kind: 'CREW' }],
     abilities: [],
@@ -553,7 +554,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'shojo',
     name: 'Shojo',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Primate League'],
     relations: [{ to: 'montblanc-cricket', kind: 'CREW' }, { to: 'masira', kind: 'CREW' }],
     abilities: [],
@@ -562,7 +563,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'foxy',
     name: 'Foxy',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The Foxy crew', 'Paramecia'],
     relations: [{ to: 'porche', kind: 'CREW' }, { to: 'hamburg', kind: 'CREW' }],
     abilities: ['Ramollo fruit', 'Captain'],
@@ -571,7 +572,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'porche',
     name: 'Porché',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['The Foxy crew'],
     relations: [{ to: 'foxy', kind: 'CREW' }, { to: 'hamburg', kind: 'CREW' }],
     abilities: ['Fighter'],
@@ -580,7 +581,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hamburg',
     name: 'Hamburg',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['The Foxy crew'],
     relations: [{ to: 'foxy', kind: 'CREW' }, { to: 'porche', kind: 'CREW' }],
     abilities: ['Fighter'],
@@ -589,7 +590,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'gecko-moria',
     name: 'Gecko Moria',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['Thriller Bark', 'Paramecia'],
     relations: [{ to: 'hogback', kind: 'CREW' }, { to: 'absalom', kind: 'CREW' }],
     abilities: ['Fruit of the Shadow', 'Captain'],
@@ -598,7 +599,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hogback',
     name: 'Hogback',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Thriller Bark'],
     relations: [{ to: 'gecko-moria', kind: 'CREW' }, { to: 'absalom', kind: 'CREW' }],
     abilities: ['Mysterious Four'],
@@ -607,7 +608,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'absalom',
     name: 'Absalom',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Thriller Bark', 'Paramecia'],
     relations: [{ to: 'gecko-moria', kind: 'CREW' }, { to: 'hogback', kind: 'CREW' }],
     abilities: ['Fruit of Invisibility', 'Mysterious Four'],
@@ -616,7 +617,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'laura',
     name: 'Laura',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: [],
     relations: [],
     abilities: ['Captain'],
@@ -625,7 +626,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'trafalgar-d-water-law',
     name: 'Trafalgar D. Water Law',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['The Hearth crew', 'Paramecia'],
     relations: [{ to: 'bepo', kind: 'CREW' }, { to: 'jean-bart', kind: 'CREW' }, { to: 'shachi', kind: 'CREW' }, { to: 'pingouin', kind: 'CREW' }],
     abilities: ['Fruit of the Scalpel', 'Captain'],
@@ -634,7 +635,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bepo',
     name: 'Bepo',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The Hearth crew'],
     relations: [{ to: 'trafalgar-d-water-law', kind: 'CREW' }, { to: 'jean-bart', kind: 'CREW' }, { to: 'shachi', kind: 'CREW' }, { to: 'pingouin', kind: 'CREW' }],
     abilities: ['Browser'],
@@ -643,7 +644,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'jean-bart',
     name: 'Jean Bart',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['The Hearth crew'],
     relations: [{ to: 'trafalgar-d-water-law', kind: 'CREW' }, { to: 'bepo', kind: 'CREW' }, { to: 'shachi', kind: 'CREW' }, { to: 'pingouin', kind: 'CREW' }],
     abilities: [],
@@ -652,7 +653,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'shachi',
     name: 'Shachi',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['The Hearth crew'],
     relations: [{ to: 'trafalgar-d-water-law', kind: 'CREW' }, { to: 'bepo', kind: 'CREW' }, { to: 'jean-bart', kind: 'CREW' }, { to: 'pingouin', kind: 'CREW' }],
     abilities: [],
@@ -661,7 +662,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'pingouin',
     name: 'Pingouin',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['The Hearth crew'],
     relations: [{ to: 'trafalgar-d-water-law', kind: 'CREW' }, { to: 'bepo', kind: 'CREW' }, { to: 'jean-bart', kind: 'CREW' }, { to: 'shachi', kind: 'CREW' }],
     abilities: [],
@@ -670,7 +671,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'killer',
     name: 'Killer',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['The Kid crew'],
     relations: [{ to: 'heat', kind: 'CREW' }, { to: 'wire', kind: 'CREW' }],
     abilities: ['Fighter'],
@@ -679,7 +680,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'heat',
     name: 'Heat',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['The Kid crew'],
     relations: [{ to: 'killer', kind: 'CREW' }, { to: 'wire', kind: 'CREW' }],
     abilities: ['Fighter'],
@@ -688,7 +689,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'wire',
     name: 'Wire',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['The Kid crew'],
     relations: [{ to: 'killer', kind: 'CREW' }, { to: 'heat', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -697,7 +698,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'capone-bege',
     name: 'Capone Bege',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['The Fire Tank crew', 'Paramecia'],
     relations: [{ to: 'vito', kind: 'CREW' }, { to: 'gotti', kind: 'CREW' }, { to: 'charlotte-chiffon', kind: 'CREW' }, { to: 'charlotte-pets', kind: 'CREW' }],
     abilities: ['Fruit du Château', 'Captain'],
@@ -724,7 +725,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charlotte-chiffon',
     name: 'Charlotte Chiffon',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['The Fire Tank crew'],
     relations: [{ to: 'capone-bege', kind: 'CREW' }, { to: 'vito', kind: 'CREW' }, { to: 'gotti', kind: 'CREW' }, { to: 'charlotte-pets', kind: 'CREW' }],
     abilities: [],
@@ -742,7 +743,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'urouge',
     name: 'Urouge',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: [],
     relations: [],
     abilities: ['Captain'],
@@ -751,7 +752,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'boa-hancock',
     name: 'Boa Hancock',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['The Kuja Pirates crew', 'Paramecia'],
     relations: [{ to: 'boa-sandersonia', kind: 'CREW' }, { to: 'boa-marigold', kind: 'CREW' }, { to: 'margaret', kind: 'CREW' }],
     abilities: ['Passion fruit', 'Captain'],
@@ -760,7 +761,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'boa-sandersonia',
     name: 'Boa Sandersonia',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The Kuja Pirates crew', 'Zoan'],
     relations: [{ to: 'boa-hancock', kind: 'CREW' }, { to: 'boa-marigold', kind: 'CREW' }, { to: 'margaret', kind: 'CREW' }],
     abilities: ['Fruit of the Reptile, Anaconda version'],
@@ -769,7 +770,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'boa-marigold',
     name: 'Boa Marigold',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The Kuja Pirates crew', 'Zoan'],
     relations: [{ to: 'boa-hancock', kind: 'CREW' }, { to: 'boa-sandersonia', kind: 'CREW' }, { to: 'margaret', kind: 'CREW' }],
     abilities: ['Fruit of the Reptile, Cobra Royal version'],
@@ -778,7 +779,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'margaret',
     name: 'Margaret',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['The Kuja Pirates crew'],
     relations: [{ to: 'boa-hancock', kind: 'CREW' }, { to: 'boa-sandersonia', kind: 'CREW' }, { to: 'boa-marigold', kind: 'CREW' }],
     abilities: [],
@@ -787,7 +788,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'shiki',
     name: 'Shiki',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The crew of the Lion d\'Or', 'Paramecia'],
     relations: [{ to: 'indigo', kind: 'CREW' }, { to: 'scarlett-2', kind: 'CREW' }, { to: 'billy', kind: 'CREW' }, { to: 'xiao', kind: 'CREW' }],
     abilities: ['Floating Fruit', 'Admiral'],
@@ -832,7 +833,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'aladdin',
     name: 'Aladdin',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['The Sun Pirates crew'],
     relations: [{ to: 'ficher-tiger', kind: 'CREW' }, { to: 'charlotte-praline', kind: 'CREW' }],
     abilities: ['Vice-Captain'],
@@ -841,7 +842,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charlotte-praline',
     name: 'Charlotte Praliné',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['The Sun Pirates crew'],
     relations: [{ to: 'ficher-tiger', kind: 'CREW' }, { to: 'aladdin', kind: 'CREW' }],
     abilities: [],
@@ -850,7 +851,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'das-bones',
     name: 'Das Bones',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: [],
     relations: [],
     abilities: [],
@@ -868,7 +869,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ben-beckmann',
     name: 'Ben Beckmann',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }],
     abilities: ['Vice-Captain'],
@@ -877,7 +878,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'lucky-roo',
     name: 'Lucky Roo',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -886,7 +887,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'yassop',
     name: 'Yassop',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -958,7 +959,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charlotte-linlin-big-mom',
     name: 'Charlotte Linlin / Big Mom',
-    rarity: 'MYTHIC',
+    rarity: 'LEGENDARY',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }],
     abilities: ['Fruit of Souls', 'Captain'],
@@ -967,7 +968,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charlotte-dent-de-chien',
     name: 'Charlotte Dent-de-chien',
-    rarity: 'LEGENDARY',
+    rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }],
     abilities: ['Glutinous Rice Fruit', 'General Sucré'],
@@ -976,7 +977,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charlotte-smoothie',
     name: 'Charlotte Smoothie',
-    rarity: 'LEGENDARY',
+    rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Zoan'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }],
     abilities: ['Horse Fruit', 'General Sucré'],
@@ -985,7 +986,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charlotte-cracker',
     name: 'Charlotte Cracker',
-    rarity: 'LEGENDARY',
+    rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }],
     abilities: ['Cookie Fruit', 'General Sucré'],
@@ -994,7 +995,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charlotte-slurp',
     name: 'Charlotte Slurp',
-    rarity: 'LEGENDARY',
+    rarity: 'RARE',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }],
     abilities: ['Fruit de la Léchouille', 'Lieutenant'],
@@ -1003,7 +1004,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charlotte-daifuku',
     name: 'Charlotte Daifuku',
-    rarity: 'LEGENDARY',
+    rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of the Lamp', 'Lieutenant'],
@@ -1012,7 +1013,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charlotte-oven',
     name: 'Charlotte Oven',
-    rarity: 'LEGENDARY',
+    rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of Heat', 'Lieutenant'],
@@ -1039,7 +1040,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charlotte-brulee',
     name: 'Charlotte Brûlée',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of the Mirror', 'Lieutenant'],
@@ -1066,7 +1067,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charlotte-snack',
     name: 'Charlotte Snack',
-    rarity: 'LEGENDARY',
+    rarity: 'RARE',
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -1075,7 +1076,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charlotte-pudding',
     name: 'Charlotte Pudding',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of Memories', 'Lieutenant'],
@@ -1705,7 +1706,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'pekoms',
     name: 'Pekoms',
-    rarity: 'LEGENDARY',
+    rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Zoan'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Turtle Fruit', 'Fighter'],
@@ -1714,7 +1715,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'del-uf',
     name: 'Delœuf',
-    rarity: 'LEGENDARY',
+    rarity: 'COMMON',
     affiliations: ['Big Mom\'s crew', 'Zoan'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of the Egg', 'Fighter'],
@@ -1723,7 +1724,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'boddin',
     name: 'Boddin',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fighter'],
@@ -1732,7 +1733,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'streusen',
     name: 'Streusen',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of the Cook', 'Cook'],
@@ -1741,7 +1742,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'promethee',
     name: 'Prométhée',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Homie'],
@@ -1750,7 +1751,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'napoleon',
     name: 'Napoléon',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Homie'],
@@ -1759,7 +1760,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hera',
     name: 'Héra',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Homie'],
@@ -1768,7 +1769,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kingbaum',
     name: 'Kingbaum',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Homie'],
@@ -1777,7 +1778,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kaido',
     name: 'Kaido',
-    rarity: 'MYTHIC',
+    rarity: 'LEGENDARY',
     affiliations: ['The Hundred Beasts crew', 'Zoan Mythique'],
     relations: [{ to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }],
     abilities: ['Fruit of the Fish, Azure Dragon version', 'Captain'],
@@ -1822,7 +1823,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ulti',
     name: 'Ulti',
-    rarity: 'LEGENDARY',
+    rarity: 'EPIC',
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Fruit of the Dinosaur, Pachycephalosaurus version', 'Tobi Roppo'],
@@ -1831,7 +1832,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'who-s-who',
     name: 'Who’s Who',
-    rarity: 'LEGENDARY',
+    rarity: 'EPIC',
     affiliations: ['The Hundred Beasts crew', 'Zoan Mythique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }],
     abilities: ['Fruit du Félin, saber-toothed tiger version', 'Tobi Roppo'],
@@ -1840,7 +1841,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'black-maria',
     name: 'Black Maria',
-    rarity: 'LEGENDARY',
+    rarity: 'EPIC',
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }],
     abilities: ['Spider fruit, Rosamygale grauvogeli version', 'Tobi Roppo'],
@@ -1849,7 +1850,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sasaki',
     name: 'Sasaki',
-    rarity: 'LEGENDARY',
+    rarity: 'EPIC',
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Fruit of the Dinosaur, Triceratops version', 'Tobi Roppo'],
@@ -1858,7 +1859,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sheep-s-head',
     name: 'Sheep’s Head',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Sheep SMILE', 'Vedette'],
@@ -1876,7 +1877,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'holdem',
     name: 'Holdem',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Lion SMILE', 'Vedette'],
@@ -1885,7 +1886,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'speed',
     name: 'Speed',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Horse SMILE', 'Vedette'],
@@ -1894,7 +1895,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'trouduc',
     name: 'Trouduc',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE of the scorpion', 'Vedette'],
@@ -1903,7 +1904,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'pouilleux',
     name: 'Pouilleux',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE of the elephant', 'Vedette'],
@@ -1912,7 +1913,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'solitaire',
     name: 'Solitaire',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Monkey SMILE', 'Vedette'],
@@ -1921,7 +1922,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bao-huang',
     name: 'Bao Huang',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Flying Squirrel SMILE', 'Vedette'],
@@ -1930,7 +1931,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ginrummy',
     name: 'Ginrummy',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Vedette'],
@@ -1939,7 +1940,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'plouf',
     name: 'Plouf',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Hippopotamus SMILE', 'Vedette'],
@@ -1948,7 +1949,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'briscola',
     name: 'Briscola',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Gorilla SMILE', 'Vedette'],
@@ -1957,7 +1958,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'fourtricks',
     name: 'Fourtricks',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE du coq', 'Vedette'],
@@ -1966,7 +1967,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hamlet',
     name: 'Hamlet',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Giraffe SMILE', 'Vedette'],
@@ -1975,7 +1976,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'mizerka',
     name: 'Mizerka',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Gorilla SMILE', 'Vedette'],
@@ -1984,7 +1985,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'poker',
     name: 'Poker',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Rattlesnake SMILE', 'Vedette'],
@@ -1993,7 +1994,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'batman',
     name: 'Batman',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Bat SMILE', 'Gifters'],
@@ -2002,7 +2003,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'gazelleman',
     name: 'Gazelleman',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE de gazelle', 'Gifters'],
@@ -2011,7 +2012,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'mouseman',
     name: 'Mouseman',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Mouse SMILE', 'Gifters'],
@@ -2020,7 +2021,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'snakeman',
     name: 'Snakeman',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE of snake', 'Gifters'],
@@ -2029,7 +2030,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'rabitman',
     name: 'Rabitman',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Rabbit SMILE', 'Gifters'],
@@ -2038,7 +2039,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sarehebi',
     name: 'Sarehebi',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE of snake', 'Gifters'],
@@ -2047,7 +2048,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'alpagaman',
     name: 'Alpagaman',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE from alpaca', 'Gifters'],
@@ -2056,7 +2057,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'tatouman',
     name: 'Tatouman',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Armadillo SMILE', 'Gifters'],
@@ -2065,7 +2066,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'dachoman',
     name: 'Dachoman',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Ostrich SMILE', 'Gifters'],
@@ -2074,7 +2075,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'tenjo-sagari',
     name: 'Tenjo-Sagari',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE of the white snake', 'Gifters'],
@@ -2083,7 +2084,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'caimanlady',
     name: 'Caimanlady',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Caiman SMILE', 'Gifters'],
@@ -2092,7 +2093,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'nure-onna',
     name: 'Nuré-Onna',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE of the scorpion', 'Gifters'],
@@ -2101,7 +2102,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'wa-nyudo',
     name: 'Wa-Nyudo',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew', 'Smile'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Pug SMILE', 'Gifters'],
@@ -2110,7 +2111,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'inbi',
     name: 'Inbi',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
@@ -2119,7 +2120,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'fuga',
     name: 'Fuga',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
@@ -2128,7 +2129,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'zanki',
     name: 'Zanki',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
@@ -2137,7 +2138,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'jaki',
     name: 'Jaki',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
@@ -2146,7 +2147,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'goki',
     name: 'Goki',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
@@ -2155,7 +2156,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'rokki',
     name: 'Rokki',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
@@ -2164,7 +2165,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'nangi',
     name: 'Nangi',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
@@ -2173,7 +2174,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hacha',
     name: 'Hacha',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
@@ -2182,7 +2183,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kunyun',
     name: 'Kunyun',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
@@ -2191,7 +2192,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'juki',
     name: 'Juki',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
@@ -2200,7 +2201,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'fukurokuju',
     name: 'Fukurokuju',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: [],
@@ -2308,7 +2309,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'scratchmen-apoo',
     name: 'Scratchmen Apoo',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['The Hundred Beasts crew', 'Paramecia'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Fruit of the Sound', 'Informer'],
@@ -2326,7 +2327,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'jesus-burgess',
     name: 'Jesus Burgess',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Blackbeard\'s crew', 'Paramecia'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'shiliew', kind: 'CREW' }],
     abilities: ['Fruit of strength', 'Admiral ship\'s captain'],
@@ -2335,7 +2336,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'shiliew',
     name: 'Shiliew',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Blackbeard\'s crew', 'Paramecia'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
     abilities: ['Fruit of Invisibility', 'Commander 2nd Ship'],
@@ -2353,7 +2354,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'avalo-pizarro',
     name: 'Avalo Pizarro',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Blackbeard\'s crew', 'Paramecia'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
     abilities: ['Island fruit', 'Commander 4th Ship'],
@@ -2362,7 +2363,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'lafitte',
     name: 'Lafitte',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }, { to: 'shiliew', kind: 'CREW' }],
     abilities: ['Commander 5th Ship'],
@@ -2371,7 +2372,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'catarina-devon',
     name: 'Catarina Devon',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Blackbeard\'s crew', 'Zoan Mythique'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
     abilities: ['Fruit of the Canidae, Nine-tailed Fox version', 'Commander 6th Ship'],
@@ -2380,7 +2381,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sanjuan-wolf',
     name: 'Sanjuan Wolf',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Blackbeard\'s crew', 'Paramecia'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
     abilities: ['The fruit of gigantism', 'Commander 7th Ship'],
@@ -2389,7 +2390,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'vasco-shot',
     name: 'Vasco Shot',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Blackbeard\'s crew', 'Paramecia'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
     abilities: ['Fruit of the Gobbledygook', 'Commander 8th Ship'],
@@ -2407,7 +2408,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'barbe-rose',
     name: 'Barbe Rose',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }, { to: 'shiliew', kind: 'CREW' }],
     abilities: [],
@@ -2416,7 +2417,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'gol-d-roger',
     name: 'Gol D. Roger',
-    rarity: 'MYTHIC',
+    rarity: 'LEGENDARY',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -2425,7 +2426,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'silvers-rayleigh',
     name: 'Silvers Rayleigh',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }],
     abilities: ['Right-hand man'],
@@ -2434,7 +2435,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'scopper-gaban',
     name: 'Scopper Gaban',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }],
     abilities: ['Carpenter'],
@@ -2443,7 +2444,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'seagull-guns-nozdon',
     name: 'Seagull Guns Nozdon',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }],
     abilities: [],
@@ -2452,7 +2453,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'taro',
     name: 'Taro',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }],
     abilities: [],
@@ -2461,7 +2462,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'dringo',
     name: 'Dringo',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }],
     abilities: [],
@@ -2470,7 +2471,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sanjuan-wolf-2',
     name: 'Sanjuan Wolf',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2479,7 +2480,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'millet-pine',
     name: 'Millet Pine',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2488,7 +2489,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ganryu',
     name: 'Ganryu',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2497,7 +2498,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'cb-galant',
     name: 'CB Galant',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2506,7 +2507,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'donquino',
     name: 'Donquino',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2515,7 +2516,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'mr-momora',
     name: 'Mr Momora',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2524,7 +2525,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'moon-isaac-jr',
     name: 'Moon Isaac Jr.',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2533,7 +2534,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'yui',
     name: 'Yui',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2542,7 +2543,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'rangram',
     name: 'Rangram',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2551,7 +2552,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'colonel-mugren',
     name: 'Colonel Mugren',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2560,7 +2561,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'max-marks',
     name: 'Max Marks',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2569,7 +2570,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'spencer',
     name: 'Spencer',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2578,7 +2579,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bankro',
     name: 'Bankro',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2587,7 +2588,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'blumarine',
     name: 'Blumarine',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2596,7 +2597,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'elio',
     name: 'Elio',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2605,7 +2606,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'rowing',
     name: 'Rowing',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2614,7 +2615,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'jacsonbaner',
     name: 'Jacsonbaner',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2623,7 +2624,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'yamon',
     name: 'Yamon',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
@@ -2632,7 +2633,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'arlong',
     name: 'Arlong',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['The Arlong crew'],
     relations: [{ to: 'kuroobi', kind: 'CREW' }, { to: 'smack', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -2641,7 +2642,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kuroobi',
     name: 'Kuroobi',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The Arlong crew'],
     relations: [{ to: 'arlong', kind: 'CREW' }, { to: 'smack', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -2659,7 +2660,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'yorki',
     name: 'Yorki',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['The Rumbar crew'],
     relations: [{ to: 'madaisky-mizuta', kind: 'CREW' }, { to: 'mawaritovsky-mizuta', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -2686,7 +2687,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sarquiss',
     name: 'Sarquiss',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: [],
     relations: [],
     abilities: [],
@@ -2695,7 +2696,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'edward-newgate-barbe-blanche',
     name: 'Edward Newgate / Barbe Blanche',
-    rarity: 'MYTHIC',
+    rarity: 'LEGENDARY',
     affiliations: ['Whitebeard\'s crew', 'Paramecia'],
     relations: [{ to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }],
     abilities: ['Fruit of Trembling', 'Captain'],
@@ -2713,7 +2714,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'diamond-joz',
     name: 'Diamond Joz',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew', 'Paramecia'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }],
     abilities: ['Sparkling Fruit', 'Commander 3rd Ship'],
@@ -2722,7 +2723,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'thatch',
     name: 'Thatch',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }],
     abilities: ['Commander 4th Ship'],
@@ -2731,7 +2732,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'vista',
     name: 'Vista',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 5th Ship'],
@@ -2740,7 +2741,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'blamenco',
     name: 'Blamenco',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew', 'Paramecia'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Fruit de la Poche', 'Commander 6th Ship'],
@@ -2749,7 +2750,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'rakuyo',
     name: 'Rakuyo',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 7th Ship'],
@@ -2758,7 +2759,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'blenheim',
     name: 'Blenheim',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 9th Ship'],
@@ -2767,7 +2768,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'curiel',
     name: 'Curiel',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 10th Ship'],
@@ -2776,7 +2777,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kingdew',
     name: 'Kingdew',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 11th Ship'],
@@ -2785,7 +2786,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'haruta',
     name: 'Haruta',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 12th Ship'],
@@ -2794,7 +2795,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'atmos',
     name: 'Atmos',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 13th Ship'],
@@ -2803,7 +2804,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'speed-jill',
     name: 'Speed Jill',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 14th Ship'],
@@ -2812,7 +2813,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'fossa',
     name: 'Fossa',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 15th Ship'],
@@ -2821,7 +2822,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'izou',
     name: 'Izou',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 16th Ship'],
@@ -2830,7 +2831,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'doma',
     name: 'Doma',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2839,7 +2840,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'freres-decalvan',
     name: 'Frères DeCalvan',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2857,7 +2858,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'whitey-bay',
     name: 'Whitey Bay',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2866,7 +2867,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'little-oz-junior',
     name: 'Little Oz Junior',
-    rarity: 'LEGENDARY',
+    rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2875,7 +2876,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'mc-guy',
     name: 'Mc Guy',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2884,7 +2885,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'a-o',
     name: 'A.O',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2893,7 +2894,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'karma',
     name: 'Karma',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2902,7 +2903,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'elmy',
     name: 'Elmy',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2911,7 +2912,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ramba',
     name: 'Ramba',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2920,7 +2921,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'delacuaji',
     name: 'Delacuaji',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2929,7 +2930,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'zodia',
     name: 'Zodia',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2938,7 +2939,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'palms',
     name: 'Palms',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2947,7 +2948,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bizarre',
     name: 'Bizarre',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2956,7 +2957,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'pavlik',
     name: 'Pavlik',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2965,7 +2966,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'vitan',
     name: 'Vitan',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2974,7 +2975,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'islewan',
     name: 'Islewan',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2983,7 +2984,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'epoida',
     name: 'Epoida',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -2992,7 +2993,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kechatch',
     name: 'Kechatch',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3001,7 +3002,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'choi',
     name: 'Choi',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3010,7 +3011,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'arhur',
     name: 'Arhur',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3019,7 +3020,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hangan',
     name: 'Hangan',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3028,7 +3029,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'reforte',
     name: 'Reforte',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3037,7 +3038,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'andre',
     name: 'Andre',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3046,7 +3047,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ninth',
     name: 'Ninth',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3055,7 +3056,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'blondie',
     name: 'Blondie',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3064,7 +3065,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'nosgarl',
     name: 'Nosgarl',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3073,7 +3074,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'amadob',
     name: 'Amadob',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3082,7 +3083,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'baggaley',
     name: 'Baggaley',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3091,7 +3092,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'wakkem',
     name: 'Wakkem',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3100,7 +3101,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'brew',
     name: 'Brew',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3109,7 +3110,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'brocca',
     name: 'Brocca',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3118,7 +3119,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'rush',
     name: 'Rush',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3127,7 +3128,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'great-micheal',
     name: 'Great Micheal',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3136,7 +3137,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'zucca',
     name: 'Zucca',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3145,7 +3146,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'cands',
     name: 'Cands',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3154,7 +3155,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kinga',
     name: 'Kinga',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3163,7 +3164,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'colscon',
     name: 'Colscon',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3172,7 +3173,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'agsilly',
     name: 'Agsilly',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3181,7 +3182,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'julius',
     name: 'Julius',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3190,7 +3191,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'happygun',
     name: 'Happygun',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3199,7 +3200,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sleepy',
     name: 'Sleepy',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3208,7 +3209,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'forliewbs',
     name: 'Forliewbs',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
@@ -3217,7 +3218,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'barbos-bruneriguez-barbe-brune',
     name: 'Barbos Bruneriguez / Barbe Brune',
-    rarity: 'EPIC',
+    rarity: 'RARE',
     affiliations: [],
     relations: [],
     abilities: ['Captain'],
@@ -3226,7 +3227,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bluejam',
     name: 'Bluejam',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The Bluejam crew'],
     relations: [{ to: 'porchemy', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -3235,7 +3236,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'porchemy',
     name: 'Porchemy',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['The Bluejam crew'],
     relations: [{ to: 'bluejam', kind: 'CREW' }],
     abilities: [],
@@ -3244,7 +3245,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'demaro-black',
     name: 'Demaro Black',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Faux Equipage du Chapeau de Paille'],
     relations: [{ to: 'manjaro', kind: 'CREW' }, { to: 'chocolat', kind: 'CREW' }, { to: 'mounblutain', kind: 'CREW' }, { to: 'drip', kind: 'CREW' }, { to: 'nora-gitsune', kind: 'CREW' }, { to: 'cocoa', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -3316,7 +3317,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hody-jones',
     name: 'Hody Jones',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['The New Fishmen crew'],
     relations: [{ to: 'dosun', kind: 'CREW' }, { to: 'zeo', kind: 'CREW' }, { to: 'daruma', kind: 'CREW' }, { to: 'ikaros-much', kind: 'CREW' }, { to: 'hyozo', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -3325,7 +3326,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'dosun',
     name: 'Dosun',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['The New Fishmen crew'],
     relations: [{ to: 'hody-jones', kind: 'CREW' }, { to: 'zeo', kind: 'CREW' }, { to: 'daruma', kind: 'CREW' }, { to: 'ikaros-much', kind: 'CREW' }, { to: 'hyozo', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -3334,7 +3335,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'zeo',
     name: 'Zeo',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['The New Fishmen crew'],
     relations: [{ to: 'hody-jones', kind: 'CREW' }, { to: 'dosun', kind: 'CREW' }, { to: 'daruma', kind: 'CREW' }, { to: 'ikaros-much', kind: 'CREW' }, { to: 'hyozo', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -3343,7 +3344,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'daruma',
     name: 'Daruma',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['The New Fishmen crew'],
     relations: [{ to: 'hody-jones', kind: 'CREW' }, { to: 'dosun', kind: 'CREW' }, { to: 'zeo', kind: 'CREW' }, { to: 'ikaros-much', kind: 'CREW' }, { to: 'hyozo', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -3352,7 +3353,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ikaros-much',
     name: 'Ikaros Much',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['The New Fishmen crew'],
     relations: [{ to: 'hody-jones', kind: 'CREW' }, { to: 'dosun', kind: 'CREW' }, { to: 'zeo', kind: 'CREW' }, { to: 'daruma', kind: 'CREW' }, { to: 'hyozo', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -3361,7 +3362,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hyozo',
     name: 'Hyozo',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['The New Fishmen crew'],
     relations: [{ to: 'hody-jones', kind: 'CREW' }, { to: 'dosun', kind: 'CREW' }, { to: 'zeo', kind: 'CREW' }, { to: 'daruma', kind: 'CREW' }, { to: 'ikaros-much', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -3370,7 +3371,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'vander-decken-ix',
     name: 'Vander Decken IX',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: [],
     relations: [],
     abilities: ['Captain'],
@@ -3379,7 +3380,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'don-quijote-doflamingo',
     name: 'Don Quijote Doflamingo',
-    rarity: 'EPIC',
+    rarity: 'LEGENDARY',
     affiliations: ['Don Quixote\'s crew', 'Paramecia'],
     relations: [{ to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }, { to: 'lao-g', kind: 'CREW' }],
     abilities: ['Fruit du Fil', 'Captain'],
@@ -3415,7 +3416,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'vergo',
     name: 'Vergo',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }],
     abilities: ['Lieutenant-Chef'],
@@ -3424,7 +3425,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sugar',
     name: 'Sugar',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Don Quixote\'s crew', 'Paramecia'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }],
     abilities: ['Fruit du Joujou', 'Lieutenant of the Trebol Army'],
@@ -3433,7 +3434,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'jora',
     name: 'Jora',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Don Quixote\'s crew', 'Paramecia'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }],
     abilities: ['Fruit of Art', 'Lieutenant of the Trebol Army'],
@@ -3460,7 +3461,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'machvise',
     name: 'Machvise',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Don Quixote\'s crew', 'Paramecia'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }],
     abilities: ['Fruit of the Tonne-Tonne', 'Lieutenant of the Army of Diamante'],
@@ -3478,7 +3479,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'gladius',
     name: 'Gladius',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Don Quixote\'s crew', 'Paramecia'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }],
     abilities: ['Fruit of the Paf-Paf', 'Pica Army Lieutenant'],
@@ -3487,7 +3488,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'buffallo',
     name: 'Buffallo',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Don Quixote\'s crew', 'Paramecia'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }],
     abilities: ['Fruit of the whirlwind', 'Pica Army Lieutenant'],
@@ -3496,7 +3497,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'monet',
     name: 'Monet',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Don Quixote\'s crew', 'Logia'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }],
     abilities: ['Fruit du Flocon', 'Lieutenant'],
@@ -3505,7 +3506,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'rocks-d-xebec',
     name: 'Rocks D. Xebec',
-    rarity: 'COMMON',
+    rarity: 'LEGENDARY',
     affiliations: [],
     relations: [],
     abilities: ['Captain'],
@@ -3514,7 +3515,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'im-sama',
     name: 'Im Sama',
-    rarity: 'COMMON',
+    rarity: 'LEGENDARY',
     affiliations: ['Buggy\'s Delivery'],
     relations: [{ to: '1er-doyen', kind: 'CREW' }, { to: '2e-doyen', kind: 'CREW' }, { to: '3e-doyen', kind: 'CREW' }, { to: '4e-doyen', kind: 'CREW' }, { to: '5e-doyen', kind: 'CREW' }],
     abilities: ['Manager'],
@@ -3568,7 +3569,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'roswald',
     name: 'Roswald',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Dragon Célestes'],
     relations: [{ to: 'charloss', kind: 'CREW' }, { to: 'sharlia', kind: 'CREW' }, { to: 'don-quijote-myosgard', kind: 'CREW' }, { to: 'jalmack', kind: 'CREW' }, { to: 'don-quijote-homing', kind: 'CREW' }],
     abilities: [],
@@ -3577,7 +3578,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'charloss',
     name: 'Charloss',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Dragon Célestes'],
     relations: [{ to: 'roswald', kind: 'CREW' }, { to: 'sharlia', kind: 'CREW' }, { to: 'don-quijote-myosgard', kind: 'CREW' }, { to: 'jalmack', kind: 'CREW' }, { to: 'don-quijote-homing', kind: 'CREW' }],
     abilities: [],
@@ -3586,7 +3587,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sharlia',
     name: 'Sharlia',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Dragon Célestes'],
     relations: [{ to: 'roswald', kind: 'CREW' }, { to: 'charloss', kind: 'CREW' }, { to: 'don-quijote-myosgard', kind: 'CREW' }, { to: 'jalmack', kind: 'CREW' }, { to: 'don-quijote-homing', kind: 'CREW' }],
     abilities: [],
@@ -3604,7 +3605,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'jalmack',
     name: 'Jalmack',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Dragon Célestes'],
     relations: [{ to: 'roswald', kind: 'CREW' }, { to: 'charloss', kind: 'CREW' }, { to: 'sharlia', kind: 'CREW' }, { to: 'don-quijote-myosgard', kind: 'CREW' }, { to: 'don-quijote-homing', kind: 'CREW' }],
     abilities: [],
@@ -3613,7 +3614,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'guernica',
     name: 'Guernica',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Cipher Pol'],
     relations: [{ to: 'rob-lucci', kind: 'CREW' }, { to: 'hittori', kind: 'CREW' }, { to: 'spandam', kind: 'CREW' }, { to: 'funckfreed', kind: 'CREW' }, { to: 'kaku', kind: 'CREW' }, { to: 'stussy', kind: 'CREW' }],
     abilities: [],
@@ -3622,7 +3623,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'rob-lucci',
     name: 'Rob Lucci',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['Cipher Pol', 'Zoan'],
     relations: [{ to: 'guernica', kind: 'CREW' }, { to: 'hittori', kind: 'CREW' }, { to: 'spandam', kind: 'CREW' }, { to: 'funckfreed', kind: 'CREW' }, { to: 'kaku', kind: 'CREW' }, { to: 'stussy', kind: 'CREW' }],
     abilities: ['Fruit of the Pachyderm'],
@@ -3640,7 +3641,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'spandam',
     name: 'Spandam',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Cipher Pol'],
     relations: [{ to: 'guernica', kind: 'CREW' }, { to: 'rob-lucci', kind: 'CREW' }, { to: 'hittori', kind: 'CREW' }, { to: 'funckfreed', kind: 'CREW' }, { to: 'kaku', kind: 'CREW' }, { to: 'stussy', kind: 'CREW' }],
     abilities: [],
@@ -3649,7 +3650,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'funckfreed',
     name: 'Funckfreed',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Cipher Pol', 'Zoan'],
     relations: [{ to: 'guernica', kind: 'CREW' }, { to: 'rob-lucci', kind: 'CREW' }, { to: 'hittori', kind: 'CREW' }, { to: 'spandam', kind: 'CREW' }, { to: 'kaku', kind: 'CREW' }, { to: 'stussy', kind: 'CREW' }],
     abilities: ['Fruit of the Pachyderm'],
@@ -3658,7 +3659,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kaku',
     name: 'Kaku',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Cipher Pol', 'Zoan'],
     relations: [{ to: 'guernica', kind: 'CREW' }, { to: 'rob-lucci', kind: 'CREW' }, { to: 'hittori', kind: 'CREW' }, { to: 'spandam', kind: 'CREW' }, { to: 'funckfreed', kind: 'CREW' }, { to: 'stussy', kind: 'CREW' }],
     abilities: ['Fruit du Bovin, Giraffe version'],
@@ -3667,7 +3668,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'stussy',
     name: 'Stussy',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Cipher Pol', 'Logia'],
     relations: [{ to: 'guernica', kind: 'CREW' }, { to: 'rob-lucci', kind: 'CREW' }, { to: 'hittori', kind: 'CREW' }, { to: 'spandam', kind: 'CREW' }, { to: 'funckfreed', kind: 'CREW' }, { to: 'kaku', kind: 'CREW' }],
     abilities: ['Bat-fruit / vampire (fruit-bat model)', 'Spy'],
@@ -3730,7 +3731,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hannyabal',
     name: 'Hannyabal',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Impel Down'],
     relations: [{ to: 'magellan', kind: 'CREW' }, { to: 'domino', kind: 'CREW' }, { to: 'saldeath', kind: 'CREW' }, { to: 'sadi', kind: 'CREW' }, { to: 'minotaure', kind: 'CREW' }, { to: 'minokoala', kind: 'CREW' }],
     abilities: ['director'],
@@ -3739,7 +3740,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'magellan',
     name: 'Magellan',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['Impel Down', 'Paramecia'],
     relations: [{ to: 'hannyabal', kind: 'CREW' }, { to: 'domino', kind: 'CREW' }, { to: 'saldeath', kind: 'CREW' }, { to: 'sadi', kind: 'CREW' }, { to: 'minotaure', kind: 'CREW' }, { to: 'minokoala', kind: 'CREW' }],
     abilities: ['Poison Fruit', 'vice-president'],
@@ -3748,7 +3749,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'domino',
     name: 'Domino',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Impel Down'],
     relations: [{ to: 'hannyabal', kind: 'CREW' }, { to: 'magellan', kind: 'CREW' }, { to: 'saldeath', kind: 'CREW' }, { to: 'sadi', kind: 'CREW' }, { to: 'minotaure', kind: 'CREW' }, { to: 'minokoala', kind: 'CREW' }],
     abilities: ['Head guard'],
@@ -3757,7 +3758,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'saldeath',
     name: 'Saldeath',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Impel Down'],
     relations: [{ to: 'hannyabal', kind: 'CREW' }, { to: 'magellan', kind: 'CREW' }, { to: 'domino', kind: 'CREW' }, { to: 'sadi', kind: 'CREW' }, { to: 'minotaure', kind: 'CREW' }, { to: 'minokoala', kind: 'CREW' }],
     abilities: ['Chief of guards'],
@@ -3766,7 +3767,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sadi',
     name: 'Sadi',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Impel Down'],
     relations: [{ to: 'hannyabal', kind: 'CREW' }, { to: 'magellan', kind: 'CREW' }, { to: 'domino', kind: 'CREW' }, { to: 'saldeath', kind: 'CREW' }, { to: 'minotaure', kind: 'CREW' }, { to: 'minokoala', kind: 'CREW' }],
     abilities: ['Chief of the demonic guard'],
@@ -3820,7 +3821,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'borsalino-kizaru',
     name: 'Borsalino / Kizaru',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['Marine', 'Logia'],
     relations: [{ to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }],
     abilities: ['Luminescent Fruit', 'Admiral'],
@@ -3829,7 +3830,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'issho-fujitora',
     name: 'Issho / Fujitora',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['Marine', 'Paramecia'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }],
     abilities: ['Fruit of Gravity', 'Admiral'],
@@ -3838,7 +3839,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'aramaki-ryokugyu',
     name: 'Aramaki / Ryokugyu',
-    rarity: 'COMMON',
+    rarity: 'LEGENDARY',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }],
     abilities: ['Admiral'],
@@ -3847,7 +3848,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'tsuru',
     name: 'Tsuru',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Marine', 'Paramecia'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }],
     abilities: ['Fruit of the Laundry', 'Vice-Admiral'],
@@ -3856,7 +3857,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'john-giant',
     name: 'John Giant',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -3865,7 +3866,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'comir',
     name: 'Comir',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -3874,7 +3875,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'momonga',
     name: 'Momonga',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -3883,7 +3884,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'onigumo',
     name: 'Onigumo',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -3892,7 +3893,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'doberman',
     name: 'Doberman',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -3901,7 +3902,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'strawberry',
     name: 'Strawberry',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -3910,7 +3911,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'yamakaji',
     name: 'Yamakaji',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -3919,7 +3920,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'dalmatien',
     name: 'Dalmatien',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -3928,7 +3929,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bastille',
     name: 'Bastille',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -3937,7 +3938,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'smoker',
     name: 'Smoker',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['Marine', 'Logia'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Fruit Smoke', 'Vice-Admiral'],
@@ -3946,7 +3947,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'maynard',
     name: 'Maynard',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -3955,7 +3956,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'tokikake',
     name: 'Tokikake',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -3964,7 +3965,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hina',
     name: 'Hina',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Marine', 'Paramecia'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Fruit du Séquestre', 'Sub-Admiral'],
@@ -3973,7 +3974,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 't-bone',
     name: 'T. Bone',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Sub-Admiral'],
@@ -3982,7 +3983,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'pudding',
     name: 'Pudding',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Rear Admiral'],
@@ -3991,7 +3992,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'jenfetro',
     name: 'Jenfétro',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Rear Admiral'],
@@ -4000,7 +4001,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'brandnew',
     name: 'Brandnew',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Rear Admiral'],
@@ -4036,7 +4037,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'tashigi',
     name: 'Tashigi',
-    rarity: 'COMMON',
+    rarity: 'LEGENDARY',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Colonel'],
@@ -4045,7 +4046,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kobby',
     name: 'Kobby',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Colonel'],
@@ -4054,7 +4055,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'nezumi',
     name: 'Nezumi',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Colonel'],
@@ -4063,7 +4064,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'don-quijote-rosinante',
     name: 'Don Quijote Rosinante',
-    rarity: 'RARE',
+    rarity: 'EPIC',
     affiliations: ['Marine', 'Paramecia'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Sourdine fruit', 'Lieutenant-Colonel'],
@@ -4072,7 +4073,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hermep',
     name: 'Hermep',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -4081,7 +4082,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'fullbody',
     name: 'Fullbody',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -4090,7 +4091,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'jango',
     name: 'Jango',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -4099,7 +4100,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sengoku',
     name: 'Sengoku',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['Marine', 'Zoan Mythique'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Fruit of the Human, Buddha version', 'Observer'],
@@ -4108,7 +4109,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sentomaru',
     name: 'Sentomaru',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Captain of the Scientific Brigade'],
@@ -4117,7 +4118,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'x-drake',
     name: 'X-Drake',
-    rarity: 'RARE',
+    rarity: 'LEGENDARY',
     affiliations: ['Marine', 'Zoan Antique'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Fruit of the Dinosaur, Allosaurus version', 'Captain of the Sword'],
@@ -4126,7 +4127,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kaiser-moustache',
     name: 'Kaiser Moustache',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -4135,7 +4136,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'cancer',
     name: 'Cancer',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -4144,7 +4145,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'mozambia',
     name: 'Mozambia',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -4153,7 +4154,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'lacroix',
     name: 'Lacroix',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -4162,7 +4163,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ronz',
     name: 'Ronz',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -4171,7 +4172,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'dohn-deynon',
     name: 'Dohn Deynon',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -4180,7 +4181,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'draw',
     name: 'Draw',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -4189,7 +4190,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sicily',
     name: 'Sicily',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Sub-Admiral'],
@@ -4198,7 +4199,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'akehende',
     name: 'Akehende',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Sub-Admiral'],
@@ -4207,7 +4208,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'catacombo',
     name: 'Catacombo',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Sub-Admiral'],
@@ -4216,7 +4217,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kadar',
     name: 'Kadar',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Sub-Admiral'],
@@ -4225,7 +4226,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'daigin',
     name: 'Daigin',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Rear Admiral'],
@@ -4234,7 +4235,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'gorilla',
     name: 'Gorilla',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Colonel'],
@@ -4243,7 +4244,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'stelly',
     name: 'Stelly',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Royaume de Goa'],
     relations: [{ to: 'sally-entoilette', kind: 'CREW' }, { to: 'outlook-iii', kind: 'CREW' }, { to: 'didit', kind: 'CREW' }, { to: 'makino', kind: 'CREW' }, { to: 'woop-slap', kind: 'CREW' }, { to: 'curly-dadan', kind: 'CREW' }],
     abilities: ['Sovereign'],
@@ -4252,7 +4253,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sally-entoilette',
     name: 'Sally Entoilette',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Royaume de Goa'],
     relations: [{ to: 'stelly', kind: 'CREW' }, { to: 'outlook-iii', kind: 'CREW' }, { to: 'didit', kind: 'CREW' }, { to: 'makino', kind: 'CREW' }, { to: 'woop-slap', kind: 'CREW' }, { to: 'curly-dadan', kind: 'CREW' }],
     abilities: ['Queen'],
@@ -4261,7 +4262,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'outlook-iii',
     name: 'Outlook III',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Royaume de Goa'],
     relations: [{ to: 'stelly', kind: 'CREW' }, { to: 'sally-entoilette', kind: 'CREW' }, { to: 'didit', kind: 'CREW' }, { to: 'makino', kind: 'CREW' }, { to: 'woop-slap', kind: 'CREW' }, { to: 'curly-dadan', kind: 'CREW' }],
     abilities: ['Residents of Haute Ville'],
@@ -4279,7 +4280,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'makino',
     name: 'Makino',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Royaume de Goa'],
     relations: [{ to: 'stelly', kind: 'CREW' }, { to: 'sally-entoilette', kind: 'CREW' }, { to: 'outlook-iii', kind: 'CREW' }, { to: 'didit', kind: 'CREW' }, { to: 'woop-slap', kind: 'CREW' }, { to: 'curly-dadan', kind: 'CREW' }],
     abilities: ['Bar owner'],
@@ -4288,7 +4289,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'woop-slap',
     name: 'Woop Slap',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Royaume de Goa'],
     relations: [{ to: 'stelly', kind: 'CREW' }, { to: 'sally-entoilette', kind: 'CREW' }, { to: 'outlook-iii', kind: 'CREW' }, { to: 'didit', kind: 'CREW' }, { to: 'makino', kind: 'CREW' }, { to: 'curly-dadan', kind: 'CREW' }],
     abilities: ['Mayor of the village of Fuchsia'],
@@ -4297,7 +4298,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'curly-dadan',
     name: 'Curly Dadan',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Royaume de Goa'],
     relations: [{ to: 'stelly', kind: 'CREW' }, { to: 'sally-entoilette', kind: 'CREW' }, { to: 'outlook-iii', kind: 'CREW' }, { to: 'didit', kind: 'CREW' }, { to: 'makino', kind: 'CREW' }, { to: 'woop-slap', kind: 'CREW' }],
     abilities: ['Mount Corvo resident'],
@@ -4306,7 +4307,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'dogra',
     name: 'Dogra',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Royaume de Goa'],
     relations: [{ to: 'stelly', kind: 'CREW' }, { to: 'sally-entoilette', kind: 'CREW' }, { to: 'outlook-iii', kind: 'CREW' }, { to: 'didit', kind: 'CREW' }, { to: 'makino', kind: 'CREW' }, { to: 'woop-slap', kind: 'CREW' }],
     abilities: ['Mount Corvo resident'],
@@ -4315,7 +4316,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'magra',
     name: 'Magra',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Royaume de Goa'],
     relations: [{ to: 'stelly', kind: 'CREW' }, { to: 'sally-entoilette', kind: 'CREW' }, { to: 'outlook-iii', kind: 'CREW' }, { to: 'didit', kind: 'CREW' }, { to: 'makino', kind: 'CREW' }, { to: 'woop-slap', kind: 'CREW' }],
     abilities: ['Mount Corvo resident'],
@@ -4324,7 +4325,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'higuma',
     name: 'Higuma',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Royaume de Goa'],
     relations: [{ to: 'stelly', kind: 'CREW' }, { to: 'sally-entoilette', kind: 'CREW' }, { to: 'outlook-iii', kind: 'CREW' }, { to: 'didit', kind: 'CREW' }, { to: 'makino', kind: 'CREW' }, { to: 'woop-slap', kind: 'CREW' }],
     abilities: ['Resident'],
@@ -4333,7 +4334,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kozaburo-shimotsuki',
     name: 'Kozaburo Shimotsuki',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Village de Shimotsuki'],
     relations: [{ to: 'koshiro', kind: 'CREW' }, { to: 'kuina', kind: 'CREW' }],
     abilities: ['Resident'],
@@ -4342,7 +4343,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'koshiro',
     name: 'Koshiro',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Village de Shimotsuki'],
     relations: [{ to: 'kozaburo-shimotsuki', kind: 'CREW' }, { to: 'kuina', kind: 'CREW' }],
     abilities: ['Dojo Master'],
@@ -4351,7 +4352,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kuina',
     name: 'Kuina',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Village de Shimotsuki'],
     relations: [{ to: 'kozaburo-shimotsuki', kind: 'CREW' }, { to: 'koshiro', kind: 'CREW' }],
     abilities: ['Resident'],
@@ -4396,7 +4397,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kaya',
     name: 'Kaya',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Archipel des Gecko'],
     relations: [{ to: 'merry', kind: 'CREW' }, { to: 'oignon', kind: 'CREW' }, { to: 'piment', kind: 'CREW' }, { to: 'carotte', kind: 'CREW' }, { to: 'banchina', kind: 'CREW' }],
     abilities: ['Medical student'],
@@ -4405,7 +4406,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'merry',
     name: 'Merry',
-    rarity: 'COMMON',
+    rarity: 'EPIC',
     affiliations: ['Archipel des Gecko'],
     relations: [{ to: 'kaya', kind: 'CREW' }, { to: 'oignon', kind: 'CREW' }, { to: 'piment', kind: 'CREW' }, { to: 'carotte', kind: 'CREW' }, { to: 'banchina', kind: 'CREW' }],
     abilities: ['Butler'],
@@ -4504,7 +4505,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'nako',
     name: 'Nako',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Archipel Conomi'],
     relations: [{ to: 'belmer', kind: 'CREW' }, { to: 'nojiko', kind: 'CREW' }, { to: 'genzo', kind: 'CREW' }, { to: 'chabo', kind: 'CREW' }, { to: 'johny', kind: 'CREW' }, { to: 'yosaku', kind: 'CREW' }],
     abilities: ['Doctor'],
@@ -4585,7 +4586,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kinderella',
     name: 'Kinderella',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Royaume maléfique de Black Drum'],
     relations: [{ to: 'wapol', kind: 'CREW' }, { to: 'musshul', kind: 'CREW' }],
     abilities: ['Queen'],
@@ -4612,7 +4613,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'haguar-d-sauro',
     name: 'Haguar D. Sauro',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Ohara'],
     relations: [{ to: 'clover', kind: 'CREW' }, { to: 'nico-olvia', kind: 'CREW' }],
     abilities: ['Vice-Admiral'],
@@ -4621,7 +4622,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ramen',
     name: 'Ramen',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Pays des fleurs'],
     relations: [{ to: 'chinjao', kind: 'CREW' }],
     abilities: ['King'],
@@ -4630,7 +4631,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'chinjao',
     name: 'Chinjao',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Pays des fleurs'],
     relations: [{ to: 'ramen', kind: 'CREW' }],
     abilities: [],
@@ -4693,7 +4694,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'dolton',
     name: 'Dolton',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Île de Drum'],
     relations: [{ to: 'kureha', kind: 'CREW' }, { to: 'hiluluk', kind: 'CREW' }, { to: 'chess', kind: 'CREW' }, { to: 'kuromarimo', kind: 'CREW' }],
     abilities: ['Sovereign'],
@@ -4702,7 +4703,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kureha',
     name: 'Kureha',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Île de Drum'],
     relations: [{ to: 'dolton', kind: 'CREW' }, { to: 'hiluluk', kind: 'CREW' }, { to: 'chess', kind: 'CREW' }, { to: 'kuromarimo', kind: 'CREW' }],
     abilities: ['Doctor'],
@@ -4711,7 +4712,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hiluluk',
     name: 'Hiluluk',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Île de Drum'],
     relations: [{ to: 'dolton', kind: 'CREW' }, { to: 'kureha', kind: 'CREW' }, { to: 'chess', kind: 'CREW' }, { to: 'kuromarimo', kind: 'CREW' }],
     abilities: ['Doctor'],
@@ -4738,7 +4739,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'nefertari-cobra',
     name: 'Nefertari Cobra',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Alabasta'],
     relations: [{ to: 'nefertari-titi', kind: 'CREW' }, { to: 'nefertari-vivi', kind: 'CREW' }, { to: 'igaram', kind: 'CREW' }, { to: 'chaka', kind: 'CREW' }, { to: 'pell', kind: 'CREW' }, { to: 'kaloo', kind: 'CREW' }],
     abilities: ['12th King'],
@@ -4747,7 +4748,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'nefertari-titi',
     name: 'Nefertari Titi',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Alabasta'],
     relations: [{ to: 'nefertari-cobra', kind: 'CREW' }, { to: 'nefertari-vivi', kind: 'CREW' }, { to: 'igaram', kind: 'CREW' }, { to: 'chaka', kind: 'CREW' }, { to: 'pell', kind: 'CREW' }, { to: 'kaloo', kind: 'CREW' }],
     abilities: ['Queen'],
@@ -4756,7 +4757,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'nefertari-vivi',
     name: 'Nefertari Vivi',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Alabasta'],
     relations: [{ to: 'nefertari-cobra', kind: 'CREW' }, { to: 'nefertari-titi', kind: 'CREW' }, { to: 'igaram', kind: 'CREW' }, { to: 'chaka', kind: 'CREW' }, { to: 'pell', kind: 'CREW' }, { to: 'kaloo', kind: 'CREW' }],
     abilities: ['Princess'],
@@ -4774,7 +4775,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'chaka',
     name: 'Chaka',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Alabasta', 'Zoan'],
     relations: [{ to: 'nefertari-cobra', kind: 'CREW' }, { to: 'nefertari-titi', kind: 'CREW' }, { to: 'nefertari-vivi', kind: 'CREW' }, { to: 'igaram', kind: 'CREW' }, { to: 'pell', kind: 'CREW' }, { to: 'kaloo', kind: 'CREW' }],
     abilities: ['Fruit of the Canidae, Jackal version', 'Deputy Commander of the Royal Guard'],
@@ -4783,7 +4784,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'pell',
     name: 'Pell',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Alabasta', 'Zoan'],
     relations: [{ to: 'nefertari-cobra', kind: 'CREW' }, { to: 'nefertari-titi', kind: 'CREW' }, { to: 'nefertari-vivi', kind: 'CREW' }, { to: 'igaram', kind: 'CREW' }, { to: 'chaka', kind: 'CREW' }, { to: 'kaloo', kind: 'CREW' }],
     abilities: ['Fruit du Volatile, Falcon version', 'Deputy Commander of the Royal Guard'],
@@ -5062,7 +5063,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'loki',
     name: 'Loki',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Erbaf'],
     relations: [{ to: 'jorl', kind: 'CREW' }, { to: 'jarl', kind: 'CREW' }, { to: 'oimo', kind: 'CREW' }, { to: 'kaashii', kind: 'CREW' }],
     abilities: ['Prince'],
@@ -5125,7 +5126,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'toki-kozuki',
     name: 'Toki Kozuki',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Paramecia'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }, { to: 'kinemon', kind: 'CREW' }],
     abilities: ['Fruit of Time', 'Resident'],
@@ -5134,7 +5135,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'mononosuke-kozuki',
     name: 'Mononosuké Kozuki',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Smile'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }, { to: 'kinemon', kind: 'CREW' }],
     abilities: [' Artificial demon fruit from Vegapunk', 'Shogun'],
@@ -5152,7 +5153,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kinemon',
     name: 'Kinémon',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Paramecia'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Fruit of the Garment', 'Red sheaths'],
@@ -5170,7 +5171,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'izo',
     name: 'Izo',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }, { to: 'kinemon', kind: 'CREW' }],
     abilities: ['Red sheaths'],
@@ -5215,7 +5216,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'shinobu',
     name: 'Shinobu',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Paramecia'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Fruit of Maturation', 'Red sheaths'],
@@ -5224,7 +5225,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'orochi-kurozumi',
     name: 'Orochi Kurozumi',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Zoan Mythique'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Fruit of the Reptile, eight-headed dragon version', 'Shogun'],
@@ -5233,7 +5234,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kanjuro-kurozumi',
     name: 'Kanjuro Kurozumi',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Paramecia'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Fruit of the Brush', 'Red sheaths'],
@@ -5242,7 +5243,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'semimaru-kurozumi',
     name: 'Semimaru Kurozumi',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Paramecia'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Fruit of the Barrier', 'Kurozumo clan'],
@@ -5251,7 +5252,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'higurashi-kurozumi',
     name: 'Higurashi Kurozumi',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Paramecia'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Travesti-Fruit', 'Kurozumo clan'],
@@ -5287,7 +5288,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'onimaru',
     name: 'Onimaru',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Zoan Mythique'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Fruit of the Human, Onyudo version', 'Resident'],
@@ -5341,7 +5342,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'tama',
     name: 'Tama',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Paramecia'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Millet fruit', 'Resident'],
@@ -5377,7 +5378,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bunbuku',
     name: 'Bunbuku',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Zoan'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Canid Fruit, Tanuki version', 'Resident'],
@@ -5386,7 +5387,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'yamato',
     name: 'Yamato',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Zoan Mythique'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Fruit of the Canid, Divine Wolf version', 'Resident'],
@@ -5395,7 +5396,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'rock',
     name: 'Rock',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Punk Hazard'],
     relations: [{ to: 'cesar-clown', kind: 'CREW' }, { to: 'scotch', kind: 'CREW' }, { to: 'smiley', kind: 'CREW' }],
     abilities: ['Yeti Cool Brothers'],
@@ -5404,7 +5405,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'scotch',
     name: 'Scotch',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Punk Hazard'],
     relations: [{ to: 'cesar-clown', kind: 'CREW' }, { to: 'rock', kind: 'CREW' }, { to: 'smiley', kind: 'CREW' }],
     abilities: ['Yeti Cool Brothers'],
@@ -5413,7 +5414,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'smiley',
     name: 'Smiley',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Punk Hazard', 'Zoan'],
     relations: [{ to: 'cesar-clown', kind: 'CREW' }, { to: 'rock', kind: 'CREW' }, { to: 'scotch', kind: 'CREW' }],
     abilities: ['Fruit of the Salamander, Axolotl version', 'Resident'],
@@ -5422,7 +5423,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'riku-dold-iii',
     name: 'Riku Dold III',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Dressrosa'],
     relations: [{ to: 'scarlett', kind: 'CREW' }, { to: 'kyros', kind: 'CREW' }, { to: 'viola', kind: 'CREW' }, { to: 'rebecca', kind: 'CREW' }, { to: 'gatz', kind: 'CREW' }, { to: 'tank-lepanto', kind: 'CREW' }],
     abilities: ['King'],
@@ -5431,7 +5432,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'scarlett',
     name: 'Scarlett',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Dressrosa'],
     relations: [{ to: 'riku-dold-iii', kind: 'CREW' }, { to: 'kyros', kind: 'CREW' }, { to: 'viola', kind: 'CREW' }, { to: 'rebecca', kind: 'CREW' }, { to: 'gatz', kind: 'CREW' }, { to: 'tank-lepanto', kind: 'CREW' }],
     abilities: ['Princess'],
@@ -5485,7 +5486,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'guncho',
     name: 'Guncho',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Green Bit'],
     relations: [{ to: 'manshelly', kind: 'CREW' }],
     abilities: ['King'],
@@ -5539,7 +5540,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sicilion',
     name: 'Sicilion',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Zo'],
     relations: [{ to: 'zunesh', kind: 'CREW' }, { to: 'begis-khan', kind: 'CREW' }, { to: 'caborage', kind: 'CREW' }, { to: 'chavipere', kind: 'CREW' }, { to: 'cancelot', kind: 'CREW' }, { to: 'giovanni', kind: 'CREW' }],
     abilities: ['Captain of the Musketeers unit'],
@@ -5593,7 +5594,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'elizabello-ii',
     name: 'Elizabello II',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Royaume de Prodence'],
     relations: [{ to: 'dagama', kind: 'CREW' }],
     abilities: ['Sovereign'],
@@ -5611,7 +5612,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kelly-funk',
     name: 'Kelly Funk',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Royaume de Mogalo', 'Paramecia'],
     relations: [{ to: 'bobby-funk', kind: 'CREW' }],
     abilities: ['Fruit de la Pelisse', 'Assassin'],
@@ -5620,7 +5621,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bobby-funk',
     name: 'Bobby Funk',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Royaume de Mogalo'],
     relations: [{ to: 'kelly-funk', kind: 'CREW' }],
     abilities: ['Assassin'],
@@ -5629,7 +5630,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'judge-vinsmoke',
     name: 'Judge Vinsmoke',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Royaume de Germa'],
     relations: [{ to: 'sora-vinsmoke', kind: 'CREW' }, { to: 'reiju-vinsmoke', kind: 'CREW' }, { to: 'ichiji-vinsmoke', kind: 'CREW' }, { to: 'niji-vinsmoke', kind: 'CREW' }, { to: 'yonji-vinsmoke', kind: 'CREW' }],
     abilities: ['Sovereign'],
@@ -5638,7 +5639,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'sora-vinsmoke',
     name: 'Sora Vinsmoke',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Royaume de Germa'],
     relations: [{ to: 'judge-vinsmoke', kind: 'CREW' }, { to: 'reiju-vinsmoke', kind: 'CREW' }, { to: 'ichiji-vinsmoke', kind: 'CREW' }, { to: 'niji-vinsmoke', kind: 'CREW' }, { to: 'yonji-vinsmoke', kind: 'CREW' }],
     abilities: ['Queen'],
@@ -5647,7 +5648,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'reiju-vinsmoke',
     name: 'Reiju Vinsmoke',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Royaume de Germa'],
     relations: [{ to: 'judge-vinsmoke', kind: 'CREW' }, { to: 'sora-vinsmoke', kind: 'CREW' }, { to: 'ichiji-vinsmoke', kind: 'CREW' }, { to: 'niji-vinsmoke', kind: 'CREW' }, { to: 'yonji-vinsmoke', kind: 'CREW' }],
     abilities: ['Princess'],
@@ -5656,7 +5657,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ichiji-vinsmoke',
     name: 'Ichiji Vinsmoke',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Royaume de Germa'],
     relations: [{ to: 'judge-vinsmoke', kind: 'CREW' }, { to: 'sora-vinsmoke', kind: 'CREW' }, { to: 'reiju-vinsmoke', kind: 'CREW' }, { to: 'niji-vinsmoke', kind: 'CREW' }, { to: 'yonji-vinsmoke', kind: 'CREW' }],
     abilities: ['Prince'],
@@ -5665,7 +5666,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'niji-vinsmoke',
     name: 'Niji Vinsmoke',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Royaume de Germa'],
     relations: [{ to: 'judge-vinsmoke', kind: 'CREW' }, { to: 'sora-vinsmoke', kind: 'CREW' }, { to: 'reiju-vinsmoke', kind: 'CREW' }, { to: 'ichiji-vinsmoke', kind: 'CREW' }, { to: 'yonji-vinsmoke', kind: 'CREW' }],
     abilities: ['Prince'],
@@ -5674,7 +5675,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'yonji-vinsmoke',
     name: 'Yonji Vinsmoke',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Royaume de Germa'],
     relations: [{ to: 'judge-vinsmoke', kind: 'CREW' }, { to: 'sora-vinsmoke', kind: 'CREW' }, { to: 'reiju-vinsmoke', kind: 'CREW' }, { to: 'ichiji-vinsmoke', kind: 'CREW' }, { to: 'niji-vinsmoke', kind: 'CREW' }],
     abilities: ['Prince'],
@@ -5683,7 +5684,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'marco',
     name: 'Marco',
-    rarity: 'LEGENDARY',
+    rarity: 'RARE',
     affiliations: ['Zoan Mythique'],
     relations: [],
     abilities: ['Phoenix Fruit', 'Sphinx (doctor) / Command 1st Whitebeard Fleet'],
@@ -5701,7 +5702,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'pierre',
     name: 'Pierre',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Skypiea', 'Zoan'],
     relations: [{ to: 'gan-forr', kind: 'CREW' }, { to: 'conis', kind: 'CREW' }, { to: 'pagaya', kind: 'CREW' }, { to: 'amazon', kind: 'CREW' }, { to: 'chef-shandia', kind: 'CREW' }, { to: 'wiper', kind: 'CREW' }],
     abilities: ['Horse Fruit', 'Resident'],
@@ -5845,7 +5846,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'yama',
     name: 'Yama',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Skypiea'],
     relations: [{ to: 'gan-forr', kind: 'CREW' }, { to: 'pierre', kind: 'CREW' }, { to: 'conis', kind: 'CREW' }, { to: 'pagaya', kind: 'CREW' }, { to: 'amazon', kind: 'CREW' }, { to: 'chef-shandia', kind: 'CREW' }],
     abilities: ['Skypiea (exile) / Clan Ener (captain of the sacred guard)'],
@@ -5854,7 +5855,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hotori',
     name: 'Hotori',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Skypiea'],
     relations: [{ to: 'gan-forr', kind: 'CREW' }, { to: 'pierre', kind: 'CREW' }, { to: 'conis', kind: 'CREW' }, { to: 'pagaya', kind: 'CREW' }, { to: 'amazon', kind: 'CREW' }, { to: 'chef-shandia', kind: 'CREW' }],
     abilities: ['Skypiea (exiled) / Clan Ener (vice captain of the sacred guard)'],
@@ -5863,7 +5864,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kotori',
     name: 'Kotori',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Skypiea'],
     relations: [{ to: 'gan-forr', kind: 'CREW' }, { to: 'pierre', kind: 'CREW' }, { to: 'conis', kind: 'CREW' }, { to: 'pagaya', kind: 'CREW' }, { to: 'amazon', kind: 'CREW' }, { to: 'chef-shandia', kind: 'CREW' }],
     abilities: ['Skypiea (exiled) / Clan Ener (vice captain of the sacred guard)'],
@@ -5890,7 +5891,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'otohime',
     name: 'Otohime',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Île des hommes-poissons'],
     relations: [{ to: 'octy', kind: 'CREW' }, { to: 'neptune', kind: 'CREW' }, { to: 'fukaboshi', kind: 'CREW' }, { to: 'ryuboshi', kind: 'CREW' }, { to: 'mamboshi', kind: 'CREW' }, { to: 'shirahoshi', kind: 'CREW' }],
     abilities: ['Queen'],
@@ -5899,7 +5900,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'fukaboshi',
     name: 'Fukaboshi',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Île des hommes-poissons'],
     relations: [{ to: 'octy', kind: 'CREW' }, { to: 'neptune', kind: 'CREW' }, { to: 'otohime', kind: 'CREW' }, { to: 'ryuboshi', kind: 'CREW' }, { to: 'mamboshi', kind: 'CREW' }, { to: 'shirahoshi', kind: 'CREW' }],
     abilities: ['Prince'],
@@ -5908,7 +5909,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ryuboshi',
     name: 'Ryuboshi',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Île des hommes-poissons'],
     relations: [{ to: 'octy', kind: 'CREW' }, { to: 'neptune', kind: 'CREW' }, { to: 'otohime', kind: 'CREW' }, { to: 'fukaboshi', kind: 'CREW' }, { to: 'mamboshi', kind: 'CREW' }, { to: 'shirahoshi', kind: 'CREW' }],
     abilities: ['Prince'],
@@ -5917,7 +5918,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'mamboshi',
     name: 'Mamboshi',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Île des hommes-poissons'],
     relations: [{ to: 'octy', kind: 'CREW' }, { to: 'neptune', kind: 'CREW' }, { to: 'otohime', kind: 'CREW' }, { to: 'fukaboshi', kind: 'CREW' }, { to: 'ryuboshi', kind: 'CREW' }, { to: 'shirahoshi', kind: 'CREW' }],
     abilities: ['Prince'],
@@ -5926,7 +5927,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'shirahoshi',
     name: 'Shirahoshi',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Île des hommes-poissons'],
     relations: [{ to: 'octy', kind: 'CREW' }, { to: 'neptune', kind: 'CREW' }, { to: 'otohime', kind: 'CREW' }, { to: 'fukaboshi', kind: 'CREW' }, { to: 'ryuboshi', kind: 'CREW' }, { to: 'mamboshi', kind: 'CREW' }],
     abilities: ['Princess'],
@@ -5998,7 +5999,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'octy',
     name: 'Octy',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Île des hommes-poissons'],
     relations: [{ to: 'neptune', kind: 'CREW' }, { to: 'otohime', kind: 'CREW' }, { to: 'fukaboshi', kind: 'CREW' }, { to: 'ryuboshi', kind: 'CREW' }, { to: 'mamboshi', kind: 'CREW' }, { to: 'shirahoshi', kind: 'CREW' }],
     abilities: ['Takoyaki merchant'],
@@ -6016,7 +6017,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ener',
     name: 'Ener',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Logia'],
     relations: [],
     abilities: ['Fulguro-Fruit', 'Manager'],
@@ -6025,7 +6026,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'emporio-ivankov',
     name: 'Emporio Ivankov',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Armée Révolutionnaire', 'Paramecia'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }],
     abilities: ['Fruit of Hormones', 'Command of troop G'],
@@ -6034,7 +6035,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'corbeau',
     name: 'Corbeau',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Armée Révolutionnaire'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }],
     abilities: ['Commander of the "Septentrionale" troop'],
@@ -6043,7 +6044,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'belo-betty',
     name: 'Belo Betty',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Armée Révolutionnaire', 'Paramecia'],
     relations: [{ to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }],
     abilities: ['Fruit of Exaltation', 'Commander of the "Oriental" troop'],
@@ -6052,7 +6053,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'morley',
     name: 'Morley',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Armée Révolutionnaire', 'Paramecia'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }],
     abilities: ['Fruit of the Pousse-Pousse', 'Western" troop commander'],
@@ -6061,7 +6062,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'lindbergh',
     name: 'Lindbergh',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Armée Révolutionnaire'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }],
     abilities: ['Commander of the "southern" troop'],
@@ -6070,7 +6071,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'inazuma',
     name: 'Inazuma',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Armée Révolutionnaire', 'Paramecia'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }],
     abilities: ['Fruit of the Scissors', 'Sub-Commander of "G" Troop'],
@@ -6088,7 +6089,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'koala',
     name: 'Koala',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Armée Révolutionnaire'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }],
     abilities: ['Lieutenant'],
@@ -6106,7 +6107,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'zala',
     name: 'Zala',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Anciens membres du Baroque Works', 'Paramecia'],
     relations: [{ to: 'bentham', kind: 'CREW' }, { to: 'marianne', kind: 'CREW' }, { to: 'drophy', kind: 'CREW' }, { to: 'gemme', kind: 'CREW' }, { to: 'mikita', kind: 'CREW' }, { to: 'babe', kind: 'CREW' }],
     abilities: ['Sea Urchin Fruit', 'Special Agent'],
@@ -6115,7 +6116,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bentham',
     name: 'Bentham',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Anciens membres du Baroque Works', 'Paramecia'],
     relations: [{ to: 'zala', kind: 'CREW' }, { to: 'marianne', kind: 'CREW' }, { to: 'drophy', kind: 'CREW' }, { to: 'gemme', kind: 'CREW' }, { to: 'mikita', kind: 'CREW' }, { to: 'babe', kind: 'CREW' }],
     abilities: ['Travesti-Fruit', 'Special Agent'],
@@ -6124,7 +6125,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'marianne',
     name: 'Marianne',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Anciens membres du Baroque Works'],
     relations: [{ to: 'zala', kind: 'CREW' }, { to: 'bentham', kind: 'CREW' }, { to: 'drophy', kind: 'CREW' }, { to: 'gemme', kind: 'CREW' }, { to: 'mikita', kind: 'CREW' }, { to: 'babe', kind: 'CREW' }],
     abilities: ['Special Agent'],
@@ -6133,7 +6134,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'babe',
     name: 'Babe',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Anciens membres du Baroque Works'],
     relations: [{ to: 'zala', kind: 'CREW' }, { to: 'bentham', kind: 'CREW' }, { to: 'marianne', kind: 'CREW' }, { to: 'drophy', kind: 'CREW' }, { to: 'gemme', kind: 'CREW' }, { to: 'mikita', kind: 'CREW' }],
     abilities: ['Special Agent'],
@@ -6142,7 +6143,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'lassou',
     name: 'Lassou',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Anciens membres du Baroque Works', 'Zoan'],
     relations: [{ to: 'zala', kind: 'CREW' }, { to: 'bentham', kind: 'CREW' }, { to: 'marianne', kind: 'CREW' }, { to: 'drophy', kind: 'CREW' }, { to: 'gemme', kind: 'CREW' }, { to: 'mikita', kind: 'CREW' }],
     abilities: ['Fruit of the Canid, Basset version', 'Special Agent'],
@@ -6151,7 +6152,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'drophy',
     name: 'Drophy',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Anciens membres du Baroque Works', 'Zoan'],
     relations: [{ to: 'zala', kind: 'CREW' }, { to: 'bentham', kind: 'CREW' }, { to: 'marianne', kind: 'CREW' }, { to: 'gemme', kind: 'CREW' }, { to: 'mikita', kind: 'CREW' }, { to: 'babe', kind: 'CREW' }],
     abilities: ['Digging Fruit', 'Special Agent'],
@@ -6160,7 +6161,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'gemme',
     name: 'Gemme',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Anciens membres du Baroque Works', 'Paramecia'],
     relations: [{ to: 'zala', kind: 'CREW' }, { to: 'bentham', kind: 'CREW' }, { to: 'marianne', kind: 'CREW' }, { to: 'drophy', kind: 'CREW' }, { to: 'mikita', kind: 'CREW' }, { to: 'babe', kind: 'CREW' }],
     abilities: ['Fruit Boum-Boum', 'Special Agent'],
@@ -6169,7 +6170,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'mikita',
     name: 'Mikita',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Anciens membres du Baroque Works', 'Paramecia'],
     relations: [{ to: 'zala', kind: 'CREW' }, { to: 'bentham', kind: 'CREW' }, { to: 'marianne', kind: 'CREW' }, { to: 'drophy', kind: 'CREW' }, { to: 'gemme', kind: 'CREW' }, { to: 'babe', kind: 'CREW' }],
     abilities: ['Kilo-Kilo Fruit', 'Special Agent'],
@@ -6178,7 +6179,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'jabura',
     name: 'Jabura',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Anciens membres du Cipher Pol', 'Zoan'],
     relations: [{ to: 'blueno', kind: 'CREW' }, { to: 'kumadori', kind: 'CREW' }, { to: 'fukuro', kind: 'CREW' }, { to: 'kalifa', kind: 'CREW' }, { to: 'nero', kind: 'CREW' }, { to: 'spandine', kind: 'CREW' }],
     abilities: ['Fruit of the Canid, Wolf version', 'Cipher Pol n°9'],
@@ -6187,7 +6188,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'blueno',
     name: 'Blueno',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Anciens membres du Cipher Pol', 'Paramecia'],
     relations: [{ to: 'jabura', kind: 'CREW' }, { to: 'kumadori', kind: 'CREW' }, { to: 'fukuro', kind: 'CREW' }, { to: 'kalifa', kind: 'CREW' }, { to: 'nero', kind: 'CREW' }, { to: 'spandine', kind: 'CREW' }],
     abilities: ['Fruit of the Porter', 'Cipher Pol n°9'],
@@ -6214,7 +6215,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'kalifa',
     name: 'Kalifa',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Anciens membres du Cipher Pol', 'Paramecia'],
     relations: [{ to: 'jabura', kind: 'CREW' }, { to: 'blueno', kind: 'CREW' }, { to: 'kumadori', kind: 'CREW' }, { to: 'fukuro', kind: 'CREW' }, { to: 'nero', kind: 'CREW' }, { to: 'spandine', kind: 'CREW' }],
     abilities: ['Fruit des Bulles', 'Cipher Pol n°9'],
@@ -6250,7 +6251,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'morgan',
     name: 'Morgan',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Anciens membres de la Marine'],
     relations: [{ to: 'kuzan-aokiji', kind: 'CREW' }],
     abilities: ['Colonel'],
@@ -6259,7 +6260,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bellamy',
     name: 'Bellamy',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Don Quixote\'s crew', 'Paramecia'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }, { to: 'lao-g', kind: 'CREW' }],
     abilities: ['Fruit of the Spring', 'Private'],
@@ -6268,7 +6269,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'cesar-clown',
     name: 'César Clown',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Punk Hazard', 'Logia'],
     relations: [{ to: 'rock', kind: 'CREW' }, { to: 'scotch', kind: 'CREW' }, { to: 'smiley', kind: 'CREW' }],
     abilities: ['Fruit of the Gas'],
@@ -6277,7 +6278,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'morgans',
     name: 'Morgans',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Zoan'],
     relations: [],
     abilities: ['Fruit du Volatile, Albatross version', 'World Economic Journal (boss)'],
@@ -6322,7 +6323,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'woonan',
     name: 'Woonan',
-    rarity: 'EPIC',
+    rarity: 'RARE',
     affiliations: [],
     relations: [],
     abilities: ['Captain'],
@@ -6340,7 +6341,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'honey-queen',
     name: 'Honey Queen',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Trump Pirates crew', 'Paramecia'],
     relations: [{ to: 'bear-king', kind: 'CREW' }, { to: 'pin-joker', kind: 'CREW' }, { to: 'skunk-one', kind: 'CREW' }, { to: 'boo-jack', kind: 'CREW' }],
     abilities: ['Fruit of Dissolution'],
@@ -6349,7 +6350,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'pin-joker',
     name: 'Pin Joker',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Trump Pirates crew'],
     relations: [{ to: 'bear-king', kind: 'CREW' }, { to: 'honey-queen', kind: 'CREW' }, { to: 'skunk-one', kind: 'CREW' }, { to: 'boo-jack', kind: 'CREW' }],
     abilities: [],
@@ -6358,7 +6359,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'boo-jack',
     name: 'Boo Jack',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Trump Pirates crew'],
     relations: [{ to: 'bear-king', kind: 'CREW' }, { to: 'pin-joker', kind: 'CREW' }, { to: 'honey-queen', kind: 'CREW' }, { to: 'skunk-one', kind: 'CREW' }],
     abilities: [],
@@ -6367,7 +6368,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'skunk-one',
     name: 'Skunk One',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Trump Pirates crew'],
     relations: [{ to: 'bear-king', kind: 'CREW' }, { to: 'pin-joker', kind: 'CREW' }, { to: 'honey-queen', kind: 'CREW' }, { to: 'boo-jack', kind: 'CREW' }],
     abilities: [],
@@ -6394,7 +6395,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bulter',
     name: 'Bulter',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: [],
     relations: [],
     abilities: ['Earl Butler'],
@@ -6403,7 +6404,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'hotdog',
     name: 'Hotdog',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: [],
     relations: [],
     abilities: ['General Hotdog'],
@@ -6412,7 +6413,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'mobambi',
     name: 'Mobambi',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: [],
     relations: [],
     abilities: ['King'],
@@ -6421,7 +6422,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'heaby',
     name: 'Heaby',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: [],
     relations: [],
     abilities: ['Chairman Heaby'],
@@ -6430,7 +6431,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'general-gasparde',
     name: 'Général Gasparde',
-    rarity: 'EPIC',
+    rarity: 'RARE',
     affiliations: ['Gasparde\'s crew', 'Logia'],
     relations: [{ to: 'needless', kind: 'CREW' }, { to: 'biera', kind: 'CREW' }, { to: 'shuraiya-bascud', kind: 'CREW' }, { to: 'adelle-bascud', kind: 'CREW' }],
     abilities: ['Candy Fruit', 'Captain'],
@@ -6439,7 +6440,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'needless',
     name: 'Needless',
-    rarity: 'EPIC',
+    rarity: 'COMMON',
     affiliations: ['Gasparde\'s crew'],
     relations: [{ to: 'general-gasparde', kind: 'CREW' }, { to: 'biera', kind: 'CREW' }, { to: 'shuraiya-bascud', kind: 'CREW' }, { to: 'adelle-bascud', kind: 'CREW' }],
     abilities: [],
@@ -6538,7 +6539,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'omatsuri',
     name: 'Omatsuri',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Pirate des flèches rouges'],
     relations: [{ to: 'lily-carnation', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -6547,7 +6548,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'lily-carnation',
     name: 'Lily Carnation',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Pirate des flèches rouges'],
     relations: [{ to: 'omatsuri', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -6556,7 +6557,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'papa',
     name: 'Papa',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: [],
     relations: [],
     abilities: ['Captain'],
@@ -6565,7 +6566,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'brief',
     name: 'Brief',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: [],
     relations: [],
     abilities: ['Captain'],
@@ -6583,7 +6584,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'honki',
     name: 'Honki',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Île de Mecha'],
     relations: [{ to: 'ratchet', kind: 'CREW' }, { to: 'maji', kind: 'CREW' }, { to: 'roba', kind: 'CREW' }],
     abilities: ['Colonel'],
@@ -6646,7 +6647,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'schneider',
     name: 'Schneider',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['The Schneider Pirates crew'],
     relations: [{ to: 'buzz', kind: 'CREW' }],
     abilities: ['Captain'],
@@ -6655,7 +6656,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'buzz',
     name: 'Buzz',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['The Schneider Pirates crew', 'Zoan'],
     relations: [{ to: 'schneider', kind: 'CREW' }],
     abilities: ['Fruit of the Volatile, Eagle version'],
@@ -6691,7 +6692,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'gild-tesoro',
     name: 'Gild Tesoro',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Gran Tesero', 'Paramecia'],
     relations: [{ to: 'baccarat', kind: 'CREW' }, { to: 'dice', kind: 'CREW' }, { to: 'tanaka', kind: 'CREW' }, { to: 'carina', kind: 'CREW' }],
     abilities: ['Fruit of Gold', 'Owner'],
@@ -6700,7 +6701,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'baccarat',
     name: 'Baccarat',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Gran Tesero', 'Paramecia'],
     relations: [{ to: 'gild-tesoro', kind: 'CREW' }, { to: 'dice', kind: 'CREW' }, { to: 'tanaka', kind: 'CREW' }, { to: 'carina', kind: 'CREW' }],
     abilities: ['Fruit of Luck', 'Concierge'],
@@ -6718,7 +6719,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'tanaka',
     name: 'Tanaka',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Gran Tesero', 'Paramecia'],
     relations: [{ to: 'gild-tesoro', kind: 'CREW' }, { to: 'baccarat', kind: 'CREW' }, { to: 'dice', kind: 'CREW' }, { to: 'carina', kind: 'CREW' }],
     abilities: ['Passe-Muraille fruit', 'Safety Manager'],
@@ -6736,7 +6737,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'douglas-bullet',
     name: 'Douglas Bullet',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Paramecia'],
     relations: [],
     abilities: ['Fruit de la Ferraille'],
@@ -6754,7 +6755,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'ann',
     name: 'Ann',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Paramecia'],
     relations: [],
     abilities: ['Fruit of Vision'],
@@ -6799,7 +6800,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'gion',
     name: 'Gion',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: [],
     relations: [],
     abilities: ['Vice-Admiral'],
@@ -6808,7 +6809,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'musshuru',
     name: 'Musshuru',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Paramecia'],
     relations: [],
     abilities: ['Chamquipue fruit'],
@@ -6835,7 +6836,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'orlombus',
     name: 'Orlombus',
-    rarity: 'EPIC',
+    rarity: 'RARE',
     affiliations: [],
     relations: [],
     abilities: ['Admiral'],
@@ -6844,7 +6845,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'macro',
     name: 'Macro',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: [],
     relations: [],
     abilities: ['Captain'],
@@ -6880,7 +6881,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'wetton',
     name: 'Wetton',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: [],
     relations: [],
     abilities: ['Mayor'],
@@ -6889,7 +6890,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'bigalo',
     name: 'Bigalo',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: [],
     relations: [],
     abilities: [],
@@ -6898,7 +6899,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'vegapunk',
     name: 'Végapunk',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Paramecia'],
     relations: [],
     abilities: ['Fruit du Ciboulot', 'Scientist'],
@@ -6907,7 +6908,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'stronger',
     name: 'Stronger',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Blackbeard\'s crew', 'Zoan Mythique'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
     abilities: ['Horse fruit, Pegasus model', 'Doc Q\'s horse'],
@@ -6970,7 +6971,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 's-snake',
     name: 'S-Snake',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Clone'],
     relations: [],
     abilities: ['Passion fruit clone', 'Seraph-type pacifistas'],
@@ -6979,7 +6980,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 's-hawk',
     name: 'S-Hawk',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Clone'],
     relations: [],
     abilities: ['Clone of the fruit of the slasher', 'Seraph-type pacifistas'],
@@ -6988,7 +6989,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 's-bear',
     name: 'S-Bear',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Clone'],
     relations: [],
     abilities: ['Clone of the Pawpaw Fruit', 'Seraph-type pacifistas'],
@@ -6997,7 +6998,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 's-shark',
     name: 'S-Shark',
-    rarity: 'RARE',
+    rarity: 'COMMON',
     affiliations: ['Clone'],
     relations: [],
     abilities: ['Clone of the Barbotage fruit', 'Seraph-type pacifistas'],
@@ -7006,7 +7007,7 @@ export const CHARACTERS: Character[] = [
   {
     id: 'karazu',
     name: 'Karazu',
-    rarity: 'COMMON',
+    rarity: 'RARE',
     affiliations: ['Armée Révolutionnaire'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }],
     abilities: ['Captain'],

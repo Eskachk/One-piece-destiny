@@ -13,11 +13,54 @@
  *      ne devienne pas une source de revenus.
  */
 
-export const REFERRAL_BERRIES_REFERRER = 300;
-export const REFERRAL_BERRIES_REFERRED = 300;
+/**
+ * Dotation d'inscription, en Berries.
+ *
+ * Un coffre coûte 1 500 Berries : un nouveau joueur arrive donc avec de quoi
+ * en ouvrir un, et un joueur venu par une invitation avec de quoi en ouvrir
+ * deux. Le repère est volontairement lisible — « une invitation = un coffre de
+ * plus » se comprend sans calcul.
+ */
+export const SIGNUP_BERRIES = 1_500;
+export const SIGNUP_BERRIES_REFERRED = 3_000;
+
+/**
+ * Ce que touche le parrain, **par filleul qui a réellement joué**.
+ *
+ * Le montant est le point d'équilibre du système, et il est contraint des deux
+ * côtés :
+ *
+ *   — trop bas, personne n'invite et la fonction ne sert à rien ;
+ *   — trop haut, fabriquer des comptes rapporte plus que jouer, et le
+ *     classement se remplit de coquilles vides (§43).
+ *
+ * 800 vaut un peu plus d'un demi-coffre. À comparer aux 200 Berries de la
+ * participation hebdomadaire : un parrainage pèse quatre semaines de présence,
+ * ce qui reste une vraie récompense sans dépasser le jeu lui-même.
+ *
+ * Le garde-fou décisif n'est pas le montant mais **le moment du versement** :
+ * rien n'est payé à l'inscription. Le parrain n'est crédité que lorsque son
+ * filleul verrouille un premier équipage — c'est-à-dire lorsqu'un joueur de
+ * plus participe vraiment au rendez-vous hebdomadaire (§116). Un générateur de
+ * comptes ne franchit pas cette étape ; un ami ramené, oui. C'est exactement la
+ * rejouabilité qu'on cherche à récompenser.
+ */
+export const REFERRAL_BERRIES_REFERRER = 800;
 
 /** Au-delà, les parrainages restent enregistrés mais ne rapportent plus. */
 export const MAX_REWARDED_REFERRALS = 10;
+
+/**
+ * Lien d'invitation.
+ *
+ * Le joueur partage une URL, jamais un code à recopier : le filleul clique, et
+ * son bonus lui est acquis sans qu'il ait rien à saisir ni à comprendre. Le
+ * code reste dans l'adresse — il faut bien transporter l'information — mais il
+ * n'est plus demandé à personne.
+ */
+export function referralLink(origin: string, code: string): string {
+  return `${origin.replace(/\/+$/, '')}/r/${encodeURIComponent(code)}`;
+}
 
 const CODE_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 const CODE_LENGTH = 8;

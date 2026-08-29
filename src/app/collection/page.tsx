@@ -4,10 +4,11 @@ import { MainNav } from '@/components/MainNav';
 import { ChestPanel } from '@/components/ChestPanel';
 import { chestOdds } from '@/domain/collection/odds';
 import { CraftButton } from '@/components/CraftButton';
-import { StarterChest } from '@/components/StarterChest';
+import { RarityCard } from '@/components/RarityCard';
+import { attributesOf } from '@/domain/collection/attributes';
 import { CHARACTERS, CHARACTER_INDEX } from '@/data/characters';
 import { allSetsProgress, collectionSummary } from '@/domain/collection/sets';
-import { RARITY_LABEL, rarityRank } from '@/domain/collection/rarity';
+import { RARITY_COLOR, RARITY_LABEL, rarityRank } from '@/domain/collection/rarity';
 import { CRAFT_COST } from '@/domain/collection/crafting';
 import { requireSession } from '@/lib/auth/guards';
 import { getRepository } from '@/lib/repository';
@@ -74,16 +75,13 @@ export default async function CollectionPage() {
       </p>
 
       <div className="mt-6">
-        {progress.starterChestOpened ? (
-          <ChestPanel
-            unopenedChests={progress.unopenedChests}
-            pityCounter={progress.pityCounter}
-            berries={wallet.berries}
-            odds={chestOdds(CHARACTERS)}
-          />
-        ) : (
-          <StarterChest />
-        )}
+        <ChestPanel
+          starterAvailable={!progress.starterChestOpened}
+          unopenedChests={progress.unopenedChests}
+          pityCounter={progress.pityCounter}
+          berries={wallet.berries}
+          odds={chestOdds(CHARACTERS)}
+        />
       </div>
 
       {/* Possédés */}
@@ -96,31 +94,26 @@ export default async function CollectionPage() {
             {ownedIds.map((id) => {
               const character = CHARACTER_INDEX.get(id);
               if (!character) return null;
+              const identity = identities.get(id);
               return (
-                <li
-                  key={id}
-                  className="hb-card"
-                >
-                  <span className="block text-sm font-semibold">
-                    {character.name}
-                  </span>
-                  <span className="hb-legend mt-0.5 block">
-                    {RARITY_LABEL[character.rarity]}
-                  </span>
-
-                  {/* Identité de l'exemplaire : ce code suit la carte, y
-                      compris lorsqu'elle change de propriétaire au Market. */}
-                  {identities.get(id)?.serialCode && (
-                    <span className="hb-serial">
-                      {identities.get(id)?.serialCode}
-                      {identities.get(id)?.mintNumber !== null && (
-                        <span className="hb-num">
-                          {' '}
-                          · n°{identities.get(id)?.mintNumber}
+                <li key={id}>
+                  <RarityCard
+                    name={character.name}
+                    rarity={character.rarity}
+                    attributes={attributesOf(character)}
+                    serial={
+                      /* Identité de l'exemplaire : ce code suit la carte, y
+                         compris lorsqu'elle change de propriétaire au Market. */
+                      identity?.serialCode ? (
+                        <span className="hb-serial">
+                          {identity.serialCode}
+                          {identity.mintNumber !== null && (
+                            <span className="hb-num"> · n°{identity.mintNumber}</span>
+                          )}
                         </span>
-                      )}
-                    </span>
-                  )}
+                      ) : null
+                    }
+                  />
                 </li>
               );
             })}
@@ -202,7 +195,10 @@ export default async function CollectionPage() {
                 <span className="mt-1 block text-sm font-semibold">
                   {character.name}
                 </span>
-                <span className="hb-legend mt-0.5 block">
+                <span
+                  className="hb-legend mt-0.5 block"
+                  style={{ color: RARITY_COLOR[character.rarity] }}
+                >
                   {RARITY_LABEL[character.rarity]}
                 </span>
                 <CraftButton

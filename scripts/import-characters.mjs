@@ -76,29 +76,40 @@ function bountyOf(raw) {
 }
 
 /**
- * Rareté dérivée de la prime et du statut de l'équipage.
+ * Table de notoriété : combien on voit chaque personnage dans l'œuvre.
  *
- * Les seuils sont choisis pour que la collection reste une pyramide : une
- * poignée de mythiques, beaucoup de communs. Un référentiel trop plat rendrait
- * les coffres sans relief.
+ * Lue depuis le même fichier que `scripts/rerank-rarity.mjs`, pour qu’un
+ * import ne réintroduise pas l’ancienne règle. Les deux scripts doivent
+ * classer un personnage exactement pareil, sans quoi le référentiel
+ * changerait de rareté selon la commande lancée en dernier.
  */
-function rarityOf(character) {
-  const bounty = bountyOf(character.bounty);
-  const yonko = Boolean(character.crew?.is_yonko);
+const PROMINENCE = (() => {
+  const table = JSON.parse(fs.readFileSync('src/data/prominence.json', 'utf8'));
+  const tiers = new Map();
+  for (const rarity of ['MYTHIC', 'LEGENDARY', 'EPIC']) {
+    for (const id of table[rarity]) tiers.set(id, rarity);
+  }
+  return tiers;
+})();
 
-  if (bounty >= 3_000_000_000) return 'MYTHIC';
-  if (bounty >= 1_000_000_000) return 'LEGENDARY';
-  if (bounty >= 300_000_000) return yonko ? 'LEGENDARY' : 'EPIC';
-  if (bounty >= 50_000_000) return 'EPIC';
-  if (bounty > 0) return 'RARE';
+const NAMED_ROLE =
+  /captain|capitaine|admiral|amiral|lieutenant|colonel|officer|king|queen|prince|princess|sovereign|doctor|samurai|shichibukai|vice-admiral|sub-admiral|rear admiral/i;
 
-  // Sans prime, les signaux restants sont faibles : appartenir à l'équipage
-  // d'un Empereur ou porter un fruit ne fait pas de quelqu'un une pièce
-  // majeure. Une première version accordait EPIC à tout l'équipage d'un
-  // Empereur — la collection comptait alors plus d'épiques que de rares, ce
-  // qui vide la rareté de son sens.
-  if (yonko || character.fruit) return 'RARE';
-  return 'COMMON';
+/**
+ * Rareté = notoriété, jamais prime.
+ *
+ * La prime produisait une collection absurde : soixante-quinze enfants
+ * Charlotte classés Épiques à égalité avec Nami, parce qu’ils portent une
+ * prime. Le joueur, lui, mesure la valeur d’une carte au nombre de fois
+ * qu’il a vu le personnage.
+ *
+ * Hors table : RARE si le personnage porte un grade ou un rôle nommé — il
+ * existe alors en tant qu’individu — COMMON s’il fait partie du décor.
+ */
+function rarityOf(id, abilities) {
+  const known = PROMINENCE.get(id);
+  if (known) return known;
+  return abilities.some((entry) => NAMED_ROLE.test(entry)) ? "RARE" : "COMMON";
 }
 
 /**
@@ -199,12 +210,14 @@ async function main() {
     usedIds.add(id);
     idByApiId.set(character.id, id);
 
+    const abilities = abilitiesOf(character);
+
     imported.push({
       id,
       name: character.name.trim(),
-      rarity: rarityOf(character),
+      rarity: rarityOf(id, abilities),
       affiliations: affiliationsOf(character, crewSizes),
-      abilities: abilitiesOf(character),
+      abilities,
       presenceExpectation: expectationOf(character),
       // Rempli au second passage : il faut tous les identifiants d'abord.
       relations: [],
@@ -240,7 +253,13 @@ async function main() {
     }
   }
 
-  const all = [...existing, ...imported.map(({ _crew, _bounty, ...rest }) => rest)];
+  // Une seule règle de rareté pour tout le monde, saisie manuelle comprise :
+  // laisser les vingt-quatre entrées écrites à la main garder la leur ferait
+  // cohabiter deux classements dans le même fichier.
+  const all = [
+    ...existing.map((c) => ({ ...c, rarity: rarityOf(c.id, c.abilities) })),
+    ...imported.map(({ _crew, _bounty, ...rest }) => rest),
+  ];
 
   // --- Contrôles -----------------------------------------------------------
   const ids = new Set();
@@ -292,7 +311,8 @@ async function main() {
  * ⚠️ **Aucun visuel, aucune planche, aucune illustration** (cahier §122) : ce
  * fichier ne contient que du texte factuel — noms, équipages, fruits, postes.
  *
- * \`rarity\` est dérivée de la prime et du statut d'équipage. Elle sert
+ * \`rarity\` est dérivée de la notoriété du personnage — de sa présence dans
+ * l'œuvre — via src/data/prominence.json. Elle sert
  * uniquement la collection, **jamais le score** (§25) : le moteur de scoring
  * ne lit pas ce champ.
  *

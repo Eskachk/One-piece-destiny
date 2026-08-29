@@ -4,6 +4,7 @@ import { randomBytes, randomUUID } from 'node:crypto';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { CHARACTERS, CHARACTER_INDEX } from '@/data/characters';
+import { attributesOf, type Attribute } from '@/domain/collection/attributes';
 import {
   openChest,
   openStarterChest,
@@ -36,6 +37,14 @@ import { getRepository } from '@/lib/repository';
  */
 export interface RevealedCard extends ChestCard {
   name: string;
+  /**
+   * Symboles d'attributs, calculés **côté serveur**.
+   *
+   * Pour les dériver, le navigateur aurait dû connaître les capacités et les
+   * affiliations de chaque personnage — donc embarquer le référentiel entier.
+   * Quatre pictogrammes ne valent pas 235 Ko de bundle.
+   */
+  attributes: Attribute[];
 }
 
 export type OpenStarterResult =
@@ -44,10 +53,14 @@ export type OpenStarterResult =
 
 /** Joint le nom de chaque carte, côté serveur. */
 function reveal(cards: ChestCard[]): RevealedCard[] {
-  return cards.map((card) => ({
-    ...card,
-    name: CHARACTER_INDEX.get(card.characterId)?.name ?? card.characterId,
-  }));
+  return cards.map((card) => {
+    const character = CHARACTER_INDEX.get(card.characterId);
+    return {
+      ...card,
+      name: character?.name ?? card.characterId,
+      attributes: character ? attributesOf(character) : [],
+    };
+  });
 }
 
 /**
@@ -96,7 +109,15 @@ export async function openStarterChestAction(): Promise<OpenStarterResult> {
     return { ok: false, error: 'Ce coffre a déjà été ouvert.' };
   }
 
-  revalidatePath('/collection');
+  // **Aucune revalidation ici**, et c'est le point important.
+  //
+  // Elle recalculait la page dans la foulée du tirage. Le nouvel arbre serveur
+  // remplaçait alors le composant qui joue la cérémonie — un coffre ouvert
+  // n'est plus « à ouvrir », donc la page rendait un autre panneau — et
+  // l'animation disparaissait avant d'avoir commencé. Les cartes étaient bien
+  // en base ; le joueur, lui, n'avait rien vu.
+  //
+  // Le rafraîchissement est demandé par le client, à la fin de la révélation.
   return { ok: true, cards: reveal(result.cards) };
 }
 
@@ -137,7 +158,15 @@ export async function openOwnedChestAction(): Promise<OpenStarterResult> {
     clientRequestId: `chest:${session.playerId}:${randomUUID()}`,
   });
 
-  revalidatePath('/collection');
+  // **Aucune revalidation ici**, et c'est le point important.
+  //
+  // Elle recalculait la page dans la foulée du tirage. Le nouvel arbre serveur
+  // remplaçait alors le composant qui joue la cérémonie — un coffre ouvert
+  // n'est plus « à ouvrir », donc la page rendait un autre panneau — et
+  // l'animation disparaissait avant d'avoir commencé. Les cartes étaient bien
+  // en base ; le joueur, lui, n'avait rien vu.
+  //
+  // Le rafraîchissement est demandé par le client, à la fin de la révélation.
   return { ok: true, cards: reveal(result.cards) };
 }
 

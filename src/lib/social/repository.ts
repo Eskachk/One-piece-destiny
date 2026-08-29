@@ -2,12 +2,13 @@ import 'server-only';
 
 import type { NotificationDraft } from '@/domain/notifications/notifications';
 import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
+import { generateReferralCode } from '@/domain/social/referral';
 
 /**
- * Notifications, commentaires et parrainage — accès base.
+ * Notifications et parrainage — accès base.
  *
- * Comme le Market, ces fonctions exigent Postgres : sans base, il n'y a ni
- * notification ni discussion à afficher.
+ * Comme le Market, ces fonctions exigent Postgres : sans base, il n'y a rien
+ * à afficher.
  */
 
 export function isSocialAvailable(): boolean {
@@ -98,139 +99,6 @@ export async function unreadCount(playerId: string): Promise<number> {
   return count ?? 0;
 }
 
-// --- Commentaires (§70) ----------------------------------------------------
-
-export interface StoredComment {
-  id: string;
-  playerId: string;
-  handle: string;
-  body: string;
-  likes: number;
-  likedByMe: boolean;
-  reports: number;
-  createdAt: Date;
-}
-
-export async function lastCommentAt(playerId: string): Promise<Date | null> {
-  const { data } = await db()
-    .from('chapter_comments')
-    .select('created_at')
-    .eq('player_id', playerId)
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  return data ? new Date(data.created_at) : null;
-}
-
-export async function addComment(
-  chapterId: string,
-  playerId: string,
-  body: string,
-): Promise<void> {
-  const { error } = await db()
-    .from('chapter_comments')
-    .insert({ chapter_id: chapterId, player_id: playerId, body });
-  if (error) throw new Error(`chapter_comments.insert : ${error.message}`);
-}
-
-export async function listComments(
-  chapterId: string,
-  viewerId: string,
-): Promise<StoredComment[]> {
-  const { data, error } = await db()
-    .from('chapter_comments')
-    // La clé étrangère est nommée explicitement : `chapter_comments` atteint
-    // `players` par plusieurs chemins (auteur, likes, signalements), et
-    // PostgREST refuse de choisir à notre place.
-    // eslint-disable-next-line prettier/prettier -- littéral d'un seul tenant :
-    // supabase-js dérive les types du texte de la requête, une concaténation
-    // lui fait perdre l'inférence.
-    .select('id, player_id, body, created_at, players!chapter_comments_player_id_fkey(handle), comment_likes(player_id), comment_reports(id)')
-    .eq('chapter_id', chapterId)
-    .is('deleted_at', null)
-    .order('created_at', { ascending: false })
-    .limit(100);
-
-  if (error) throw new Error(`chapter_comments.select : ${error.message}`);
-
-  return (data ?? []).map((row) => {
-    const player = row.players as unknown as { handle: string };
-    const likes = (row.comment_likes ?? []) as { player_id: string }[];
-    const reports = (row.comment_reports ?? []) as { id: string }[];
-
-    return {
-      id: row.id,
-      playerId: row.player_id,
-      handle: player.handle,
-      body: row.body,
-      likes: likes.length,
-      likedByMe: likes.some((like) => like.player_id === viewerId),
-      reports: reports.length,
-      createdAt: new Date(row.created_at),
-    };
-  });
-}
-
-export async function toggleLike(
-  commentId: string,
-  playerId: string,
-): Promise<void> {
-  const { data } = await db()
-    .from('comment_likes')
-    .select('player_id')
-    .eq('comment_id', commentId)
-    .eq('player_id', playerId)
-    .maybeSingle();
-
-  if (data) {
-    await db()
-      .from('comment_likes')
-      .delete()
-      .eq('comment_id', commentId)
-      .eq('player_id', playerId);
-    return;
-  }
-
-  const { error } = await db()
-    .from('comment_likes')
-    .insert({ comment_id: commentId, player_id: playerId });
-  if (error && error.code !== '23505') {
-    throw new Error(`comment_likes.insert : ${error.message}`);
-  }
-}
-
-export async function reportComment(
-  commentId: string,
-  reporterId: string,
-  reason: string | null,
-): Promise<void> {
-  const { error } = await db()
-    .from('comment_reports')
-    .insert({ comment_id: commentId, reporter_id: reporterId, reason });
-  // Un second signalement du même joueur n'est pas une erreur pour lui.
-  if (error && error.code !== '23505') {
-    throw new Error(`comment_reports.insert : ${error.message}`);
-  }
-}
-
-/** Suppression logique par l'auteur (§70). */
-export async function deleteOwnComment(
-  commentId: string,
-  playerId: string,
-): Promise<boolean> {
-  const { data } = await db()
-    .from('chapter_comments')
-    .update({ deleted_at: new Date().toISOString() })
-    .eq('id', commentId)
-    .eq('player_id', playerId)
-    .is('deleted_at', null)
-    .select('id')
-    .maybeSingle();
-
-  return data !== null;
-}
-
 // --- Parrainage (§71) ------------------------------------------------------
 
 export async function getReferralCode(playerId: string): Promise<string | null> {
@@ -253,6 +121,27 @@ export async function setReferralCode(
 
   // Collision de code : l'appelant en régénère un.
   return !error;
+}
+
+/**
+ * Code du joueur, créé au premier affichage du profil.
+ *
+ * Il n'y a plus de bouton « générer mon code » : le lien d'invitation doit
+ * être là, prêt à copier, sans que le joueur ait à demander la permission de
+ * l'obtenir. Une collision de code est improbable mais possible — on retente
+ * plutôt que d'échouer sur un tirage malheureux.
+ */
+export async function ensureReferralCode(
+  playerId: string,
+): Promise<string | null> {
+  const existing = await getReferralCode(playerId);
+  if (existing) return existing;
+
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const code = generateReferralCode();
+    if (await setReferralCode(playerId, code)) return code;
+  }
+  return null;
 }
 
 export async function findPlayerByReferralCode(
@@ -305,4 +194,60 @@ export async function recordReferral(
     throw new Error(`referrals.insert : ${error.message}`);
   }
   return true;
+}
+
+/**
+ * Parrain d'un filleul **pas encore payé**, ou `null`.
+ *
+ * Lecture seule : elle sert à décider si le plafond du parrain autorise le
+ * versement, avant de consommer quoi que ce soit.
+ */
+export async function pendingReferrerOf(
+  referredId: string,
+): Promise<string | null> {
+  const { data } = await db()
+    .from('referrals')
+    .select('referrer_id')
+    .eq('referred_id', referredId)
+    .is('rewarded_at', null)
+    .maybeSingle();
+
+  return data?.referrer_id ?? null;
+}
+
+/**
+ * Confirme un parrainage : le filleul a joué, le parrain peut être payé.
+ *
+ * Renvoie l'identifiant du parrain **une seule fois**. Le `is('rewarded_at',
+ * null)` fait office de verrou : deux verrouillages d'équipage simultanés
+ * partent en concurrence, mais un seul `update` trouvera encore la ligne non
+ * marquée et rapportera un parrain. L'autre repartira les mains vides. Sans
+ * cette condition dans la requête, un joueur qui enregistre son équipage deux
+ * fois de suite paierait son parrain deux fois.
+ */
+export async function confirmReferral(
+  referredId: string,
+): Promise<string | null> {
+  const { data } = await db()
+    .from('referrals')
+    .update({ rewarded_at: new Date().toISOString() })
+    .eq('referred_id', referredId)
+    .is('rewarded_at', null)
+    .select('referrer_id')
+    .maybeSingle();
+
+  return data?.referrer_id ?? null;
+}
+
+/** Parrainages déjà payés à ce parrain — sert à appliquer le plafond (§43). */
+export async function rewardedReferralCount(
+  referrerId: string,
+): Promise<number> {
+  const { count } = await db()
+    .from('referrals')
+    .select('referred_id', { count: 'exact', head: true })
+    .eq('referrer_id', referrerId)
+    .not('rewarded_at', 'is', null);
+
+  return count ?? 0;
 }

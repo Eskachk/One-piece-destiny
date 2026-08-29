@@ -9,7 +9,6 @@ import {
 } from '@/lib/cache';
 import { MainNav } from '@/components/MainNav';
 import Link from 'next/link';
-import { Comments } from '@/components/Comments';
 import { CHARACTER_INDEX } from '@/data/characters';
 import { spoilerState } from '@/domain/chapter/lock';
 import { percentileFromRank } from '@/domain/scoring/chapter-results';
@@ -20,8 +19,6 @@ import {
 } from '@/domain/scoring/chapter-analysis';
 import type { CharacterScore } from '@/domain/scoring';
 import { getAuthenticatedSession } from '@/lib/auth/session-store';
-import { getRepository } from '@/lib/repository';
-import * as social from '@/lib/social/repository';
 
 export const dynamic = 'force-dynamic';
 
@@ -48,7 +45,6 @@ const percent = (ratio: number) => `${Math.round(ratio * 100)}%`;
  *     la consultation (§75).
  */
 export default async function LeaderboardPage() {
-  const repository = getRepository();
   const session = await getAuthenticatedSession();
 
   // Le classement porte sur le dernier chapitre **publié**. S'il n'y en a pas
@@ -100,23 +96,6 @@ export default async function LeaderboardPage() {
   ]);
   const analysis = rawAnalysis as ChapterAnalysis | null;
 
-  // Commentaires : uniquement pour un joueur connecté, et seulement une fois
-  // les résultats publiés (§3, §70).
-  const comments =
-    session && social.isSocialAvailable()
-      ? (await social.listComments(chapter.id, session.playerId)).map(
-          (comment) => ({
-            id: comment.id,
-            handle: comment.handle,
-            body: comment.body,
-            likes: comment.likes,
-            likedByMe: comment.likedByMe,
-            reports: comment.reports,
-            isMine: comment.playerId === session.playerId,
-            createdAt: comment.createdAt.toLocaleDateString('fr-FR'),
-          }),
-        )
-      : null;
   const myIndex = session
     ? leaderboard.findIndex((row) => row.playerId === session.playerId)
     : -1;
@@ -284,9 +263,6 @@ export default async function LeaderboardPage() {
           </ol>
         )}
       </section>
-
-      {/* Discussion du chapitre (cahier §70), ouverte une fois publié. */}
-      {session && comments !== null && <Comments comments={comments} />}
 
       <Link href="/" className="hb-link mt-6 block text-center text-sm">
         Retour à l&apos;équipage

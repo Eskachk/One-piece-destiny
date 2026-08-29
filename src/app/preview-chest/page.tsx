@@ -11,11 +11,11 @@ export default function PreviewChestPage() {
   // Le nom est fourni ici comme il l'est par le serveur en vrai : la
   // cérémonie ne cherche jamais dans le référentiel.
   const legendary: RevealedCard[] = [
-    { characterId: 'shanks', name: 'Shanks', rarity: 'MYTHIC', duplicate: false, shards: 0 },
-    { characterId: 'luffy', name: 'Monkey D. Luffy', rarity: 'LEGENDARY', duplicate: true, shards: 200 },
-    { characterId: 'koby', name: 'Koby', rarity: 'RARE', duplicate: false, shards: 0 },
-    { characterId: 'nami', name: 'Nami', rarity: 'EPIC', duplicate: false, shards: 0 },
-    { characterId: 'helmeppo', name: 'Helmeppo', rarity: 'COMMON', duplicate: false, shards: 0 },
+    { characterId: 'shanks', name: 'Shanks', rarity: 'MYTHIC', duplicate: false, shards: 0, attributes: [{ id: 'conqueror', symbol: '👑', label: 'Haki des Rois' }, { id: 'pirate', symbol: '🏴', label: 'Pirate' }] },
+    { characterId: 'luffy', name: 'Monkey D. Luffy', rarity: 'LEGENDARY', duplicate: true, shards: 200, attributes: [{ id: 'conqueror', symbol: '👑', label: 'Haki des Rois' }, { id: 'fruit', symbol: '🍎', label: 'Fruit du démon' }] },
+    { characterId: 'koby', name: 'Koby', rarity: 'RARE', duplicate: false, shards: 0, attributes: [{ id: 'marine', symbol: '⚓', label: 'Marine' }] },
+    { characterId: 'nami', name: 'Nami', rarity: 'EPIC', duplicate: false, shards: 0, attributes: [{ id: 'navigator', symbol: '🧭', label: 'Navigation' }] },
+    { characterId: 'helmeppo', name: 'Helmeppo', rarity: 'COMMON', duplicate: false, shards: 0, attributes: [{ id: 'marine', symbol: '⚓', label: 'Marine' }] },
   ];
 
   return (

@@ -1,17 +1,8 @@
 'use client';
 
-import { attempt } from './attempt';
 import Link from 'next/link';
 import { useState, useTransition } from 'react';
-import {
-  ensureReferralCodeAction,
-  markNotificationsReadAction,
-  redeemReferralAction,
-} from '@/app/actions/social';
-import {
-  MAX_REWARDED_REFERRALS,
-  REFERRAL_BERRIES_REFERRED,
-} from '@/domain/social/referral';
+import { markNotificationsReadAction } from '@/app/actions/social';
 
 /**
  * Notifications (cahier §108) et parrainage (§71) sur le profil.
@@ -106,97 +97,94 @@ export function NotificationCenter({
   );
 }
 
+/**
+ * Lien d'invitation (cahier §71).
+ *
+ * Il n'y a plus de code à dicter ni à recopier : le joueur partage une URL,
+ * son invité clique, et le bonus lui est acquis sans qu'il ait rien à saisir.
+ * Un champ « saisis ton code de parrainage » était le seul endroit du produit
+ * où l'on demandait à quelqu'un de retaper une chaîne de huit caractères sans
+ * voyelles — c'était aussi celui où l'on perdait le plus de monde.
+ *
+ * Le lien est fabriqué **côté serveur**, à partir de l'origine réelle de la
+ * requête : construit ici avec `window.location`, il aurait pointé vers
+ * l'aperçu Vercel du jour pour qui l'aurait copié depuis une préproduction.
+ */
 export function ReferralPanel({
-  code,
+  link,
   referredCount,
-  alreadyReferred,
+  referrerBerries,
+  referredBerries,
+  maxRewarded,
 }: {
-  code: string | null;
+  link: string | null;
   referredCount: number;
-  alreadyReferred: boolean;
+  referrerBerries: number;
+  referredBerries: number;
+  maxRewarded: number;
 }) {
-  const [myCode, setMyCode] = useState(code);
-  const [input, setInput] = useState('');
-  const [message, setMessage] = useState<
-    { kind: 'ok' | 'error'; text: string } | null
-  >(null);
-  const [pending, startTransition] = useTransition();
+  const [copied, setCopied] = useState(false);
 
-  const generate = () => {
-    startTransition(async () => {
-      const result = await attempt(ensureReferralCodeAction());
-      if (result.ok) setMyCode(result.code);
-      else setMessage({ kind: 'error', text: result.error });
-    });
-  };
+  const share = async () => {
+    if (!link) return;
 
-  const redeem = () => {
-    startTransition(async () => {
-      const result = await attempt(redeemReferralAction(input));
-      setMessage(
-        result.ok
-          ? { kind: 'ok', text: 'Parrainage enregistré.' }
-          : { kind: 'error', text: result.error },
-      );
-    });
+    // `navigator.share` ouvre le partage natif du téléphone — le geste
+    // attendu sur mobile, qui est la cible du produit (§55). Il n'existe pas
+    // partout : le presse-papiers reste le repli, et le lien est de toute
+    // façon affiché en clair au-dessus, sélectionnable à la main.
+    try {
+      if (typeof navigator !== 'undefined' && navigator.share) {
+        await navigator.share({
+          title: 'Grand Line Weekly',
+          text: `Rejoins-moi : tu démarres avec ${referredBerries} Berries.`,
+          url: link,
+        });
+        return;
+      }
+      await navigator.clipboard.writeText(link);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      // Partage annulé ou presse-papiers refusé : rien à signaler, le lien
+      // reste visible et copiable manuellement.
+    }
   };
 
   return (
-    <section className="mt-6 rounded-xl hb-surface p-5">
-      <h2 className="text-sm uppercase tracking-widest hb-ink-soft">
-        Parrainage
-      </h2>
+    <section className="hb-card mt-6">
+      <h2 className="hb-legend">Invite un équipier</h2>
 
-      <div className="mt-3">
-        <p className="text-xs hb-ink-soft">Ton code</p>
-        {myCode ? (
-          <p className="mt-1 font-mono text-lg hb-gold">{myCode}</p>
-        ) : (
-          <button
-            type="button"
-            disabled={pending}
-            onClick={generate}
-            className="transition-quick mt-1 rounded-lg border hb-border px-3 py-1.5 text-sm hb-accent disabled:opacity-40"
-          >
-            Générer mon code
+      <p className="hb-muted mt-2 text-sm">
+        Qui arrive par ton lien démarre avec{' '}
+        <span className="hb-num">{referredBerries}</span> Berries au lieu de{' '}
+        <span className="hb-num">{referredBerries / 2}</span>.
+      </p>
+
+      {link ? (
+        <>
+          <p className="hb-serial mt-3 break-all" aria-label="Ton lien d’invitation">
+            {link}
+          </p>
+          <button type="button" onClick={share} className="hb-btn mt-3 w-full">
+            {copied ? 'Lien copié ✓' : 'Partager mon lien'}
           </button>
-        )}
-        <p className="mt-1 text-[11px] hb-ink-soft">
-          {referredCount} / {MAX_REWARDED_REFERRALS} parrainages récompensés.
-        </p>
-      </div>
-
-      {!alreadyReferred && (
-        <div className="mt-4">
-          <label htmlFor="referral" className="text-xs hb-ink-soft">
-            On t&apos;a parrainé ? Saisis le code
-          </label>
-          <input
-            id="referral"
-            value={input}
-            onChange={(event) => setInput(event.target.value)}
-            placeholder="AB3DEF4G"
-            className="mt-1 w-full rounded-lg border hb-border hb-input px-3 py-2 font-mono uppercase hb-ink placeholder:text-[#9aa8bf]"
-          />
-          <button
-            type="button"
-            disabled={pending || input.trim().length < 4}
-            onClick={redeem}
-            className="transition-quick mt-2 w-full rounded-lg hb-goldfill px-3 py-2 text-sm font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
-          >
-            Valider — {REFERRAL_BERRIES_REFERRED} 🪙 pour vous deux
-          </button>
-        </div>
-      )}
-
-      {message && (
-        <p
-          role="status"
-          className={`mt-3 text-sm ${message.kind === 'ok' ? 'hb-accent' : 'hb-ko'}`}
-        >
-          {message.text}
+        </>
+      ) : (
+        <p className="hb-muted mt-3 text-sm">
+          Ton lien n&apos;est pas encore disponible. Recharge la page.
         </p>
       )}
+
+      <p className="hb-muted mt-3 text-xs">
+        Tu reçois <span className="hb-num">{referrerBerries}</span> Berries par
+        filleul, <strong>le jour où il verrouille son premier équipage</strong> —
+        pas à son inscription. Un compte créé pour la forme ne rapporte donc
+        rien. Plafond : {maxRewarded} filleuls récompensés.
+      </p>
+
+      <p className="hb-muted mt-2 text-xs">
+        {referredCount} / {maxRewarded} parrainages récompensés.
+      </p>
     </section>
   );
 }

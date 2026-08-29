@@ -3,6 +3,7 @@ import 'server-only';
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
 import { baseUrl } from '@/lib/email/templates';
+import { grantSignupBonus } from '@/lib/social/signup-grant';
 
 /**
  * Connexion par Google (OpenID Connect, flux « authorization code »).
@@ -286,6 +287,11 @@ export async function resolveGoogleAccount(
     last_used_at: new Date().toISOString(),
   });
   if (error) return { ok: false, error: 'Liaison impossible.' };
+
+  // Même dotation d'arrivée que par formulaire (§71) : un lien d'invitation
+  // suivi d'une connexion Google est le chemin le plus court qui soit, il
+  // serait absurde qu'il soit le seul à ne rien donner.
+  await grantSignupBonus(player.data.id);
 
   return { ok: true, userId: account.data.id, created: true };
 }
