@@ -9,8 +9,18 @@ import { beginEnrollment } from '@/lib/auth/mfa';
 
 export const dynamic = 'force-dynamic';
 
+/**
+ * Titre neutre, et ce n’est pas un oubli.
+ *
+ * Les métadonnées de Next sont résolues indépendamment du rendu : quand
+ * `requireAdmin` déclenche `notFound()`, le contenu devient bien une page
+ * introuvable — mais le `<title>` déjà calculé, lui, subsiste. Un visiteur
+ * anonyme recevait donc un 404 intitulé du nom exact de la page, ce qui
+ * confirme précisément ce que ce 404 est censé taire (§105).
+ *
+ * Le titre reste donc celui du site. `robots` interdit l’indexation.
+ */
 export const metadata: Metadata = {
-  title: 'Double authentification',
   robots: { index: false, follow: false },
 };
 
