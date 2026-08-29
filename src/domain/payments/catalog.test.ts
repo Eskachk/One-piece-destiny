@@ -1,0 +1,89 @@
+import { describe, expect, it } from 'vitest';
+import { CATALOG, productOf, verifyClaim, withinDailyCap } from './catalog';
+import { restrictionsForBirthDate } from '../compliance/age';
+
+const VALIDE = {
+  productId: 'chest_pack_small',
+  amountCents: CATALOG.chest_pack_small.priceCents,
+  currency: 'EUR',
+  status: 'paid',
+  playerId: 'joueur-1',
+  eventId: 'evt_1',
+};
+
+describe('vérification d’un paiement', () => {
+  it('accepte un paiement conforme', () => {
+    const verdict = verifyClaim(VALIDE);
+    expect(verdict.ok).toBe(true);
+  });
+
+  it('refuse un montant manipulé', () => {
+    // Le cas central : le client tente de payer 1 centime un produit à 2,99 €.
+    const verdict = verifyClaim({ ...VALIDE, amountCents: 1 });
+    expect(verdict.ok).toBe(false);
+  });
+
+  it('refuse un montant supérieur au prix', () => {
+    // Aussi refusé : un montant inattendu signale un désaccord, pas un cadeau.
+    expect(verifyClaim({ ...VALIDE, amountCents: 99_999 }).ok).toBe(false);
+  });
+
+  it('refuse une devise différente', () => {
+    // 299 unités d'une devise faible ne valent pas 2,99 €.
+    expect(verifyClaim({ ...VALIDE, currency: 'JPY' }).ok).toBe(false);
+  });
+
+  it('accepte la devise quelle que soit la casse', () => {
+    expect(verifyClaim({ ...VALIDE, currency: 'eur' }).ok).toBe(true);
+  });
+
+  it('refuse un produit inconnu', () => {
+    expect(verifyClaim({ ...VALIDE, productId: 'coffre_gratuit' }).ok).toBe(false);
+  });
+
+  it('refuse un paiement non abouti', () => {
+    expect(verifyClaim({ ...VALIDE, status: 'unpaid' }).ok).toBe(false);
+    expect(verifyClaim({ ...VALIDE, status: 'pending' }).ok).toBe(false);
+  });
+
+  it('refuse un paiement sans joueur associé', () => {
+    // Sans joueur, on ne saurait pas qui créditer — et créditer au hasard
+    // serait pire que refuser.
+    expect(verifyClaim({ ...VALIDE, playerId: null }).ok).toBe(false);
+  });
+
+  it('expose des prix strictement positifs', () => {
+    for (const product of Object.values(CATALOG)) {
+      expect(product.priceCents).toBeGreaterThan(0);
+      expect(product.description.length).toBeGreaterThan(10);
+    }
+  });
+
+  it('ne trouve rien pour un identifiant inventé', () => {
+    expect(productOf('__proto__')).toBeNull();
+    expect(productOf('constructor')).toBeNull();
+  });
+});
+
+describe('plafond de dépense', () => {
+  it('refuse tout achat quand le plafond est nul', () => {
+    expect(withinDailyCap(0, 299, 0)).toBe(false);
+  });
+
+  it('autorise sous le plafond', () => {
+    expect(withinDailyCap(1_000, 299, 5_000)).toBe(true);
+  });
+
+  it('refuse au-delà du plafond', () => {
+    expect(withinDailyCap(4_900, 299, 5_000)).toBe(false);
+  });
+
+  it('interdit tout achat à un compte mineur', () => {
+    const naissance = new Date('2012-01-01T00:00:00Z');
+    const maintenant = new Date('2026-08-29T00:00:00Z');
+    const restrictions = restrictionsForBirthDate(naissance, maintenant);
+
+    expect(restrictions.mayPurchase).toBe(false);
+    expect(withinDailyCap(0, 299, restrictions.dailySpendCapCents)).toBe(false);
+  });
+});

@@ -1,0 +1,1218 @@
+@import 'tailwindcss';
+
+/**
+ * Direction artistique « Grand Line Weekly » (cahier §50 à §54).
+ *
+ * Le jaune trésor est réservé aux éléments à forte valeur : récompenses,
+ * points, coffres, raretés, classement. L'utiliser partout le viderait de
+ * son sens.
+ */
+@theme {
+  --color-abyss: #071c2c;
+  --color-navy: #0e3045;
+  --color-turquoise: #25c7c5;
+  --color-parchment: #f5e8c8;
+  --color-treasure: #f4c84a;
+  --color-orange: #f58a32;
+  --color-danger: #e94e4e;
+
+  --font-display: 'Georgia', 'Times New Roman', serif;
+
+  /* Scène du port — pages d'authentification, en plein jour. */
+  --color-sky-high: #3f97e0;
+  --color-sky-low: #cfe9f8;
+  --color-sea-deep: #125ea8;
+  --color-sea-light: #3d9ad8;
+  --color-deck: #9a6636;
+  --color-deck-dark: #6f4523;
+  --color-ink: #14294f;
+  --color-flag: #d22f27;
+  --color-gold: #f5c542;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background:
+    radial-gradient(circle at 50% 0%, #0e3045 0%, #071c2c 55%),
+    var(--color-abyss);
+  color: var(--color-parchment);
+  /* Mobile-first : la base de design est 390 × 844 (cahier §59). */
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Lignes de navigation discrètes — le décor ne doit jamais nuire à la
+   lisibilité (cahier §51). */
+.chart-grid {
+  background-image:
+    linear-gradient(rgba(37, 199, 197, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 199, 197, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Les interactions normales restent dans 150–250 ms (cahier §60). */
+@media (prefers-reduced-motion: no-preference) {
+  .transition-quick {
+    transition-duration: 180ms;
+    transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+}
+
+/* ===========================================================================
+   Scène du port — pages d'authentification.
+
+   Direction plein jour, en rupture avec le bleu nuit du reste du produit :
+   on embarque à l'aube, on entre ensuite dans la Grand Line.
+
+   Aucune image : dégradés et SVG en ligne seulement. Rien à télécharger, rien
+   qui puisse être bloqué, aucun poids ajouté au bundle client.
+   =========================================================================== */
+
+.harbor {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+
+  /* Le `body` impose la couleur parchemin (crème) héritée de la direction
+     nuit. Tout élément qui ne fixe pas la sienne devenait donc invisible sur
+     le fond clair du port. On rétablit l'encre marine comme couleur par
+     défaut de toute la scène : une seule règle, au lieu d'en corriger cent. */
+  color: var(--color-ink);
+
+  /* Fond de base clair. Le `body` reste en bleu nuit et le décor du port ne le
+     recouvre que par superposition : au rebond de défilement sur mobile, ou si
+     le décor tarde à peindre, le noir réapparaissait derrière un texte encre
+     marine. */
+  background: var(--color-sky-low);
+
+  /* Centre du soleil. Halo et rayons s'y accrochent tous les deux : une seule
+     valeur à changer pour le déplacer, et aucun risque de désalignement. */
+  --sun-x: 19%;
+  --sun-y: 26%;
+}
+
+/* --- Décor ---------------------------------------------------------------- */
+
+.harbor__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.harbor__sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    var(--color-sky-high) 0%,
+    #7dc0ec 42%,
+    var(--color-sky-low) 68%
+  );
+}
+
+/* Le soleil se lève à droite, comme sur la maquette. */
+/* Halo et rayons partagent le MÊME ancrage et la même translation. Une
+   version précédente ancrait le halo par son coin (`right`) et les rayons par
+   leur centre : les deux étaient décalés de 13vmax, et l'éclat ne partait
+   visiblement pas du soleil. */
+.harbor__sun {
+  position: absolute;
+  right: var(--sun-x);
+  bottom: var(--sun-y);
+  translate: 50% 50%;
+  width: 26vmax;
+  height: 26vmax;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 250, 224, 0.95) 0%,
+    rgba(255, 236, 168, 0.65) 34%,
+    rgba(255, 224, 150, 0) 70%
+  );
+}
+
+/* Signature de la page. Les rayons tournent très lentement : assez pour que
+   la scène respire, pas assez pour distraire d'un formulaire. */
+.harbor__sunrays {
+  position: absolute;
+  right: var(--sun-x);
+  bottom: var(--sun-y);
+  translate: 50% 50%;
+  width: 105vmax;
+  height: 105vmax;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 244, 198, 0.42) 0deg 2.6deg,
+    transparent 2.6deg 14deg
+  );
+  /* Le masque s'ouvre progressivement : un bord net faisait apparaître un
+     cercle, et l'origine des rayons se voyait comme un point dur. */
+  mask-image: radial-gradient(
+    circle,
+    transparent 6%,
+    #000 20%,
+    #000 34%,
+    transparent 66%
+  );
+  animation: harbor-rays 140s linear infinite;
+}
+
+@keyframes harbor-rays {
+  to {
+    rotate: 360deg;
+  }
+}
+
+
+.harbor__sea {
+  position: absolute;
+  inset: 74% 0 0 0;
+  background: linear-gradient(
+    180deg,
+    var(--color-sea-light) 0%,
+    var(--color-sea-deep) 55%,
+    #0d4c8c 100%
+  );
+}
+
+/* Vagues.
+ *
+ * Deux couches qui défilent à des vitesses différentes : le décalage crée une
+ * parallaxe, et l'eau cesse de ressembler à un aplat. Chaque tracé est dessiné
+ * **deux fois côte à côte** dans le SVG et se déplace d'exactement une
+ * largeur : la boucle est alors invisible.
+ */
+.harbor__waves {
+  position: absolute;
+  inset: 0 0 auto 0;
+  width: 100%;
+  height: 7vh;
+  min-height: 42px;
+  translate: 0 -48%;
+  /* Découpe au cadre : la copie de droite doit entrer par le bord, pas
+     déborder par-dessus le reste de la scène. */
+  overflow: hidden;
+}
+
+.harbor__wave {
+  animation: harbor-swell linear infinite;
+}
+
+.harbor__wave--front {
+  animation-duration: 14s;
+}
+
+.harbor__wave--back {
+  animation-duration: 23s;
+  animation-direction: reverse;
+}
+
+@keyframes harbor-swell {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-1200px);
+  }
+}
+
+/* Planches.
+ *
+ * Le bois était un simple dégradé répété : plat, sans matière. Cinq couches le
+ * remplacent, de la plus fine à la plus large :
+ *   1. grain vertical serré, à peine visible, qui casse l'aplat ;
+ *   2. veinage long et irrégulier ;
+ *   3. arête claire en haut de chaque planche — la lumière vient du ciel ;
+ *   4. rainure sombre entre les planches, avec son ombre portée ;
+ *   5. dégradé général : le pont s'assombrit vers le bas du cadre.
+ */
+.harbor__deck {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 11vh;
+  min-height: 74px;
+  background:
+    /* 1. grain */
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.035) 0 1px,
+      transparent 1px 3px,
+      rgba(0, 0, 0, 0.04) 3px 4px,
+      transparent 4px 7px
+    ),
+    /* 2. veinage */
+    repeating-linear-gradient(
+      92deg,
+      rgba(92, 54, 24, 0.16) 0 2px,
+      transparent 2px 17px,
+      rgba(120, 74, 36, 0.14) 17px 20px,
+      transparent 20px 41px
+    ),
+    /* 3. arête éclairée en haut de planche */
+    linear-gradient(
+      180deg,
+      rgba(255, 225, 180, 0.42) 0 3px,
+      rgba(255, 205, 150, 0.14) 3px 9px,
+      transparent 9px
+    ),
+    /* 4. rainures entre planches */
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 64px,
+      rgba(58, 32, 12, 0.75) 64px 67px,
+      rgba(196, 143, 88, 0.25) 67px 69px,
+      transparent 69px 72px
+    ),
+    /* 5. fond */
+    linear-gradient(180deg, #b07c46 0%, #96633a 45%, #6d4423 100%);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 231, 194, 0.35),
+    inset 0 -18px 26px rgba(45, 22, 6, 0.45),
+    0 -16px 34px rgba(10, 40, 70, 0.34);
+}
+
+/* Ombre portée du pont sur l'eau, juste au-dessus de lui. */
+.harbor__deckEdge {
+  position: absolute;
+  inset: auto 0 100% 0;
+  height: 26px;
+  background: linear-gradient(180deg, rgba(24, 60, 96, 0), rgba(18, 48, 80, 0.4));
+}
+
+.harbor__mast {
+  position: absolute;
+  left: 3.5%;
+  top: 0;
+  bottom: 0;
+  width: 46px;
+  background:
+    /* veinage vertical */
+    repeating-linear-gradient(
+      180deg,
+      rgba(70, 40, 16, 0.22) 0 2px,
+      transparent 2px 21px,
+      rgba(255, 224, 180, 0.1) 21px 23px,
+      transparent 23px 47px
+    ),
+    /* cylindre : lumière à gauche, ombre à droite */
+    linear-gradient(
+      90deg,
+      #5d3719 0%,
+      #a06e3c 22%,
+      #c99457 42%,
+      #8c5a2c 72%,
+      #4f2f14 100%
+    );
+  border-radius: 8px;
+  box-shadow:
+    inset 0 0 22px rgba(40, 20, 6, 0.5),
+    0 0 34px rgba(10, 40, 70, 0.3);
+}
+
+@media (max-width: 720px) {
+  /* Sur mobile, le mât mangerait la largeur du formulaire. */
+  .harbor__mast {
+    display: none;
+  }
+}
+
+/* --- Contenu -------------------------------------------------------------- */
+
+.harbor__content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.25rem 16vh;
+}
+
+.harbor__header {
+  width: 100%;
+  max-width: 27rem;
+  text-align: center;
+}
+
+.harbor__eyebrow {
+  font-family: var(--font-poster), system-ui, sans-serif;
+  font-size: clamp(0.8rem, 3.4vw, 1.05rem);
+  letter-spacing: 0.22em;
+  color: var(--color-flag);
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.harbor__wheel {
+  width: 2.6rem;
+  height: 2.6rem;
+  margin: 0.35rem auto 0.1rem;
+  color: var(--color-ink);
+  opacity: 0.9;
+}
+
+.harbor__title {
+  font-family: var(--font-poster), system-ui, sans-serif;
+  /* Très grand et condensé : la typographie est le sujet, pas un véhicule. */
+  font-size: clamp(3.2rem, 15vw, 5.6rem);
+  line-height: 0.92;
+  letter-spacing: 0.01em;
+  color: var(--color-ink);
+  text-transform: uppercase;
+  text-shadow: 0 3px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* Bannière peinte au pinceau, sous le titre. */
+.harbor__banner {
+  margin: 0.9rem auto 0;
+  display: inline-block;
+  padding: 0.4rem 1.5rem 0.55rem;
+  background: var(--color-flag);
+  color: #fff6e4;
+  border-radius: 999px / 55%;
+  rotate: -1.2deg;
+  box-shadow: 0 6px 16px rgba(140, 26, 20, 0.3);
+}
+
+.harbor__banner span {
+  font-family: var(--font-brush), cursive;
+  font-size: clamp(1.15rem, 4.6vw, 1.5rem);
+  font-weight: 700;
+}
+
+/* --- Formulaire ----------------------------------------------------------- */
+
+.harbor__card {
+  margin-top: 1.9rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.harbor__label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: 0.35rem;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+.harbor__field {
+  position: relative;
+}
+
+.harbor__field svg {
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  translate: 0 -50%;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: #6b7fa3;
+  pointer-events: none;
+}
+
+.harbor__input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.85rem;
+  border-radius: 0.85rem;
+  border: 2px solid rgba(20, 41, 79, 0.14);
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--color-ink);
+  font-size: 1rem;
+  box-shadow: 0 4px 14px rgba(12, 45, 80, 0.12);
+}
+
+.harbor__input::placeholder {
+  color: #93a3bd;
+}
+
+.harbor__input:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 2px;
+  border-color: rgba(20, 41, 79, 0.3);
+}
+
+.harbor__hint {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: #21406f;
+}
+
+.harbor__submit {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border-radius: 0.85rem;
+  background: linear-gradient(180deg, #ffd767, var(--color-gold));
+  color: var(--color-ink);
+  font-family: var(--font-poster), system-ui, sans-serif;
+  font-size: 1.18rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow:
+    0 6px 0 #c99a1e,
+    0 12px 22px rgba(12, 45, 80, 0.22);
+  transition:
+    translate 90ms ease,
+    box-shadow 90ms ease;
+}
+
+.harbor__submit:hover:not(:disabled) {
+  translate: 0 2px;
+  box-shadow:
+    0 4px 0 #c99a1e,
+    0 8px 16px rgba(12, 45, 80, 0.22);
+}
+
+.harbor__submit:active:not(:disabled) {
+  translate: 0 6px;
+  box-shadow:
+    0 0 0 #c99a1e,
+    0 4px 10px rgba(12, 45, 80, 0.22);
+}
+
+.harbor__submit:disabled {
+  opacity: 0.65;
+}
+
+.harbor__submit:focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+.harbor__meta {
+  text-align: center;
+  font-size: 0.92rem;
+  color: #17325c;
+}
+
+.harbor__link {
+  color: #0f4f96;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.harbor__divider {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: #2a4a78;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.harbor__divider::before,
+.harbor__divider::after {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: rgba(20, 41, 79, 0.18);
+}
+
+.harbor__google {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 0.85rem;
+  background: #fff;
+  color: var(--color-ink);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  border: 2px solid rgba(20, 41, 79, 0.12);
+  box-shadow: 0 4px 14px rgba(12, 45, 80, 0.14);
+}
+
+.harbor__google:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+.harbor__alert {
+  border-radius: 0.7rem;
+  background: rgba(210, 47, 39, 0.94);
+  color: #fff4ec;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 14px rgba(140, 26, 20, 0.25);
+}
+
+/* Le mouvement est un agrément, jamais une condition de lecture. */
+@media (prefers-reduced-motion: reduce) {
+  .harbor__sunrays,
+  .harbor__wave {
+    animation: none;
+  }
+  .harbor__submit {
+    transition: none;
+  }
+}
+
+/* ===========================================================================
+   Direction « port » appliquée aux pages intérieures.
+
+   La scène complète — rayons, vagues, grand soleil — est la signature de
+   l'entrée. À l'intérieur, elle se calme : le décor ne doit jamais disputer
+   la lecture d'un classement ou d'un détail de score (§51).
+
+   Les surfaces deviennent du parchemin sur bois : texte encre marine sur fond
+   crème, ce qui donne un bien meilleur contraste que le bleu nuit précédent.
+   =========================================================================== */
+
+.harbor--page .harbor__sunrays {
+  /* Rayons très atténués : présents, jamais lisibles par-dessus du texte. */
+  opacity: 0.28;
+}
+
+
+
+.harbor--page .harbor__deck {
+  height: 7vh;
+  min-height: 52px;
+}
+
+.harbor--page .harbor__content {
+  align-items: flex-start;
+  padding: 1.5rem 1rem 12vh;
+}
+
+.harbor--page .harbor__header {
+  max-width: 30rem;
+  /* Le centrage est propre à la page d'entrée : à l'intérieur, le texte se
+     lit de gauche à droite comme partout ailleurs. */
+  text-align: left;
+}
+
+/* --- Surfaces ------------------------------------------------------------- */
+
+/* Panneau de parchemin. Le grain vient de deux dégradés très légers : sans
+   eux, l'aplat crème paraît numérique au milieu d'une scène dessinée. */
+.hb-card {
+  border-radius: 1rem;
+  padding: 1.15rem 1.1rem;
+  color: var(--color-ink);
+  background:
+    repeating-linear-gradient(
+      92deg,
+      rgba(155, 118, 66, 0.05) 0 2px,
+      transparent 2px 23px
+    ),
+    linear-gradient(180deg, #fbf1dc 0%, #f3e3c6 100%);
+  border: 2px solid rgba(109, 68, 35, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 6px 18px rgba(12, 45, 80, 0.18);
+}
+
+/* Variante « bois » : pour ce qui doit peser plus que le reste. */
+.hb-card--wood {
+  color: #fdf3df;
+  background:
+    repeating-linear-gradient(
+      92deg,
+      rgba(58, 32, 12, 0.14) 0 2px,
+      transparent 2px 19px
+    ),
+    linear-gradient(180deg, #96633a 0%, #6d4423 100%);
+  border-color: rgba(45, 24, 8, 0.55);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 224, 180, 0.28),
+    0 8px 20px rgba(12, 45, 80, 0.24);
+}
+
+/* --- Typographie ---------------------------------------------------------- */
+
+.hb-title {
+  font-family: var(--font-poster), system-ui, sans-serif;
+  font-size: clamp(2.1rem, 9vw, 3rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.4);
+}
+
+.hb-eyebrow {
+  font-family: var(--font-poster), system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-flag);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
+}
+
+/* Intitulé de section, à l'intérieur d'une carte. */
+.hb-legend {
+  font-family: var(--font-poster), system-ui, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7a4d27;
+}
+
+.hb-muted {
+  color: #4a5f80;
+}
+
+.hb-num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #8a5a12;
+  font-weight: 700;
+}
+
+/* --- Boutons -------------------------------------------------------------- */
+
+.hb-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 0.8rem;
+  background: linear-gradient(180deg, #ffd767, var(--color-gold));
+  color: var(--color-ink);
+  font-family: var(--font-poster), system-ui, sans-serif;
+  font-size: 1.02rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow:
+    0 5px 0 #c99a1e,
+    0 10px 18px rgba(12, 45, 80, 0.2);
+  transition:
+    translate 90ms ease,
+    box-shadow 90ms ease;
+}
+
+.hb-btn:hover:not(:disabled) {
+  translate: 0 2px;
+  box-shadow:
+    0 3px 0 #c99a1e,
+    0 7px 14px rgba(12, 45, 80, 0.2);
+}
+
+.hb-btn:active:not(:disabled) {
+  translate: 0 5px;
+  box-shadow:
+    0 0 0 #c99a1e,
+    0 3px 8px rgba(12, 45, 80, 0.2);
+}
+
+.hb-btn:disabled {
+  opacity: 0.55;
+  box-shadow: 0 3px 0 rgba(150, 120, 40, 0.5);
+}
+
+.hb-btn:focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+/* Bouton secondaire : contour, pas de remplissage. Le doré est réservé à
+   l'action principale — l'utiliser partout le viderait de son sens (§52). */
+.hb-btn--ghost {
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--color-ink);
+  border: 2px solid rgba(109, 68, 35, 0.35);
+  box-shadow: 0 3px 0 rgba(109, 68, 35, 0.28);
+  font-size: 0.92rem;
+}
+
+.hb-btn--ghost:hover:not(:disabled) {
+  box-shadow: 0 2px 0 rgba(109, 68, 35, 0.28);
+}
+
+.hb-link {
+  color: #0f4f96;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-btn {
+    transition: none;
+  }
+}
+
+/* --- Navigation principale ------------------------------------------------ */
+
+/* Barre de bois : les cinq destinations sont des planches clouées au pont. */
+.hb-nav {
+  margin-top: 1.5rem;
+}
+
+.hb-nav ul {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.35rem;
+  padding: 0.4rem;
+  border-radius: 1rem;
+  background:
+    repeating-linear-gradient(
+      92deg,
+      rgba(58, 32, 12, 0.16) 0 2px,
+      transparent 2px 17px
+    ),
+    linear-gradient(180deg, #9a6636 0%, #6d4423 100%);
+  border: 2px solid rgba(45, 24, 8, 0.5);
+  box-shadow:
+    inset 0 2px 0 rgba(255, 224, 180, 0.26),
+    0 6px 16px rgba(12, 45, 80, 0.26);
+}
+
+.hb-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  /* 44 px minimum : c'est la cible tactile recommandée, et la page est
+     conçue pour le mobile (§55). */
+  min-height: 52px;
+  padding: 0.35rem 0.15rem;
+  border-radius: 0.7rem;
+  color: #f6e6c8;
+  text-align: center;
+  transition: background 140ms ease;
+}
+
+.hb-nav__item span:first-child {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.hb-nav__item span:last-child {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+.hb-nav__item:hover {
+  background: rgba(255, 232, 190, 0.14);
+}
+
+.hb-nav__item--active {
+  background: linear-gradient(180deg, #ffd767, var(--color-gold));
+  color: var(--color-ink);
+  box-shadow: inset 0 -3px 0 rgba(201, 154, 30, 0.85);
+}
+
+.hb-nav__item:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-nav__item {
+    transition: none;
+  }
+}
+
+/* --- Sélecteur d'équipage -------------------------------------------------- */
+
+/* Emplacement vide : une case clouée au pont, en attente. */
+.hb-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  padding: 0.5rem;
+  text-align: center;
+  border-radius: 0.9rem;
+  color: var(--color-ink);
+  background: linear-gradient(180deg, #fbf1dc 0%, #efdfc0 100%);
+  border: 2px dashed rgba(109, 68, 35, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transition: border-color 140ms ease;
+}
+
+.hb-slot:hover:not(:disabled) {
+  border-color: rgba(109, 68, 35, 0.75);
+}
+
+.hb-slot:disabled {
+  opacity: 0.55;
+}
+
+.hb-slot:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* Carte de personnage dans la liste. */
+.hb-pick {
+  width: 100%;
+  padding: 0.7rem 0.75rem;
+  text-align: left;
+  border-radius: 0.75rem;
+  color: var(--color-ink);
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(109, 68, 35, 0.25);
+  transition:
+    border-color 140ms ease,
+    background 140ms ease;
+}
+
+.hb-pick:hover:not(:disabled) {
+  border-color: rgba(109, 68, 35, 0.6);
+}
+
+.hb-pick--on {
+  background: linear-gradient(180deg, #ffeeb8, #ffe08f);
+  border-color: #c99a1e;
+  box-shadow: inset 0 -3px 0 rgba(201, 154, 30, 0.6);
+}
+
+.hb-pick:disabled {
+  opacity: 0.4;
+}
+
+.hb-pick:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* Jauge de risque. */
+.hb-gauge {
+  height: 0.5rem;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(20, 41, 79, 0.16);
+}
+
+/* Bandes de risque : le doré est réservé au risque moyen, le rouge à
+   l'extrême. Le vert n'existe pas dans cette palette — le turquoise du
+   large joue ce rôle. */
+.hb-risk {
+  font-weight: 700;
+}
+.hb-risk--safe {
+  color: #0f6f6b;
+}
+.hb-risk--mid {
+  color: #9a6a06;
+}
+.hb-risk--high {
+  color: #b8560f;
+}
+.hb-risk--max {
+  color: #b3241d;
+}
+
+.hb-ok {
+  color: #0f6f6b;
+  font-weight: 600;
+}
+.hb-ko {
+  color: #b3241d;
+  font-weight: 600;
+}
+
+/* --- Petits éléments de données ------------------------------------------- */
+
+/* Tuile de statistique, à l'intérieur d'une carte. */
+.hb-tile {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.6rem;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(109, 68, 35, 0.18);
+}
+
+/* Ligne de classement. Le rang du joueur est le seul élément doré : c'est
+   l'information qu'il vient chercher. */
+.hb-row {
+  padding: 0.45rem 0.7rem;
+  border-radius: 0.5rem;
+}
+
+.hb-row:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.hb-row--mine {
+  background: linear-gradient(180deg, #ffeeb8, #ffe08f) !important;
+  box-shadow: inset 0 -2px 0 rgba(201, 154, 30, 0.55);
+  font-weight: 600;
+}
+
+/* Code de série d'une carte. */
+.hb-serial {
+  display: block;
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(109, 68, 35, 0.2);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.62rem;
+  color: #7a6242;
+}
+
+/* Avis de recherche — les personnages manquants (§68). */
+.hb-wanted {
+  padding: 0.65rem 0.5rem;
+  text-align: center;
+  border-radius: 0.6rem;
+  color: #5c4526;
+  background:
+    repeating-linear-gradient(
+      92deg,
+      rgba(155, 118, 66, 0.06) 0 2px,
+      transparent 2px 21px
+    ),
+    linear-gradient(180deg, #f2e4c6 0%, #e6d2ab 100%);
+  border: 2px dashed rgba(109, 68, 35, 0.45);
+}
+
+/* ---------------------------------------------------------------------------
+   Utilitaires « port » utilisés par les composants.
+
+   Ils remplacent, un pour un, les utilitaires sombres de la première version
+   (`text-parchment`, `bg-navy`, `text-turquoise`…). Les garder sous forme de
+   classes nommées — plutôt que d'écrire les couleurs partout — laisse un seul
+   endroit à changer si la direction évolue.
+   --------------------------------------------------------------------------- */
+
+.hb-surface {
+  background:
+    repeating-linear-gradient(
+      92deg,
+      rgba(155, 118, 66, 0.05) 0 2px,
+      transparent 2px 23px
+    ),
+    linear-gradient(180deg, #fbf1dc 0%, #f3e3c6 100%);
+  border-color: rgba(109, 68, 35, 0.28);
+  color: var(--color-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 6px 18px rgba(12, 45, 80, 0.16);
+}
+
+.hb-surface-quiet {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(109, 68, 35, 0.2);
+  color: var(--color-ink);
+}
+
+.hb-input {
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--color-ink);
+}
+
+.hb-border {
+  border-color: rgba(109, 68, 35, 0.3);
+}
+
+.hb-ink {
+  color: var(--color-ink);
+}
+
+.hb-ink-soft {
+  color: #4a5f80;
+}
+
+.hb-accent {
+  color: #0f4f96;
+}
+
+.hb-gold {
+  color: #8a5a12;
+  font-weight: 600;
+}
+
+.hb-goldfill {
+  background: linear-gradient(180deg, #ffd767, var(--color-gold));
+  color: var(--color-ink);
+}
+
+.hb-on-gold {
+  color: var(--color-ink);
+}
+
+.hb-warn {
+  color: #b8560f;
+}
+
+/* Surlignage d'un élément à retenir : notification non lue, ligne du joueur. */
+.hb-hi {
+  background: linear-gradient(180deg, #fff3cd, #ffe8a8);
+  border-color: rgba(201, 154, 30, 0.55);
+  color: var(--color-ink);
+}
+
+.hb-gauge-bg {
+  background: rgba(20, 41, 79, 0.16);
+}
+
+/* Le titre en serif d'origine devient l'affiche du port. */
+.font-display {
+  font-family: var(--font-poster), Georgia, serif;
+  text-transform: uppercase;
+  letter-spacing: 0.005em;
+}
+
+/* --- Corrections de contraste et de superposition -------------------------- */
+
+/* Sur bois, les couleurs d'encre du parchemin deviennent illisibles : brun sur
+   brun. Les intitulés et les chiffres passent en clair. */
+.hb-card--wood .hb-legend,
+.hb-card--wood .hb-ink-soft {
+  color: #e8c58f;
+}
+
+.hb-card--wood .hb-num,
+.hb-card--wood .hb-gold {
+  color: #ffd767;
+}
+
+.hb-card--wood .hb-title,
+.hb-card--wood .hb-ink {
+  color: #fdf3df;
+  text-shadow: 0 2px 0 rgba(40, 20, 6, 0.35);
+}
+
+.hb-card--wood .hb-muted {
+  color: #e0c093;
+}
+
+/* Le décor est en position fixe : sur une page qui défile, le pont masquerait
+   en permanence la bande basse du contenu. Il appartient à l'entrée, où le
+   contenu tient dans une seule carte centrée. */
+.harbor--page .harbor__deck,
+.harbor--page .harbor__mast {
+  display: none;
+}
+
+
+
+.harbor--page .harbor__content {
+  padding-bottom: 4rem;
+}
+
+/* Pages intérieures : **pas de mer**.
+ *
+ * Le décor est en position fixe et le contenu défile par-dessus. Avec une mer
+ * bleu foncé, tout intitulé qui la croisait devenait illisible — et le corriger
+ * au cas par cas aurait demandé de connaître, pour chaque élément, la position
+ * qu'il occupe au défilement. Impossible à tenir.
+ *
+ * Le contenu repose donc toujours sur un ciel clair. L'univers maritime est
+ * porté par le bois, le parchemin, la typographie d'affiche et la barre de
+ * navigation — la scène complète reste l'apanage de l'entrée.
+ */
+.harbor--page .harbor__sea,
+.harbor--page .harbor__waves {
+  display: none;
+}
+
+.harbor--page .harbor__sky {
+  background: linear-gradient(180deg, #6fb6ea 0%, #a8d8f4 55%, #d8ecf9 100%);
+}
+
+.harbor--page .harbor__clouds {
+  inset: 0 0 72% 0;
+  opacity: 0.75;
+}
+
+/* Le soleil descend hors du cadre : il ne reste que la lueur, en bas à
+   droite, qui réchauffe le fond sans rien traverser. */
+.harbor--page {
+  --sun-x: 8%;
+  --sun-y: -14%;
+}
+
+.harbor--page .harbor__sunrays {
+  opacity: 0.2;
+}
+
+/* --- Nuages ---------------------------------------------------------------
+   Silhouettes SVG plutôt que dégradés radiaux : les ellipses diffuses
+   lisaient comme des salissures sur l'écran. Chaque nuage dérive à sa propre
+   vitesse — plus il est petit et haut, plus il va vite, ce qui suggère la
+   distance.
+   ------------------------------------------------------------------------- */
+
+.harbor__clouds {
+  position: absolute;
+  inset: 0 0 52% 0;
+  overflow: hidden;
+}
+
+.harbor__cloud {
+  position: absolute;
+  height: auto;
+  opacity: 0.95;
+  filter: drop-shadow(0 6px 10px rgba(30, 90, 150, 0.14));
+  animation: harbor-drift linear infinite;
+}
+
+/* La dérive traverse tout l'écran puis reprend au bord opposé. La largeur du
+   nuage est incluse dans le déplacement pour qu'il sorte complètement du
+   cadre avant de revenir. */
+@keyframes harbor-drift {
+  from {
+    transform: translateX(-40vw);
+  }
+  to {
+    transform: translateX(140vw);
+  }
+}
+
+.harbor__cloud--1 {
+  width: 30%;
+  top: 12%;
+  animation-duration: 210s;
+  animation-delay: -40s;
+}
+
+.harbor__cloud--2 {
+  width: 20%;
+  top: 5%;
+  opacity: 0.8;
+  animation-duration: 150s;
+  animation-delay: -110s;
+}
+
+.harbor__cloud--3 {
+  width: 38%;
+  top: 22%;
+  opacity: 0.7;
+  animation-duration: 280s;
+  animation-delay: -190s;
+}
+
+.harbor__cloud--4 {
+  width: 16%;
+  top: 30%;
+  opacity: 0.55;
+  animation-duration: 120s;
+  animation-delay: -70s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .harbor__cloud {
+    animation: none;
+  }
+  /* Sans dérive, on les répartit à la main pour éviter qu'ils se superposent
+     tous à gauche. */
+  .harbor__cloud--1 { left: 4%; }
+  .harbor__cloud--2 { left: 62%; }
+  .harbor__cloud--3 { left: 30%; }
+  .harbor__cloud--4 { left: 82%; }
+}

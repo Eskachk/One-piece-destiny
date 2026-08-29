@@ -1,0 +1,26 @@
+# Ce que Vercel ne doit pas recevoir.
+#
+# Le CLI se rabat sur .gitignore quand ce fichier est absent — mais ce repli
+# s'est révélé insuffisant : un premier déploiement a téléversé 254 Mo, soit
+# l'intégralité de node_modules et des dossiers de build. Vercel réinstalle les
+# dépendances et reconstruit de son côté ; les envoyer est inutile et fait
+# échouer le téléversement.
+
+node_modules
+.next
+.next-build
+out
+build
+
+# Secrets — ne doivent jamais quitter la machine (cahier §102).
+.env
+.env.local
+.env*.local
+
+# Outillage local sans intérêt pour le déploiement.
+.claude
+.git
+*.tsbuildinfo
+scripts
+supabase
+docs

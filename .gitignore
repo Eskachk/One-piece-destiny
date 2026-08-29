@@ -1,0 +1,27 @@
+# Dépendances et sorties de build
+node_modules/
+.next/
+out/
+build/
+# Build de production local, isolé du .next du serveur de développement
+# (voir next.config.ts).
+.next-build
+
+# Outillage
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+.vercel
+
+# ---------------------------------------------------------------------------
+# Secrets — jamais dans git (cahier §102).
+#
+# `.env*` exclut TOUTE variante d'environnement : .env, .env.local,
+# .env.production… La négation qui suit doit rester en dernier, sinon elle
+# n'a aucun effet — dans un .gitignore, c'est la dernière règle qui gagne.
+# ---------------------------------------------------------------------------
+.env*
+
+# Seule exception : le gabarit. Il ne contient que des emplacements vides et
+# doit être versionné pour que quiconque clone le dépôt sache quoi renseigner.
+!.env.example
