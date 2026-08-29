@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import QRCode from 'qrcode';
-import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import { MfaEnrollment } from '@/components/MfaEnrollment';
 import { formatSecretForDisplay } from '@/domain/auth/totp';
 import { base32Decode } from '@/domain/auth/totp';
@@ -31,8 +31,37 @@ export const metadata: Metadata = {
 export default async function AdminMfaPage() {
   const session = await requireAdminForEnrollment();
 
-  // Déjà en règle : rien à faire ici.
-  if (session.mfaEnabled) redirect('/admin');
+  // Déjà en règle. **On rend un écran, on ne redirige pas.**
+  //
+  // Un `redirect()` déclenché ici traversait la frontière de Suspense créée
+  // par l'écran d'attente : Next ne peut alors plus émettre de 3xx, il place
+  // l'ordre dans le flux — et le navigateur restait sur le squelette, sans
+  // erreur ni contenu. Le Chapter HQ paraissait cassé alors qu'il ne l'était
+  // pas.
+  //
+  // Un écran explicite vaut mieux de toute façon : l'administrateur sait
+  // pourquoi il n'a rien à faire.
+  if (session.mfaEnabled) {
+    return (
+      <main className="mx-auto w-full max-w-[430px] px-5 py-10">
+        <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
+          Chapter HQ
+        </p>
+        <h1 className="mt-1 font-display text-3xl text-parchment">
+          Double authentification active
+        </h1>
+        <p className="mt-3 text-sm text-parchment/70">
+          Ce compte est déjà protégé par un second facteur. Rien à faire ici.
+        </p>
+        <Link
+          href="/admin"
+          className="mt-6 inline-block text-sm text-turquoise underline"
+        >
+          Retour au Chapter HQ
+        </Link>
+      </main>
+    );
+  }
 
   const enrollment = await beginEnrollment(session.userId, session.email);
 

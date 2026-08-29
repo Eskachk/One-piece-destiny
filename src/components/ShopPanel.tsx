@@ -20,10 +20,39 @@ import { startCheckoutAction } from '@/app/actions/shop';
 
 export interface ShopProduct {
   id: string;
+  category: string;
   label: string;
   price: string;
   description: string;
 }
+
+/**
+ * Rayons, dans leur ordre d'affichage.
+ *
+ * Les coffres d'abord : c'est le produit que le joueur connaît déjà, celui
+ * qu'il ouvre chaque semaine. Les personnages en dernier, parce que c'est le
+ * seul achat qui court-circuite la collection — on ne le met pas en vitrine.
+ */
+const SECTIONS: { key: string; title: string; blurb: string }[] = [
+  {
+    key: 'CHEST',
+    title: 'Coffres',
+    blurb:
+      'Mêmes probabilités que les coffres gagnés en jeu. Le coffre royal ajoute une garantie et sa propre cérémonie.',
+  },
+  {
+    key: 'COINS',
+    title: 'Berries',
+    blurb:
+      'La monnaie du jeu. Elle n’ouvre que de la collection : aucun bonus de score n’est en vente.',
+  },
+  {
+    key: 'CHARACTER',
+    title: 'Personnages',
+    blurb:
+      'Des Légendaires nommés, tous obtenables gratuitement en coffre. L’achat abrège, il n’ouvre rien d’exclusif.',
+  },
+];
 
 export function ShopPanel({
   products,
@@ -67,29 +96,51 @@ export function ShopPanel({
         </p>
       )}
 
-      <ul className="mt-5 space-y-3">
-        {products.map((product) => (
-          <li key={product.id} className="hb-card">
-            <div className="flex items-baseline justify-between gap-3">
-              <span className="font-display text-lg hb-ink">{product.label}</span>
-              <span className="hb-num text-lg whitespace-nowrap">
-                {product.price}
-              </span>
-            </div>
+      {SECTIONS.map((section) => {
+        const items = products.filter((p) => p.category === section.key);
+        if (items.length === 0) return null;
 
-            <p className="hb-muted mt-2 text-sm">{product.description}</p>
+        return (
+          <section key={section.key} className="mt-7">
+            <h2 className="hb-legend">{section.title}</h2>
+            <p className="hb-muted mt-1 text-xs">{section.blurb}</p>
 
-            <button
-              type="button"
-              disabled={pending || !enabled}
-              onClick={() => buy(product.id)}
-              className="hb-btn mt-3 disabled:opacity-40"
-            >
-              {pending ? 'Un instant…' : 'Acheter'}
-            </button>
-          </li>
-        ))}
-      </ul>
+            <ul className="mt-3 space-y-3">
+              {items.map((product) => (
+                <li
+                  key={product.id}
+                  className={
+                    // Le coffre royal porte sa propre bordure : c'est le seul
+                    // produit dont l'apparence en jeu diffère, autant que la
+                    // fiche le montre avant l'achat plutôt qu'après.
+                    product.id === 'royal_chest' ? 'hb-card hb-card--royal' : 'hb-card'
+                  }
+                >
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span className="font-display text-lg hb-ink">
+                      {product.label}
+                    </span>
+                    <span className="hb-num whitespace-nowrap text-lg">
+                      {product.price}
+                    </span>
+                  </div>
+
+                  <p className="hb-muted mt-2 text-sm">{product.description}</p>
+
+                  <button
+                    type="button"
+                    disabled={pending || !enabled}
+                    onClick={() => buy(product.id)}
+                    className="hb-btn mt-3 disabled:opacity-40"
+                  >
+                    {pending ? 'Un instant…' : 'Acheter'}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
 
       <div className="hb-card mt-6">
         <p className="hb-legend">Ce que l’argent n’achète pas</p>

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
-import { MainNav } from '@/components/MainNav';
+import { Nav } from '@/components/Nav';
 import { ShopPanel } from '@/components/ShopPanel';
 import { CATALOG } from '@/domain/payments/catalog';
 import { requireSession } from '@/lib/auth/guards';
@@ -31,6 +31,7 @@ export default async function ShopPage() {
 
   const products = Object.values(CATALOG).map((product) => ({
     id: product.id,
+    category: product.category,
     label: product.label,
     price: euros(product.priceCents),
     description: product.description,
@@ -59,7 +60,7 @@ export default async function ShopPage() {
         }
       />
 
-      <MainNav />
+      <Nav />
     </HarborScene>
   );
 }

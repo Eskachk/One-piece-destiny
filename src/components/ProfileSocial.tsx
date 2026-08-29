@@ -157,7 +157,8 @@ export function ReferralPanel({
       <p className="hb-muted mt-2 text-sm">
         Qui arrive par ton lien démarre avec{' '}
         <span className="hb-num">{referredBerries}</span> Berries au lieu de{' '}
-        <span className="hb-num">{referredBerries / 2}</span>.
+        <span className="hb-num">{referredBerries / 2}</span> — débloquées à son
+        premier équipage verrouillé.
       </p>
 
       {link ? (

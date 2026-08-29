@@ -112,6 +112,8 @@ export interface Repository {
   // --- Économie (cahier §29, §36, §72, §93) -------------------------------
 
   getWallet(playerId: string): Promise<Wallet>;
+  /** Consomme un coffre royal. `false` si la réserve est vide. */
+  consumeRoyalChest(playerId: string): Promise<boolean>;
 
   /**
    * Dépense atomique avec verrou optimiste (§93).
@@ -210,6 +212,16 @@ export interface PlayerProgress {
 
 export interface Wallet {
   berries: number;
+  /**
+   * Dotation d'arrivée **pas encore dépensable** (anti-abus).
+   *
+   * Elle est libérée au premier équipage verrouillé. La distinguer du solde
+   * plutôt que de l'y ajouter est ce qui permet de l'annoncer au joueur sans
+   * lui laisser croire qu'il peut la dépenser.
+   */
+  pendingBerries: number;
+  /** Coffres royaux achetés en boutique, en attente d'ouverture. */
+  royalChests: number;
   /** Verrou optimiste (§93) : à repasser tel quel lors d'une dépense. */
   version: number;
 }
@@ -223,7 +235,7 @@ export interface WeeklyGrant {
 
 export interface ApplyChestInput {
   playerId: string;
-  kind: 'STARTER' | 'WEEKLY';
+  kind: 'STARTER' | 'WEEKLY' | 'ROYAL';
   cards: ChestCard[];
   pityCounter: number;
   pityTriggered: boolean;

@@ -12,6 +12,8 @@
  * ensuite dans la Grand Line. Le contraste raconte le passage.
  */
 
+import { StrawHat } from './StrawHat';
+
 /**
  * Tracés des vagues, définis une fois puis répétés à 1200 px pour que le
  * défilement boucle sans couture visible.
@@ -171,6 +173,11 @@ export function HarborScene({
         {/* Pont : planches en dégradés répétés plutôt qu'une image. */}
         <div className="harbor__deck">
           <div className="harbor__deckEdge" />
+
+          {/* Chapeau de paille posé sur le pont. Il est dans le décor, pas
+              dans le contenu : purement ornemental, il ne doit ni être lu par
+              un lecteur d'écran ni capter le moindre clic. */}
+          <StrawHat className="harbor__hat" />
         </div>
 
         {/* Mât et cordage, sur le bord gauche. Masqué sur petit écran :

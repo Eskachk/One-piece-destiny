@@ -54,9 +54,12 @@ function supportsWebGL(): boolean {
 
 export function ChestOpening({
   cards,
+  royal = false,
   onDone,
 }: {
   cards: RevealedCard[];
+  /** Coffre royal : apparence et cérémonie dédiées, quel que soit le tirage. */
+  royal?: boolean;
   onDone?: () => void;
 }) {
   // Décidé après montage : `matchMedia` et WebGL n'existent pas côté serveur,
@@ -86,8 +89,11 @@ export function ChestOpening({
   }, []);
 
   const plan = useMemo(
-    () => (mode === 'plain' ? reducedMotionPlan(cards) : ceremonyPlan(cards)),
-    [cards, mode],
+    () =>
+      mode === 'plain'
+        ? reducedMotionPlan(cards, { royal })
+        : ceremonyPlan(cards, { royal }),
+    [cards, mode, royal],
   );
 
   // Ordre de révélation : du moins bon au meilleur. La dernière carte
@@ -168,7 +174,7 @@ export function ChestOpening({
 
       {revealed && (
         <>
-          {plan.tier === 'PREMIUM' && shown >= ordered.length && (
+          {plan.tier !== 'STANDARD' && shown >= ordered.length && (
             <p className="hb-legend mb-3 text-center">
               {RARITY_LABEL[plan.highlight]} — la prise de la semaine
             </p>

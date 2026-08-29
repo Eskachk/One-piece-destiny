@@ -43,6 +43,8 @@ export function ChestPanel({
   unopenedChests,
   pityCounter,
   berries,
+  pendingBerries,
+  royalChests,
   odds,
 }: {
   /** Le coffre d'inscription n'a pas encore été ouvert (§27). */
@@ -58,6 +60,10 @@ export function ChestPanel({
   unopenedChests: number;
   pityCounter: number;
   berries: number;
+  /** Dotation d'arrivée pas encore libérée (§43). */
+  pendingBerries: number;
+  /** Coffres royaux achetés en boutique, en attente d'ouverture. */
+  royalChests: number;
   /** Calculées côté serveur depuis les constantes du tirage (§113). */
   odds: RarityOdds[];
 }) {
@@ -95,6 +101,18 @@ export function ChestPanel({
         </h2>
         <span className="font-mono text-sm hb-gold">🪙 {berries}</span>
       </div>
+
+      {/* Dotation d'arrivée en attente.
+          Elle est annoncée, jamais dissimulée : le joueur voit ce qu'il a, ce
+          qu'il aura, et à quelle condition. La taire ferait passer un compte
+          neuf pour un compte vide — et laisserait croire à une promesse non
+          tenue au moment où l'on cherche justement à donner confiance. */}
+      {pendingBerries > 0 && (
+        <p className="mt-2 rounded-lg border hb-border hb-hi px-3 py-2 text-xs hb-ink">
+          <strong className="hb-num">{pendingBerries} Berries</strong> t’attendent.
+          Elles se débloquent dès que tu verrouilles ton premier équipage.
+        </p>
+      )}
 
       {showStarter ? (
         <>
@@ -134,7 +152,7 @@ export function ChestPanel({
 
       {result?.ok && (
         <div className="mt-4">
-          <ChestOpening cards={result.cards} />
+          <ChestOpening cards={result.cards} royal={Boolean(result.royal)} />
         </div>
       )}
 
@@ -163,12 +181,26 @@ export function ChestPanel({
           <>
             <button
               type="button"
-              onClick={() => run(openOwnedChestAction)}
+              onClick={() => run(() => openOwnedChestAction('WEEKLY'))}
               disabled={pending || (!unlimited && unopenedChests === 0)}
               className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
             >
               {pending ? 'Un instant…' : 'Ouvrir un coffre'}
             </button>
+
+            {/* Coffre royal : bouton distinct, et seulement s'il y en a un.
+                Le fondre dans « Ouvrir un coffre » aurait fait consommer un
+                coffre payé à la place d'un coffre hebdomadaire. */}
+            {royalChests > 0 && (
+              <button
+                type="button"
+                onClick={() => run(() => openOwnedChestAction('ROYAL'))}
+                disabled={pending}
+                className="hb-royal-btn transition-quick w-full rounded-xl px-4 py-3 font-semibold disabled:opacity-50"
+              >
+                Ouvrir un coffre royal ({royalChests})
+              </button>
+            )}
 
             <button
               type="button"

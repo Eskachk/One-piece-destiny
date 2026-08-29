@@ -24,10 +24,21 @@ import type { ChestCard } from './chest';
  * Partout ailleurs, 150–250 ms.
  */
 
-export type CeremonyTier = 'STANDARD' | 'PREMIUM';
+export type CeremonyTier = 'STANDARD' | 'PREMIUM' | 'ROYAL';
+
+/**
+ * Apparence du coffre.
+ *
+ * Séparée du palier de cérémonie : un coffre royal garde son bois noir et or
+ * même si le tirage retombe sur un Épique, sinon le joueur croirait avoir
+ * ouvert autre chose que ce qu'il a payé.
+ */
+export type ChestSkin = 'HARBOR' | 'ROYAL';
 
 export interface CeremonyPlan {
   tier: CeremonyTier;
+  /** Apparence du coffre à afficher. */
+  skin: ChestSkin;
   /** Rareté la plus élevée du coffre, celle qui dicte la mise en scène. */
   highlight: Rarity;
   /** Secondes de tremblement et de montée en charge. */
@@ -108,6 +119,29 @@ const PREMIUM = {
   ramp: HAKI_RAMP_PREMIUM,
 };
 
+/**
+ * Coffre royal (boutique).
+ *
+ * Plus long, plus dense, et **la rampe ne redescend jamais sous le
+ * Légendaire** : elle boucle entre les deux teintes hautes. Le joueur a payé
+ * pour une garantie, il serait absurde de lui faire craindre un commun.
+ */
+const ROYAL = {
+  shakeSeconds: 4,
+  suspenseSeconds: 2,
+  burstSeconds: 1.1,
+  particles: 320,
+  bolts: 18,
+  cardIntervalSeconds: 0.55,
+  ramp: [
+    RARITY_COLOR.EPIC,
+    RARITY_COLOR.LEGENDARY,
+    RARITY_COLOR.MYTHIC,
+    RARITY_COLOR.LEGENDARY,
+    RARITY_COLOR.MYTHIC,
+  ],
+};
+
 export function bestRarity(cards: ChestCard[]): Rarity {
   return cards.reduce<Rarity>(
     (best, card) => (rarityRank(card.rarity) > rarityRank(best) ? card.rarity : best),
@@ -115,13 +149,25 @@ export function bestRarity(cards: ChestCard[]): Rarity {
   );
 }
 
-export function ceremonyPlan(cards: ChestCard[]): CeremonyPlan {
+/**
+ * Plan de cérémonie.
+ *
+ * `royal` est décidé par **l'origine du coffre**, pas par son contenu : un
+ * coffre acheté garde sa mise en scène quel que soit le tirage. Lier
+ * l'apparence au résultat reviendrait à annoncer la déception avant de
+ * l'infliger.
+ */
+export function ceremonyPlan(
+  cards: ChestCard[],
+  { royal = false }: { royal?: boolean } = {},
+): CeremonyPlan {
   const highlight = bestRarity(cards);
   const premium = rarityRank(highlight) >= rarityRank(PREMIUM_FROM);
-  const base = premium ? PREMIUM : STANDARD;
+  const base = royal ? ROYAL : premium ? PREMIUM : STANDARD;
 
   return {
-    tier: premium ? 'PREMIUM' : 'STANDARD',
+    tier: royal ? 'ROYAL' : premium ? 'PREMIUM' : 'STANDARD',
+    skin: royal ? 'ROYAL' : 'HARBOR',
     highlight,
     shakeSeconds: base.shakeSeconds,
     suspenseSeconds: base.suspenseSeconds,
@@ -162,9 +208,12 @@ export function hakiColorAt(plan: CeremonyPlan, progress: number): string {
  * mais tremblement, éclairs, particules et attente disparaissent. Les
  * couleurs restent : ce sont des repères de lecture, pas du mouvement.
  */
-export function reducedMotionPlan(cards: ChestCard[]): CeremonyPlan {
+export function reducedMotionPlan(
+  cards: ChestCard[],
+  options?: { royal?: boolean },
+): CeremonyPlan {
   return {
-    ...ceremonyPlan(cards),
+    ...ceremonyPlan(cards, options),
     shakeSeconds: 0,
     suspenseSeconds: 0,
     burstSeconds: 0,

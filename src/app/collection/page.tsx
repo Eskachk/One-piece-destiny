@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
-import { MainNav } from '@/components/MainNav';
+import { Nav } from '@/components/Nav';
 import { ChestPanel } from '@/components/ChestPanel';
 import { chestOdds } from '@/domain/collection/odds';
 import { CraftButton } from '@/components/CraftButton';
@@ -82,6 +82,8 @@ export default async function CollectionPage() {
           unopenedChests={progress.unopenedChests}
           pityCounter={progress.pityCounter}
           berries={wallet.berries}
+          pendingBerries={wallet.pendingBerries}
+          royalChests={wallet.royalChests}
           odds={chestOdds(CHARACTERS)}
         />
       </div>
@@ -213,7 +215,7 @@ export default async function CollectionPage() {
           </ul>
         </section>
       )}
-      <MainNav />
+      <Nav />
     </HarborScene>
   );
 }

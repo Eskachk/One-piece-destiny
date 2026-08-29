@@ -1566,8 +1566,7 @@ body {
     rgba(7, 28, 44, 0) 0%,
     rgba(7, 28, 44, 0.32) 100%
   );
-  /* Le chapeau déborde vers le haut : sans cette marge, il serait rogné. */
-  padding-top: 1.9rem;
+  padding-top: 0.35rem;
 }
 
 .hb-nav ul {
@@ -1579,38 +1578,6 @@ body {
    paragraphe de chaque page passerait sous la barre. */
 .harbor--page .harbor__content {
   padding-bottom: calc(7.5rem + env(safe-area-inset-bottom, 0px));
-}
-
-/* --- Chapeau de paille ---------------------------------------------------- */
-
-.hb-nav__hat {
-  position: absolute;
-  /* Aligné sur le bord gauche de la barre de boutons, pas sur celui de
-     l'écran : il doit poser sur le bois, pas flotter à côté. */
-  left: 50%;
-  translate: -16.4rem 0;
-  /* Le chapeau repose **au-dessus** de la rangée de boutons, dans la marge
-     haute de la barre. Posé plus bas, il masquait l'icône du premier onglet :
-     décoratif ou non, un élément qui recouvre un bouton est un défaut. */
-  bottom: calc(100% - 2.05rem);
-  width: 4.4rem;
-  height: auto;
-  pointer-events: none;
-  filter: drop-shadow(0 3px 5px rgba(12, 45, 80, 0.35));
-  /* Légèrement incliné : posé à plat, il ressemblait à un logo centré. */
-  rotate: -13deg;
-}
-
-/* Sur un écran étroit, la barre occupe toute la largeur : le chapeau se cale
-   à gauche plutôt qu'à une distance calculée du centre, qui le sortirait du
-   cadre. */
-@media (max-width: 36rem) {
-  .hb-nav__hat {
-    left: 0.4rem;
-    translate: 0 0;
-    width: 3.4rem;
-    bottom: calc(100% - 1.9rem);
-  }
 }
 
 /* Six onglets tiennent, mais les libellés doivent rétrécir sous 380 px. */
@@ -1699,4 +1666,118 @@ body {
   width: auto;
   padding: 0.8rem 1rem;
   white-space: nowrap;
+}
+
+/* ===========================================================================
+   Chapeau de paille sur le pont de la page de connexion.
+   =========================================================================== */
+
+/* Il repose sur les planches, à droite du formulaire, légèrement de biais —
+   comme posé là par quelqu'un qui vient d'embarquer. Il fait partie du décor
+   (`harbor__backdrop`), donc il est déjà `aria-hidden` et ne capte aucun clic.
+
+   Sous 700 px il disparaît : le pont n'y fait plus que quelques dizaines de
+   pixels, et le chapeau chevaucherait le bouton de connexion. */
+.harbor__hat {
+  position: absolute;
+  right: 7%;
+  bottom: 38%;
+  width: clamp(5rem, 11vw, 8.5rem);
+  height: auto;
+  rotate: -9deg;
+  filter: drop-shadow(0 6px 10px rgba(60, 32, 8, 0.45));
+}
+
+@media (max-width: 700px) {
+  .harbor__hat {
+    display: none;
+  }
+}
+
+/* ===========================================================================
+   Icônes dessinées de la navigation.
+   =========================================================================== */
+
+.hb-nav__icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  /* `currentColor` dans le SVG : l'icône suit la couleur de l'onglet, y
+     compris quand celui-ci devient actif sur fond doré. */
+  color: inherit;
+}
+
+/* Sept onglets quand l'administration est visible. Une colonne de plus, donc
+   des libellés plus courts — mieux vaut réduire le texte que rogner la cible
+   tactile, qui est déjà au minimum recommandé. */
+.hb-nav--admin ul {
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.hb-nav--admin .hb-nav__item span:last-child {
+  font-size: 0.55rem;
+}
+
+.hb-nav--admin .hb-nav__icon {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+@media (max-width: 420px) {
+  .hb-nav__icon {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .hb-nav--admin .hb-nav__icon {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+}
+
+/* --- Coffre royal ---------------------------------------------------------
+   Noir et or, comme le coffre lui-même. Deux endroits l'emploient : la fiche
+   en boutique et le bouton d'ouverture. La cohérence entre les deux est ce qui
+   fait comprendre, sans phrase, qu'il s'agit du même objet. */
+.hb-card--royal {
+  color: #f3e4b8;
+  background:
+    repeating-linear-gradient(
+      92deg,
+      rgba(255, 214, 120, 0.05) 0 2px,
+      transparent 2px 21px
+    ),
+    linear-gradient(180deg, #33224a 0%, #1d1230 100%);
+  border-color: rgba(232, 201, 100, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 226, 150, 0.25),
+    0 6px 18px rgba(12, 45, 80, 0.3);
+}
+
+.hb-card--royal .hb-ink,
+.hb-card--royal .font-display {
+  color: #f6e8c0;
+}
+
+.hb-card--royal .hb-muted {
+  color: #b9a6d8;
+}
+
+.hb-card--royal .hb-num {
+  color: #e8c964;
+}
+
+.hb-royal-btn {
+  color: #1d1230;
+  background: linear-gradient(180deg, #f4dc8a, #d9ae3b);
+  box-shadow:
+    0 5px 0 #9c7a1f,
+    0 10px 18px rgba(12, 45, 80, 0.24);
+  font-family: var(--font-poster), system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.hb-royal-btn:active:not(:disabled) {
+  translate: 0 3px;
+  box-shadow: 0 2px 0 #9c7a1f;
 }

@@ -508,18 +508,35 @@ export const postgresRepository: Repository = {
   async getWallet(playerId) {
     const { data, error } = await db()
       .from('wallets')
-      .select('berries, version')
+      .select('berries, pending_berries, royal_chests, version')
       .eq('player_id', playerId)
       .maybeSingle();
 
     if (error) throw new Error(`wallets.select : ${error.message}`);
-    if (data) return { berries: data.berries, version: data.version };
+    if (data) {
+      return {
+        berries: data.berries,
+        pendingBerries: data.pending_berries ?? 0,
+        royalChests: data.royal_chests ?? 0,
+        version: data.version,
+      };
+    }
 
     // Portefeuille créé à la volée, à zéro.
     await db()
       .from('wallets')
       .upsert({ player_id: playerId }, { onConflict: 'player_id', ignoreDuplicates: true });
-    return { berries: 0, version: 0 };
+    return { berries: 0, pendingBerries: 0, royalChests: 0, version: 0 };
+  },
+
+  async consumeRoyalChest(playerId) {
+    // Décision en base : deux ouvertures simultanées ne peuvent pas consommer
+    // le même coffre, la seconde ne trouvant plus `royal_chests > 0`.
+    const { data, error } = await db().rpc('consume_royal_chest', {
+      p_player_id: playerId,
+    });
+    if (error) throw new Error(`consume_royal_chest : ${error.message}`);
+    return data === true;
   },
 
   async spendBerries(playerId, amount, expectedVersion) {

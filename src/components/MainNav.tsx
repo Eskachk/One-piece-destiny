@@ -3,7 +3,15 @@
 import Link from 'next/link';
 import { useLinkStatus } from 'next/link';
 import { usePathname } from 'next/navigation';
-import { StrawHat } from './StrawHat';
+import {
+  IconAdmin,
+  IconCollection,
+  IconCrew,
+  IconMarket,
+  IconProfile,
+  IconRanking,
+  IconShop,
+} from './NavIcons';
 
 /**
  * Navigation principale (cahier §55, §109).
@@ -18,52 +26,63 @@ import { StrawHat } from './StrawHat';
  *     se trouvait ;
  *   — **une navigation différente par page**, donc une position qui bouge.
  *
- * Sur mobile, la barre est ancrée en bas de l'écran (voir `.hb-nav` dans
- * globals.css) : le pouce l'atteint sans faire défiler.
+ * La barre est ancrée en bas de l'écran sur **tous** les formats. Sur un
+ * ordinateur, il fallait auparavant faire défiler jusqu'en bas pour changer
+ * d'onglet : la navigation d'un jeu se cherchait.
+ *
+ * Les symboles sont **dessinés** (`NavIcons.tsx`), pas des emoji. Un emoji est
+ * rendu par le système : le drapeau noir était un rectangle sur Windows et
+ * l'ancre changeait de forme d'un téléphone à l'autre.
  *
  * **`prefetch` est laissé au réglage par défaut, délibérément.** Toutes ces
  * pages sont en `force-dynamic` ; forcer `prefetch` les ferait toutes rendre
- * côté serveur dès qu'un joueur voit la barre, soit cinq rendus complets pour
- * un clic. Avec quelques milliers de joueurs simultanés, on paierait cinq fois
- * la charge pour gagner quelques dizaines de millisecondes. Le comportement
- * par défaut précharge l'écran d'attente (`app/loading.tsx`), ce qui suffit à
- * rendre la transition immédiate à l'œil — la page réelle se substitue au
- * squelette dès son arrivée.
+ * côté serveur dès qu'un joueur voit la barre, soit six rendus complets pour
+ * un clic. Le défaut précharge l'écran d'attente (`app/loading.tsx`), ce qui
+ * suffit à rendre la transition immédiate à l'œil.
  */
 
 const LINKS = [
-  { href: '/', label: 'Équipage', icon: '🏴' },
-  { href: '/classement', label: 'Classement', icon: '🏆' },
-  { href: '/collection', label: 'Collection', icon: '🗺️' },
-  { href: '/market', label: 'Market', icon: '⚓' },
-  { href: '/boutique', label: 'Boutique', icon: '💎' },
-  { href: '/profil', label: 'Profil', icon: '📜' },
+  { href: '/', label: 'Équipage', Icon: IconCrew },
+  { href: '/classement', label: 'Classement', Icon: IconRanking },
+  { href: '/collection', label: 'Collection', Icon: IconCollection },
+  { href: '/market', label: 'Market', Icon: IconMarket },
+  { href: '/boutique', label: 'Boutique', Icon: IconShop },
+  { href: '/profil', label: 'Profil', Icon: IconProfile },
 ] as const;
+
+const ADMIN_LINK = {
+  href: '/admin',
+  label: 'Admin',
+  Icon: IconAdmin,
+} as const;
 
 /**
  * Voyant d'attente propre au lien cliqué.
  *
  * `useLinkStatus` ne fonctionne qu'à l'intérieur d'un `<Link>` : ce composant
  * doit donc rester enfant du lien, il ne peut pas remonter dans la boucle.
- * Il ne s'affiche qu'au-delà d'un délai — sur une navigation instantanée,
- * un voyant qui apparaît et disparaît en 50 ms ne se lit pas comme du
- * mouvement, mais comme un défaut d'affichage.
  */
 function PendingDot() {
   const { pending } = useLinkStatus();
   return pending ? <span className="hb-nav__pending" aria-hidden="true" /> : null;
 }
 
-export function MainNav() {
+export function MainNav({ admin = false }: { admin?: boolean }) {
   const pathname = usePathname();
 
+  // L'onglet d'administration n'est **qu'un raccourci d'affichage**. Le
+  // contrôle réel est sur la route : `requireAdmin` exige le rôle en base et
+  // l'adresse de la liste d'autorisation, et répond 404 sinon. Un joueur qui
+  // forcerait ce booléen dans son navigateur gagnerait un bouton, pas un accès.
+  const links = admin ? [...LINKS, ADMIN_LINK] : LINKS;
+
   return (
-    <nav aria-label="Navigation principale" className="hb-nav">
-      {/* Le chapeau est posé sur le bois, débordant vers le haut. Purement
-          décoratif : il ne recouvre aucun bouton et ne capte aucun clic. */}
-      <StrawHat className="hb-nav__hat" />
+    <nav
+      aria-label="Navigation principale"
+      className={`hb-nav${admin ? ' hb-nav--admin' : ''}`}
+    >
       <ul>
-        {LINKS.map((link) => {
+        {links.map((link) => {
           const active =
             link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
 
@@ -74,7 +93,7 @@ export function MainNav() {
                 aria-current={active ? 'page' : undefined}
                 className={`hb-nav__item${active ? ' hb-nav__item--active' : ''}`}
               >
-                <span aria-hidden="true">{link.icon}</span>
+                <link.Icon className="hb-nav__icon" />
                 <span>{link.label}</span>
                 <PendingDot />
               </Link>

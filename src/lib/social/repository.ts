@@ -251,3 +251,25 @@ export async function rewardedReferralCount(
 
   return count ?? 0;
 }
+
+/**
+ * Libère la dotation d'arrivée en attente et rend le montant crédité.
+ *
+ * Toute la logique est en base (`release_pending_berries`) : verrou de ligne,
+ * remise à zéro, incrément de version. Deux appels concurrents ne peuvent pas
+ * créditer deux fois, et ce n'est pas une convention côté application — c'est
+ * le moteur qui le garantit.
+ */
+export async function releasePendingBerries(playerId: string): Promise<number> {
+  if (!isDatabaseConfigured()) return 0;
+
+  const { data, error } = await db().rpc('release_pending_berries', {
+    p_player_id: playerId,
+  });
+
+  if (error) {
+    console.warn('[signup] dotation non libérée', error.message);
+    return 0;
+  }
+  return typeof data === 'number' ? data : 0;
+}

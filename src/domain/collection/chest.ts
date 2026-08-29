@@ -227,6 +227,22 @@ export const STARTER_CHEST_SLOTS: readonly Rarity[] = [
 ] as const;
 
 /**
+ * Emplacements du coffre royal (boutique).
+ *
+ * Un Légendaire garanti, et le reste au-dessus du commun. C'est ce qui
+ * justifie son prix : la garantie, pas un tirage secret. Les probabilités des
+ * autres emplacements sont celles de tous les coffres du jeu (§113).
+ */
+export const ROYAL_CHEST_SLOTS: readonly Rarity[] = [
+  'RARE',
+  'RARE',
+  'EPIC',
+  'LEGENDARY',
+  'RARE',
+] as const;
+
+
+/**
  * Coffre d'inscription : personnages **distincts**, pour ne pas offrir un
  * démarrage frustrant fait de doublons.
  */

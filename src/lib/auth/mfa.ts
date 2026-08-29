@@ -73,6 +73,25 @@ export async function beginEnrollment(
     };
   }
 
+  // **Refus si le second facteur est déjà actif.**
+  //
+  // Sans ce garde-fou, la suite de la fonction écrasait le secret en place et
+  // repassait `mfa_enabled` à `false` : il suffisait d'ouvrir la page
+  // d'inscription pour **désactiver silencieusement** la double
+  // authentification d'un administrateur, et rendre inutilisable son
+  // application d'authentification. La page appelante teste déjà le cas, mais
+  // une garde qui ne tient que dans l'appelant finit par sauter — celle-ci est
+  // au bon endroit.
+  //
+  // Régénérer un second facteur actif est une opération de récupération, pas
+  // une consultation de page : elle passe par `scripts/reset-mfa.mjs`, avec un
+  // accès à la base.
+  if (account?.mfa_enabled) {
+    throw new Error(
+      'Le second facteur est déjà actif : la réinscription passe par une réinitialisation explicite.',
+    );
+  }
+
   const secret = new Uint8Array(randomBytes(SECRET_BYTES));
   const encoded = base32Encode(secret);
 

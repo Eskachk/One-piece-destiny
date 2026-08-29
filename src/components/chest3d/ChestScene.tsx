@@ -7,7 +7,7 @@ import {
   hakiColorAt,
   type CeremonyPlan,
 } from '@/domain/collection/chest-ceremony';
-import { ChestModel } from './ChestModel';
+import { ChestModel, HARBOR_PALETTE, ROYAL_PALETTE } from './ChestModel';
 
 /**
  * Ouverture de coffre en 3D (cahier §56, §57, §61).
@@ -265,7 +265,12 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
 
   return (
     <>
-      <ChestModel ref={group} lidRef={lid} seamRef={seam} />
+      <ChestModel
+        ref={group}
+        lidRef={lid}
+        seamRef={seam}
+        palette={plan.skin === 'ROYAL' ? ROYAL_PALETTE : HARBOR_PALETTE}
+      />
 
       {/* Lumière intérieure. Sa couleur est celle de la rareté obtenue : le
           coffre s'éclaire de ce qu'il contient. */}

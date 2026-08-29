@@ -235,12 +235,18 @@ export const memoryRepository: Repository = {
   },
 
   async getWallet(playerId) {
-    return store().wallets.get(playerId) ?? { berries: 0, version: 0 };
+    return store().wallets.get(playerId) ?? { berries: 0, pendingBerries: 0, royalChests: 0, version: 0 };
+  },
+
+  async consumeRoyalChest() {
+    // Le dépôt en mémoire ne vend rien : sans paiement, il n'y a pas de
+    // coffre royal à consommer.
+    return false;
   },
 
   async spendBerries(playerId, amount, expectedVersion) {
     const state = store();
-    const wallet = state.wallets.get(playerId) ?? { berries: 0, version: 0 };
+    const wallet = state.wallets.get(playerId) ?? { berries: 0, pendingBerries: 0, royalChests: 0, version: 0 };
 
     // Même sémantique que la fonction SQL : version périmée ou solde
     // insuffisant, rien n'est débité.
@@ -249,6 +255,7 @@ export const memoryRepository: Repository = {
     }
 
     state.wallets.set(playerId, {
+      ...wallet,
       berries: wallet.berries - amount,
       version: wallet.version + 1,
     });
@@ -257,8 +264,9 @@ export const memoryRepository: Repository = {
 
   async grantBerriesAndChests(playerId, berries, chests) {
     const state = store();
-    const wallet = state.wallets.get(playerId) ?? { berries: 0, version: 0 };
+    const wallet = state.wallets.get(playerId) ?? { berries: 0, pendingBerries: 0, royalChests: 0, version: 0 };
     state.wallets.set(playerId, {
+      ...wallet,
       berries: wallet.berries + berries,
       version: wallet.version + 1,
     });

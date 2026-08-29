@@ -8,6 +8,7 @@ import { attributesOf, type Attribute } from '@/domain/collection/attributes';
 import {
   openChest,
   openStarterChest,
+  ROYAL_CHEST_SLOTS,
   type ChestCard,
 } from '@/domain/collection/chest';
 import {
@@ -49,7 +50,7 @@ export interface RevealedCard extends ChestCard {
 }
 
 export type OpenStarterResult =
-  | { ok: true; cards: RevealedCard[] }
+  | { ok: true; cards: RevealedCard[]; royal?: boolean }
   | { ok: false; error: string };
 
 /** Joint le nom de chaque carte, côté serveur. */
@@ -133,9 +134,23 @@ export async function openStarterChestAction(): Promise<OpenStarterResult> {
  * aucun tirage n'a lieu. L'inverse laisserait la porte ouverte à l'obtention
  * de cartes sans coffre.
  */
-export async function openOwnedChestAction(): Promise<OpenStarterResult> {
+/**
+ * Ouvre un coffre possédé — ordinaire ou royal.
+ *
+ * Le type est un **paramètre validé**, pas une confiance : le client demande,
+ * le serveur vérifie que la réserve correspondante existe. Sans cela,
+ * réclamer `ROYAL` suffirait à obtenir un Légendaire garanti sans l'avoir
+ * acheté.
+ */
+export async function openOwnedChestAction(
+  kind: unknown = 'WEEKLY',
+): Promise<OpenStarterResult> {
   await assertSameOrigin();
   const session = await requireSession();
+
+  const parsedKind = z.enum(['WEEKLY', 'ROYAL']).safeParse(kind);
+  if (!parsedKind.success) return { ok: false, error: 'Coffre inconnu.' };
+  const royal = parsedKind.data === 'ROYAL';
 
   const repository = getRepository();
 
@@ -146,10 +161,22 @@ export async function openOwnedChestAction(): Promise<OpenStarterResult> {
   // joueur pourrait se déclarer administrateur et ouvrir des coffres à
   // volonté. C'est aussi pour cela qu'on ne se contente pas du rôle en base :
   // `isAllowedAdmin` exige en plus l'adresse déclarée dans l'environnement.
-  const unlimited = await isAllowedAdmin();
+  //
+  // Le privilège ne s'étend **pas** aux coffres royaux : ils sont payés, et
+  // les distribuer gratuitement fausserait le rapprochement comptable.
+  const unlimited = (await isAllowedAdmin()) && !royal;
 
-  if (!unlimited && !(await repository.consumeChest(session.playerId))) {
-    return { ok: false, error: 'Tu n\'as aucun coffre à ouvrir.' };
+  const consumed = royal
+    ? await repository.consumeRoyalChest(session.playerId)
+    : unlimited || (await repository.consumeChest(session.playerId));
+
+  if (!consumed) {
+    return {
+      ok: false,
+      error: royal
+        ? 'Tu n\'as aucun coffre royal à ouvrir.'
+        : 'Tu n\'as aucun coffre à ouvrir.',
+    };
   }
 
   const owned = new Set(await repository.getOwnedCharacterIds(session.playerId));
@@ -160,11 +187,12 @@ export async function openOwnedChestAction(): Promise<OpenStarterResult> {
     owned,
     pityCounter: progress.pityCounter,
     random: secureRandom,
+    ...(royal ? { slots: ROYAL_CHEST_SLOTS } : {}),
   });
 
   await repository.applyChestOpening({
     playerId: session.playerId,
-    kind: 'WEEKLY',
+    kind: royal ? 'ROYAL' : 'WEEKLY',
     cards: result.cards,
     pityCounter: result.pityCounter,
     pityTriggered: result.pityTriggered,
@@ -183,9 +211,10 @@ export async function openOwnedChestAction(): Promise<OpenStarterResult> {
   // Le rafraîchissement est demandé par le client, à la fin de la révélation.
   await recordEvent(session.playerId, 'CHEST_OPENED', {
     cards: result.cards.length,
+    royal,
   });
 
-  return { ok: true, cards: reveal(result.cards) };
+  return { ok: true, cards: reveal(result.cards), royal };
 }
 
 export type ShopResult = { ok: true } | { ok: false; error: string };

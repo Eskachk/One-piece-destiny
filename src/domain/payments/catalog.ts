@@ -13,18 +13,42 @@
 export type ProductId =
   | 'chest_pack_small'
   | 'chest_pack_large'
-  | 'legendary_chest'
+  | 'royal_chest'
   | 'berries_pouch'
-  | 'berries_hold';
+  | 'berries_hold'
+  | 'character_shanks'
+  | 'character_mihawk'
+  | 'character_crocodile';
+
+/**
+ * Rayons de la boutique.
+ *
+ * Trois intentions d'achat distinctes, et les mélanger rendait la page
+ * illisible : on ne compare pas un coffre à une pièce de monnaie.
+ */
+export type ProductCategory = 'CHEST' | 'COINS' | 'CHARACTER';
 
 export interface Product {
   id: ProductId;
+  category: ProductCategory;
   label: string;
   /** En centimes, pour éviter toute arithmétique en virgule flottante. */
   priceCents: number;
   currency: 'EUR';
-  /** Ce que le compte reçoit une fois le paiement vérifié. */
-  grants: { berries: number; chests: number };
+  /**
+   * Ce que le compte reçoit une fois le paiement vérifié.
+   *
+   * `royalChests` sont des coffres à mise en scène particulière, réservés aux
+   * raretés hautes. `characterId` accorde un personnage nommé — c'est le seul
+   * produit qui touche directement la collection, et c'est pour cela qu'il est
+   * lu ici, dans le catalogue serveur, jamais transmis par le client.
+   */
+  grants: {
+    berries: number;
+    chests: number;
+    royalChests?: number;
+    characterId?: string;
+  };
   /** Description affichée avant l'achat (§113). */
   description: string;
 }
@@ -32,6 +56,7 @@ export interface Product {
 export const CATALOG: Record<ProductId, Product> = {
   chest_pack_small: {
     id: 'chest_pack_small',
+    category: 'CHEST',
     label: 'Petite cale',
     priceCents: 299,
     currency: 'EUR',
@@ -40,6 +65,7 @@ export const CATALOG: Record<ProductId, Product> = {
   },
   chest_pack_large: {
     id: 'chest_pack_large',
+    category: 'CHEST',
     label: 'Grande cale',
     priceCents: 999,
     currency: 'EUR',
@@ -47,28 +73,28 @@ export const CATALOG: Record<ProductId, Product> = {
     description: '12 coffres. Composition et probabilités identiques aux coffres gagnés en jeu.',
   },
   /**
-   * Coffre à légendaire garanti.
+   * Coffre royal.
    *
-   * C'est la lecture honnête de « acheter un personnage légendaire » : on
-   * vend une **rareté garantie**, pas un personnage nommé. Vendre Luffy à
-   * l'unité supposerait un prix par personnage, donc un classement marchand
-   * des personnages de l'œuvre — et transformerait la collection en catalogue.
+   * Mise en scène et apparence propres — coffre noir et or, cérémonie plus
+   * longue, éclairs qui ne redescendent jamais sous le Légendaire. C'est ce
+   * qu'on vend : un moment, pas un avantage.
    *
-   * Le §25 tient toujours : un légendaire est une carte de collection, il ne
-   * donne aucun point de plus. On vend de la rareté, jamais de la victoire
-   * (§48).
+   * Le §25 tient toujours : un Légendaire est une carte de collection, il ne
+   * donne aucun point. On vend de la rareté, jamais de la victoire (§48).
    */
-  legendary_chest: {
-    id: 'legendary_chest',
+  royal_chest: {
+    id: 'royal_chest',
+    category: 'CHEST',
     label: 'Coffre du Yonko',
     priceCents: 1_499,
     currency: 'EUR',
-    grants: { berries: 0, chests: 1 },
+    grants: { berries: 0, chests: 0, royalChests: 1 },
     description:
-      '1 coffre avec un Légendaire ou mieux garanti. La rareté est une valeur de collection : elle ne donne aucun point au classement.',
+      '1 coffre royal : Légendaire ou mieux garanti, ouverture en cérémonie dédiée. La rareté est une valeur de collection, elle ne donne aucun point au classement.',
   },
   berries_pouch: {
     id: 'berries_pouch',
+    category: 'COINS',
     label: 'Bourse de Berries',
     priceCents: 499,
     currency: 'EUR',
@@ -77,12 +103,54 @@ export const CATALOG: Record<ProductId, Product> = {
   },
   berries_hold: {
     id: 'berries_hold',
+    category: 'COINS',
     label: 'Cale pleine',
     priceCents: 1_999,
     currency: 'EUR',
     grants: { berries: 30_000, chests: 0 },
     description:
       '30 000 Berries, soit 20 coffres à la boutique du jeu. Les Berries n’achètent que de la collection.',
+  },
+  /**
+   * Rayon personnages.
+   *
+   * Trois Légendaires nommés, et **seulement trois** : un catalogue complet
+   * reviendrait à mettre un prix sur chaque personnage de l'œuvre, ce qui
+   * transformerait la collection en boutique. Ceux-ci restent obtenables en
+   * coffre, gratuitement — l'achat abrège, il n'ouvre rien d'exclusif.
+   *
+   * Le personnage accordé est lu **ici**, côté serveur. Un identifiant venu du
+   * client serait un personnage choisi par le client.
+   */
+  character_shanks: {
+    id: 'character_shanks',
+    category: 'CHARACTER',
+    label: 'Shanks',
+    priceCents: 899,
+    currency: 'EUR',
+    grants: { berries: 0, chests: 0, characterId: 'shanks' },
+    description:
+      'Ajoute Shanks à ta collection. Légendaire — valeur de collection, aucun point au classement.',
+  },
+  character_mihawk: {
+    id: 'character_mihawk',
+    category: 'CHARACTER',
+    label: 'Dracule Mihawk',
+    priceCents: 899,
+    currency: 'EUR',
+    grants: { berries: 0, chests: 0, characterId: 'mihawk' },
+    description:
+      'Ajoute Mihawk à ta collection. Légendaire — valeur de collection, aucun point au classement.',
+  },
+  character_crocodile: {
+    id: 'character_crocodile',
+    category: 'CHARACTER',
+    label: 'Crocodile',
+    priceCents: 699,
+    currency: 'EUR',
+    grants: { berries: 0, chests: 0, characterId: 'crocodile' },
+    description:
+      'Ajoute Crocodile à ta collection. Légendaire — valeur de collection, aucun point au classement.',
   },
 };
 

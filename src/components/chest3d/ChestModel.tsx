@@ -21,24 +21,51 @@ import * as THREE from 'three';
  * d'obtenir une peinture écaillée sans image.
  */
 
-/** Bois clair du cadre, éclairé et ombré par ses propres faces. */
-const WOOD = '#e2bd85';
-const WOOD_DARK = '#c39a5e';
-const WOOD_DEEP = '#a97c44';
-/** Rouge des panneaux peints. */
-const PAINT = '#bf3a30';
-/** Gris-bleu de la peinture écaillée. */
-const WORN = '#5d7b88';
+/**
+ * Deux palettes, une seule géométrie.
+ *
+ * Le coffre royal n'est pas un second modèle : ce serait deux fois le même
+ * assemblage à maintenir, et ils finiraient par diverger. C'est le **même**
+ * coffre, repeint — bois d'ébène, ferrures dorées, panneaux pourpres.
+ */
+export interface ChestPalette {
+  wood: string;
+  woodDark: string;
+  woodDeep: string;
+  paint: string;
+  worn: string;
+}
+
+export const HARBOR_PALETTE: ChestPalette = {
+  wood: '#e2bd85',
+  woodDark: '#c39a5e',
+  woodDeep: '#a97c44',
+  paint: '#bf3a30',
+  worn: '#5d7b88',
+};
+
+/**
+ * Coffre royal. L'or est franc et le bois presque noir : à l'écran, sur fond
+ * de nuit, c'est le contraste qui fait lire « précieux », pas la quantité de
+ * dorure.
+ */
+export const ROYAL_PALETTE: ChestPalette = {
+  wood: '#e8c964',
+  woodDark: '#b9932f',
+  woodDeep: '#7d611b',
+  paint: '#2a1b3d',
+  worn: '#4b3468',
+};
 
 function Wood({
   position,
   size,
-  color = WOOD,
+  color,
   rotation,
 }: {
   position: [number, number, number];
   size: [number, number, number];
-  color?: string;
+  color: string;
   rotation?: [number, number, number];
 }) {
   return (
@@ -50,11 +77,17 @@ function Wood({
 }
 
 /** Clou à tête bombée. Six segments suffisent à cette taille. */
-function Rivet({ position }: { position: [number, number, number] }) {
+function Rivet({
+  position,
+  color,
+}: {
+  position: [number, number, number];
+  color: string;
+}) {
   return (
     <mesh position={position} castShadow>
       <sphereGeometry args={[0.045, 10, 8]} />
-      <meshStandardMaterial color={WOOD} roughness={0.5} metalness={0.15} />
+      <meshStandardMaterial color={color} roughness={0.5} metalness={0.15} />
     </mesh>
   );
 }
@@ -69,10 +102,12 @@ function Rivet({ position }: { position: [number, number, number] }) {
 function Wear({
   seed,
   z,
+  color,
   rotationY = 0,
 }: {
   seed: number;
   z: number;
+  color: string;
   rotationY?: number;
 }) {
   const patches = useMemo(() => {
@@ -101,7 +136,7 @@ function Wear({
       {patches.map((patch, index) => (
         <mesh key={index} position={[patch.x, patch.y, 0]} rotation={[0, 0, patch.r]}>
           <planeGeometry args={[patch.w, patch.h]} />
-          <meshStandardMaterial color={WORN} roughness={0.9} />
+          <meshStandardMaterial color={color} roughness={0.9} />
         </mesh>
       ))}
     </group>
@@ -115,24 +150,24 @@ function Wear({
  * découpé : la forme se lit de loin, et une extrusion sur mesure coûterait
  * bien plus de triangles pour un détail de vingt pixels.
  */
-function Clasp() {
+function Clasp({ palette }: { palette: ChestPalette }) {
   return (
     <group position={[0, -0.06, 0.63]}>
       {[-0.11, 0.11].map((x) => (
         <mesh key={x} position={[x, 0.08, 0]} castShadow>
           <sphereGeometry args={[0.15, 14, 12]} />
-          <meshStandardMaterial color={WOOD} roughness={0.6} />
+          <meshStandardMaterial color={palette.wood} roughness={0.6} />
         </mesh>
       ))}
       <mesh position={[0, -0.09, 0]} rotation={[0, 0, Math.PI / 4]} castShadow>
         <boxGeometry args={[0.21, 0.21, 0.1]} />
-        <meshStandardMaterial color={WOOD} roughness={0.6} />
+        <meshStandardMaterial color={palette.wood} roughness={0.6} />
       </mesh>
 
       {/* Moraillon : la languette métallique qui retient le couvercle. */}
       <mesh position={[0, 0.04, 0.09]} castShadow>
         <boxGeometry args={[0.16, 0.3, 0.05]} />
-        <meshStandardMaterial color={WOOD_DARK} roughness={0.45} metalness={0.25} />
+        <meshStandardMaterial color={palette.woodDark} roughness={0.45} metalness={0.25} />
       </mesh>
       <mesh position={[0, 0.02, 0.13]}>
         <boxGeometry args={[0.05, 0.11, 0.02]} />
@@ -143,16 +178,16 @@ function Clasp() {
 }
 
 /** Anneau de poignée, sur les flancs. */
-function Handle({ x }: { x: number }) {
+function Handle({ x, palette }: { x: number; palette: ChestPalette }) {
   return (
     <group position={[x, 0.02, 0]} rotation={[0, Math.PI / 2, 0]}>
       <mesh castShadow>
         <torusGeometry args={[0.16, 0.045, 8, 20]} />
-        <meshStandardMaterial color={WOOD} roughness={0.55} />
+        <meshStandardMaterial color={palette.wood} roughness={0.55} />
       </mesh>
       <mesh position={[0, 0.18, 0]}>
         <cylinderGeometry args={[0.07, 0.07, 0.06, 12]} />
-        <meshStandardMaterial color={WOOD_DARK} roughness={0.6} />
+        <meshStandardMaterial color={palette.woodDark} roughness={0.6} />
       </mesh>
     </group>
   );
@@ -163,10 +198,12 @@ export interface ChestModelProps {
   lidRef: React.Ref<THREE.Group>;
   /** Plan lumineux du joint, animé par la scène. */
   seamRef: React.Ref<THREE.Mesh>;
+  /** Palette. Le coffre royal est le même modèle, repeint. */
+  palette?: ChestPalette;
 }
 
 export const ChestModel = forwardRef<THREE.Group, ChestModelProps>(
-  function ChestModel({ lidRef, seamRef }, ref) {
+  function ChestModel({ lidRef, seamRef, palette = HARBOR_PALETTE }, ref) {
     return (
       <group ref={ref}>
         {/* ---------------------------------------------------------------
@@ -175,11 +212,11 @@ export const ChestModel = forwardRef<THREE.Group, ChestModelProps>(
             --------------------------------------------------------------- */}
         <mesh position={[0, -0.28, 0]} castShadow receiveShadow>
           <boxGeometry args={[1.5, 0.86, 1.1]} />
-          <meshStandardMaterial color={PAINT} roughness={0.62} />
+          <meshStandardMaterial color={palette.paint} roughness={0.62} />
         </mesh>
 
-        <Wear seed={7} z={0.552} />
-        <Wear seed={91} z={-0.552} rotationY={Math.PI} />
+        <Wear seed={7} z={0.552} color={palette.worn} />
+        <Wear seed={91} z={-0.552} color={palette.worn} rotationY={Math.PI} />
 
         {/* Montants d'angle */}
         {[-0.72, 0.72].map((x) =>
@@ -188,36 +225,42 @@ export const ChestModel = forwardRef<THREE.Group, ChestModelProps>(
               key={`${x}:${z}`}
               position={[x, -0.28, z]}
               size={[0.16, 0.94, 0.16]}
+              color={palette.wood}
             />
           )),
         )}
 
         {/* Traverses horizontales : haute, médiane, basse. */}
-        <Wood position={[0, 0.13, 0]} size={[1.56, 0.13, 1.16]} />
-        <Wood position={[0, -0.24, 0]} size={[1.56, 0.1, 1.15]} color={WOOD_DARK} />
-        <Wood position={[0, -0.68, 0]} size={[1.6, 0.16, 1.2]} color={WOOD_DEEP} />
+        <Wood position={[0, 0.13, 0]} size={[1.56, 0.13, 1.16]} color={palette.wood} />
+        <Wood position={[0, -0.24, 0]} size={[1.56, 0.1, 1.15]} color={palette.woodDark} />
+        <Wood position={[0, -0.68, 0]} size={[1.6, 0.16, 1.2]} color={palette.woodDeep} />
 
         {/* Montant central, avant et arrière */}
         {[0.56, -0.56].map((z) => (
-          <Wood key={z} position={[0, -0.28, z]} size={[0.2, 0.92, 0.06]} />
+          <Wood
+            key={z}
+            position={[0, -0.28, z]}
+            size={[0.2, 0.92, 0.06]}
+            color={palette.wood}
+          />
         ))}
 
         {/* Clous, alignés sur les traverses. */}
         {[-0.72, -0.36, 0.36, 0.72].map((x) => (
-          <Rivet key={`t${x}`} position={[x, 0.13, 0.59]} />
+          <Rivet color={palette.wood} key={`t${x}`} position={[x, 0.13, 0.59]} />
         ))}
         {[-0.72, -0.36, 0.36, 0.72].map((x) => (
-          <Rivet key={`b${x}`} position={[x, -0.68, 0.61]} />
+          <Rivet color={palette.wood} key={`b${x}`} position={[x, -0.68, 0.61]} />
         ))}
         {[-0.72, 0.72].map((x) =>
           [-0.5, -0.08].map((y) => (
-            <Rivet key={`c${x}:${y}`} position={[x, y, 0.58]} />
+            <Rivet color={palette.wood} key={`c${x}:${y}`} position={[x, y, 0.58]} />
           )),
         )}
 
-        <Handle x={-0.79} />
-        <Handle x={0.79} />
-        <Clasp />
+        <Handle x={-0.79} palette={palette} />
+        <Handle x={0.79} palette={palette} />
+        <Clasp palette={palette} />
 
         {/* Rai de lumière au joint. Posé devant la face avant, pas dessus :
             coplanaires, les deux surfaces se disputeraient le même plan et le
@@ -249,7 +292,7 @@ export const ChestModel = forwardRef<THREE.Group, ChestModelProps>(
                 args={[0.55, 0.55, 1.5, 28, 1, false, 0, Math.PI]}
               />
               <meshStandardMaterial
-                color={PAINT}
+                color={palette.paint}
                 roughness={0.6}
                 side={THREE.DoubleSide}
               />
@@ -257,7 +300,7 @@ export const ChestModel = forwardRef<THREE.Group, ChestModelProps>(
 
             {/* Usure sur le dessus du couvercle. */}
             <group position={[0, 0.36, 0.24]} rotation={[-0.5, 0, 0]}>
-              <Wear seed={313} z={0.02} />
+              <Wear seed={313} z={0.02} color={palette.worn} />
             </group>
 
             {/* Cerclages de bois clair suivant la voûte. */}
@@ -272,7 +315,7 @@ export const ChestModel = forwardRef<THREE.Group, ChestModelProps>(
                   args={[0.575, 0.575, 0.15, 24, 1, true, 0, Math.PI]}
                 />
                 <meshStandardMaterial
-                  color={x === 0 ? WOOD : WOOD_DARK}
+                  color={x === 0 ? palette.wood : palette.woodDark}
                   roughness={0.75}
                   side={THREE.DoubleSide}
                 />
@@ -284,7 +327,7 @@ export const ChestModel = forwardRef<THREE.Group, ChestModelProps>(
               <mesh key={x} position={[x, 0.02, 0]} rotation={[0, 0, 0]}>
                 <circleGeometry args={[0.55, 24, 0, Math.PI]} />
                 <meshStandardMaterial
-                  color={WOOD}
+                  color={palette.wood}
                   roughness={0.8}
                   side={THREE.DoubleSide}
                 />
@@ -294,11 +337,11 @@ export const ChestModel = forwardRef<THREE.Group, ChestModelProps>(
             {/* Bordure basse du couvercle : elle vient couvrir le joint. */}
             <mesh position={[0, -0.02, 0]} castShadow>
               <boxGeometry args={[1.58, 0.13, 1.16]} />
-              <meshStandardMaterial color={WOOD} roughness={0.75} />
+              <meshStandardMaterial color={palette.wood} roughness={0.75} />
             </mesh>
 
             {[-0.72, -0.36, 0.36, 0.72].map((x) => (
-              <Rivet key={`l${x}`} position={[x, -0.02, 0.59]} />
+              <Rivet color={palette.wood} key={`l${x}`} position={[x, -0.02, 0.59]} />
             ))}
           </group>
         </group>

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
-import { MainNav } from '@/components/MainNav';
+import { Nav } from '@/components/Nav';
 import Link from 'next/link';
 import { MarketBoard } from '@/components/MarketBoard';
 import { Watchlist } from '@/components/Watchlist';
@@ -143,7 +143,7 @@ export default async function MarketPage() {
         </h2>
         <Watchlist watched={watched} />
       </section>
-      <MainNav />
+      <Nav />
     </HarborScene>
   );
 }

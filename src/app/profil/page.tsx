@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
-import { MainNav } from '@/components/MainNav';
+import { Nav } from '@/components/Nav';
 import { collectionSummary } from '@/domain/collection/sets';
 import { CHARACTERS } from '@/data/characters';
 import { deriveStyle, MIN_WEEKS_FOR_STYLE, STYLE_DESCRIPTION, STYLE_LABEL } from '@/domain/player/style';
@@ -292,7 +292,7 @@ export default async function ProfilePage() {
       </div>
 
       <HouseRules />
-      <MainNav />
+      <Nav />
     </HarborScene>
   );
 }

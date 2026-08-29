@@ -61,3 +61,40 @@ ADMIN_EMAIL=<la même adresse>
 Sur Vercel : Project Settings → Environment Variables → Production, puis
 redéployer. Tant qu'elle n'y est pas, le second verrou n'existe pas en
 production.
+
+## Perdre son second facteur
+
+```bash
+node scripts/reset-mfa.mjs <email>
+```
+
+Efface le secret et le drapeau `mfa_enabled`. La prochaine visite de `/admin`
+repropose l'inscription.
+
+**C'est délibérément un script, pas un bouton.** Réinitialiser un second
+facteur depuis l'interface en ferait une case à cocher : quiconque prend la
+main sur une session ouverte le désactiverait. Ici il faut un accès à la base —
+c'est-à-dire un niveau de compromission où la MFA n'était de toute façon plus
+la dernière ligne de défense.
+
+Les sessions en cours ne sont pas révoquées : la double authentification
+protège l'entrée, pas la session ouverte. Les couper déconnecterait quelqu'un
+qui n'a rien demandé.
+
+### Un défaut corrigé au passage
+
+`beginEnrollment` écrasait le secret en place et repassait `mfa_enabled` à
+`false` lorsqu'il était appelé sur un compte **déjà protégé**. Ouvrir la page
+d'inscription suffisait donc à désactiver silencieusement la double
+authentification d'un administrateur et à rendre son application inutilisable.
+
+La fonction refuse désormais. La page appelante testait déjà le cas, mais une
+garde qui ne tient que dans l'appelant finit par sauter.
+
+## L'onglet Administrateur
+
+Il apparaît dans la barre de navigation **uniquement** pour le compte
+autorisé. Ce n'est qu'un raccourci d'affichage : le contrôle réel est sur la
+route (`requireAdmin`), qui exige le rôle en base *et* `ADMIN_EMAIL`, et
+répond 404 sinon. Un joueur qui forcerait le booléen dans son navigateur
+gagnerait un bouton, pas un accès.

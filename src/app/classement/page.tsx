@@ -7,7 +7,7 @@ import {
   getCachedLatestPublishedChapter,
   getCachedLeaderboard,
 } from '@/lib/cache';
-import { MainNav } from '@/components/MainNav';
+import { Nav } from '@/components/Nav';
 import Link from 'next/link';
 import { CHARACTER_INDEX } from '@/data/characters';
 import { spoilerState } from '@/domain/chapter/lock';
@@ -65,7 +65,7 @@ export default async function LeaderboardPage() {
         <p className="hb-card mt-5 text-sm">
           Aucun chapitre en cours.
         </p>
-        <MainNav />
+        <Nav />
       </HarborScene>
     );
   }
@@ -81,7 +81,7 @@ export default async function LeaderboardPage() {
           🔒 Les résultats du chapitre {chapter.chapterNumber} ne sont pas encore
           publiés. Rien n&apos;est révélé avant la sortie officielle.
         </p>
-        <MainNav />
+        <Nav />
       </HarborScene>
     );
   }

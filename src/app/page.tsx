@@ -3,7 +3,7 @@ import { logoutAction } from '@/app/actions/auth';
 import { Countdown } from '@/components/Countdown';
 import { CrewSelector } from '@/components/CrewSelector';
 import { HarborScene } from '@/components/HarborScene';
-import { MainNav } from '@/components/MainNav';
+import { Nav } from '@/components/Nav';
 import { Tutorial } from '@/components/Tutorial';
 import { CHARACTER_INDEX } from '@/data/characters';
 import type { Character } from '@/domain/types';
@@ -77,7 +77,7 @@ export default async function HomePage() {
           Aucun chapitre n&apos;est ouvert aux prédictions pour le moment.
           Reviens quand le prochain sera annoncé.
         </p>
-        <MainNav />
+        <Nav />
         <Tutorial />
       </HarborScene>
     );
@@ -145,7 +145,7 @@ export default async function HomePage() {
         )}
       </section>
 
-      <MainNav />
+      <Nav />
 
       <CrewSelector
         locked={!editable}

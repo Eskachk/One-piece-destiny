@@ -10,6 +10,7 @@ import {
   confirmReferral,
   isSocialAvailable,
   pendingReferrerOf,
+  releasePendingBerries,
   rewardedReferralCount,
 } from './repository';
 
@@ -35,6 +36,16 @@ export async function payReferrerOnFirstCrew(
   playerId: string,
 ): Promise<void> {
   if (!isSocialAvailable()) return;
+
+  // Libération de la dotation d'arrivée du joueur lui-même.
+  //
+  // Elle est posée en attente à l'inscription et ne devient dépensable qu'ici,
+  // au premier équipage verrouillé. C'est la mesure qui rend le fermage
+  // stérile : créer un compte ne produit plus aucune monnaie, il faut jouer.
+  //
+  // La fonction en base est idempotente (verrou de ligne + remise à zéro) :
+  // l'appeler à chaque enregistrement d'équipage ne crédite qu'une fois.
+  await releasePendingBerries(playerId);
 
   const referrerId = await pendingReferrerOf(playerId);
   if (!referrerId) return;

@@ -101,11 +101,21 @@ export async function POST(request: Request) {
   // crédite que si l'intention était encore « CREATED » : deux webhooks
   // concurrents sur le même achat ne peuvent pas créditer deux fois, même
   // s'ils franchissent ensemble le contrôle d'idempotence précédent.
-  const { data: granted, error: grantError } = await db().rpc('grant_purchase', {
-    p_intent_id: intent?.id ?? null,
-    p_berries: verdict.product.grants.berries,
-    p_chests: verdict.product.grants.chests,
-  });
+  // `grant_purchase_v2` accorde aussi les coffres royaux et les personnages du
+  // rayon boutique. Tout ce qu'elle reçoit vient du **catalogue serveur** —
+  // jamais du webhook : le prestataire dit qu'un produit a été payé, il ne dit
+  // pas ce que ce produit contient.
+  const { data: granted, error: grantError } = await db().rpc(
+    'grant_purchase_v2',
+    {
+      p_player_id: verdict.playerId,
+      p_intent_id: intent?.id ?? null,
+      p_berries: verdict.product.grants.berries,
+      p_chests: verdict.product.grants.chests,
+      p_royal_chests: verdict.product.grants.royalChests ?? 0,
+      p_character_id: verdict.product.grants.characterId ?? null,
+    },
+  );
 
   if (grantError) {
     console.error('[payment] PAYMENT_GRANT_FAILED');
