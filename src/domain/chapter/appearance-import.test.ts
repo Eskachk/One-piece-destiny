@@ -59,9 +59,12 @@ describe('parseAppearanceImport', () => {
     expect(issues[0]).toMatchObject({ line: 2, kind: 'UNKNOWN_CHARACTER' });
   });
 
-  it('signale un nombre manquant', () => {
-    const { issues } = parse('Luffy');
-    expect(issues[0]).toMatchObject({ kind: 'MISSING_COUNT', line: 1 });
+  it('accepte un nom seul : la presence suffit', () => {
+    // Le moteur v2 ne compte plus les cases. Une ligne sans nombre est donc
+    // la saisie normale, plus une anomalie.
+    const { appearances, issues } = parse('Luffy');
+    expect(issues).toHaveLength(0);
+    expect(appearances).toEqual([{ characterId: 'luffy', appearances: 1 }]);
   });
 
   it('refuse un nombre négatif', () => {

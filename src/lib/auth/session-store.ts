@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { createHash, randomBytes } from 'node:crypto';
+import { cache } from 'react';
 import { cookies } from 'next/headers';
 import {
   evaluateSession,
@@ -86,7 +87,7 @@ export async function createSession(
  * Une session expirée est révoquée en base au passage : on ne laisse pas
  * traîner des lignes utilisables.
  */
-export async function getSession(): Promise<AuthenticatedSession | null> {
+async function readSession(): Promise<AuthenticatedSession | null> {
   // Sans base, aucune session ne peut exister : on rend l'application
   // utilisable en mode mémoire plutôt que de la faire planter.
   if (!isDatabaseConfigured()) return null;
@@ -151,6 +152,27 @@ export async function getSession(): Promise<AuthenticatedSession | null> {
     state,
   };
 }
+
+/**
+ * Session courante, **mémorisée le temps de la requête**.
+ *
+ * Une page de jeu lit la session au moins deux fois : une fois pour son propre
+ * contrôle d'accès (`requireSession`), une fois pour savoir s'il faut afficher
+ * l'onglet d'administration (`<Nav />`). Certaines la lisent trois fois. Sans
+ * mémorisation, c'était autant de requêtes `sessions ⨝ user_accounts` par
+ * affichage — sur la page la plus visitée, un dimanche soir, à quatre chiffres
+ * de joueurs simultanés.
+ *
+ * `cache()` de React mémorise **par requête serveur**, pas globalement : deux
+ * joueurs différents ne partagent jamais de session, et la même requête ne
+ * paie l'aller-retour qu'une fois. C'est exactement la portée qu'il faut ici —
+ * un cache plus large serait une faille, un cache plus étroit ne servirait à
+ * rien.
+ *
+ * Le glissement de la fenêtre d'inactivité reste dans `readSession` : il
+ * n'écrit qu'une fois par minute, et se retrouve donc lui aussi dédoublonné.
+ */
+export const getSession = cache(readSession);
 
 /**
  * Session authentifiée pour l'application.

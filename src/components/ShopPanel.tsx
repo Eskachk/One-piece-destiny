@@ -3,6 +3,12 @@
 import { useState, useTransition } from 'react';
 import { attempt } from './attempt';
 import { startCheckoutAction } from '@/app/actions/shop';
+import {
+  IconChest,
+  IconCharacter,
+  IconPouch,
+  IconRoyalChest,
+} from './ShopIcons';
 
 /**
  * Boutique en argent réel (cahier §113, §114).
@@ -24,6 +30,29 @@ export interface ShopProduct {
   label: string;
   price: string;
   description: string;
+  /** Couleur de rareté du personnage vendu, résolue côté serveur. */
+  rarityColor: string | null;
+  rarityLabel: string | null;
+}
+
+/**
+ * Emblème d'un produit.
+ *
+ * Le coffre royal a le sien : c'est le seul dont l'apparence en jeu diffère,
+ * et la fiche doit le montrer avant l'achat plutôt qu'après.
+ */
+function ProductIcon({ product }: { product: ShopProduct }) {
+  if (product.category === 'CHARACTER') {
+    return <IconCharacter className="hb-shop__icon" />;
+  }
+  if (product.category === 'COINS') {
+    return <IconPouch className="hb-shop__icon" />;
+  }
+  return product.id === 'royal_chest' ? (
+    <IconRoyalChest className="hb-shop__icon" />
+  ) : (
+    <IconChest className="hb-shop__icon" />
+  );
 }
 
 /**
@@ -109,23 +138,49 @@ export function ShopPanel({
               {items.map((product) => (
                 <li
                   key={product.id}
-                  className={
-                    // Le coffre royal porte sa propre bordure : c'est le seul
+                  className={[
+                    'hb-card',
+                    // Le coffre royal porte sa propre parure : c'est le seul
                     // produit dont l'apparence en jeu diffère, autant que la
                     // fiche le montre avant l'achat plutôt qu'après.
-                    product.id === 'royal_chest' ? 'hb-card hb-card--royal' : 'hb-card'
+                    product.id === 'royal_chest' ? 'hb-card--royal' : '',
+                    product.rarityColor ? 'hb-card--rarity' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
+                  style={
+                    product.rarityColor
+                      ? ({ ['--rarity' as string]: product.rarityColor })
+                      : undefined
                   }
                 >
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span className="font-display text-lg hb-ink">
-                      {product.label}
-                    </span>
-                    <span className="hb-num whitespace-nowrap text-lg">
-                      {product.price}
-                    </span>
-                  </div>
+                  <div className="flex items-start gap-3">
+                    <ProductIcon product={product} />
 
-                  <p className="hb-muted mt-2 text-sm">{product.description}</p>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-baseline justify-between gap-3">
+                        <span className="font-display text-lg hb-ink">
+                          {product.label}
+                        </span>
+                        <span className="hb-num whitespace-nowrap text-lg">
+                          {product.price}
+                        </span>
+                      </div>
+
+                      {/* La rareté est écrite **et** colorée : la couleur seule
+                          n'est pas lisible par un joueur daltonien, et c'est la
+                          même règle que sur les cartes de collection. */}
+                      {product.rarityLabel && (
+                        <span className="hb-shop__rarity">
+                          {product.rarityLabel}
+                        </span>
+                      )}
+
+                      <p className="hb-muted mt-2 text-sm">
+                        {product.description}
+                      </p>
+                    </div>
+                  </div>
 
                   <button
                     type="button"

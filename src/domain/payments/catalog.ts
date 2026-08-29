@@ -10,6 +10,8 @@
  * Un montant transmis par le client serait un montant négociable par lui.
  */
 
+import type { Rarity } from '../types';
+
 export type ProductId =
   | 'chest_pack_small'
   | 'chest_pack_large'
@@ -49,6 +51,15 @@ export interface Product {
     royalChests?: number;
     characterId?: string;
   };
+  /**
+   * Rareté du personnage vendu, pour la mise en couleur de la fiche.
+   *
+   * Recopiée ici plutôt que relue dans le référentiel : la boutique est rendue
+   * côté serveur, mais la fiche passe au navigateur — aller chercher la rareté
+   * dans `CHARACTER_INDEX` depuis le client réimporterait les 790 personnages
+   * pour trois couleurs.
+   */
+  rarity?: Rarity;
   /** Description affichée avant l'achat (§113). */
   description: string;
 }
@@ -129,6 +140,7 @@ export const CATALOG: Record<ProductId, Product> = {
     priceCents: 899,
     currency: 'EUR',
     grants: { berries: 0, chests: 0, characterId: 'shanks' },
+    rarity: 'LEGENDARY',
     description:
       'Ajoute Shanks à ta collection. Légendaire — valeur de collection, aucun point au classement.',
   },
@@ -139,6 +151,7 @@ export const CATALOG: Record<ProductId, Product> = {
     priceCents: 899,
     currency: 'EUR',
     grants: { berries: 0, chests: 0, characterId: 'mihawk' },
+    rarity: 'LEGENDARY',
     description:
       'Ajoute Mihawk à ta collection. Légendaire — valeur de collection, aucun point au classement.',
   },
@@ -149,6 +162,7 @@ export const CATALOG: Record<ProductId, Product> = {
     priceCents: 699,
     currency: 'EUR',
     grants: { berries: 0, chests: 0, characterId: 'crocodile' },
+    rarity: 'LEGENDARY',
     description:
       'Ajoute Crocodile à ta collection. Légendaire — valeur de collection, aucun point au classement.',
   },

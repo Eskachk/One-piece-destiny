@@ -99,7 +99,11 @@ export function suggestionsAsImportText(
   roster: Character[],
 ): string {
   const names = new Map(roster.map((c) => [c.id, c.name]));
+
+  // Des noms seuls, sans nombre. Depuis le moteur v2, seule la présence
+  // compte et la zone de saisie attend une liste : recracher un comptage
+  // aurait remis dans le champ ce qu'on vient d'en retirer.
   return suggestions
-    .map((s) => `${names.get(s.characterId) ?? s.characterId} ${s.suggested}`)
+    .map((suggestion) => names.get(suggestion.characterId) ?? suggestion.characterId)
     .join('\n');
 }

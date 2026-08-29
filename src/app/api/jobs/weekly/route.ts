@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { authorizeJob } from '@/lib/jobs/guard';
 import { runPriceAlerts } from '@/lib/jobs/price-alerts';
 import { runWeeklyNotifications } from '@/lib/jobs/weekly';
+import { runChapterOpening } from '@/lib/jobs/open-chapter';
 
 /**
  * Rendez-vous hebdomadaire et alertes de prix.
@@ -24,9 +25,13 @@ async function handle(request: Request) {
   try {
     // Les deux passes partagent la même cadence horaire : un seul déclencheur
     // à configurer vaut mieux que deux.
+    // L'ouverture passe **en premier** : les notifications hebdomadaires
+    // parlent du chapitre en cours, autant qu'il existe déjà quand elles
+    // partent.
+    const chapter = await runChapterOpening();
     const weekly = await runWeeklyNotifications();
     const prices = await runPriceAlerts();
-    return NextResponse.json({ weekly, prices });
+    return NextResponse.json({ chapter, weekly, prices });
   } catch (error) {
     console.error('[jobs] WEEKLY_FAILED', error);
     return NextResponse.json({ error: 'Tâche impossible.' }, { status: 500 });

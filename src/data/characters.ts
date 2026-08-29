@@ -26,7 +26,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'MYTHIC',
     affiliations: ['Mugiwara', 'Worst Generation'],
     relations: [{ to: 'zoro', kind: 'CREW' }, { to: 'nami', kind: 'CREW' }, { to: 'sanji', kind: 'CREW' }, { to: 'law', kind: 'ALLIANCE' }, { to: 'koby', kind: 'FAMILY' }],
-    abilities: ['Haki des Rois', 'Fruit du démon'],
+    abilities: ['Haki des Rois', 'Fruit du démon', 'Haki armement', 'Haki observation'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -35,7 +35,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'MYTHIC',
     affiliations: ['Mugiwara', 'Worst Generation'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'sanji', kind: 'RIVALRY' }, { to: 'mihawk', kind: 'MENTOR' }],
-    abilities: ['Haki armement', 'Trois sabres'],
+    abilities: ['Haki armement', 'Trois sabres', 'Haki des Rois', 'Épéiste'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -53,7 +53,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'MYTHIC',
     affiliations: ['Mugiwara', 'Germa'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'zoro', kind: 'RIVALRY' }],
-    abilities: ['Haki observation', 'Combat'],
+    abilities: ['Haki observation', 'Combat', 'Haki des Rois', 'Haki armement', 'Cuisinier'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -62,7 +62,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'MYTHIC',
     affiliations: ['Mugiwara'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'nami', kind: 'CREW' }],
-    abilities: ['Fruit du démon', 'Archéologie'],
+    abilities: ['Fruit du démon', 'Archéologie', 'Archéologue'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -71,7 +71,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'MYTHIC',
     affiliations: ['Mugiwara'],
     relations: [{ to: 'luffy', kind: 'CREW' }],
-    abilities: ['Médecine', 'Fruit du démon'],
+    abilities: ['Médecine', 'Fruit du démon', 'Médecin'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -80,7 +80,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'MYTHIC',
     affiliations: ['Mugiwara', 'Grand Fleet'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'bartolomeo', kind: 'ALLIANCE' }],
-    abilities: ['Haki observation', 'Tir'],
+    abilities: ['Haki observation', 'Tir', 'Tireur'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -89,7 +89,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'MYTHIC',
     affiliations: ['Mugiwara'],
     relations: [{ to: 'luffy', kind: 'CREW' }],
-    abilities: ['Haki armement', 'Combat'],
+    abilities: ['Haki armement', 'Combat', 'Haki observation', 'Barreur', 'Homme-poisson'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -98,7 +98,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Heart Pirates', 'Worst Generation'],
     relations: [{ to: 'luffy', kind: 'ALLIANCE' }, { to: 'kid', kind: 'RIVALRY' }],
-    abilities: ['Haki armement', 'Fruit du démon'],
+    abilities: ['Haki armement', 'Fruit du démon', 'Haki observation', 'Épéiste', 'Médecin'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -107,7 +107,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Kid Pirates', 'Worst Generation'],
     relations: [{ to: 'law', kind: 'RIVALRY' }],
-    abilities: ['Haki armement', 'Fruit du démon'],
+    abilities: ['Haki armement', 'Fruit du démon', 'Haki des Rois'],
     presenceExpectation: 'LOW',
   },
   {
@@ -125,7 +125,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Révolutionnaires'],
     relations: [{ to: 'bonney', kind: 'FAMILY' }, { to: 'dragon', kind: 'FACTION' }],
-    abilities: ['Fruit du démon'],
+    abilities: ['Fruit du démon', 'Révolutionnaire'],
     presenceExpectation: 'LOW',
   },
   {
@@ -134,7 +134,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Révolutionnaires'],
     relations: [{ to: 'luffy', kind: 'FAMILY' }, { to: 'sabo', kind: 'FACTION' }],
-    abilities: ['Inconnu'],
+    abilities: ['Inconnu', 'Révolutionnaire'],
     presenceExpectation: 'LOW',
   },
   {
@@ -143,7 +143,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Révolutionnaires'],
     relations: [{ to: 'luffy', kind: 'FAMILY' }, { to: 'dragon', kind: 'FACTION' }],
-    abilities: ['Haki des Rois', 'Fruit du démon'],
+    abilities: ['Haki des Rois', 'Fruit du démon', 'Haki armement', 'Révolutionnaire'],
     presenceExpectation: 'LOW',
   },
   {
@@ -152,7 +152,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Marine', 'SWORD'],
     relations: [{ to: 'luffy', kind: 'FAMILY' }, { to: 'garp', kind: 'MENTOR' }, { to: 'helmeppo', kind: 'CREW' }],
-    abilities: ['Haki observation'],
+    abilities: ['Haki observation', 'Haki armement', 'Marine'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -161,7 +161,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine', 'SWORD'],
     relations: [{ to: 'koby', kind: 'CREW' }],
-    abilities: ['Combat'],
+    abilities: ['Combat', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -170,7 +170,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Marine'],
     relations: [{ to: 'koby', kind: 'MENTOR' }, { to: 'luffy', kind: 'FAMILY' }, { to: 'akainu', kind: 'FACTION' }],
-    abilities: ['Haki armement'],
+    abilities: ['Haki armement', 'Haki observation', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -179,7 +179,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Marine'],
     relations: [{ to: 'garp', kind: 'FACTION' }],
-    abilities: ['Fruit du démon', 'Haki armement'],
+    abilities: ['Fruit du démon', 'Haki armement', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -188,7 +188,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Cross Guild'],
     relations: [{ to: 'zoro', kind: 'MENTOR' }, { to: 'buggy', kind: 'ALLIANCE' }, { to: 'crocodile', kind: 'ALLIANCE' }],
-    abilities: ['Haki armement', 'Escrime'],
+    abilities: ['Haki armement', 'Escrime', 'Haki observation', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -224,7 +224,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Red Hair Pirates', 'Yonko'],
     relations: [{ to: 'luffy', kind: 'MENTOR' }],
-    abilities: ['Haki des Rois', 'Escrime'],
+    abilities: ['Haki des Rois', 'Escrime', 'Haki armement', 'Haki observation', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -242,7 +242,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'MYTHIC',
     affiliations: ['The Chapeau de Paille crew'],
     relations: [{ to: 'brook', kind: 'CREW' }, { to: 'zeus', kind: 'CREW' }],
-    abilities: ['Carpenter'],
+    abilities: ['Carpenter', 'Charpentier'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -251,7 +251,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'MYTHIC',
     affiliations: ['The Chapeau de Paille crew', 'Paramecia'],
     relations: [{ to: 'franky', kind: 'CREW' }, { to: 'zeus', kind: 'CREW' }],
-    abilities: ['Fruit of the Resurrection', 'Musician'],
+    abilities: ['Fruit of the Resurrection', 'Musician', 'Épéiste', 'Musicien'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -269,7 +269,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }, { to: 'baby-5', kind: 'CREW' }],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Épéiste'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -386,7 +386,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Géant'],
     presenceExpectation: 'LOW',
   },
   {
@@ -395,7 +395,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
-    abilities: ['Carpenter'],
+    abilities: ['Carpenter', 'Géant'],
     presenceExpectation: 'LOW',
   },
   {
@@ -404,7 +404,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
-    abilities: ['Browser'],
+    abilities: ['Browser', 'Géant'],
     presenceExpectation: 'LOW',
   },
   {
@@ -413,7 +413,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
-    abilities: ['Cook'],
+    abilities: ['Cook', 'Géant'],
     presenceExpectation: 'LOW',
   },
   {
@@ -422,7 +422,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
-    abilities: ['Doctor'],
+    abilities: ['Doctor', 'Géant'],
     presenceExpectation: 'LOW',
   },
   {
@@ -539,7 +539,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Primate League'],
     relations: [{ to: 'shojo', kind: 'CREW' }, { to: 'masira', kind: 'CREW' }],
-    abilities: ['Commander-in-Chief'],
+    abilities: ['Commander-in-Chief', 'Navigation'],
     presenceExpectation: 'LOW',
   },
   {
@@ -602,7 +602,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Thriller Bark'],
     relations: [{ to: 'gecko-moria', kind: 'CREW' }, { to: 'absalom', kind: 'CREW' }],
-    abilities: ['Mysterious Four'],
+    abilities: ['Mysterious Four', 'Médecin'],
     presenceExpectation: 'LOW',
   },
   {
@@ -629,7 +629,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Hearth crew', 'Paramecia'],
     relations: [{ to: 'bepo', kind: 'CREW' }, { to: 'jean-bart', kind: 'CREW' }, { to: 'shachi', kind: 'CREW' }, { to: 'pingouin', kind: 'CREW' }],
-    abilities: ['Fruit of the Scalpel', 'Captain'],
+    abilities: ['Fruit of the Scalpel', 'Captain', 'Haki armement', 'Haki observation', 'Épéiste', 'Médecin'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -638,7 +638,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['The Hearth crew'],
     relations: [{ to: 'trafalgar-d-water-law', kind: 'CREW' }, { to: 'jean-bart', kind: 'CREW' }, { to: 'shachi', kind: 'CREW' }, { to: 'pingouin', kind: 'CREW' }],
-    abilities: ['Browser'],
+    abilities: ['Browser', 'Navigation'],
     presenceExpectation: 'LOW',
   },
   {
@@ -674,7 +674,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Kid crew'],
     relations: [{ to: 'heat', kind: 'CREW' }, { to: 'wire', kind: 'CREW' }],
-    abilities: ['Fighter'],
+    abilities: ['Fighter', 'Haki armement'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -701,7 +701,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Fire Tank crew', 'Paramecia'],
     relations: [{ to: 'vito', kind: 'CREW' }, { to: 'gotti', kind: 'CREW' }, { to: 'charlotte-chiffon', kind: 'CREW' }, { to: 'charlotte-pets', kind: 'CREW' }],
-    abilities: ['Fruit du Château', 'Captain'],
+    abilities: ['Fruit du Château', 'Captain', 'Haki armement'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -746,7 +746,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: [],
     relations: [],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Haki armement'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -755,7 +755,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Kuja Pirates crew', 'Paramecia'],
     relations: [{ to: 'boa-sandersonia', kind: 'CREW' }, { to: 'boa-marigold', kind: 'CREW' }, { to: 'margaret', kind: 'CREW' }],
-    abilities: ['Passion fruit', 'Captain'],
+    abilities: ['Passion fruit', 'Captain', 'Haki des Rois', 'Haki armement', 'Haki observation', 'Royauté'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -827,7 +827,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['The Sun Pirates crew'],
     relations: [{ to: 'aladdin', kind: 'CREW' }, { to: 'charlotte-praline', kind: 'CREW' }],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Homme-poisson'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -836,7 +836,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['The Sun Pirates crew'],
     relations: [{ to: 'ficher-tiger', kind: 'CREW' }, { to: 'charlotte-praline', kind: 'CREW' }],
-    abilities: ['Vice-Captain'],
+    abilities: ['Vice-Captain', 'Barreur', 'Homme-poisson'],
     presenceExpectation: 'LOW',
   },
   {
@@ -845,7 +845,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['The Sun Pirates crew'],
     relations: [{ to: 'ficher-tiger', kind: 'CREW' }, { to: 'aladdin', kind: 'CREW' }],
-    abilities: [],
+    abilities: ['Cuisinier'],
     presenceExpectation: 'LOW',
   },
   {
@@ -872,7 +872,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }],
-    abilities: ['Vice-Captain'],
+    abilities: ['Vice-Captain', 'Barreur'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -890,7 +890,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }],
-    abilities: ['Lieutenant'],
+    abilities: ['Lieutenant', 'Tireur'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -962,7 +962,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }],
-    abilities: ['Fruit of Souls', 'Captain'],
+    abilities: ['Fruit of Souls', 'Captain', 'Haki des Rois', 'Haki armement', 'Haki observation'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -971,7 +971,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }],
-    abilities: ['Glutinous Rice Fruit', 'General Sucré'],
+    abilities: ['Glutinous Rice Fruit', 'General Sucré', 'Haki armement', 'Haki observation'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -989,7 +989,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }],
-    abilities: ['Cookie Fruit', 'General Sucré'],
+    abilities: ['Cookie Fruit', 'General Sucré', 'Haki armement'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -1025,7 +1025,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
-    abilities: ['Lieutenant'],
+    abilities: ['Lieutenant', 'Épéiste'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -1052,7 +1052,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
-    abilities: ['Fruit of the Book', 'Lieutenant'],
+    abilities: ['Fruit of the Book', 'Lieutenant', 'Musicien'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -1709,7 +1709,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Zoan'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
-    abilities: ['Turtle Fruit', 'Fighter'],
+    abilities: ['Turtle Fruit', 'Fighter', 'Homme-poisson'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -1736,7 +1736,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew', 'Paramecia'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
-    abilities: ['Fruit of the Cook', 'Cook'],
+    abilities: ['Fruit of the Cook', 'Cook', 'Cuisinier'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -1781,7 +1781,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Hundred Beasts crew', 'Zoan Mythique'],
     relations: [{ to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }],
-    abilities: ['Fruit of the Fish, Azure Dragon version', 'Captain'],
+    abilities: ['Fruit of the Fish, Azure Dragon version', 'Captain', 'Haki des Rois', 'Haki armement', 'Haki observation'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -1790,7 +1790,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }],
-    abilities: ['Fruit of the Dinosaur, Pteranodon version', 'Superstar'],
+    abilities: ['Fruit of the Dinosaur, Pteranodon version', 'Superstar', 'Haki armement'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -1799,7 +1799,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }],
-    abilities: ['Fruit of the Dinosaur, Brachiosaurus version', 'Superstar'],
+    abilities: ['Fruit of the Dinosaur, Brachiosaurus version', 'Superstar', 'Haki armement'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -1808,7 +1808,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }],
-    abilities: ['Fruit of the Pachyderm, Mammoth version', 'Superstar'],
+    abilities: ['Fruit of the Pachyderm, Mammoth version', 'Superstar', 'Haki armement'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -1871,7 +1871,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Hundred Beasts crew', 'Paramecia'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
-    abilities: ['Fruit de la Paille', 'Vedette'],
+    abilities: ['Fruit de la Paille', 'Vedette', 'Haki armement', 'Haki observation', 'Épéiste'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2312,7 +2312,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Hundred Beasts crew', 'Paramecia'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
-    abilities: ['Fruit of the Sound', 'Informer'],
+    abilities: ['Fruit of the Sound', 'Informer', 'Haki armement', 'Musicien'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2321,7 +2321,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Blackbeard\'s crew', 'Logia'],
     relations: [{ to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }, { to: 'shiliew', kind: 'CREW' }],
-    abilities: ['Fruit of Darkness', 'Pirate'],
+    abilities: ['Fruit of Darkness', 'Pirate', 'Haki armement'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -2339,7 +2339,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Blackbeard\'s crew', 'Paramecia'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
-    abilities: ['Fruit of Invisibility', 'Commander 2nd Ship'],
+    abilities: ['Fruit of Invisibility', 'Commander 2nd Ship', 'Épéiste'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2348,7 +2348,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Blackbeard\'s crew', 'Paramecia'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }, { to: 'shiliew', kind: 'CREW' }],
-    abilities: ['Fruit of teleportation', 'Commander 3rd Ship'],
+    abilities: ['Fruit of teleportation', 'Commander 3rd Ship', 'Tireur'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2384,7 +2384,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Blackbeard\'s crew', 'Paramecia'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
-    abilities: ['The fruit of gigantism', 'Commander 7th Ship'],
+    abilities: ['The fruit of gigantism', 'Commander 7th Ship', 'Géant'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2420,7 +2420,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Haki des Rois', 'Haki armement', 'Haki observation'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -2429,7 +2429,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }],
-    abilities: ['Right-hand man'],
+    abilities: ['Right-hand man', 'Haki des Rois', 'Haki armement', 'Haki observation'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2636,7 +2636,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Arlong crew'],
     relations: [{ to: 'kuroobi', kind: 'CREW' }, { to: 'smack', kind: 'CREW' }],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Homme-poisson'],
     presenceExpectation: 'LOW',
   },
   {
@@ -2645,7 +2645,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['The Arlong crew'],
     relations: [{ to: 'arlong', kind: 'CREW' }, { to: 'smack', kind: 'CREW' }],
-    abilities: ['Lieutenant'],
+    abilities: ['Lieutenant', 'Homme-poisson'],
     presenceExpectation: 'LOW',
   },
   {
@@ -2663,7 +2663,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['The Rumbar crew'],
     relations: [{ to: 'madaisky-mizuta', kind: 'CREW' }, { to: 'mawaritovsky-mizuta', kind: 'CREW' }],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Charpentier'],
     presenceExpectation: 'LOW',
   },
   {
@@ -2699,7 +2699,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Whitebeard\'s crew', 'Paramecia'],
     relations: [{ to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }],
-    abilities: ['Fruit of Trembling', 'Captain'],
+    abilities: ['Fruit of Trembling', 'Captain', 'Haki des Rois', 'Haki armement', 'Haki observation'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -2708,7 +2708,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Whitebeard\'s crew', 'Logia'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }],
-    abilities: ['Pyro-Fruit', 'Commander 2nd Ship'],
+    abilities: ['Pyro-Fruit', 'Commander 2nd Ship', 'Haki armement'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2717,7 +2717,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew', 'Paramecia'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }],
-    abilities: ['Sparkling Fruit', 'Commander 3rd Ship'],
+    abilities: ['Sparkling Fruit', 'Commander 3rd Ship', 'Haki armement'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2735,7 +2735,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
-    abilities: ['Commander 5th Ship'],
+    abilities: ['Commander 5th Ship', 'Haki armement', 'Épéiste'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2753,7 +2753,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
-    abilities: ['Commander 7th Ship'],
+    abilities: ['Commander 7th Ship', 'Épéiste'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2816,7 +2816,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
-    abilities: ['Commander 15th Ship'],
+    abilities: ['Commander 15th Ship', 'Épéiste'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2825,7 +2825,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
-    abilities: ['Commander 16th Ship'],
+    abilities: ['Commander 16th Ship', 'Épéiste'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2870,7 +2870,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }],
-    abilities: ['Subordinate'],
+    abilities: ['Subordinate', 'Géant'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -3320,7 +3320,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['The New Fishmen crew'],
     relations: [{ to: 'dosun', kind: 'CREW' }, { to: 'zeo', kind: 'CREW' }, { to: 'daruma', kind: 'CREW' }, { to: 'ikaros-much', kind: 'CREW' }, { to: 'hyozo', kind: 'CREW' }],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Homme-poisson'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3329,7 +3329,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['The New Fishmen crew'],
     relations: [{ to: 'hody-jones', kind: 'CREW' }, { to: 'zeo', kind: 'CREW' }, { to: 'daruma', kind: 'CREW' }, { to: 'ikaros-much', kind: 'CREW' }, { to: 'hyozo', kind: 'CREW' }],
-    abilities: ['Lieutenant'],
+    abilities: ['Lieutenant', 'Homme-poisson'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3338,7 +3338,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['The New Fishmen crew'],
     relations: [{ to: 'hody-jones', kind: 'CREW' }, { to: 'dosun', kind: 'CREW' }, { to: 'daruma', kind: 'CREW' }, { to: 'ikaros-much', kind: 'CREW' }, { to: 'hyozo', kind: 'CREW' }],
-    abilities: ['Lieutenant'],
+    abilities: ['Lieutenant', 'Homme-poisson'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3347,7 +3347,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['The New Fishmen crew'],
     relations: [{ to: 'hody-jones', kind: 'CREW' }, { to: 'dosun', kind: 'CREW' }, { to: 'zeo', kind: 'CREW' }, { to: 'ikaros-much', kind: 'CREW' }, { to: 'hyozo', kind: 'CREW' }],
-    abilities: ['Lieutenant'],
+    abilities: ['Lieutenant', 'Homme-poisson'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3356,7 +3356,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['The New Fishmen crew'],
     relations: [{ to: 'hody-jones', kind: 'CREW' }, { to: 'dosun', kind: 'CREW' }, { to: 'zeo', kind: 'CREW' }, { to: 'daruma', kind: 'CREW' }, { to: 'hyozo', kind: 'CREW' }],
-    abilities: ['Lieutenant'],
+    abilities: ['Lieutenant', 'Homme-poisson'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3365,7 +3365,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['The New Fishmen crew'],
     relations: [{ to: 'hody-jones', kind: 'CREW' }, { to: 'dosun', kind: 'CREW' }, { to: 'zeo', kind: 'CREW' }, { to: 'daruma', kind: 'CREW' }, { to: 'ikaros-much', kind: 'CREW' }],
-    abilities: ['Lieutenant'],
+    abilities: ['Lieutenant', 'Homme-poisson'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3374,7 +3374,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: [],
     relations: [],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Tireur'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3383,7 +3383,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Don Quixote\'s crew', 'Paramecia'],
     relations: [{ to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }, { to: 'lao-g', kind: 'CREW' }],
-    abilities: ['Fruit du Fil', 'Captain'],
+    abilities: ['Fruit du Fil', 'Captain', 'Haki des Rois', 'Haki armement'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -3509,7 +3509,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: [],
     relations: [],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Haki des Rois'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3518,7 +3518,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Buggy\'s Delivery'],
     relations: [{ to: '1er-doyen', kind: 'CREW' }, { to: '2e-doyen', kind: 'CREW' }, { to: '3e-doyen', kind: 'CREW' }, { to: '4e-doyen', kind: 'CREW' }, { to: '5e-doyen', kind: 'CREW' }],
-    abilities: ['Manager'],
+    abilities: ['Manager', 'Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3572,7 +3572,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Dragon Célestes'],
     relations: [{ to: 'charloss', kind: 'CREW' }, { to: 'sharlia', kind: 'CREW' }, { to: 'don-quijote-myosgard', kind: 'CREW' }, { to: 'jalmack', kind: 'CREW' }, { to: 'don-quijote-homing', kind: 'CREW' }],
-    abilities: [],
+    abilities: ['Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3581,7 +3581,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Dragon Célestes'],
     relations: [{ to: 'roswald', kind: 'CREW' }, { to: 'sharlia', kind: 'CREW' }, { to: 'don-quijote-myosgard', kind: 'CREW' }, { to: 'jalmack', kind: 'CREW' }, { to: 'don-quijote-homing', kind: 'CREW' }],
-    abilities: [],
+    abilities: ['Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3590,7 +3590,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Dragon Célestes'],
     relations: [{ to: 'roswald', kind: 'CREW' }, { to: 'charloss', kind: 'CREW' }, { to: 'don-quijote-myosgard', kind: 'CREW' }, { to: 'jalmack', kind: 'CREW' }, { to: 'don-quijote-homing', kind: 'CREW' }],
-    abilities: [],
+    abilities: ['Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3626,7 +3626,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Cipher Pol', 'Zoan'],
     relations: [{ to: 'guernica', kind: 'CREW' }, { to: 'hittori', kind: 'CREW' }, { to: 'spandam', kind: 'CREW' }, { to: 'funckfreed', kind: 'CREW' }, { to: 'kaku', kind: 'CREW' }, { to: 'stussy', kind: 'CREW' }],
-    abilities: ['Fruit of the Pachyderm'],
+    abilities: ['Fruit of the Pachyderm', 'Haki armement'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3662,7 +3662,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Cipher Pol', 'Zoan'],
     relations: [{ to: 'guernica', kind: 'CREW' }, { to: 'rob-lucci', kind: 'CREW' }, { to: 'hittori', kind: 'CREW' }, { to: 'spandam', kind: 'CREW' }, { to: 'funckfreed', kind: 'CREW' }, { to: 'stussy', kind: 'CREW' }],
-    abilities: ['Fruit du Bovin, Giraffe version'],
+    abilities: ['Fruit du Bovin, Giraffe version', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3824,7 +3824,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Marine', 'Logia'],
     relations: [{ to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }],
-    abilities: ['Luminescent Fruit', 'Admiral'],
+    abilities: ['Luminescent Fruit', 'Admiral', 'Haki armement', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3833,7 +3833,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Marine', 'Paramecia'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }],
-    abilities: ['Fruit of Gravity', 'Admiral'],
+    abilities: ['Fruit of Gravity', 'Admiral', 'Haki armement', 'Haki observation', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3842,7 +3842,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }],
-    abilities: ['Admiral'],
+    abilities: ['Admiral', 'Haki des Rois', 'Haki armement', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3851,7 +3851,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine', 'Paramecia'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }],
-    abilities: ['Fruit of the Laundry', 'Vice-Admiral'],
+    abilities: ['Fruit of the Laundry', 'Vice-Admiral', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3860,7 +3860,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }],
-    abilities: ['Vice-Admiral'],
+    abilities: ['Vice-Admiral', 'Géant', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3878,7 +3878,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Vice-Admiral'],
+    abilities: ['Vice-Admiral', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3887,7 +3887,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Vice-Admiral'],
+    abilities: ['Vice-Admiral', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3896,7 +3896,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Vice-Admiral'],
+    abilities: ['Vice-Admiral', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3905,7 +3905,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Vice-Admiral'],
+    abilities: ['Vice-Admiral', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3914,7 +3914,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Vice-Admiral'],
+    abilities: ['Vice-Admiral', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3932,7 +3932,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Vice-Admiral'],
+    abilities: ['Vice-Admiral', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3941,7 +3941,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Marine', 'Logia'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Fruit Smoke', 'Vice-Admiral'],
+    abilities: ['Fruit Smoke', 'Vice-Admiral', 'Haki armement', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3950,7 +3950,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Vice-Admiral'],
+    abilities: ['Vice-Admiral', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3968,7 +3968,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine', 'Paramecia'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Fruit du Séquestre', 'Sub-Admiral'],
+    abilities: ['Fruit du Séquestre', 'Sub-Admiral', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3977,7 +3977,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Sub-Admiral'],
+    abilities: ['Sub-Admiral', 'Épéiste', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4004,7 +4004,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Rear Admiral'],
+    abilities: ['Rear Admiral', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4040,7 +4040,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Colonel'],
+    abilities: ['Colonel', 'Épéiste', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4103,7 +4103,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Marine', 'Zoan Mythique'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Fruit of the Human, Buddha version', 'Observer'],
+    abilities: ['Fruit of the Human, Buddha version', 'Observer', 'Haki armement', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4112,7 +4112,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Captain of the Scientific Brigade'],
+    abilities: ['Captain of the Scientific Brigade', 'Marine'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4121,7 +4121,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Marine', 'Zoan Antique'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Fruit of the Dinosaur, Allosaurus version', 'Captain of the Sword'],
+    abilities: ['Fruit of the Dinosaur, Allosaurus version', 'Captain of the Sword', 'Haki armement'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4247,7 +4247,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Royaume de Goa'],
     relations: [{ to: 'sally-entoilette', kind: 'CREW' }, { to: 'outlook-iii', kind: 'CREW' }, { to: 'didit', kind: 'CREW' }, { to: 'makino', kind: 'CREW' }, { to: 'woop-slap', kind: 'CREW' }, { to: 'curly-dadan', kind: 'CREW' }],
-    abilities: ['Sovereign'],
+    abilities: ['Sovereign', 'Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4337,7 +4337,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Village de Shimotsuki'],
     relations: [{ to: 'koshiro', kind: 'CREW' }, { to: 'kuina', kind: 'CREW' }],
-    abilities: ['Resident'],
+    abilities: ['Resident', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4346,7 +4346,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Village de Shimotsuki'],
     relations: [{ to: 'kozaburo-shimotsuki', kind: 'CREW' }, { to: 'kuina', kind: 'CREW' }],
-    abilities: ['Dojo Master'],
+    abilities: ['Dojo Master', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4355,7 +4355,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Village de Shimotsuki'],
     relations: [{ to: 'kozaburo-shimotsuki', kind: 'CREW' }, { to: 'koshiro', kind: 'CREW' }],
-    abilities: ['Resident'],
+    abilities: ['Resident', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4454,7 +4454,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Baratie'],
     relations: [{ to: 'patty', kind: 'CREW' }, { to: 'canne', kind: 'CREW' }],
-    abilities: ['Owner and Chef'],
+    abilities: ['Owner and Chef', 'Cuisinier'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4463,7 +4463,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Baratie'],
     relations: [{ to: 'zeff', kind: 'CREW' }, { to: 'canne', kind: 'CREW' }],
-    abilities: ['Pastry chef'],
+    abilities: ['Pastry chef', 'Cuisinier'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4535,7 +4535,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Archipel Conomi'],
     relations: [{ to: 'belmer', kind: 'CREW' }, { to: 'nojiko', kind: 'CREW' }, { to: 'genzo', kind: 'CREW' }, { to: 'nako', kind: 'CREW' }, { to: 'chabo', kind: 'CREW' }, { to: 'johny', kind: 'CREW' }],
-    abilities: ['Fisherman'],
+    abilities: ['Fisherman', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4580,7 +4580,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Royaume maléfique de Black Drum', 'Paramecia'],
     relations: [{ to: 'kinderella', kind: 'CREW' }, { to: 'musshul', kind: 'CREW' }],
-    abilities: ['Fruit of the Glutton', 'King'],
+    abilities: ['Fruit of the Glutton', 'King', 'Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4598,7 +4598,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Ohara'],
     relations: [{ to: 'nico-olvia', kind: 'CREW' }, { to: 'haguar-d-sauro', kind: 'CREW' }],
-    abilities: ['Library Manager'],
+    abilities: ['Library Manager', 'Archéologue'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4607,7 +4607,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Ohara'],
     relations: [{ to: 'clover', kind: 'CREW' }, { to: 'haguar-d-sauro', kind: 'CREW' }],
-    abilities: ['Archaeologist'],
+    abilities: ['Archaeologist', 'Archéologue'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4634,7 +4634,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des fleurs'],
     relations: [{ to: 'ramen', kind: 'CREW' }],
-    abilities: [],
+    abilities: ['Haki des Rois'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -4679,7 +4679,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Little Garden'],
     relations: [{ to: 'broggy', kind: 'CREW' }],
-    abilities: ['Resident'],
+    abilities: ['Resident', 'Géant'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4706,7 +4706,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Île de Drum'],
     relations: [{ to: 'dolton', kind: 'CREW' }, { to: 'hiluluk', kind: 'CREW' }, { to: 'chess', kind: 'CREW' }, { to: 'kuromarimo', kind: 'CREW' }],
-    abilities: ['Doctor'],
+    abilities: ['Doctor', 'Médecin'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4715,7 +4715,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Île de Drum'],
     relations: [{ to: 'dolton', kind: 'CREW' }, { to: 'kureha', kind: 'CREW' }, { to: 'chess', kind: 'CREW' }, { to: 'kuromarimo', kind: 'CREW' }],
-    abilities: ['Doctor'],
+    abilities: ['Doctor', 'Médecin'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4742,7 +4742,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Alabasta'],
     relations: [{ to: 'nefertari-titi', kind: 'CREW' }, { to: 'nefertari-vivi', kind: 'CREW' }, { to: 'igaram', kind: 'CREW' }, { to: 'chaka', kind: 'CREW' }, { to: 'pell', kind: 'CREW' }, { to: 'kaloo', kind: 'CREW' }],
-    abilities: ['12th King'],
+    abilities: ['12th King', 'Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4760,7 +4760,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Alabasta'],
     relations: [{ to: 'nefertari-cobra', kind: 'CREW' }, { to: 'nefertari-titi', kind: 'CREW' }, { to: 'igaram', kind: 'CREW' }, { to: 'chaka', kind: 'CREW' }, { to: 'pell', kind: 'CREW' }, { to: 'kaloo', kind: 'CREW' }],
-    abilities: ['Princess'],
+    abilities: ['Princess', 'Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4976,7 +4976,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Water Seven'],
     relations: [{ to: 'icebarg', kind: 'CREW' }, { to: 'pauly', kind: 'CREW' }, { to: 'peeply-lulu', kind: 'CREW' }, { to: 'tilestone', kind: 'CREW' }, { to: 'zanbai', kind: 'CREW' }, { to: 'mozu', kind: 'CREW' }],
-    abilities: ['Tom\'s Workers (boss)'],
+    abilities: ['Tom\'s Workers (boss)', 'Charpentier'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5093,7 +5093,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Erbaf'],
     relations: [{ to: 'loki', kind: 'CREW' }, { to: 'jorl', kind: 'CREW' }, { to: 'jarl', kind: 'CREW' }, { to: 'kaashii', kind: 'CREW' }],
-    abilities: ['Resident'],
+    abilities: ['Resident', 'Géant'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5156,7 +5156,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Paramecia'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Fruit of the Garment', 'Red sheaths'],
+    abilities: ['Fruit of the Garment', 'Red sheaths', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5165,7 +5165,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Red sheaths'],
+    abilities: ['Red sheaths', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5183,7 +5183,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Red sheaths'],
+    abilities: ['Red sheaths', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5192,7 +5192,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Red sheaths'],
+    abilities: ['Red sheaths', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5201,7 +5201,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Red sheaths'],
+    abilities: ['Red sheaths', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5300,7 +5300,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['head of a yakuza clan in the capital of flowers'],
+    abilities: ['head of a yakuza clan in the capital of flowers', 'Épéiste'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5390,7 +5390,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Zoan Mythique'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Fruit of the Canid, Divine Wolf version', 'Resident'],
+    abilities: ['Fruit of the Canid, Divine Wolf version', 'Resident', 'Haki des Rois'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5426,7 +5426,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Dressrosa'],
     relations: [{ to: 'scarlett', kind: 'CREW' }, { to: 'kyros', kind: 'CREW' }, { to: 'viola', kind: 'CREW' }, { to: 'rebecca', kind: 'CREW' }, { to: 'gatz', kind: 'CREW' }, { to: 'tank-lepanto', kind: 'CREW' }],
-    abilities: ['King'],
+    abilities: ['King', 'Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5462,7 +5462,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Dressrosa'],
     relations: [{ to: 'riku-dold-iii', kind: 'CREW' }, { to: 'scarlett', kind: 'CREW' }, { to: 'kyros', kind: 'CREW' }, { to: 'viola', kind: 'CREW' }, { to: 'gatz', kind: 'CREW' }, { to: 'tank-lepanto', kind: 'CREW' }],
-    abilities: ['Next'],
+    abilities: ['Next', 'Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5597,7 +5597,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Royaume de Prodence'],
     relations: [{ to: 'dagama', kind: 'CREW' }],
-    abilities: ['Sovereign'],
+    abilities: ['Sovereign', 'Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5687,7 +5687,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Zoan Mythique'],
     relations: [],
-    abilities: ['Phoenix Fruit', 'Sphinx (doctor) / Command 1st Whitebeard Fleet'],
+    abilities: ['Phoenix Fruit', 'Sphinx (doctor) / Command 1st Whitebeard Fleet', 'Haki armement'],
     presenceExpectation: 'HIGH',
   },
   {
@@ -5795,7 +5795,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Skypiea'],
     relations: [{ to: 'gan-forr', kind: 'CREW' }, { to: 'pierre', kind: 'CREW' }, { to: 'conis', kind: 'CREW' }, { to: 'pagaya', kind: 'CREW' }, { to: 'amazon', kind: 'CREW' }, { to: 'chef-shandia', kind: 'CREW' }],
-    abilities: ['Resident / Shandia tribe'],
+    abilities: ['Resident / Shandia tribe', 'Haki observation'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5885,7 +5885,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Île des hommes-poissons'],
     relations: [{ to: 'octy', kind: 'CREW' }, { to: 'otohime', kind: 'CREW' }, { to: 'fukaboshi', kind: 'CREW' }, { to: 'ryuboshi', kind: 'CREW' }, { to: 'mamboshi', kind: 'CREW' }, { to: 'shirahoshi', kind: 'CREW' }],
-    abilities: ['Monarch'],
+    abilities: ['Monarch', 'Homme-poisson', 'Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5903,7 +5903,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Île des hommes-poissons'],
     relations: [{ to: 'octy', kind: 'CREW' }, { to: 'neptune', kind: 'CREW' }, { to: 'otohime', kind: 'CREW' }, { to: 'ryuboshi', kind: 'CREW' }, { to: 'mamboshi', kind: 'CREW' }, { to: 'shirahoshi', kind: 'CREW' }],
-    abilities: ['Prince'],
+    abilities: ['Prince', 'Homme-poisson'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5930,7 +5930,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Île des hommes-poissons'],
     relations: [{ to: 'octy', kind: 'CREW' }, { to: 'neptune', kind: 'CREW' }, { to: 'otohime', kind: 'CREW' }, { to: 'fukaboshi', kind: 'CREW' }, { to: 'ryuboshi', kind: 'CREW' }, { to: 'mamboshi', kind: 'CREW' }],
-    abilities: ['Princess'],
+    abilities: ['Princess', 'Homme-poisson', 'Royauté'],
     presenceExpectation: 'LOW',
   },
   {
@@ -6029,7 +6029,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Armée Révolutionnaire', 'Paramecia'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }],
-    abilities: ['Fruit of Hormones', 'Command of troop G'],
+    abilities: ['Fruit of Hormones', 'Command of troop G', 'Révolutionnaire'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -6047,7 +6047,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Armée Révolutionnaire', 'Paramecia'],
     relations: [{ to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }],
-    abilities: ['Fruit of Exaltation', 'Commander of the "Oriental" troop'],
+    abilities: ['Fruit of Exaltation', 'Commander of the "Oriental" troop', 'Révolutionnaire'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -6056,7 +6056,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Armée Révolutionnaire', 'Paramecia'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }],
-    abilities: ['Fruit of the Pousse-Pousse', 'Western" troop commander'],
+    abilities: ['Fruit of the Pousse-Pousse', 'Western" troop commander', 'Révolutionnaire'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -6065,7 +6065,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Armée Révolutionnaire'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }],
-    abilities: ['Commander of the "southern" troop'],
+    abilities: ['Commander of the "southern" troop', 'Révolutionnaire'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -6074,7 +6074,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Armée Révolutionnaire', 'Paramecia'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }],
-    abilities: ['Fruit of the Scissors', 'Sub-Commander of "G" Troop'],
+    abilities: ['Fruit of the Scissors', 'Sub-Commander of "G" Troop', 'Révolutionnaire'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -6092,7 +6092,7 @@ export const CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Armée Révolutionnaire'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }],
-    abilities: ['Lieutenant'],
+    abilities: ['Lieutenant', 'Révolutionnaire'],
     presenceExpectation: 'LOW',
   },
   {

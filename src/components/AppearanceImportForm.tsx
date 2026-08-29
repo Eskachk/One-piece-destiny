@@ -93,15 +93,19 @@ export function AppearanceImportForm({
           htmlFor="import"
           className="block text-xs uppercase tracking-widest hb-ink-soft"
         >
-          Import rapide
+          Personnages présents
         </label>
+        <p className="mt-1 text-[11px] hb-ink-soft">
+          Un nom par ligne. Seule la présence compte — inutile de compter les
+          cases.
+        </p>
         <button
           type="button"
           onClick={suggest}
           disabled={pending}
           className="mt-1 text-xs hb-accent underline disabled:opacity-40"
         >
-          Proposer un comptage d'après l'historique
+          Proposer une liste d'après l'historique
         </button>
         {note && (
           <p className="mt-1 text-[11px] hb-ink-soft">{note}</p>
@@ -112,7 +116,10 @@ export function AppearanceImportForm({
           onChange={(event) => setRaw(event.target.value)}
           rows={8}
           spellCheck={false}
-          placeholder={'Luffy 12\nZoro 7\nSanji 5\nBartolomeo 2'}
+          // Un nom par ligne, sans nombre : depuis le moteur v2, seule la
+          // présence compte. Un nombre reste toléré et ignoré, pour que
+          // d'anciennes notes se collent encore telles quelles.
+          placeholder={'Luffy\nZoro\nSanji\nBartolomeo'}
           className="mt-2 w-full rounded-lg border hb-border hb-input p-3 font-mono text-sm hb-ink placeholder:text-[#9aa8bf]"
         />
       </div>
@@ -132,7 +139,9 @@ export function AppearanceImportForm({
                   <span>
                     {appearance.name}
                   </span>
-                  <span className="hb-gold">{appearance.appearances}</span>
+                  {/* Une coche, pas un nombre : le v2 ne compte plus, et
+                      afficher « 1 » partout ferait croire à un comptage. */}
+                  <span className="hb-accent" aria-label="présent">✓</span>
                 </li>
               ))}
             </ul>
@@ -172,7 +181,7 @@ export function AppearanceImportForm({
           onClick={() => run(() => validateAppearances(raw))}
           className="transition-quick rounded-lg border hb-border px-4 py-2 text-sm hb-accent disabled:opacity-40"
         >
-          Valider les apparitions
+          Valider les présences
         </button>
 
         <button

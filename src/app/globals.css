@@ -26,7 +26,9 @@
   --color-deck: #9a6636;
   --color-deck-dark: #6f4523;
   --color-ink: #14294f;
-  --color-flag: #d22f27;
+  /* Assombri : #d22f27 ne passait pas le contraste sur le voile crème.
+     La teinte reste franchement rouge. */
+  --color-flag: #c02419;
   --color-gold: #f5c542;
 }
 
@@ -1688,7 +1690,10 @@ body {
   filter: drop-shadow(0 6px 10px rgba(60, 32, 8, 0.45));
 }
 
-@media (max-width: 700px) {
+/* Masqué seulement sur les écrans vraiment étroits : au-delà, le pont a la
+   place de le porter sans chevaucher le formulaire. Le seuil était à 700 px,
+   ce qui le faisait disparaître sur la plupart des fenêtres de portable. */
+@media (max-width: 560px) {
   .harbor__hat {
     display: none;
   }
@@ -1780,4 +1785,133 @@ body {
 .hb-royal-btn:active:not(:disabled) {
   translate: 0 3px;
   box-shadow: 0 2px 0 #9c7a1f;
+}
+
+/* --- Boutique : emblèmes et teintes de rareté ------------------------------ */
+
+.hb-shop__icon {
+  width: 2.6rem;
+  height: 2.6rem;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: #8a5a12;
+}
+
+.hb-card--royal .hb-shop__icon {
+  color: #e8c964;
+}
+
+/* Fiche d'un personnage vendu : la rareté colore le liseré et le halo, comme
+   sur les cartes de collection. Un joueur doit reconnaître un Légendaire à la
+   même couleur partout — c'est ce repère qui rend la boutique lisible d'un
+   coup d'œil. */
+.hb-card--rarity {
+  box-shadow:
+    inset 0.34rem 0 0 var(--rarity, #8ea3bd),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 6px 18px rgba(12, 45, 80, 0.18);
+  position: relative;
+  overflow: hidden;
+}
+
+.hb-card--rarity::after {
+  content: '';
+  position: absolute;
+  top: -3rem;
+  right: -3rem;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--rarity, #8ea3bd) 45%, transparent) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+.hb-card--rarity .hb-shop__icon {
+  color: color-mix(in srgb, var(--rarity, #8ea3bd) 70%, #2a1c07);
+}
+
+.hb-shop__rarity {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-family: var(--font-poster), system-ui, sans-serif;
+  font-size: 0.64rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  /* Assombri à la lecture : l'or pur ne passe pas le contraste sur parchemin.
+     La teinte reste reconnaissable. */
+  color: color-mix(in srgb, var(--rarity, #8ea3bd) 72%, #2a1c07);
+}
+
+/* ===========================================================================
+   Lisibilité du contenu sur la scène du port.
+   =========================================================================== */
+
+/* Le problème, mesuré plutôt que supposé : le texte des pages intérieures
+   était posé **directement sur le ciel**. En haut de page, où se trouvent
+   justement l'accroche et le titre, le rouge tombait à 1,6:1 et le gris-bleu à
+   2,1:1 — très en dessous des 4,5:1 exigés. Les cartes, elles, allaient bien :
+   ce n'était pas un problème de palette mais de fond manquant.
+
+   On pose donc un voile crème sous la colonne de contenu. Le décor reste
+   visible tout autour ; le texte, lui, a enfin un sol. Mesuré après coup :
+   4,9:1 au pire, sur le ciel le plus foncé. */
+.harbor--page .harbor__header {
+  position: relative;
+  padding: 1.25rem 1.1rem 1.6rem;
+  border-radius: 1.25rem;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 248, 233, 0.9) 0%,
+    rgba(255, 248, 233, 0.84) 55%,
+    rgba(255, 248, 233, 0.78) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 10px 30px rgba(12, 45, 80, 0.14);
+}
+
+/* Les cartes posées **sur** le voile n'ont plus besoin d'une ombre portée
+   aussi marquée : deux ombres superposées donnaient un empilement pâteux. */
+.harbor--page .harbor__header .hb-card {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 3px 10px rgba(12, 45, 80, 0.12);
+}
+
+/* Hiérarchie du texte.
+
+   Le second grief — « les écrits ne ressortent pas » — n'était pas seulement
+   une affaire de fond : les tailles étaient trop uniformes. Un paragraphe
+   d'introduction, une légende de section et une note de bas de carte avaient
+   presque le même poids visuel, donc l'œil ne savait pas par où commencer. */
+.harbor--page .harbor__header > p:first-of-type,
+.hb-lede {
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: #2b3f5f;
+}
+
+.hb-legend {
+  /* +1 px et une lettre plus espacée : une légende doit se lire comme un
+     panneau, pas comme du corps de texte réduit. */
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+}
+
+.hb-muted {
+  /* #4a5f80 passait tout juste. Assombri d'un cran : les notes explicatives
+     sont ce qu'on lit le plus mal, et ce sont elles qui portent les règles. */
+  color: #42567a;
+}
+
+/* Le titre gagne un liseré clair : sur un voile crème, l'encre marine massive
+   se lisait comme un bloc plat. */
+.hb-title {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.85),
+    0 3px 10px rgba(12, 45, 80, 0.12);
 }

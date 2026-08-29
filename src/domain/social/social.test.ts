@@ -191,7 +191,8 @@ describe('comptage assisté (§7)', () => {
       1180,
     );
     expect(suggestionsAsImportText(suggestions, CHARACTERS)).toBe(
-      'Monkey D. Luffy 12',
+      // Sans nombre : la zone de saisie attend des noms depuis le moteur v2.
+      'Monkey D. Luffy',
     );
   });
 

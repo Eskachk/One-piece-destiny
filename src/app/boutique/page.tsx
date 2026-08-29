@@ -3,6 +3,7 @@ import { HarborScene } from '@/components/HarborScene';
 import { Nav } from '@/components/Nav';
 import { ShopPanel } from '@/components/ShopPanel';
 import { CATALOG } from '@/domain/payments/catalog';
+import { RARITY_COLOR, RARITY_LABEL } from '@/domain/collection/rarity';
 import { requireSession } from '@/lib/auth/guards';
 import { paymentsState } from '@/lib/payments/provider';
 
@@ -29,12 +30,17 @@ export default async function ShopPage() {
 
   const state = paymentsState();
 
+  // La couleur est résolue **ici**, côté serveur : le panneau reçoit une
+  // valeur toute faite plutôt que la table des raretés, qu'il faudrait sinon
+  // embarquer dans le bundle client.
   const products = Object.values(CATALOG).map((product) => ({
     id: product.id,
     category: product.category,
     label: product.label,
     price: euros(product.priceCents),
     description: product.description,
+    rarityColor: product.rarity ? RARITY_COLOR[product.rarity] : null,
+    rarityLabel: product.rarity ? RARITY_LABEL[product.rarity] : null,
   }));
 
   return (

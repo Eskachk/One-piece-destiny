@@ -1,11 +1,20 @@
 /**
  * Import rapide des apparitions (cahier §6.3).
  *
- * L'administrateur colle un bloc de texte :
+ * L'administrateur colle **une liste de noms**, un par ligne :
  *
- *     Luffy 12
- *     Zoro 7
- *     Bartolomeo 2
+ *     Luffy
+ *     Zoro
+ *     Bartolomeo
+ *
+ * Depuis le moteur de score v2, seule la présence compte : compter les cases
+ * d'un personnage était long, discutable au bord — une silhouette au fond
+ * compte-t-elle ? — et impossible à contester sereinement. « Apparaît ou
+ * n'apparaît pas » se vérifie en une seconde.
+ *
+ * Un nombre reste **accepté** en fin de ligne et simplement ignoré : les
+ * anciennes notes collées telles quelles continuent de fonctionner, et les
+ * chapitres calculés en v1 gardent leur comptage d'origine en base.
  *
  * Le système mappe automatiquement les personnages connus et ne signale que
  * les anomalies. La publication reste humaine (§7) : ce parseur ne décide
@@ -103,17 +112,14 @@ export function parseAppearanceImport(
     const namePart = (match?.[1] ?? trimmed).trim();
     const countPart = match?.[2];
 
-    if (countPart === undefined) {
-      issues.push({
-        line,
-        raw: trimmed,
-        kind: 'MISSING_COUNT',
-        message: `Aucun nombre d'apparitions sur cette ligne.`,
-      });
-      return;
-    }
+    // Le nombre est **facultatif** : sans lui, la présence vaut 1.
+    //
+    // Depuis le moteur v2, seule la présence compte. Un nombre reste accepté
+    // et relu — les anciennes notes collées telles quelles continuent de
+    // fonctionner — mais il n'est plus exigé, et le moteur ne lira de toute
+    // façon que « > 0 ».
+    const count = countPart === undefined ? 1 : Number(countPart);
 
-    const count = Number(countPart);
     if (!Number.isInteger(count) || count < 0) {
       issues.push({
         line,
