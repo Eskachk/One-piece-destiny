@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
+import { logoutAction } from '@/app/actions/auth';
 import { MfaChallengeForm } from '@/components/MfaChallengeForm';
 import { getMfaPendingSession } from '@/lib/auth/session-store';
 
@@ -31,6 +32,22 @@ export default async function MfaChallengePage() {
       <div className="mt-8">
         <MfaChallengeForm />
       </div>
+
+      {/* Sortie de secours.
+          Sans elle, cette page était un cul-de-sac : quiconque commençait une
+          connexion sans pouvoir fournir son code y restait indéfiniment, et
+          toute navigation l'y ramenait — la session en attente survivait. Il
+          n'y avait littéralement aucun moyen de repartir, pas même en allant
+          sur /login.
+
+          Le bouton révoque la session en attente, ce qui est aussi la bonne
+          chose à faire du point de vue de la sécurité : une session laissée
+          ouverte à mi-authentification n'a aucune raison de traîner. */}
+      <form action={logoutAction} className="mt-6">
+        <button type="submit" className="text-xs text-turquoise underline">
+          Utiliser un autre compte
+        </button>
+      </form>
     </main>
   );
 }
