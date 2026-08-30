@@ -80,13 +80,34 @@ export async function setBirthDateAction(input: unknown): Promise<BirthDateResul
     return { ok: false, error: 'Cette date de naissance n’est pas plausible.' };
   }
 
-  const { error } = await db()
+  // **Écrit une seule fois.**
+  //
+  // Sans le `is('birth_date', null)`, la date se réécrivait à volonté : un
+  // compte bloqué parce que mineur n'avait qu'à se déclarer majeur, et la
+  // protection du §114 ne protégeait plus rien du tout. La date reste
+  // déclarative — on ne vérifie l'identité de personne — mais on ne la déclare
+  // qu'une fois.
+  //
+  // `select` renvoie les lignes réellement touchées : zéro ligne signifie que
+  // la date était déjà posée. Une correction passe alors par le support, ce
+  // qui est le bon niveau de friction pour une donnée qui ouvre des achats.
+  const { data, error } = await db()
     .from('user_accounts')
     .update({ birth_date: parsed.data })
-    .eq('player_id', session.playerId);
+    .eq('player_id', session.playerId)
+    .is('birth_date', null)
+    .select('id');
 
   if (error) {
     return { ok: false, error: 'Enregistrement impossible.' };
+  }
+
+  if (!data || data.length === 0) {
+    return {
+      ok: false,
+      error:
+        'Ta date de naissance est déjà enregistrée et ne peut pas être modifiée.',
+    };
   }
 
   // Journalisé sans la date : c'est une donnée personnelle, et savoir que le

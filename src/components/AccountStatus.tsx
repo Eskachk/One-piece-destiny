@@ -79,14 +79,14 @@ export function AccountStatus({
             id="birthDate"
             type="date"
             value={date}
-            disabled={pending}
+            disabled={pending || birthDate !== null}
             onChange={(event) => setDate(event.target.value)}
             className="rounded-md border hb-border hb-input px-2 py-1 font-mono text-xs hb-ink"
           />
           <button
             type="button"
             onClick={saveDate}
-            disabled={pending || date === '' || date === birthDate}
+            disabled={pending || date === '' || birthDate !== null}
             className="text-xs hb-accent underline disabled:opacity-30"
           >
             Enregistrer
@@ -94,8 +94,9 @@ export function AccountStatus({
         </div>
 
         <p className="mt-2 text-[11px] hb-ink-soft">
-          Déclarative : elle n’est pas vérifiée. Elle sert uniquement à
-          appliquer les restrictions d’âge.
+          {birthDate === null
+            ? 'Déclarative : elle n’est pas vérifiée. Elle sert à appliquer les restrictions d’âge, et ne se saisit qu’une fois.'
+            : 'Enregistrée, et non modifiable. Sans cela, un compte restreint n’aurait qu’à se redéclarer majeur.'}
         </p>
       </div>
 
