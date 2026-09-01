@@ -44,7 +44,7 @@ function Tile({
 }
 
 /**
- * Tableau de bord du Chapter HQ (cahier §82).
+ * Tableau de bord du Poste de commandement (cahier §82).
  *
  * Trois familles de chiffres, dans cet ordre : les joueurs, l'économie, les
  * chapitres. C'est l'ordre dans lequel on cherche une anomalie — un pic
@@ -75,7 +75,7 @@ export default async function AdminStatsPage() {
   return (
     <main className="hb-page mx-auto w-full max-w-3xl px-5 py-8">
       <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
-        Chapter HQ
+        Poste de commandement
       </p>
       <h1 className="font-display text-3xl text-parchment">Statistiques</h1>
 

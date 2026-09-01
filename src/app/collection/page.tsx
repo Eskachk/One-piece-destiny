@@ -67,7 +67,7 @@ export default async function CollectionPage() {
   return (
     <HarborScene variant="page">
       <p className="hb-eyebrow">
-        Captain&apos;s log
+        Journal de bord
       </p>
       <h1 className="hb-title mt-1">Collection</h1>
 
@@ -183,7 +183,7 @@ export default async function CollectionPage() {
       {missing.length > 0 && (
         <section className="mt-8">
           <h2 className="hb-legend">
-            Most wanted
+            Avis de recherche
           </h2>
           <p className="hb-muted mt-1 text-xs">
             {missingAll.length} personnage{missingAll.length > 1 ? 's' : ''} à
@@ -196,7 +196,7 @@ export default async function CollectionPage() {
                 className="hb-wanted"
               >
                 <span className="hb-legend block">
-                  Wanted
+                  Recherché
                 </span>
                 <span className="mt-1 block text-sm font-semibold">
                   {character.name}

@@ -11,6 +11,8 @@ import { Nav } from '@/components/Nav';
 import Link from 'next/link';
 import { CHARACTER_INDEX } from '@/data/characters';
 import { spoilerState } from '@/domain/chapter/lock';
+import { SpoilerVeil } from '@/components/SpoilerVeil';
+import { readDisplaySettings } from '@/lib/settings/store';
 import { percentileFromRank } from '@/domain/scoring/chapter-results';
 import {
   AWARD_LABEL,
@@ -92,10 +94,11 @@ export default async function LeaderboardPage() {
   // Trois requêtes indépendantes, lancées ensemble : enchaînées, elles
   // cumulaient trois allers-retours sur la page consultée par tout le monde
   // en même temps, le dimanche soir.
-  const [leaderboard, rawAnalysis, awards] = await Promise.all([
+  const [leaderboard, rawAnalysis, awards, display] = await Promise.all([
     getCachedLeaderboard(chapter.id),
     getCachedChapterAnalysis(chapter.id),
     getCachedChapterAwards(chapter.id),
+    readDisplaySettings(),
   ]);
   const analysis = rawAnalysis as ChapterAnalysis | null;
 
@@ -111,7 +114,15 @@ export default async function LeaderboardPage() {
       <p className="hb-eyebrow">
         Chapitre {chapter.chapterNumber}
       </p>
-      <h1 className="hb-title mt-1">Weekly bounty</h1>
+      <h1 className="hb-title mt-1">Prime hebdomadaire</h1>
+
+      {/* Voile personnel (paramètres). Distinct du verrou du §3 : celui-ci
+          intervient après publication, pour le joueur qui n'a pas encore lu le
+          chapitre. Tout ce qui suit révèle des apparitions. */}
+      <SpoilerVeil
+        active={display.spoilerShield}
+        label={`Afficher les résultats du chapitre ${chapter.chapterNumber}`}
+      >
 
       {/* Position personnelle : le percentile parle plus qu'un rang absolu. */}
       {mine && (
@@ -267,9 +278,18 @@ export default async function LeaderboardPage() {
         )}
       </section>
 
+      </SpoilerVeil>
+
       <Link href="/" className="hb-link mt-6 block text-center text-sm">
         Retour à l&apos;équipage
       </Link>
+
+      {/* La barre d'onglets manquait sur ce retour — celui que voient tous les
+          joueurs le dimanche soir, une fois les résultats publiés. On sortait
+          du classement par le lien de bas de page ou par le bouton retour du
+          navigateur. */}
+      <AdBanner />
+      <Nav />
     </HarborScene>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Anton, Caveat } from 'next/font/google';
 import Script from 'next/script';
 import { AppShell } from '@/components/AppShell';
+import { readDisplaySettings } from '@/lib/settings/store';
 import './globals.css';
 
 /** SEO : titres uniques, Open Graph, canonical (cahier §106). */
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     'Le chapitre est le spectacle. Ta prédiction est le jeu. Choisis 3 personnages avant dimanche 23:59:59 et affronte le classement hebdomadaire.',
   openGraph: {
     title: 'Grand Line Weekly — One Piece Quest',
-    description: 'Predict the next chapter.',
+    description: 'Devine qui apparaîtra dans le prochain chapitre.',
     type: 'website',
   },
   other: {
@@ -53,13 +54,34 @@ const caveat = Caveat({
   display: 'swap',
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  /*
+   * Langue et confort de lecture sont lus **ici**, au rendu serveur.
+   *
+   * Les appliquer côté navigateur ferait apparaître la page dans un état puis
+   * dans l'autre : une phrase en français remplacée par sa traduction, une
+   * animation qui démarre avant d'être coupée. Le premier rendu est déjà le
+   * bon.
+   *
+   * `lang` n'est pas décoratif : il décide de la césure, de la prononciation
+   * par un lecteur d'écran et de la langue proposée par le navigateur pour la
+   * traduction automatique.
+   */
+  const display = await readDisplaySettings();
+
   return (
-    <html lang="fr" className={`${anton.variable} ${caveat.variable}`}>
+    <html
+      lang={display.locale}
+      // Réglage du joueur, distinct de `prefers-reduced-motion` : le système
+      // dit une préférence générale, ceci dit un choix pour ce site. Les deux
+      // coupent les animations, aucun n'annule l'autre.
+      data-motion={display.reducedMotion ? 'reduced' : undefined}
+      className={`${anton.variable} ${caveat.variable}`}
+    >
       <body className="chart-grid">
         <AppShell>{children}</AppShell>
 

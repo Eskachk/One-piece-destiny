@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { HarborScene } from '@/components/HarborScene';
 import { Nav } from '@/components/Nav';
 import { collectionSummary } from '@/domain/collection/sets';
@@ -31,12 +32,12 @@ import { AdBanner } from '@/components/AdBanner';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Captain’s log',
+  title: 'Journal de bord',
   robots: { index: false, follow: false },
 };
 
 /**
- * Captain's Log (cahier §66) — profil du joueur.
+ * Journal de bord (cahier §66) — profil du joueur.
  *
  * Rassemble ce qui donne une identité sur la durée : division (§19), saison
  * (§20), style de jeu (§16) et historique des prédictions. Rien ici n'influe
@@ -94,9 +95,15 @@ export default async function ProfilePage() {
   // serveur : le navigateur ne les recoit que pour affichage.
   const { data: account } = await db()
     .from('user_accounts')
-    .select('email_verified_at, birth_date')
+    .select('email_verified_at, birth_date, players!inner(handle)')
     .eq('player_id', session.playerId)
     .maybeSingle();
+
+  // Le titre de la page affichait la partie locale de l'adresse e-mail. Le
+  // joueur a maintenant un pseudo, choisi par lui : c'est celui-là qu'on
+  // montre. Afficher une adresse — même tronquée — sur l'écran qu'on tend à
+  // quelqu'un pour lui montrer sa collection n'était pas une bonne idée.
+  const player = account?.players as unknown as { handle: string } | undefined;
 
   const restrictions = restrictionsForBirthDate(
     account?.birth_date ? new Date(`${account.birth_date}T00:00:00Z`) : null,
@@ -106,11 +113,14 @@ export default async function ProfilePage() {
   return (
     <HarborScene variant="page">
       <p className="hb-eyebrow">
-        Captain&apos;s log
+        Journal de bord
       </p>
-      <h1 className="hb-title mt-1">
-        {session.email.split('@')[0]}
-      </h1>
+      <div className="flex items-baseline justify-between gap-3">
+        <h1 className="hb-title mt-1">{player?.handle ?? 'Sans nom'}</h1>
+        <Link href="/parametres" className="hb-link shrink-0 text-sm">
+          Paramètres
+        </Link>
+      </div>
 
       {/* Style de jeu (§16) */}
       <section className="hb-card hb-card--wood mt-5">

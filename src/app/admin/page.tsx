@@ -56,7 +56,7 @@ export default async function AdminPage() {
         <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
           One Piece Quest
         </p>
-        <h1 className="font-display text-3xl text-parchment">Chapter HQ</h1>
+        <h1 className="font-display text-3xl text-parchment">Poste de commandement</h1>
 
       <nav className="mt-4 flex gap-3 text-sm">
         <Link href="/admin/stats" className="text-turquoise underline">Statistiques</Link>
@@ -112,7 +112,7 @@ export default async function AdminPage() {
         <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
           One Piece Quest
         </p>
-        <h1 className="font-display text-3xl text-parchment">Chapter HQ</h1>
+        <h1 className="font-display text-3xl text-parchment">Poste de commandement</h1>
       </header>
 
       <p className="mt-4 flex items-center justify-between rounded-lg border border-turquoise/25 bg-navy/50 p-3 text-sm text-parchment/70">

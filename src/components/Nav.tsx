@@ -1,4 +1,5 @@
 import { isAllowedAdmin } from '@/lib/auth/guards';
+import { readDisplaySettings } from '@/lib/settings/store';
 import { MainNav } from './MainNav';
 
 /**
@@ -15,5 +16,13 @@ import { MainNav } from './MainNav';
  * l'une d'elles.
  */
 export async function Nav() {
-  return <MainNav admin={await isAllowedAdmin()} />;
+  // La langue vient elle aussi du serveur : un composant client ne peut lire
+  // ni la session ni les cookies au rendu initial, et une barre qui change de
+  // langue après coup clignote sous les yeux du joueur.
+  const [admin, display] = await Promise.all([
+    isAllowedAdmin(),
+    readDisplaySettings(),
+  ]);
+
+  return <MainNav admin={admin} locale={display.locale} />;
 }

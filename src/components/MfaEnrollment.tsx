@@ -57,7 +57,7 @@ export function MfaEnrollment({
           href="/admin"
           className="transition-quick block w-full rounded-xl hb-goldfill px-4 py-3 text-center font-semibold hb-on-gold"
         >
-          Continuer vers le Chapter HQ
+          Continuer vers le Poste de commandement
         </Link>
       </section>
     );

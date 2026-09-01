@@ -1,5 +1,5 @@
 /**
- * Écran d'attente du Chapter HQ.
+ * Écran d'attente du Poste de commandement.
  *
  * Sans ce fichier, les pages d'administration héritaient de l'écran d'attente
  * du jeu (`app/loading.tsx`) : un décor de port ensoleillé et la barre
@@ -14,7 +14,7 @@
 export default function AdminLoading() {
   return (
     <main className="mx-auto w-full max-w-3xl px-5 py-8" aria-busy="true">
-      <span className="sr-only">Chargement du Chapter HQ…</span>
+      <span className="sr-only">Chargement du Poste de commandement…</span>
 
       <div className="hb-skeleton" style={{ width: '8rem', height: '0.7rem' }} />
       <div

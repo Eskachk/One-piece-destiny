@@ -118,7 +118,7 @@ export function WatchToggle({
       disabled={pending}
       aria-pressed={watching}
       aria-label={
-        watching ? 'Retirer de la watchlist' : 'Ajouter à la watchlist'
+        watching ? 'Retirer de la liste de surveillance' : 'Ajouter à la liste de surveillance'
       }
       onClick={() => startTransition(() => void toggleWatchAction(characterId))}
       className={`transition-quick text-sm disabled:opacity-40 ${

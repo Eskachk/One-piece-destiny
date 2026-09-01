@@ -37,7 +37,7 @@ export default async function AdminMfaPage() {
   // Un `redirect()` déclenché ici traversait la frontière de Suspense créée
   // par l'écran d'attente : Next ne peut alors plus émettre de 3xx, il place
   // l'ordre dans le flux — et le navigateur restait sur le squelette, sans
-  // erreur ni contenu. Le Chapter HQ paraissait cassé alors qu'il ne l'était
+  // erreur ni contenu. Le Poste de commandement paraissait cassé alors qu'il ne l'était
   // pas.
   //
   // Un écran explicite vaut mieux de toute façon : l'administrateur sait
@@ -46,7 +46,7 @@ export default async function AdminMfaPage() {
     return (
       <main className="hb-page mx-auto w-full max-w-[430px] px-5 py-10">
         <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
-          Chapter HQ
+          Poste de commandement
         </p>
         <h1 className="mt-1 font-display text-3xl text-parchment">
           Double authentification active
@@ -58,7 +58,7 @@ export default async function AdminMfaPage() {
           href="/admin"
           className="mt-6 inline-block text-sm text-turquoise underline"
         >
-          Retour au Chapter HQ
+          Retour au Poste de commandement
         </Link>
         <Nav />
       </main>
@@ -79,7 +79,7 @@ export default async function AdminMfaPage() {
   return (
     <main className="hb-page mx-auto w-full max-w-[430px] px-5 py-10">
       <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
-        Chapter HQ
+        Poste de commandement
       </p>
       <h1 className="mt-1 font-display text-3xl text-parchment">
         Double authentification

@@ -46,7 +46,7 @@ export default async function FraudPage() {
   return (
     <main className="hb-page mx-auto w-full max-w-3xl px-5 py-8">
       <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
-        Chapter HQ
+        Poste de commandement
       </p>
       <h1 className="font-display text-3xl text-parchment">Fraude</h1>
 

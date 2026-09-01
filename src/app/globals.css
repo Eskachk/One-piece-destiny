@@ -2361,3 +2361,116 @@ body {
      pas renvoyer le prix à la ligne. */
   overflow-wrap: anywhere;
 }
+
+/* ===========================================================================
+   Paramètres.
+   =========================================================================== */
+
+.hb-setting {
+  padding: 0.7rem 0.8rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(109, 68, 35, 0.22);
+}
+
+/* La rangée entière est un `<label>` : sur téléphone, viser une case de 16 px
+   se rate une fois sur deux. La cible fait ici toute la largeur (§55). */
+.hb-setting__row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.75rem;
+  cursor: pointer;
+}
+
+.hb-setting__box {
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+  accent-color: #a8321f;
+}
+
+.hb-setting__label {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+.hb-setting__hint {
+  margin-top: 0.15rem;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+/* ===========================================================================
+   Animations coupées par le joueur.
+
+   Distinct de `prefers-reduced-motion` : le système exprime une préférence
+   générale, ce réglage-ci un choix pour ce site — sur un téléphone lent, par
+   exemple, sans vouloir couper les animations partout ailleurs. Les deux
+   coupent, aucun n'annule l'autre.
+
+   `!important` est nécessaire : les animations sont déclarées par des règles
+   plus spécifiques, chacune dans son propre bloc `@media`. Les neutraliser une
+   par une demanderait de se souvenir d'ajouter une exception à chaque
+   nouvelle animation — c'est-à-dire de l'oublier.
+   =========================================================================== */
+
+[data-motion='reduced'] *,
+[data-motion='reduced'] *::before,
+[data-motion='reduced'] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ===========================================================================
+   Voile anti-spoiler personnel.
+
+   Il n'a pas l'air d'une erreur ni d'un blocage : c'est un choix du joueur, et
+   l'ouvrir doit ressembler à soulever un rabat, pas à débloquer une page.
+   =========================================================================== */
+
+.hb-veil {
+  margin-top: 1.25rem;
+  border-radius: 1rem;
+  border: 2px dashed rgba(109, 68, 35, 0.35);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.hb-veil__summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  /* 44 px de haut : c'est la cible tactile minimale, et ce résumé est le seul
+     élément cliquable de l'écran quand le voile est fermé. */
+  min-height: 3rem;
+  padding: 0.6rem 1rem;
+  font-family: var(--font-poster), system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Safari affiche encore son triangle par défaut malgré `list-style: none`. */
+.hb-veil__summary::-webkit-details-marker {
+  display: none;
+}
+
+.hb-veil__summary:focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 2px;
+  border-radius: 0.9rem;
+}
+
+.hb-veil[open] .hb-veil__summary {
+  border-bottom: 1px dashed rgba(109, 68, 35, 0.3);
+  opacity: 0.7;
+}
+
+.hb-veil__body {
+  padding: 0 0.7rem 0.9rem;
+}

@@ -22,7 +22,7 @@ import { AdSlot } from './AdSlot';
  * ## Où il n'apparaît pas
  *
  * Ni sur les écrans d'authentification, ni sur la boutique, ni dans le
- * Chapter HQ. Voir `AdSlot` pour le raisonnement.
+ * poste de commandement. Voir `AdSlot` pour le raisonnement.
  */
 export function AdBanner() {
   const slot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_BANNER;

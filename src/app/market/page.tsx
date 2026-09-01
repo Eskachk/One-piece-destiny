@@ -19,7 +19,7 @@ import { AdBanner } from '@/components/AdBanner';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-  title: 'Grand Line Market',
+  title: 'Marché de la Grand Line',
   robots: { index: false, follow: false },
 };
 
@@ -37,7 +37,7 @@ export default async function MarketPage() {
     return (
       <HarborScene variant="page">
         <h1 className="hb-title">
-          Grand Line Market
+          Marché de la Grand Line
         </h1>
         <p className="hb-card mt-5 text-sm">
           Le Market repose sur des transactions atomiques en base. Sans
@@ -50,6 +50,10 @@ export default async function MarketPage() {
         >
           Retour à l&apos;équipage
         </Link>
+        {/* La barre manquait sur cette branche : sans base configurée, le
+            joueur se retrouvait sur un écran sans aucune sortie autre que le
+            lien de bas de page. */}
+        <Nav />
       </HarborScene>
     );
   }
@@ -113,7 +117,7 @@ export default async function MarketPage() {
           🪙 {wallet.berries}
         </span>
       </div>
-      <h1 className="hb-title mt-1">Market</h1>
+      <h1 className="hb-title mt-1">Marché</h1>
 
       <p className="hb-muted mt-3 text-xs">
         {Math.round(MARKET_FEE_RATE * 100)} % de taxe sur chaque vente. Les
@@ -181,7 +185,7 @@ export default async function MarketPage() {
 
       <section className="mt-8">
         <h2 className="hb-legend">
-          Watchlist
+          Liste de surveillance
         </h2>
         <Watchlist watched={watched} />
       </section>

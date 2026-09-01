@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useLinkStatus } from 'next/link';
 import { usePathname } from 'next/navigation';
+import { MESSAGES, type Locale, type MessageKey } from '@/domain/i18n/locales';
 import {
   IconAdmin,
   IconCollection,
@@ -41,18 +42,25 @@ import {
  * suffit à rendre la transition immédiate à l'œil.
  */
 
+/**
+ * Les libellés sont des **clés**, pas du texte.
+ *
+ * La barre est le seul élément présent sur chaque page : c'est le premier
+ * endroit où une langue non traduite se verrait, et le dernier où on veut
+ * découvrir un oubli.
+ */
 const LINKS = [
-  { href: '/', label: 'Équipage', Icon: IconCrew },
-  { href: '/classement', label: 'Classement', Icon: IconRanking },
-  { href: '/collection', label: 'Collection', Icon: IconCollection },
-  { href: '/market', label: 'Market', Icon: IconMarket },
-  { href: '/boutique', label: 'Boutique', Icon: IconShop },
-  { href: '/profil', label: 'Profil', Icon: IconProfile },
-] as const;
+  { href: '/', label: 'nav.crew', Icon: IconCrew },
+  { href: '/classement', label: 'nav.ranking', Icon: IconRanking },
+  { href: '/collection', label: 'nav.collection', Icon: IconCollection },
+  { href: '/market', label: 'nav.market', Icon: IconMarket },
+  { href: '/boutique', label: 'nav.shop', Icon: IconShop },
+  { href: '/profil', label: 'nav.profile', Icon: IconProfile },
+] as const satisfies readonly { href: string; label: MessageKey; Icon: unknown }[];
 
 const ADMIN_LINK = {
   href: '/admin',
-  label: 'Admin',
+  label: 'nav.admin',
   Icon: IconAdmin,
 } as const;
 
@@ -67,8 +75,15 @@ function PendingDot() {
   return pending ? <span className="hb-nav__pending" aria-hidden="true" /> : null;
 }
 
-export function MainNav({ admin = false }: { admin?: boolean }) {
+export function MainNav({
+  admin = false,
+  locale = 'fr',
+}: {
+  admin?: boolean;
+  locale?: Locale;
+}) {
   const pathname = usePathname();
+  const t = (key: MessageKey) => MESSAGES[locale][key] ?? MESSAGES.fr[key];
 
   // L'onglet d'administration n'est **qu'un raccourci d'affichage**. Le
   // contrôle réel est sur la route : `requireAdmin` exige le rôle en base et
@@ -94,7 +109,7 @@ export function MainNav({ admin = false }: { admin?: boolean }) {
                 className={`hb-nav__item${active ? ' hb-nav__item--active' : ''}`}
               >
                 <link.Icon className="hb-nav__icon" />
-                <span>{link.label}</span>
+                <span>{t(link.label)}</span>
                 <PendingDot />
               </Link>
             </li>
