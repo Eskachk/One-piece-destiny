@@ -120,7 +120,7 @@ export function AuthForm({
             style={handleError ? { color: '#b4402f' } : undefined}
           >
             {handleError ??
-              `Visible au classement et sur le Market. ${HANDLE_MIN_LENGTH} à ${HANDLE_MAX_LENGTH} caractères, modifiable dans les paramètres.`}
+              `Visible au classement et sur le Marché. ${HANDLE_MIN_LENGTH} à ${HANDLE_MAX_LENGTH} caractères, modifiable dans les paramètres.`}
           </p>
         </div>
       )}

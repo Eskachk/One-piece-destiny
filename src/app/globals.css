@@ -2152,8 +2152,8 @@ body {
 
 /* Pont rehaussé : il doit porter deux objets, pas seulement suggérer du bois. */
 .harbor:not(.harbor--page) .harbor__deck {
-  height: 16vh;
-  min-height: 132px;
+  height: 17vh;
+  min-height: 146px;
 }
 
 /* Le formulaire remonte de la hauteur gagnée par le pont, sinon il repose
@@ -2166,7 +2166,7 @@ body {
   position: absolute;
   right: 6%;
   bottom: 30%;
-  width: clamp(4.5rem, 17vw, 8.5rem);
+  width: clamp(5.5rem, 21vw, 9rem);
   height: auto;
   rotate: -9deg;
   filter: drop-shadow(0 6px 10px rgba(60, 32, 8, 0.45));
@@ -2178,7 +2178,7 @@ body {
   position: absolute;
   left: 7%;
   bottom: 16%;
-  width: clamp(3.2rem, 12vw, 6rem);
+  width: clamp(3.9rem, 15vw, 6.5rem);
   height: auto;
   rotate: 3deg;
   filter: drop-shadow(0 7px 11px rgba(60, 32, 8, 0.45));

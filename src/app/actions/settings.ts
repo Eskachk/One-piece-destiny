@@ -13,7 +13,7 @@ import {
 import { audit } from '@/lib/audit';
 import { requireSession } from '@/lib/auth/guards';
 import { assertSameOrigin } from '@/lib/auth/request-guard';
-import { readDisplaySettings, writeDisplaySettings } from '@/lib/settings/store';
+import { writeDisplaySettings } from '@/lib/settings/store';
 import { db } from '@/lib/supabase-admin';
 
 /**
@@ -62,13 +62,18 @@ export async function updateDisplaySettingsAction(
 /**
  * Délai entre deux changements de pseudo.
  *
+ * Constante **non exportée** : un fichier `'use server'` ne peut exporter que
+ * des fonctions asynchrones. Chaque export y devient un point d'entrée
+ * appelable depuis le navigateur, et Next refuse donc tout ce qui n'en est pas
+ * un. La valeur ne sert qu'ici de toute façon.
+ *
  * Le pseudo est l'identité publique sur le Marché et au classement. Sans
  * délai, un vendeur peut conclure une vente douteuse puis changer de nom : les
  * ventes récentes le nomment encore, mais plus personne ne le retrouve. Trente
  * jours laissent le temps de corriger un choix qu'on regrette sans permettre
  * d'effacer une réputation.
  */
-export const HANDLE_COOLDOWN_DAYS = 30;
+const HANDLE_COOLDOWN_DAYS = 30;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -141,9 +146,4 @@ export async function changeHandleAction(input: unknown): Promise<HandleResult> 
 
   revalidatePath('/', 'layout');
   return { ok: true, handle };
-}
-
-/** Réglages d'affichage courants, pour le rendu initial du panneau. */
-export async function currentDisplaySettingsAction() {
-  return readDisplaySettings();
 }

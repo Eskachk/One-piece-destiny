@@ -257,6 +257,24 @@ export interface RecentSale {
   buyerHandle: string;
 }
 
+/**
+ * Forme d'une ligne rendue par la requête ci-dessous.
+ *
+ * Elle est déclarée à la main parce que le client Supabase n'infère les types
+ * que d'un `select` écrit **en une seule chaîne littérale**. Celui-ci est
+ * assemblé — les deux jointures nommées ne tiendraient pas sur une ligne
+ * lisible — et l'inférence retombe alors sur `GenericStringError`, c'est-à-dire
+ * sur rien d'exploitable.
+ */
+interface SaleRow {
+  id: string;
+  character_id: string;
+  price: number;
+  sold_at: string;
+  seller: { handle: string } | null;
+  buyer: { handle: string } | null;
+}
+
 export async function recentSales(limit = 12): Promise<RecentSale[]> {
   const { data, error } = await db()
     .from('market_transactions')
@@ -270,21 +288,18 @@ export async function recentSales(limit = 12): Promise<RecentSale[]> {
 
   if (error) throw new Error(`market_transactions.select : ${error.message}`);
 
-  return (data ?? []).map((row): RecentSale => {
-    const seller = row.seller as unknown as { handle: string } | null;
-    const buyer = row.buyer as unknown as { handle: string } | null;
+  const rows = (data ?? []) as unknown as SaleRow[];
 
-    return {
-      id: row.id,
-      characterId: row.character_id,
-      price: row.price,
-      soldAt: new Date(row.sold_at),
-      // Un compte supprimé laisse sa transaction derrière lui. Afficher un
-      // tiret vaut mieux que faire échouer toute la section.
-      sellerHandle: seller?.handle ?? '—',
-      buyerHandle: buyer?.handle ?? '—',
-    };
-  });
+  return rows.map((row): RecentSale => ({
+    id: row.id,
+    characterId: row.character_id,
+    price: row.price,
+    soldAt: new Date(row.sold_at),
+    // Un compte supprimé laisse sa transaction derrière lui. Afficher un tiret
+    // vaut mieux que faire échouer toute la section.
+    sellerHandle: row.seller?.handle ?? '—',
+    buyerHandle: row.buyer?.handle ?? '—',
+  }));
 }
 
 /** Ventes d'un personnage, pour l'historique des prix (§39). */

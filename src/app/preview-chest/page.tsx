@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { ChestOpening } from '@/components/chest3d/ChestOpening';
+import { RarityCard } from '@/components/RarityCard';
 import type { RevealedCard } from '@/app/actions/collection';
 
 export const dynamic = 'force-dynamic';
@@ -24,6 +25,31 @@ export default function PreviewChestPage() {
       <div className="mt-6 rounded-xl border border-turquoise/25 bg-navy/40 p-5">
         <ChestOpening cards={legendary} />
       </div>
+
+      {/*
+        Les cinq niveaux d'illustration côte à côte.
+
+        La cérémonie ne montre qu'un tirage à la fois, derrière une animation
+        de plusieurs secondes : impossible d'y comparer un Épique et un
+        Mythique. Ici les cinq raretés sont sur le même écran, ce qui est la
+        seule façon de voir si la progression se lit — c'est tout l'intérêt de
+        faire monter l'illustration avec la rareté.
+      */}
+      <h2 className="mt-10 font-display text-2xl text-parchment">
+        Aperçu des cartes
+      </h2>
+      <ul className="mt-4 grid grid-cols-2 gap-2">
+        {legendary.map((card) => (
+          <li key={card.characterId}>
+            <RarityCard
+              characterId={card.characterId}
+              name={card.name}
+              rarity={card.rarity}
+              attributes={card.attributes}
+            />
+          </li>
+        ))}
+      </ul>
     </main>
   );
 }

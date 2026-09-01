@@ -33,7 +33,7 @@ const RULES: { title: string; body: string; sanction: string }[] = [
       'Parrainages annulés et Berries retirées. En cas de volume, fermeture du compte.',
   },
   {
-    title: 'Pas d’arnaque sur le Market',
+    title: 'Pas d’arnaque sur le Marché',
     body:
       'Une carte s’échange contre des Berries, à l’intérieur du jeu, et rien d’autre. Toute vente contre un paiement extérieur, tout échange promis « après coup », toute usurpation d’identité pour obtenir une carte est une arnaque — y compris si l’autre joueur était d’accord.',
     sanction:

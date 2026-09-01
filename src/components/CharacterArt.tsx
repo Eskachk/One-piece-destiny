@@ -134,36 +134,45 @@ function SpriteFigure({
       <rect x={32 - shoulders / 2 - 4} y="31" width="4" height="20" rx="2" fill={palette.outfit} />
       <rect x={32 + shoulders / 2} y="31" width="4" height="20" rx="2" fill={palette.outfit} />
 
+      {/* Chevelure longue, **derrière** la tête. Une première version dessinait
+          toute la coiffure par-dessus : le visage disparaissait sous une masse
+          de couleur, et les yeux, tracés en sombre sur des cheveux sombres,
+          n'en ressortaient pas. Ce qui est devant la tête doit se limiter à ce
+          qui couvre réellement le front. */}
+      {traits.hair === 'long' && (
+        <path d="M21 18c0-10 5-15 11-15s11 5 11 15v14c-4 2-18 2-22 0Z" fill={palette.hair} />
+      )}
+
       {/* Cou et tête */}
       <rect x="30" y="24" width="4" height="6" fill={palette.skin} />
       <ellipse cx="32" cy="18" rx="9" ry="10" fill={palette.skin} />
 
-      {/* Coiffure. Quatre formes seulement, mais elles changent complètement la
-          silhouette en vignette — c'est là que se joue la reconnaissance. */}
+      {/* Ce qui couvre le front : frange, mèches ou chapeau. Quatre formes
+          seulement, mais elles changent complètement la silhouette en
+          vignette — c'est là que se joue la reconnaissance. */}
       {traits.hair === 'hat' ? (
         <>
           <ellipse cx="32" cy="11" rx="16" ry="4.5" fill={palette.hair} />
           <path d="M23 11c0-7 4-11 9-11s9 4 9 11c0 2-4 3-9 3s-9-1-9-3Z" fill={palette.hair} />
           <rect x="23" y="9" width="18" height="2.6" fill={palette.accent} />
         </>
-      ) : traits.hair === 'long' ? (
-        <path
-          d="M23 16c0-9 4-13 9-13s9 4 9 13v14c-3 2-15 2-18 0Z"
-          fill={palette.hair}
-        />
       ) : traits.hair === 'spiky' ? (
-        <path
-          d="M23 15 26 6l3 6 3-8 3 8 3-6 3 9c-3 2-15 2-18 0Z"
-          fill={palette.hair}
-        />
+        <path d="M23 15 26 6l3 6 3-8 3 8 3-6 3 9c-4 1.5-14 1.5-18 0Z" fill={palette.hair} />
       ) : (
-        <path d="M23 16c0-8 4-12 9-12s9 4 9 12c-3 2-15 2-18 0Z" fill={palette.hair} />
+        // Frange commune au court et au long : elle s'arrête au-dessus des
+        // yeux, qui sont à y = 18.
+        <path d="M23 15c0-8 4-12 9-12s9 4 9 12c-4 1.5-14 1.5-18 0Z" fill={palette.hair} />
       )}
 
       {/* Yeux : deux traits. Des pupilles rondes à cette taille donnent un
-          regard fixe et vaguement inquiétant. */}
-      <rect x="28" y="18" width="2" height="2.6" rx="1" fill="#171a20" />
-      <rect x="34" y="18" width="2" height="2.6" rx="1" fill="#171a20" />
+          regard fixe et vaguement inquiétant.
+
+          Cerclés de blanc : sur un teint foncé, un trait sombre seul se perdait
+          dans la joue. */}
+      <rect x="27.4" y="17.4" width="3.2" height="3.8" rx="1.4" fill="#ffffff" opacity="0.9" />
+      <rect x="33.4" y="17.4" width="3.2" height="3.8" rx="1.4" fill="#ffffff" opacity="0.9" />
+      <rect x="28.2" y="18" width="1.6" height="2.6" rx="0.8" fill="#171a20" />
+      <rect x="34.2" y="18" width="1.6" height="2.6" rx="0.8" fill="#171a20" />
 
       {/* Accessoire */}
       {traits.prop === 'sword' && (

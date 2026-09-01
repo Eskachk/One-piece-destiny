@@ -115,16 +115,21 @@ export default async function RootLayout({
           rien qu'un bloqueur de publicité ne coupe — et cela évite une
           dépendance de plus pour trois lignes de code.
 
-          Hors Vercel, `/_vercel/insights/script.js` n'existe pas : la requête
-          échoue en 404 et rien d'autre ne se produit. C'est sans conséquence,
-          et c'est pour cela que le script n'est pas conditionné.
+          **Posé uniquement sur Vercel.** Ailleurs, `/_vercel/insights/script.js`
+          n'existe pas : Next répond sa page 404 en HTML, et le navigateur
+          journalise deux erreurs — un 404 et un refus de type MIME — sur
+          *chaque* page. Vérifié en local : la console du développement était
+          rouge en permanence, ce qui est le meilleur moyen de ne plus regarder
+          les vraies erreurs.
         */}
-        <Script
-          id="vercel-analytics"
-          defer
-          strategy="afterInteractive"
-          src="/_vercel/insights/script.js"
-        />
+        {process.env.VERCEL === '1' && (
+          <Script
+            id="vercel-analytics"
+            defer
+            strategy="afterInteractive"
+            src="/_vercel/insights/script.js"
+          />
+        )}
       </body>
     </html>
   );
