@@ -67,7 +67,7 @@ export default async function CollectionPage() {
   return (
     <HarborScene variant="page">
       <p className="hb-eyebrow">
-        Journal de bord
+        Grand Line Weekly
       </p>
       <h1 className="hb-title mt-1">Collection</h1>
 

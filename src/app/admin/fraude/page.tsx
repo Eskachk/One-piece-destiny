@@ -76,7 +76,7 @@ export default async function FraudPage() {
             <strong className="text-treasure">{days(STARTER_CARD_LOCK_MS)} jours</strong>.
           </li>
           <li>
-            • Le Market s’ouvre{' '}
+            • Le Marché s’ouvre{' '}
             <strong className="text-treasure">{hours(MARKET_ACCESS_DELAY_MS)} h</strong>{' '}
             après l’inscription.
           </li>

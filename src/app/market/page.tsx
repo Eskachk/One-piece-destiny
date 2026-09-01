@@ -41,7 +41,7 @@ export default async function MarketPage() {
           Marché de la Grand Line
         </h1>
         <p className="hb-card mt-5 text-sm">
-          Le Market repose sur des transactions atomiques en base. Sans
+          Le Marché repose sur des transactions atomiques en base. Sans
           configuration Postgres, il est indisponible — plutôt que simulé en
           mémoire, ce qui donnerait une fausse assurance sur les doubles ventes.
         </p>

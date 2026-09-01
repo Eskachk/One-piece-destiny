@@ -122,7 +122,7 @@ export default async function HomePage() {
             il est sur bois, pas sur parchemin, pour peser davantage. */}
         <div className="hb-card hb-card--wood mt-4">
           <p className="hb-legend" style={{ color: '#f0d6a6' }}>
-            Crew lock
+            Verrouillage de l’équipage
           </p>
           <div className="mt-2">
             <Countdown

@@ -60,12 +60,12 @@ export default async function SettingsPage() {
         />
       </div>
 
-      <section className="mt-8">
-        <h2 className="hb-legend">{t('settings.notifications')}</h2>
-        <div className="mt-2">
-          <NotificationPreferences initial={preferences} />
-        </div>
-      </section>
+      {/* Pas d'intitulé ici : `NotificationPreferences` porte déjà le sien, et
+          deux fois « Notifications » à trois lignes d'intervalle se lit comme
+          un défaut de rendu. */}
+      <div className="mt-8">
+        <NotificationPreferences initial={preferences} />
+      </div>
 
       <Nav />
     </HarborScene>

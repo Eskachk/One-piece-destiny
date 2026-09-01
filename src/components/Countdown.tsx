@@ -34,7 +34,7 @@ export function Countdown({
   if (remaining === 0) {
     return (
       <p className="font-mono text-2xl tracking-[0.2em] hb-ko">
-        🔒 CREW LOCKED
+        🔒 VERROUILLÉ
       </p>
     );
   }

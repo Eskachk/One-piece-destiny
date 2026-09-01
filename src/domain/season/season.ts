@@ -18,7 +18,7 @@ export interface SeasonConfig {
 
 export const SEASON_01: SeasonConfig = {
   id: 'season-01',
-  name: 'Season 01',
+  name: 'Saison 01',
   chapters: 26,
   countedResults: 20,
 };

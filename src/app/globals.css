@@ -1913,8 +1913,19 @@ body {
 
 /* Fondu d'entrée. Il ne joue qu'à l'arrivée d'une page : l'ancienne reste
    affichée jusqu'à ce que la nouvelle soit prête, donc il n'y a pas d'écran
-   vide au milieu de la transition. Le léger décalage vertical suffit à
-   suggérer le mouvement sans donner l'impression que la page glisse. */
+   vide au milieu de la transition.
+
+   ⚠️ **Opacité seulement, jamais `transform`.** Une première version ajoutait un
+   `translateY` de 10 px pour suggérer le mouvement. Avec `animation-fill-mode:
+   both`, la valeur finale de l'animation reste appliquée : `transform: none`
+   est alors calculé comme une matrice identité, ce qui suffit à faire de la
+   coquille un **bloc conteneur pour les descendants en `position: fixed`**. La
+   barre d'onglets et le décor cessaient d'être ancrés à l'écran et se mettaient
+   à défiler avec la page — sur une page longue, la barre disparaissait purement
+   et simplement.
+
+   L'opacité, elle, ne crée aucun bloc conteneur. Et un fondu d'opacité est
+   exactement ce qu'on voulait : le décalage n'ajoutait rien qu'on remarque. */
 @media (prefers-reduced-motion: no-preference) {
   .app-shell {
     animation: shell-fade 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
@@ -1924,11 +1935,9 @@ body {
 @keyframes shell-fade {
   from {
     opacity: 0;
-    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: none;
   }
 }
 
@@ -2106,12 +2115,19 @@ body {
   position: relative;
 }
 
+/* ⚠️ **Pas de `backdrop-filter` ici.** Une première version en mettait un, pour
+   adoucir le décor sous le texte. Effet de bord : `backdrop-filter` crée un
+   bloc conteneur pour les descendants en `position: fixed` — et la barre
+   d'onglets est un descendant de cet en-tête. Elle se retrouvait ancrée au bas
+   du bloc de contenu au lieu du bas de l'écran, donc au milieu de la page.
+
+   Le voile opaque suffit de toute façon : ce qu'on veut, c'est que le texte ne
+   repose pas directement sur les nuages, pas que le décor soit flou. */
 .harbor--page .harbor__header {
   position: relative;
   padding: 1.1rem 1rem 1.4rem;
   border-radius: 1.15rem;
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(3px);
+  background: rgba(255, 255, 255, 0.66);
   box-shadow: 0 8px 26px rgba(12, 45, 80, 0.12);
 }
 

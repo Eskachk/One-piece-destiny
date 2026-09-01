@@ -33,6 +33,7 @@ npm test
 | `MFA_ENCRYPTION_KEY` | [docs/mfa.md](docs/mfa.md) |
 | Tâches planifiées (Vercel Cron) | [docs/cron.md](docs/cron.md) |
 | Déploiement Vercel | [docs/deploiement.md](docs/deploiement.md) |
+| **À faire avant l'ouverture au public** | [docs/lancement.md](docs/lancement.md) |
 
 Variables d'environnement : [`.env.example`](.env.example).
 
