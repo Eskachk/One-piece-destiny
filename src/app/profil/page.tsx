@@ -18,6 +18,7 @@ import { restrictionsForBirthDate } from '@/domain/compliance/age';
 import {
   MAX_REWARDED_REFERRALS,
   REFERRAL_BERRIES_REFERRER,
+  REFERRAL_MIN_CHAPTERS,
   SIGNUP_BERRIES_REFERRED,
   referralLink,
 } from '@/domain/social/referral';
@@ -286,6 +287,7 @@ export default async function ProfilePage() {
             referrerBerries={REFERRAL_BERRIES_REFERRER}
             referredBerries={SIGNUP_BERRIES_REFERRED}
             maxRewarded={MAX_REWARDED_REFERRALS}
+            minChapters={REFERRAL_MIN_CHAPTERS}
           />
         </>
       )}

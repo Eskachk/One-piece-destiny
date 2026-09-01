@@ -28,7 +28,7 @@ const RULES: { title: string; body: string; sanction: string }[] = [
   {
     title: 'Le parrainage récompense un joueur, pas une inscription',
     body:
-      'Le lien d’invitation sert à faire venir quelqu’un qui joue. C’est pour cela que le parrain n’est crédité qu’au moment où son filleul verrouille un premier équipage : fabriquer des comptes ne rapporte rien.',
+      'Le lien d’invitation sert à faire venir quelqu’un qui joue. Le parrain n’est crédité que lorsque son filleul a confirmé son adresse et joué trois chapitres : fabriquer des comptes ne rapporte rien, et attendre trois semaines pour rien non plus.',
     sanction:
       'Parrainages annulés et Berries retirées. En cas de volume, fermeture du compte.',
   },

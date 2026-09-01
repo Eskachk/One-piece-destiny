@@ -1,6 +1,7 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
+import { MARKET_TAG } from '@/lib/cache';
 import { z } from 'zod';
 import { CHARACTER_INDEX } from '@/data/characters';
 import {
@@ -258,6 +259,10 @@ export async function buyListingAction(
     console.warn('[antiabuse] évaluation impossible', (error as Error).message);
   }
 
+  // La liste des ventes récentes est partagée par tout le monde et servie
+  // depuis le cache : sans cette purge, l'acheteur ne verrait pas sa propre
+  // transaction avant une minute — et c'est la première chose qu'il cherche.
+  revalidateTag(MARKET_TAG);
   revalidatePath('/market');
   revalidatePath('/collection');
   return { ok: true };

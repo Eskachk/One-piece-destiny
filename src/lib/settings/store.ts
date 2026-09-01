@@ -1,5 +1,6 @@
 import 'server-only';
 
+import { cache } from 'react';
 import { cookies, headers } from 'next/headers';
 import {
   DEFAULT_LOCALE,
@@ -62,7 +63,7 @@ export interface DisplaySettings {
  * Toute valeur illisible retombe sur les valeurs par défaut. Un cookie
  * corrompu ne doit pas faire échouer une page.
  */
-export async function readDisplaySettings(): Promise<DisplaySettings> {
+async function loadDisplaySettings(): Promise<DisplaySettings> {
   const raw = (await cookies()).get(COOKIE)?.value;
 
   if (raw) {
@@ -84,6 +85,18 @@ export async function readDisplaySettings(): Promise<DisplaySettings> {
     spoilerShield: false,
   };
 }
+
+/**
+ * Réglages d'affichage de la requête en cours.
+ *
+ * `cache()` de React mémorise **par requête serveur**, pas globalement : la
+ * mise en page, la barre d'onglets et la page elle-même appellent tous cette
+ * fonction, et sans lui chaque rendu relirait trois fois les mêmes en-têtes.
+ *
+ * Ce n'est pas un cache partagé — il ne peut donc pas servir les réglages d'un
+ * joueur à un autre, ce qui serait la faute à ne pas commettre ici.
+ */
+export const readDisplaySettings = cache(loadDisplaySettings);
 
 export function serializeDisplaySettings(settings: DisplaySettings): string {
   return [

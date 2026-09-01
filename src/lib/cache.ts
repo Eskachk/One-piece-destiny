@@ -118,3 +118,40 @@ export function getCachedChapterAwards(chapterId: string) {
     { tags: [chapterTag(chapterId)], revalidate: 300 },
   )();
 }
+
+/** Étiquette du Marché, purgée dès qu'une vente aboutit. */
+export const MARKET_TAG = 'market:sales';
+
+/**
+ * Ventes récentes du Marché.
+ *
+ * Identique pour tout le monde : les douze dernières transactions ne dépendent
+ * pas du spectateur. Sans cache, chaque ouverture du Marché refaisait une
+ * jointure sur `market_transactions` — soit, à mille joueurs, mille fois la
+ * même requête pour le même résultat.
+ *
+ * Soixante secondes, et pas plus : une vente qui met une minute à apparaître
+ * passe inaperçue, cinq minutes se remarquent — un joueur qui vient d'acheter
+ * cherche sa transaction dans la liste. L'achat purge l'étiquette de toute
+ * façon ; le délai n'est qu'un filet.
+ *
+ * Aucune donnée personnelle n'y entre : les pseudos sont publics, c'est
+ * précisément ce que la section affiche.
+ *
+ * ⚠️ Les `Date` reviennent du cache en chaînes de caractères — même piège que
+ * `reviveChapter` plus haut. `soldAt` est reconstruite ici, sans quoi
+ * `toLocaleDateString` échouerait à la première page servie depuis le cache,
+ * et pas avant : le défaut n'apparaît qu'à la deuxième visite.
+ */
+export async function getCachedRecentSales() {
+  const rows = await unstable_cache(
+    async () => {
+      const { recentSales } = await import('@/lib/market/repository');
+      return recentSales();
+    },
+    ['market-recent-sales'],
+    { tags: [MARKET_TAG], revalidate: 60 },
+  )();
+
+  return rows.map((sale) => ({ ...sale, soldAt: new Date(sale.soldAt) }));
+}

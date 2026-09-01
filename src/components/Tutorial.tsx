@@ -31,17 +31,40 @@ interface Step {
 }
 
 /**
- * Cinq étapes, dans l'ordre où le joueur va réellement les rencontrer :
- * il ouvre son coffre, il compose, il attend, il découvre, il recommence.
- * Un tutoriel qui suit l'ordre des menus plutôt que celui du jeu se retient
- * moins bien.
+ * Sept étapes, dans l'ordre où le joueur va réellement les rencontrer : il
+ * ouvre son coffre, il compose, il attend, il découvre, il recommence. Un
+ * tutoriel qui suit l'ordre des menus plutôt que celui du jeu se retient moins
+ * bien.
+ *
+ * ## Ce que les deux étapes ajoutées viennent réparer
+ *
+ * L'ancienne version disait « un Commun peut rapporter plus qu'un Légendaire »
+ * et s'arrêtait là. C'est vrai, mais ça se lit comme une formule
+ * d'encouragement — et personne ne change sa façon de jouer sur une promesse
+ * qu'on ne lui explique pas.
+ *
+ * Le jeu a exactement deux leviers, et ce sont les seuls endroits où un joueur
+ * peut être meilleur qu'un autre :
+ *
+ *   — **le risque.** Un personnage attendu partout rapporte un bonus proche de
+ *     zéro ; un personnage que presque personne ne choisit et qui apparaît
+ *     quand même vaut jusqu'à 25 points de plus. Ce bonus ne regarde ni la
+ *     rareté ni le niveau — seulement l'improbabilité du pari ;
+ *   — **la synergie.** Un lien ne rapporte que si les **deux** personnages
+ *     figurent au chapitre. Trois personnages sans rapport entre eux valent
+ *     trois fois la base et rien d'autre.
+ *
+ * Les chiffres cités dans les étapes sont ceux du moteur (`scoring/v2.ts`) :
+ *   base 40 · synergie jusqu'à 35 · risque jusqu'à 25.
+ * S'ils changent là-bas, ils doivent changer ici — un tutoriel qui ment sur
+ * les points est pire qu'un tutoriel absent.
  */
 const STEPS: Step[] = [
   {
     title: 'Le chapitre est le spectacle',
     body:
-      'Chaque semaine, un nouveau chapitre de l’œuvre paraît. Ton jeu, c’est de deviner qui y apparaîtra le plus — avant qu’il sorte.',
-    hint: 'Aucune connaissance de spoiler n’aide : personne ne l’a lu.',
+      'Un nouveau chapitre paraît chaque semaine. Ton jeu : deviner qui y apparaîtra, avant qu’il sorte.',
+    hint: 'Personne ne l’a lu. Aucun spoiler ne peut t’aider.',
   },
   {
     title: 'Ouvre ton coffre d’arrivée',
@@ -52,14 +75,26 @@ const STEPS: Step[] = [
   {
     title: 'Compose ton équipage',
     body:
-      'Trois personnages, choisis parmi ceux que tu possèdes. Tu marques des points selon leurs apparitions réelles dans le chapitre — et selon les liens qui les unissent.',
+      'Trois personnages parmi ceux que tu possèdes. Chacun rapporte 40 points s’il apparaît dans le chapitre, et zéro sinon. Un absent ne rapporte rien, même très bien entouré.',
     hint: 'Onglet Équipage. Modifiable jusqu’au dimanche 23:59:59.',
   },
   {
-    title: 'La rareté n’est pas la puissance',
+    title: 'Le pari improbable rapporte gros',
     body:
-      'Un Commun peut rapporter plus qu’un Légendaire. La rareté dit la valeur de collection, jamais la valeur en jeu. C’est ce qui rend les paris intéressants.',
-    hint: 'Un personnage peu choisi qui apparaît beaucoup rapporte gros.',
+      'Au-dessus des 40 points de présence, un personnage peu attendu et peu choisi rapporte jusqu’à 25 points de plus. Un personnage que tout le monde aligne n’en rapporte presque aucun : il est déjà dans l’équipage de tes adversaires.',
+    hint: 'Un pari raté ne coûte rien de plus qu’un choix sûr absent : zéro dans les deux cas.',
+  },
+  {
+    title: 'Les liens ne comptent qu’à deux',
+    body:
+      'Un équipage, une rivalité, une famille : jusqu’à 35 points de plus par personnage. Mais un lien ne se déclenche que si les deux apparaissent dans le même chapitre. Trois personnages sans rapport entre eux, c’est trois fois la base et rien d’autre.',
+    hint: 'Vise une scène plausible, pas trois noms connus.',
+  },
+  {
+    title: 'La rareté ne donne aucun point',
+    body:
+      'Le moteur de score ne regarde jamais la rareté d’une carte. Un Commun peu choisi qui apparaît aux côtés de son capitaine bat un Mythique aligné par tout le monde. La rareté dit ce qu’une carte vaut en collection, jamais ce qu’elle vaut au classement.',
+    hint: 'C’est aussi pour ça qu’aucun achat ne peut te faire gagner.',
   },
   {
     title: 'Puis on recommence',

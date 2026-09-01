@@ -116,12 +116,15 @@ export function ReferralPanel({
   referrerBerries,
   referredBerries,
   maxRewarded,
+  minChapters,
 }: {
   link: string | null;
   referredCount: number;
   referrerBerries: number;
   referredBerries: number;
   maxRewarded: number;
+  /** Chapitres que le filleul doit avoir joués pour que le parrain soit payé. */
+  minChapters: number;
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -178,9 +181,11 @@ export function ReferralPanel({
 
       <p className="hb-muted mt-3 text-xs">
         Tu reçois <span className="hb-num">{referrerBerries}</span> Berries par
-        filleul, <strong>le jour où il verrouille son premier équipage</strong> —
+        filleul, une fois qu&apos;il a{' '}
+        <strong>confirmé son adresse et joué {minChapters} chapitres</strong> —
         pas à son inscription. Un compte créé pour la forme ne rapporte donc
-        rien. Plafond : {maxRewarded} filleuls récompensés.
+        rien, et attendre trois semaines pour rien non plus. Plafond :{' '}
+        {maxRewarded} filleuls récompensés.
       </p>
 
       <p className="hb-muted mt-2 text-xs">

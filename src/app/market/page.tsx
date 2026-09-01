@@ -14,6 +14,7 @@ import {
 import { requireSession } from '@/lib/auth/guards';
 import * as market from '@/lib/market/repository';
 import { getRepository } from '@/lib/repository';
+import { getCachedRecentSales } from '@/lib/cache';
 import { AdBanner } from '@/components/AdBanner';
 
 export const dynamic = 'force-dynamic';
@@ -64,7 +65,7 @@ export default async function MarketPage() {
     repository.getWallet(session.playerId),
     repository.getOwnedCharacterIds(session.playerId),
     market.getWatchlist(session.playerId),
-    market.recentSales(),
+    getCachedRecentSales(),
   ]);
 
   const owned = new Set(ownedIds);

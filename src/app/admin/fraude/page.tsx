@@ -3,12 +3,13 @@ import Link from 'next/link';
 import { requireAdmin } from '@/lib/auth/guards';
 import { suspiciousAccounts } from '@/lib/antiabuse/review';
 import { FraudCenter } from '@/components/FraudCenter';
-import {
 import { Nav } from '@/components/Nav';
+import {
   MARKET_ACCESS_DELAY_MS,
   MAX_ACCOUNTS_PER_PERSON,
   STARTER_CARD_LOCK_MS,
 } from '@/domain/antiabuse/config';
+import { REFERRAL_MIN_CHAPTERS } from '@/domain/social/referral';
 
 export const dynamic = 'force-dynamic';
 
@@ -80,8 +81,12 @@ export default async function FraudPage() {
             après l’inscription.
           </li>
           <li>
-            • Le parrain n’est payé que lorsque son filleul verrouille un
-            premier équipage.
+            • Le parrain n’est payé que lorsque son filleul a confirmé son
+            adresse et joué{' '}
+            <strong className="text-treasure">
+              {REFERRAL_MIN_CHAPTERS} chapitres
+            </strong>
+            . Deux inscriptions depuis la même empreinte ne rapportent rien.
           </li>
           <li>
             • Règle annoncée aux joueurs :{' '}
