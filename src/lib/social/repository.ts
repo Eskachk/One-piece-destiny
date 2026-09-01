@@ -197,6 +197,50 @@ export async function recordReferral(
 }
 
 /**
+ * Maturité d'un filleul : ce qui décide si son parrain est payé (§71, §43).
+ *
+ * Les trois lectures partent ensemble — elles sont indépendantes, et les
+ * enchaîner tripleraient l'attente sur un chemin déjà emprunté à chaque
+ * enregistrement d'équipage.
+ *
+ * `chaptersPlayed` compte les **chapitres distincts**, pas les enregistrements :
+ * réenregistrer six fois son équipage la même semaine ne doit pas valoir six
+ * semaines de présence.
+ */
+export async function referralMaturityOf(
+  referredId: string,
+  referrerId: string,
+): Promise<import('@/domain/social/referral').ReferralMaturity> {
+  const [account, teams, fingerprints] = await Promise.all([
+    db()
+      .from('user_accounts')
+      .select('email_verified_at')
+      .eq('player_id', referredId)
+      .maybeSingle(),
+    db().from('teams').select('chapter_id').eq('player_id', referredId).limit(200),
+    db()
+      .from('user_accounts')
+      .select('player_id, signup_ip')
+      .in('player_id', [referredId, referrerId]),
+  ]);
+
+  const chapters = new Set((teams.data ?? []).map((row) => row.chapter_id));
+
+  const ips = (fingerprints.data ?? [])
+    .map((row) => row.signup_ip)
+    .filter((ip): ip is string => Boolean(ip));
+
+  return {
+    emailVerified: Boolean(account.data?.email_verified_at),
+    chaptersPlayed: chapters.size,
+    // Signal faible pris ici en refus de récompense, jamais en sanction : un
+    // foyer ou un opérateur mobile produit la même empreinte pour deux
+    // personnes réelles. On ne paie pas, on ne punit pas.
+    sharesSignupFingerprint: ips.length === 2 && ips[0] === ips[1],
+  };
+}
+
+/**
  * Parrain d'un filleul **pas encore payé**, ou `null`.
  *
  * Lecture seule : elle sert à décider si le plafond du parrain autorise le

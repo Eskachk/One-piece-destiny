@@ -4,6 +4,12 @@ import Link from 'next/link';
 import { useActionState, useState } from 'react';
 import type { AuthFormState } from '@/app/actions/auth';
 import { PASSWORD_MIN_LENGTH } from '@/domain/auth/password-policy';
+import {
+  HANDLE_MAX_LENGTH,
+  HANDLE_MIN_LENGTH,
+  checkHandle,
+  describeHandleIssue,
+} from '@/domain/player/handle';
 
 /**
  * Formulaire de connexion / inscription — scène du port.
@@ -34,6 +40,16 @@ function LockIcon() {
   );
 }
 
+/** Silhouette de buste : le champ « qui es-tu » de l'inscription. */
+function CrewIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <circle cx="12" cy="8" r="3.6" />
+      <path d="M4.5 20a7.5 7.5 0 0 1 15 0" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function AnchorIcon() {
   return (
     <svg
@@ -60,10 +76,55 @@ export function AuthForm({
 }) {
   const [state, formAction, pending] = useActionState(action, { error: null });
   const [visible, setVisible] = useState(false);
+  const [handle, setHandle] = useState('');
   const isRegister = mode === 'register';
+
+  // Vérification immédiate, côté navigateur : le joueur voit tout de suite que
+  // son pseudo passe. Le serveur revalide de toute façon — ce contrôle-ci est
+  // un confort de saisie, jamais une garantie.
+  const handleCheck = handle.length > 0 ? checkHandle(handle) : null;
+  const handleError =
+    handleCheck && !handleCheck.valid
+      ? describeHandleIssue(handleCheck.issue!)
+      : null;
 
   return (
     <form action={formAction} className="harbor__card">
+      {isRegister && (
+        <div>
+          <label htmlFor="handle" className="harbor__label">
+            Pseudo
+          </label>
+          <div className="harbor__field">
+            <CrewIcon />
+            <input
+              id="handle"
+              name="handle"
+              type="text"
+              required
+              value={handle}
+              onChange={(event) => setHandle(event.target.value)}
+              minLength={HANDLE_MIN_LENGTH}
+              maxLength={HANDLE_MAX_LENGTH}
+              autoComplete="username"
+              autoCapitalize="off"
+              spellCheck={false}
+              placeholder="Ton nom de pirate"
+              aria-describedby="handle-hint"
+              className="harbor__input"
+            />
+          </div>
+          <p
+            id="handle-hint"
+            className="harbor__hint"
+            style={handleError ? { color: '#b4402f' } : undefined}
+          >
+            {handleError ??
+              `Visible au classement et sur le Market. ${HANDLE_MIN_LENGTH} à ${HANDLE_MAX_LENGTH} caractères, modifiable dans les paramètres.`}
+          </p>
+        </div>
+      )}
+
       <div>
         <label htmlFor="email" className="harbor__label">
           Adresse e-mail

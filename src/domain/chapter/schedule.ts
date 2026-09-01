@@ -84,7 +84,27 @@ export function expectedChapterNumber(now: Date): number {
   return ANCHOR.chapterNumber + weeks - skipped;
 }
 
-export type ScheduleConfidence = 'CONFIRMED' | 'AHEAD' | 'BEHIND' | 'UNKNOWN';
+export type ScheduleConfidence =
+  | 'CONFIRMED'
+  | 'AHEAD'
+  | 'BEHIND'
+  | 'STALE'
+  | 'UNKNOWN';
+
+/**
+ * Écart au-delà duquel la source externe est déclarée **figée**.
+ *
+ * api-onepiece.com s'arrête au chapitre 1085 : son jeu de données n'est plus
+ * alimenté, alors que la parution, elle, continue. L'écart n'est donc pas
+ * « une pause non déclarée » comme le disait l'ancien message — c'est une
+ * source morte, et le dire autrement envoyait l'administrateur vérifier une
+ * liste de pauses qui n'a rien à se reprocher.
+ *
+ * Quatre chapitres : au-delà d'un mois d'écart, aucune explication de
+ * calendrier ne tient. En deçà, une pause réellement oubliée reste l'hypothèse
+ * la plus probable, et le message doit continuer à la proposer.
+ */
+export const STALE_SOURCE_GAP = 4;
 
 export interface ScheduleProposal {
   /** Numéro retenu — toujours celui du calendrier. */
@@ -146,6 +166,21 @@ export function proposeChapter(
         `de plus que le calendrier. Si des chapitres sont réellement parus, ` +
         `corrige l'ancrage — mais n'ouvre pas les prédictions sur un chapitre ` +
         `déjà lisible.`,
+    };
+  }
+
+  if (-gap > STALE_SOURCE_GAP) {
+    return {
+      chapterNumber,
+      latestKnown,
+      // Le titre d'une source figée porte sur un chapitre vieux de plusieurs
+      // mois : l'afficher à côté du numéro du calendrier serait un mensonge.
+      title: null,
+      confidence: 'STALE',
+      note:
+        `Source externe figée : elle s'arrête au chapitre ${latestKnown}, soit ` +
+        `${-gap} de retard. Son jeu de données n'est plus alimenté — le ` +
+        `calendrier fait foi, et le titre du chapitre doit être saisi à la main.`,
     };
   }
 

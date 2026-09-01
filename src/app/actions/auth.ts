@@ -21,6 +21,17 @@ const CredentialsSchema = z.object({
   password: z.string().min(1).max(128),
 });
 
+/**
+ * Inscription : le pseudo s'ajoute aux identifiants.
+ *
+ * La validation de forme est faite par `checkHandle` dans le service, qui sait
+ * dire *ce qui* ne va pas. Ici on borne seulement la taille reçue — un champ
+ * de 10 Mo n'a pas à traverser la couche métier.
+ */
+const RegistrationSchema = CredentialsSchema.extend({
+  handle: z.string().trim().min(1).max(64),
+});
+
 export type AuthFormState = { error: string | null };
 
 function readCredentials(formData: FormData) {
@@ -60,14 +71,19 @@ export async function registerAction(
 ): Promise<AuthFormState> {
   await assertSameOrigin();
 
-  const parsed = readCredentials(formData);
+  const parsed = RegistrationSchema.safeParse({
+    email: formData.get('email'),
+    password: formData.get('password'),
+    handle: formData.get('handle'),
+  });
   if (!parsed.success) {
-    return { error: 'Adresse e-mail ou mot de passe invalide.' };
+    return { error: 'Pseudo, adresse e-mail ou mot de passe invalide.' };
   }
 
   const result = await register(
     parsed.data.email,
     parsed.data.password,
+    parsed.data.handle,
     await getRequestContext(),
   );
 

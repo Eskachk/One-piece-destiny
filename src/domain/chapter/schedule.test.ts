@@ -51,6 +51,21 @@ describe('confrontation à la source externe', () => {
     expect(proposal.note).toContain('pauses');
   });
 
+  it('déclare la source figée quand elle décroche franchement', () => {
+    // Cas réel : api-onepiece.com s'arrête au chapitre 1085 alors que la
+    // parution en est à plus de 1180. Ce n'est pas une pause oubliée, c'est
+    // un jeu de données mort — et le message doit le dire, sinon
+    // l'administrateur cherche une erreur de calendrier qui n'existe pas.
+    const proposal = proposeChapter(after(2), ANCHOR.chapterNumber - 90, 'Vieux titre');
+
+    expect(proposal.confidence).toBe('STALE');
+    expect(proposal.chapterNumber).toBe(ANCHOR.chapterNumber + 2);
+    expect(proposal.note).toContain('figée');
+    // Le titre d'un chapitre vieux de deux ans ne doit pas être proposé pour
+    // celui de cette semaine.
+    expect(proposal.title).toBeNull();
+  });
+
   it('fonctionne sans la source', () => {
     // Réseau coupé : le calendrier suffit, et c'est tout l'intérêt de ne pas
     // dépendre d'un tiers pour décider.

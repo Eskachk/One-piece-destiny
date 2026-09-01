@@ -3,6 +3,7 @@ import 'server-only';
 import {
   MAX_REWARDED_REFERRALS,
   REFERRAL_BERRIES_REFERRER,
+  evaluateReferralPayout,
 } from '@/domain/social/referral';
 import { getRepository } from '@/lib/repository';
 import { dispatch } from '@/lib/notifications/dispatch';
@@ -10,6 +11,7 @@ import {
   confirmReferral,
   isSocialAvailable,
   pendingReferrerOf,
+  referralMaturityOf,
   releasePendingBerries,
   rewardedReferralCount,
 } from './repository';
@@ -17,9 +19,11 @@ import {
 /**
  * Versement au parrain (cahier §71, §43).
  *
- * Déclenché quand le filleul verrouille un équipage — pas à son inscription.
- * Un compte fabriqué s'arrête avant cette étape ; un joueur réellement ramené
- * la franchit dès sa première semaine.
+ * Appelé à **chaque** enregistrement d'équipage, pas seulement au premier :
+ * les conditions de maturité (adresse confirmée, trois chapitres joués) se
+ * remplissent avec le temps, et il faut donc les réexaminer à chaque passage.
+ * Tant qu'elles ne sont pas réunies, la ligne reste en attente et rien n'est
+ * consommé.
  *
  * Ordre des opérations, et il n'est pas interchangeable :
  *
@@ -27,9 +31,11 @@ import {
  *   2. **vérifier le plafond** — au-delà, on ne touche pas à la ligne. La
  *      marquer « récompensée » sans payer la ferait disparaître du compteur
  *      tout en la comptant comme honorée ;
- *   3. **réclamer** la ligne de façon atomique, puis créditer.
+ *   3. **vérifier la maturité du filleul** (§43) — même raisonnement : on
+ *      laisse la ligne en attente plutôt que de la consommer pour rien ;
+ *   4. **réclamer** la ligne de façon atomique, puis créditer.
  *
- * L'étape 3 est le verrou contre le double paiement : `confirmReferral` ne
+ * L'étape 4 est le verrou contre le double paiement : `confirmReferral` ne
  * rend un parrain que si la ligne était encore en attente.
  */
 export async function payReferrerOnFirstCrew(
@@ -56,6 +62,11 @@ export async function payReferrerOnFirstCrew(
     return;
   }
 
+  // Le filleul a-t-il assez joué ? Sans ce contrôle, fabriquer un compte et
+  // cliquer trois personnages suffisait à encaisser 800 Berries.
+  const maturity = await referralMaturityOf(playerId, referrerId);
+  if (!evaluateReferralPayout(maturity).pay) return;
+
   const claimed = await confirmReferral(playerId);
   if (!claimed) return;
 
@@ -68,7 +79,7 @@ export async function payReferrerOnFirstCrew(
   await dispatch(claimed, {
     kind: 'REWARD_RECEIVED',
     title: '🏴 Ton filleul a pris la mer',
-    body: `+${REFERRAL_BERRIES_REFERRER} Berries : quelqu'un que tu as invité vient de verrouiller son premier équipage.`,
+    body: `+${REFERRAL_BERRIES_REFERRER} Berries : quelqu'un que tu as invité a confirmé son adresse et joué trois chapitres.`,
     href: '/profil',
     dedupeKey: `referral:${playerId}`,
   });

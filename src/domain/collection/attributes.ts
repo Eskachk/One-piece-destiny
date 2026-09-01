@@ -12,6 +12,19 @@ import type { Character } from '../types';
  * est dérivé du référentiel, donc un import ultérieur met les symboles à jour
  * sans travail supplémentaire.
  *
+ * ## Couverture
+ *
+ * La première version ne connaissait qu'une vingtaine de motifs, presque tous
+ * francophones. Sur 740 personnages, **211 n'affichaient aucun attribut** et
+ * 187 n'en affichaient qu'un seul — « Pirate » — parce que leur seule donnée
+ * était un poste écrit en anglais : `Officer`, `Resident`, `Tangerine grower`,
+ * `Bestial Guard`. Une carte sans attribut n'est pas neutre : elle donne
+ * l'impression d'un personnage vide, alors que la donnée existait.
+ *
+ * Les règles couvrent donc maintenant le vocabulaire réellement présent dans
+ * l'import, dans les deux langues, y compris les postes civils. Une carte finit
+ * toujours par dire quelque chose de son personnage.
+ *
  * Contrainte §122 : aucun visuel de l'œuvre. Ce sont des pictogrammes Unicode,
  * pas des illustrations.
  */
@@ -28,10 +41,22 @@ export interface Attribute {
 /**
  * Règles de détection, **dans l'ordre de priorité**.
  *
- * L'ordre compte : une carte n'affiche que quelques symboles, et il vaut mieux
- * montrer « Haki des Rois » que « Résident ». Les motifs couvrent les deux
- * langues parce que le référentiel mélange saisie manuelle en français et
- * import en anglais.
+ * L'ordre compte, et il n'est pas alphabétique : une carte n'affiche que
+ * quelques symboles, et il vaut mieux montrer « Haki des Rois » que
+ * « Résident ». Les familles se succèdent du plus au moins distinctif :
+ *
+ *   1. le Haki — ce qui sépare un combattant de premier plan des autres ;
+ *   2. le type de fruit du démon ;
+ *   3. le métier ou l'arme, c'est-à-dire ce que le personnage sait faire ;
+ *   4. l'espèce ;
+ *   5. le camp ;
+ *   6. le grade ;
+ *   7. le rôle civil, en dernier recours — mais affiché, parce qu'une carte
+ *      vide vaut moins qu'une carte qui dit « aubergiste ».
+ *
+ * Les motifs couvrent les deux langues : le référentiel mélange saisie
+ * manuelle en français et import en anglais, et cette incohérence-là ne se
+ * corrigera pas — elle vient de la source.
  */
 const RULES: {
   id: string;
@@ -39,26 +64,80 @@ const RULES: {
   label: string;
   match: RegExp;
 }[] = [
+  // --- 1. Haki -------------------------------------------------------------
   { id: 'conqueror', symbol: '👑', label: 'Haki des Rois', match: /haki des rois|conqueror/i },
   { id: 'armament', symbol: '✊', label: 'Haki de l’armement', match: /haki (de l.)?armement|armament/i },
   { id: 'observation', symbol: '👁', label: 'Haki de l’observation', match: /haki (de l.)?observation|observation haki/i },
+
+  // --- 2. Fruits du démon --------------------------------------------------
   { id: 'logia', symbol: '🌪', label: 'Fruit Logia', match: /\blogia\b/i },
+  { id: 'mythic-zoan', symbol: '🐉', label: 'Zoan mythique', match: /zoan mythique|mythical zoan/i },
+  { id: 'ancient-zoan', symbol: '🦕', label: 'Zoan antique', match: /zoan antique|ancient zoan/i },
   { id: 'zoan', symbol: '🐾', label: 'Fruit Zoan', match: /\bzoan\b/i },
   { id: 'paramecia', symbol: '🌀', label: 'Fruit Paramecia', match: /\bparamecia\b/i },
   { id: 'smile', symbol: '😈', label: 'SMILE', match: /\bsmile\b/i },
-  { id: 'fruit', symbol: '🍎', label: 'Fruit du démon', match: /fruit du d.mon|devil fruit/i },
-  { id: 'sword', symbol: '⚔️', label: 'Épéiste', match: /sabre|samurai|swordsman|épée|epee|sword/i },
-  { id: 'marine', symbol: '⚓', label: 'Marine', match: /^marine$|admiral|amiral|vice-admiral|colonel|lieutenant/i },
-  { id: 'captain', symbol: '🎖', label: 'Capitaine', match: /^captain$|capitaine/i },
-  { id: 'doctor', symbol: '⚕️', label: 'Médecin', match: /doctor|m.decin/i },
-  { id: 'navigator', symbol: '🧭', label: 'Navigation', match: /navigation|navigator/i },
+  // Attrape-tout : l'import écrit le nom du fruit sans jamais dire « fruit du
+  // démon » — « Armo-Fruit », « Horse Fruit », « Ramollo fruit », « Fruit de
+  // la Couture ». Sans cette règle, un utilisateur de fruit passait pour un
+  // combattant ordinaire.
+  { id: 'fruit', symbol: '🍎', label: 'Fruit du démon', match: /fruit du d.mon|devil fruit|[- ]fruit\b|\bfruit\b/i },
+
+  // --- 3. Métiers et armes -------------------------------------------------
+  { id: 'sword', symbol: '⚔️', label: 'Épéiste', match: /sabre|samura|swordsman|épéiste|epeiste|escrime|épée|epee|sword|dojo/i },
+  { id: 'doctor', symbol: '⚕️', label: 'Médecin', match: /doctor|m.decin|m.decine|medical|surgeon|chirurgien/i },
+  { id: 'navigator', symbol: '🧭', label: 'Navigation', match: /navigation|navigator|barreur|helmsman|climat/i },
   { id: 'shipwright', symbol: '🛠', label: 'Charpentier', match: /carpenter|charpentier|shipwright/i },
-  { id: 'cook', symbol: '🍳', label: 'Cuisinier', match: /^cook$|cuisinier|chef/i },
-  { id: 'sniper', symbol: '🎯', label: 'Tireur', match: /sniper|tireur|musketeer/i },
-  { id: 'royal', symbol: '🏰', label: 'Royauté', match: /^(king|queen|prince|princess|sovereign|roi|reine)$/i },
-  { id: 'giant', symbol: '🗿', label: 'Géant', match: /giant|g.ant/i },
-  { id: 'fishman', symbol: '🐟', label: 'Homme-poisson', match: /homme|fishman|merfolk|poisson/i },
-  { id: 'pirate', symbol: '🏴', label: 'Pirate', match: /\bcrew\b|pirate|équipage|equipage/i },
+  { id: 'cook', symbol: '🍳', label: 'Cuisinier', match: /^cook$|cuisinier|\bchef\b|cook\b|baker|p.tissier/i },
+  { id: 'sniper', symbol: '🎯', label: 'Tireur', match: /sniper|tireur|musketeer|mousquetaire|\btir\b|marksman/i },
+  { id: 'musician', symbol: '🎵', label: 'Musicien', match: /musicien|musician|chanteu|singer/i },
+  { id: 'archaeologist', symbol: '📜', label: 'Archéologue', match: /arch.olog/i },
+  { id: 'scientist', symbol: '⚗️', label: 'Scientifique', match: /scientist|scientifique|savant|chercheur|researcher/i },
+  { id: 'assassin', symbol: '🗡', label: 'Assassin', match: /assassin|tueur|hitman/i },
+  { id: 'fighter', symbol: '🥊', label: 'Combattant', match: /fighter|combat|combattant|martial|karat|boxe|lutteur|wrestler|gladiat/i },
+
+  // --- 4. Espèces ----------------------------------------------------------
+  { id: 'giant', symbol: '🗿', label: 'Géant', match: /\bgiant\b|g.ant/i },
+  { id: 'fishman', symbol: '🐟', label: 'Homme-poisson', match: /homme-poisson|fishman|merfolk|sir.ne|mermaid|poisson/i },
+  { id: 'mink', symbol: '🦁', label: 'Mink', match: /\bmink\b|fourrure|musketeer unit|\bzo\b/i },
+  { id: 'skypiean', symbol: '☁️', label: 'Habitant du ciel', match: /skypiea|shandia|birka|ciel/i },
+  { id: 'cyborg', symbol: '🤖', label: 'Corps modifié', match: /cyborg|pacifista|seraph|s.raphin|homie|clone|robot/i },
+
+  // --- 5. Camps ------------------------------------------------------------
+  { id: 'marine', symbol: '⚓', label: 'Marine', match: /^marine$|\bmarine\b|admiral|amiral|colonel|lieutenant|commodore|ensign|private|rear.admiral|commander-in-chief/i },
+  { id: 'cipher-pol', symbol: '🕶', label: 'Cipher Pol', match: /cipher pol|special agent|\bcp\d|sword/i },
+  { id: 'revolutionary', symbol: '🔥', label: 'Armée révolutionnaire', match: /r.volutionnaire|revolutionary|arm.e r.volutionnaire/i },
+  { id: 'celestial', symbol: '🕊', label: 'Dragon Céleste', match: /dragon c.leste|celestial dragon|tenryubito|doyen|council of five/i },
+  // Les Cinq Doyens et les Chevaliers Divins n'ont pour toute donnée qu'une
+  // formule — « God of justice », « Absolute ruler of the world ». Sans cette
+  // règle, les personnages les plus haut placés de l'œuvre étaient aussi les
+  // seules cartes entièrement muettes.
+  { id: 'world-gov', symbol: '⚔', label: 'Gouvernement Mondial', match: /god of |absolute ruler|divine knight|chevalier divin|gorosei|world government|gouvernement mondial/i },
+  { id: 'warden', symbol: '⛓', label: 'Impel Down', match: /impel down|guard|gardien|geôlier|geolier|warden|jailer/i },
+  { id: 'samurai-land', symbol: '🎌', label: 'Pays des Wa', match: /pays des wa|wano|shogun|kozuki|kurozumo|shimotsuki|red sheaths|oniwabanshu/i },
+
+  // --- 6. Grades -----------------------------------------------------------
+  { id: 'royal', symbol: '🏰', label: 'Royauté', match: /^(king|queen|prince|princess|sovereign|roi|reine|royaut.)$|royaut.|\bking\b|\bqueen\b|\bprince(ss)?\b|souverain|monarque/i },
+  { id: 'captain', symbol: '🎖', label: 'Capitaine', match: /^captain$|capitaine|co-captain|vice-captain|second-in-command|commander|chief|g.n.ral|general/i },
+  { id: 'officer', symbol: '🏅', label: 'Officier', match: /officer|officier|tobi roppo|all star|gifters|numbers|lieutenant of|advisor|manager|director|chairman/i },
+  { id: 'star', symbol: '⭐', label: 'Vedette', match: /vedette|superstar|star\b|idol/i },
+
+  // --- 7. Rôles civils -----------------------------------------------------
+  { id: 'craftsman', symbol: '🔨', label: 'Artisan', match: /armurier|blacksmith|forgeron|smith|galley-la|cabinetmaker|sailmaker|coater/i },
+  { id: 'explorer', symbol: '🗺', label: 'Explorateur', match: /explorer|explorat|nomad|voyageur|lighthouse|phare|stationmaster|conductor/i },
+  { id: 'strategist', symbol: '♟', label: 'Stratège', match: /strategist|strat.g|tactic/i },
+  { id: 'merchant', symbol: '🪙', label: 'Commerce', match: /owner|marchand|merchant|store|shop|bartender|barman|grower|farmer|fisherman|p.cheur|vendeur|trader|butler|majordome|loan|usurier|banquier/i },
+  { id: 'mayor', symbol: '🏛', label: 'Notable', match: /mayor|maire|sheriff|noble|advis|conseiller|ministre|minister|dean/i },
+  { id: 'civilian', symbol: '🏘', label: 'Habitant', match: /resident|r.sident|habitant|villager|student|.tudiant|subordinate|citoyen|employee|employ.|squadron|escadron|yeti|vegapunk/i },
+
+  // --- 8. Repli ------------------------------------------------------------
+  //
+  // Deux replis, dans cet ordre. Les noms d'équipages de l'import ne
+  // contiennent pas tous le mot « crew » : « Armarda du Chapeau de Paille »,
+  // « Baggy's Delivery » et « Primate League » n'en portent aucun, et leurs
+  // membres se retrouvaient sans le moindre symbole alors que ce sont des
+  // pirates ou des alliés.
+  { id: 'ally', symbol: '🤝', label: 'Grande Flotte', match: /armarda|armada|grand fleet|grande flotte|alliance|primate league|delivery|enies lobby/i },
+  { id: 'pirate', symbol: '🏴', label: 'Pirate', match: /\bcrew\b|pirate|équipage|equipage|\bbande\b/i },
 ];
 
 /** Nombre de symboles affichés sur une carte. Au-delà, la carte devient une soupe. */

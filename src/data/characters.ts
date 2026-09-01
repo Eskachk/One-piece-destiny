@@ -18,8 +18,9 @@
  */
 
 import type { Character } from '../domain/types';
+import { isCanon } from './non-canon';
 
-export const CHARACTERS: Character[] = [
+const ALL_CHARACTERS: Character[] = [
   {
     id: 'luffy',
     name: 'Monkey D. Luffy',
@@ -7131,6 +7132,29 @@ export const CHARACTERS: Character[] = [
     presenceExpectation: 'LOW',
   },
 ];
+
+/**
+ * Personnages jouables : le manga seulement.
+ *
+ * Le tableau ci-dessus est le référentiel brut de l'import, films et
+ * épisodes hors-série compris. `CHARACTERS` est ce que le jeu voit — et le
+ * jeu se joue sur le chapitre hebdomadaire : un personnage qui n'apparaît que
+ * dans un film ne peut jamais y figurer, donc jamais rapporter un point.
+ *
+ * Le filtrage est fait **ici, à l'export**, plutôt que dans l'import : la
+ * liste des exclusions se relit et se corrige dans `non-canon.ts`, sans avoir
+ * à régénérer 7 000 lignes pour changer d'avis sur un personnage.
+ */
+export const CHARACTERS: Character[] = ALL_CHARACTERS.filter((character) =>
+  isCanon(character.id),
+).map((character) => ({
+  ...character,
+  // Les liens vers un personnage retiré sont coupés. Ils ne fausseraient rien
+  // — une synergie ne compte que si l'autre apparaît dans le chapitre, ce qui
+  // n'arrivera jamais — mais ils resteraient affichés sur la fiche, à promettre
+  // un bonus impossible.
+  relations: character.relations.filter((relation) => isCanon(relation.to)),
+}));
 
 export const CHARACTER_INDEX: Map<string, Character> = new Map(
   CHARACTERS.map((character) => [character.id, character]),

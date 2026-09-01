@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { attributesOf, MAX_ATTRIBUTES } from './attributes';
-import { CHARACTER_INDEX } from '../../data/characters';
+import { CHARACTERS, CHARACTER_INDEX } from '../../data/characters';
 import type { Character } from '../types';
 
 const character = (partial: Partial<Character>): Character => ({
@@ -68,6 +68,20 @@ describe('attributs de carte', () => {
       const found = attributesOf(CHARACTER_INDEX.get(id)!);
       expect(found.length, id).toBeGreaterThan(0);
     }
+  });
+
+  it('couvre la quasi-totalité du référentiel', () => {
+    // Garde-fou de régression, pas d'objectif esthétique. La première version
+    // des règles laissait 211 personnages sur 740 sans le moindre symbole :
+    // leur seule donnée était un poste écrit en anglais que rien ne
+    // reconnaissait. Une carte muette se lit comme un personnage vide.
+    //
+    // Il reste sept entrées sans aucune donnée dans la source — ni poste, ni
+    // équipage, ni fruit. Rien ne peut en être déduit, et inventer un attribut
+    // serait pire que de n'en afficher aucun.
+    const muettes = CHARACTERS.filter((c) => attributesOf(c).length === 0);
+
+    expect(muettes.length).toBeLessThanOrEqual(10);
   });
 
   it('rend des identifiants uniques : ils servent de clé de rendu', () => {

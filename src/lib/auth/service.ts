@@ -8,6 +8,12 @@ import {
   type AttemptRecord,
 } from '@/domain/auth/rate-limit';
 import { checkPassword, describePasswordIssue } from '@/domain/auth/password-policy';
+import {
+  canonicalHandle,
+  checkHandle,
+  describeHandleIssue,
+  normalizeHandle,
+} from '@/domain/player/handle';
 import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
 import { grantSignupBonus } from '@/lib/social/signup-grant';
 import { getDummyHash, hashPassword, verifyPassword } from './password';
@@ -86,28 +92,69 @@ function normalizeEmail(email: string): string {
   return email.trim().toLowerCase();
 }
 
+/**
+ * Le pseudo est-il déjà pris ?
+ *
+ * La comparaison se fait sur la **forme canonique** — sans accents, sans
+ * ponctuation, sans casse : `Sh_anks` ne doit pas pouvoir se faire passer pour
+ * `Shanks` sur une annonce du Market.
+ *
+ * Ce contrôle est un confort d'affichage, pas la garantie : deux inscriptions
+ * simultanées le passeraient toutes les deux. L'unicité réelle vient de la
+ * contrainte `players.handle unique`, dont l'échec est traité plus bas.
+ */
+async function handleIsTaken(handle: string): Promise<boolean> {
+  const canonical = canonicalHandle(handle);
+  const { data } = await db()
+    .from('players')
+    .select('handle')
+    .ilike('handle', `%${canonical.slice(0, 12)}%`)
+    .limit(200);
+
+  return (data ?? []).some((row) => canonicalHandle(row.handle) === canonical);
+}
+
 export async function register(
   rawEmail: string,
   password: string,
+  rawHandle: string,
   meta: RequestMeta = {},
 ): Promise<AuthResult> {
   if (!isDatabaseConfigured()) return databaseUnavailable();
 
   const email = normalizeEmail(rawEmail);
+  const handle = normalizeHandle(rawHandle);
+
+  const naming = checkHandle(handle);
+  if (!naming.valid) {
+    return { ok: false, error: describeHandleIssue(naming.issue!) };
+  }
 
   const policy = checkPassword(password, email);
   if (!policy.valid) {
     return { ok: false, error: describePasswordIssue(policy.issues[0]) };
   }
 
+  if (await handleIsTaken(handle)) {
+    return { ok: false, error: 'Ce pseudo est déjà pris.' };
+  }
+
   // Le joueur porte la collection et les équipes ; le compte porte l'identité.
+  //
+  // Le pseudo vient du joueur, jamais de son adresse : le pseudo est public,
+  // l'adresse ne l'est pas.
   const player = await db()
     .from('players')
-    .insert({ handle: email.split('@')[0].slice(0, 24) + '-' + Date.now().toString(36).slice(-4) })
+    .insert({ handle })
     .select('id')
     .single();
 
   if (player.error) {
+    // Course perdue sur la contrainte d'unicité : c'est le seul cas où l'on
+    // sait dire précisément quoi corriger, et le dire ne révèle rien de privé.
+    if (player.error.code === '23505') {
+      return { ok: false, error: 'Ce pseudo est déjà pris.' };
+    }
     return { ok: false, error: 'Création du compte impossible.' };
   }
 

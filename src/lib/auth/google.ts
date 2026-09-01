@@ -4,6 +4,7 @@ import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
 import { baseUrl } from '@/lib/email/templates';
 import { grantSignupBonus } from '@/lib/social/signup-grant';
+import { fallbackHandle } from '@/domain/player/handle';
 
 /**
  * Connexion par Google (OpenID Connect, flux « authorization code »).
@@ -249,18 +250,32 @@ export async function resolveGoogleAccount(
   }
 
   // --- Création ------------------------------------------------------------
-  const player = await db()
-    .from('players')
-    .insert({
-      handle:
-        identity.email.split('@')[0].slice(0, 24) +
-        '-' +
-        Date.now().toString(36).slice(-4),
-    })
-    .select('id')
-    .single();
+  // Pseudo de repli, tiré au sort. Il ne reprend rien de l'adresse : le pseudo
+  // s'affiche au classement et sur le Market, l'adresse n'a pas à y arriver.
+  // Le joueur le change ensuite dans ses paramètres.
+  //
+  // Jusqu'à cinq tentatives : la collision est improbable (15 mots × 10 000),
+  // mais une contrainte d'unicité qui échoue ne doit pas coûter un compte.
+  let playerId: string | null = null;
+  for (let attempt = 0; attempt < 5 && playerId === null; attempt += 1) {
+    const inserted = await db()
+      .from('players')
+      .insert({ handle: fallbackHandle() })
+      .select('id')
+      .single();
 
-  if (player.error) return { ok: false, error: 'Création du compte impossible.' };
+    if (!inserted.error) {
+      playerId = inserted.data.id;
+      break;
+    }
+    // Toute erreur autre qu'une collision de pseudo est définitive :
+    // réessayer ne ferait que répéter le même échec.
+    if (inserted.error.code !== '23505') break;
+  }
+
+  if (playerId === null) {
+    return { ok: false, error: 'Création du compte impossible.' };
+  }
 
   const account = await db()
     .from('user_accounts')
@@ -268,14 +283,14 @@ export async function resolveGoogleAccount(
       email: identity.email,
       // Pas de mot de passe : ce compte s'ouvre par Google.
       password_hash: null,
-      player_id: player.data.id,
+      player_id: playerId,
       email_verified_at: new Date().toISOString(),
     })
     .select('id')
     .single();
 
   if (account.error) {
-    await db().from('players').delete().eq('id', player.data.id);
+    await db().from('players').delete().eq('id', playerId);
     return { ok: false, error: 'Création du compte impossible.' };
   }
 
@@ -291,7 +306,7 @@ export async function resolveGoogleAccount(
   // Même dotation d'arrivée que par formulaire (§71) : un lien d'invitation
   // suivi d'une connexion Google est le chemin le plus court qui soit, il
   // serait absurde qu'il soit le seul à ne rien donner.
-  await grantSignupBonus(player.data.id);
+  await grantSignupBonus(playerId);
 
   return { ok: true, userId: account.data.id, created: true };
 }

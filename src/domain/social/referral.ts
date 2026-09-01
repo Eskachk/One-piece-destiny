@@ -40,15 +40,91 @@ export const SIGNUP_BERRIES_REFERRED = 3_000;
  *
  * Le garde-fou décisif n'est pas le montant mais **le moment du versement** :
  * rien n'est payé à l'inscription. Le parrain n'est crédité que lorsque son
- * filleul verrouille un premier équipage — c'est-à-dire lorsqu'un joueur de
- * plus participe vraiment au rendez-vous hebdomadaire (§116). Un générateur de
- * comptes ne franchit pas cette étape ; un ami ramené, oui. C'est exactement la
- * rejouabilité qu'on cherche à récompenser.
+ * filleul a confirmé son adresse et joué trois chapitres — voir
+ * {@link REFERRAL_MIN_CHAPTERS}. Un générateur de comptes ne franchit pas ces
+ * étapes ; un ami ramené, oui. C'est exactement la rejouabilité qu'on cherche
+ * à récompenser.
  */
 export const REFERRAL_BERRIES_REFERRER = 800;
 
 /** Au-delà, les parrainages restent enregistrés mais ne rapportent plus. */
-export const MAX_REWARDED_REFERRALS = 10;
+export const MAX_REWARDED_REFERRALS = 5;
+
+/**
+ * Ce qu'un filleul doit avoir fait pour que son parrain soit payé.
+ *
+ * Le seuil était : **un** équipage verrouillé. Trop bas. Fabriquer un compte,
+ * ouvrir le coffre d'arrivée et cliquer trois personnages prend deux minutes,
+ * ne demande aucune adresse valide, et rapportait 800 Berries. Multiplié par
+ * dix filleuls, c'était plus rentable que de jouer — exactement ce que le §43
+ * demande d'empêcher.
+ *
+ * Trois conditions cumulatives, choisies parce qu'elles coûtent chacune
+ * quelque chose de différent à un fabricant de comptes :
+ *
+ *   1. **adresse e-mail confirmée** — il faut une boîte qui reçoit. C'est le
+ *      filtre le moins contournable des trois ;
+ *   2. **participation à {@link REFERRAL_MIN_CHAPTERS} chapitres distincts** —
+ *      donc à trois semaines différentes. Le temps ne s'automatise pas : c'est
+ *      la seule barrière qu'un script ne peut pas franchir plus vite ;
+ *   3. **empreinte d'inscription différente de celle du parrain** — se
+ *      parrainer soi-même depuis la même connexion ne paie plus.
+ *
+ * Le montant, lui, ne bouge pas : c'est le moment du versement qui protège,
+ * pas sa taille. Le plafond passe en revanche de dix à cinq — au-delà de cinq
+ * amis réellement ramenés, on est dans le recrutement, plus dans le bouche à
+ * oreille.
+ */
+export const REFERRAL_MIN_CHAPTERS = 3;
+
+export type ReferralHoldReason =
+  | 'EMAIL_UNVERIFIED'
+  | 'NOT_ENOUGH_CHAPTERS'
+  | 'LINKED_ACCOUNTS';
+
+export interface ReferralMaturity {
+  emailVerified: boolean;
+  chaptersPlayed: number;
+  sharesSignupFingerprint: boolean;
+}
+
+export type ReferralPayoutDecision =
+  | { pay: true }
+  | { pay: false; hold: ReferralHoldReason };
+
+/**
+ * Le filleul a-t-il assez joué pour que le parrainage soit honoré ?
+ *
+ * Fonction pure : chaque refus se teste sans base ni réseau.
+ */
+export function evaluateReferralPayout(
+  maturity: ReferralMaturity,
+): ReferralPayoutDecision {
+  if (maturity.sharesSignupFingerprint) {
+    return { pay: false, hold: 'LINKED_ACCOUNTS' };
+  }
+  if (!maturity.emailVerified) {
+    return { pay: false, hold: 'EMAIL_UNVERIFIED' };
+  }
+  if (maturity.chaptersPlayed < REFERRAL_MIN_CHAPTERS) {
+    return { pay: false, hold: 'NOT_ENOUGH_CHAPTERS' };
+  }
+  return { pay: true };
+}
+
+export function describeReferralProgress(maturity: ReferralMaturity): string {
+  const decision = evaluateReferralPayout(maturity);
+  if (decision.pay) return 'Parrainage validé.';
+
+  switch (decision.hold) {
+    case 'LINKED_ACCOUNTS':
+      return 'Parrainage non récompensé : les deux comptes se sont inscrits depuis la même connexion.';
+    case 'EMAIL_UNVERIFIED':
+      return 'En attente : ton filleul doit confirmer son adresse e-mail.';
+    case 'NOT_ENOUGH_CHAPTERS':
+      return `En attente : ton filleul a joué ${maturity.chaptersPlayed} chapitre${maturity.chaptersPlayed > 1 ? 's' : ''} sur ${REFERRAL_MIN_CHAPTERS}.`;
+  }
+}
 
 /**
  * Lien d'invitation.
