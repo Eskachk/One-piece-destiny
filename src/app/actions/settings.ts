@@ -98,6 +98,17 @@ export async function changeHandleAction(input: unknown): Promise<HandleResult> 
 
   if (!player) return { ok: false, error: 'Compte introuvable.' };
 
+  // Recherche par égalité sur `handle_canonical` (index unique, migration
+  // 0025). Le contrôle nomme le problème ; c'est l'index qui le garantit.
+  const { data: taken } = await db()
+    .from('players')
+    .select('id')
+    .eq('handle_canonical', canonicalHandle(handle))
+    .neq('id', session.playerId)
+    .maybeSingle();
+
+  if (taken) return { ok: false, error: 'Ce pseudo est déjà pris.' };
+
   // Même pseudo, à la ponctuation près : on ne consomme pas le délai pour
   // corriger une majuscule.
   if (canonicalHandle(player.handle) === canonicalHandle(handle)) {

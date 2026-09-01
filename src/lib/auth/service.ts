@@ -97,21 +97,25 @@ function normalizeEmail(email: string): string {
  *
  * La comparaison se fait sur la **forme canonique** — sans accents, sans
  * ponctuation, sans casse : `Sh_anks` ne doit pas pouvoir se faire passer pour
- * `Shanks` sur une annonce du Market.
+ * `Shanks` sur une annonce du Marché.
  *
- * Ce contrôle est un confort d'affichage, pas la garantie : deux inscriptions
- * simultanées le passeraient toutes les deux. L'unicité réelle vient de la
- * contrainte `players.handle unique`, dont l'échec est traité plus bas.
+ * Recherche par **égalité sur index** (`players.handle_canonical`, colonne
+ * générée, migration 0025). Une première version faisait un `ilike '%…%'` puis
+ * comparait côté application : un balayage de table à chaque inscription, qui
+ * ne se voit pas sur mille lignes et se voit beaucoup à l'échelle visée.
+ *
+ * Ce contrôle sert à **nommer** le problème au joueur ; il ne le garantit pas.
+ * Deux inscriptions simultanées le passeraient toutes les deux. La garantie est
+ * l'index unique, dont l'échec est traité plus bas.
  */
 async function handleIsTaken(handle: string): Promise<boolean> {
-  const canonical = canonicalHandle(handle);
   const { data } = await db()
     .from('players')
-    .select('handle')
-    .ilike('handle', `%${canonical.slice(0, 12)}%`)
-    .limit(200);
+    .select('id')
+    .eq('handle_canonical', canonicalHandle(handle))
+    .maybeSingle();
 
-  return (data ?? []).some((row) => canonicalHandle(row.handle) === canonical);
+  return data !== null;
 }
 
 export async function register(
