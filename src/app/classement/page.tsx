@@ -19,6 +19,7 @@ import {
 } from '@/domain/scoring/chapter-analysis';
 import type { CharacterScore } from '@/domain/scoring';
 import { getAuthenticatedSession } from '@/lib/auth/session-store';
+import { AdBanner } from '@/components/AdBanner';
 
 export const dynamic = 'force-dynamic';
 
@@ -65,6 +66,7 @@ export default async function LeaderboardPage() {
         <p className="hb-card mt-5 text-sm">
           Aucun chapitre en cours.
         </p>
+        <AdBanner />
         <Nav />
       </HarborScene>
     );
@@ -81,6 +83,7 @@ export default async function LeaderboardPage() {
           🔒 Les résultats du chapitre {chapter.chapterNumber} ne sont pas encore
           publiés. Rien n&apos;est révélé avant la sortie officielle.
         </p>
+        <AdBanner />
         <Nav />
       </HarborScene>
     );

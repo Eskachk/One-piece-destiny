@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import type { Rarity } from '@/domain/types';
 import type { Attribute } from '@/domain/collection/attributes';
 import { RARITY_COLOR, RARITY_LABEL } from '@/domain/collection/rarity';
+import { CharacterArt } from './CharacterArt';
 
 /**
  * Carte de personnage (cahier §24, §111, §122).
@@ -15,16 +16,27 @@ import { RARITY_COLOR, RARITY_LABEL } from '@/domain/collection/rarity';
  * halo, et par le libellé écrit en toutes lettres. La redondance est
  * volontaire : un joueur daltonien lit la carte aussi bien qu'un autre.
  *
+ * L'illustration monte avec la rareté — rien pour un Commun, un pictogramme
+ * pour un Rare, un portrait en pixels pour un Épique, une figurine pour un
+ * Légendaire, la même avec ses effets pour un Mythique. C'est ce qui donne au
+ * tirage un contenu visible : deux cartes ne se distinguaient jusqu'ici que
+ * par la couleur de leur liseré.
+ *
  * §122 : aucun visuel de l'œuvre. Les attributs sont des pictogrammes
- * Unicode dérivés des données factuelles du personnage, pas des illustrations.
+ * Unicode et l'illustration est **générée** à partir de l'identifiant du
+ * personnage (`domain/collection/portrait.ts`) — aucune planche, aucun
+ * décalque.
  */
 export function RarityCard({
+  characterId,
   name,
   rarity,
   attributes,
   serial,
   footer,
 }: {
+  /** Sert de graine à l'illustration : le même personnage donne la même image. */
+  characterId: string;
   name: string;
   rarity: Rarity;
   attributes: Attribute[];
@@ -37,6 +49,12 @@ export function RarityCard({
       className="hb-rcard"
       style={{ ['--rarity' as string]: RARITY_COLOR[rarity] }}
     >
+      <CharacterArt
+        characterId={characterId}
+        rarity={rarity}
+        attributes={attributes}
+      />
+
       <div className="hb-rcard__head">
         <span className="hb-rcard__name">{name}</span>
         <span className="hb-rcard__rarity">{RARITY_LABEL[rarity]}</span>

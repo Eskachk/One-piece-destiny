@@ -6,6 +6,7 @@ import { formatSecretForDisplay } from '@/domain/auth/totp';
 import { base32Decode } from '@/domain/auth/totp';
 import { requireAdminForEnrollment } from '@/lib/auth/guards';
 import { beginEnrollment } from '@/lib/auth/mfa';
+import { Nav } from '@/components/Nav';
 
 export const dynamic = 'force-dynamic';
 
@@ -43,7 +44,7 @@ export default async function AdminMfaPage() {
   // pourquoi il n'a rien à faire.
   if (session.mfaEnabled) {
     return (
-      <main className="mx-auto w-full max-w-[430px] px-5 py-10">
+      <main className="hb-page mx-auto w-full max-w-[430px] px-5 py-10">
         <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
           Chapter HQ
         </p>
@@ -59,6 +60,7 @@ export default async function AdminMfaPage() {
         >
           Retour au Chapter HQ
         </Link>
+        <Nav />
       </main>
     );
   }
@@ -75,7 +77,7 @@ export default async function AdminMfaPage() {
   });
 
   return (
-    <main className="mx-auto w-full max-w-[430px] px-5 py-10">
+    <main className="hb-page mx-auto w-full max-w-[430px] px-5 py-10">
       <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
         Chapter HQ
       </p>
@@ -94,6 +96,7 @@ export default async function AdminMfaPage() {
           secret={formatSecretForDisplay(base32Decode(enrollment.secret))}
         />
       </div>
+      <Nav />
     </main>
   );
 }

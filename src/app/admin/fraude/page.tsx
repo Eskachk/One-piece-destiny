@@ -4,6 +4,7 @@ import { requireAdmin } from '@/lib/auth/guards';
 import { suspiciousAccounts } from '@/lib/antiabuse/review';
 import { FraudCenter } from '@/components/FraudCenter';
 import {
+import { Nav } from '@/components/Nav';
   MARKET_ACCESS_DELAY_MS,
   MAX_ACCOUNTS_PER_PERSON,
   STARTER_CARD_LOCK_MS,
@@ -43,7 +44,7 @@ export default async function FraudPage() {
   const accounts = await suspiciousAccounts();
 
   return (
-    <main className="mx-auto w-full max-w-3xl px-5 py-8">
+    <main className="hb-page mx-auto w-full max-w-3xl px-5 py-8">
       <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
         Chapter HQ
       </p>
@@ -115,6 +116,7 @@ export default async function FraudPage() {
           }))}
         />
       </section>
+      <Nav />
     </main>
   );
 }

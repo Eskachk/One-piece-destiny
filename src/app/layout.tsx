@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Anton, Caveat } from 'next/font/google';
+import Script from 'next/script';
+import { AppShell } from '@/components/AppShell';
 import './globals.css';
 
 /** SEO : titres uniques, Open Graph, canonical (cahier §106). */
@@ -14,6 +16,12 @@ export const metadata: Metadata = {
     title: 'Grand Line Weekly — One Piece Quest',
     description: 'Predict the next chapter.',
     type: 'website',
+  },
+  other: {
+    // Identifiant d'éditeur AdSense. Il est aussi porté par le script
+    // ci-dessous ; la balise sert à la vérification du site par Google, qui
+    // lit le document sans exécuter le script.
+    'google-adsense-account': 'ca-pub-9364111418812673',
   },
 };
 
@@ -52,7 +60,50 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className={`${anton.variable} ${caveat.variable}`}>
-      <body className="chart-grid">{children}</body>
+      <body className="chart-grid">
+        <AppShell>{children}</AppShell>
+
+        {/*
+          Publicité AdSense.
+
+          `afterInteractive` : le script part une fois la page utilisable. En
+          `beforeInteractive` il retarderait le premier affichage pour un
+          contenu qui n'est pas le produit — et l'accueil est justement ce
+          qu'on a passé du temps à alléger.
+
+          Les emplacements eux-mêmes sont posés page par page (`AdSlot`), pas
+          ici : une régie chargée sans emplacement ne coûte qu'une requête,
+          mais un bandeau posé dans la coquille apparaîtrait aussi sur les
+          écrans de connexion et de paiement, où il n'a rien à faire.
+        */}
+        <Script
+          id="adsense"
+          async
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9364111418812673"
+          crossOrigin="anonymous"
+        />
+
+        {/*
+          Mesure d'audience Vercel.
+
+          Le script est appelé par son chemin plutôt que par le paquet
+          `@vercel/analytics`. Deux raisons : il est servi par la plateforme
+          elle-même sous le domaine du site — donc aucune requête tierce, et
+          rien qu'un bloqueur de publicité ne coupe — et cela évite une
+          dépendance de plus pour trois lignes de code.
+
+          Hors Vercel, `/_vercel/insights/script.js` n'existe pas : la requête
+          échoue en 404 et rien d'autre ne se produit. C'est sans conséquence,
+          et c'est pour cela que le script n'est pas conditionné.
+        */}
+        <Script
+          id="vercel-analytics"
+          defer
+          strategy="afterInteractive"
+          src="/_vercel/insights/script.js"
+        />
+      </body>
     </html>
   );
 }

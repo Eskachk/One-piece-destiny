@@ -12,6 +12,7 @@
  * ensuite dans la Grand Line. Le contraste raconte le passage.
  */
 
+import { EternalPose } from './EternalPose';
 import { StrawHat } from './StrawHat';
 
 /**
@@ -174,10 +175,18 @@ export function HarborScene({
         <div className="harbor__deck">
           <div className="harbor__deckEdge" />
 
-          {/* Chapeau de paille posé sur le pont. Il est dans le décor, pas
-              dans le contenu : purement ornemental, il ne doit ni être lu par
-              un lecteur d'écran ni capter le moindre clic. */}
+          {/* Chapeau de paille et Éternal Pose posés sur le pont. Ils sont
+              dans le décor, pas dans le contenu : purement ornementaux, ils ne
+              doivent ni être lus par un lecteur d'écran ni capter le moindre
+              clic.
+
+              Tous deux sont visibles sur téléphone. Le chapeau y disparaissait
+              sous 560 px — c'est-à-dire sur la quasi-totalité des mobiles,
+              soit la cible du produit (§55) : la seule scène signée du site
+              n'existait que sur ordinateur. Le pont a été rehaussé et la carte
+              remontée pour leur faire place, plutôt que de les masquer. */}
           <StrawHat className="harbor__hat" />
+          <EternalPose className="harbor__pose" />
         </div>
 
         {/* Mât et cordage, sur le bord gauche. Masqué sur petit écran :

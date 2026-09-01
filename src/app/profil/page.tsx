@@ -26,6 +26,7 @@ import { preferencesOf } from '@/lib/notifications/dispatch';
 import { requireSession } from '@/lib/auth/guards';
 import * as social from '@/lib/social/repository';
 import { getRepository } from '@/lib/repository';
+import { AdBanner } from '@/components/AdBanner';
 
 export const dynamic = 'force-dynamic';
 
@@ -292,6 +293,7 @@ export default async function ProfilePage() {
       </div>
 
       <HouseRules />
+      <AdBanner />
       <Nav />
     </HarborScene>
   );

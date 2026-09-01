@@ -14,6 +14,7 @@ import {
 import { requireSession } from '@/lib/auth/guards';
 import * as market from '@/lib/market/repository';
 import { getRepository } from '@/lib/repository';
+import { AdBanner } from '@/components/AdBanner';
 
 export const dynamic = 'force-dynamic';
 
@@ -143,6 +144,7 @@ export default async function MarketPage() {
         </h2>
         <Watchlist watched={watched} />
       </section>
+      <AdBanner />
       <Nav />
     </HarborScene>
   );

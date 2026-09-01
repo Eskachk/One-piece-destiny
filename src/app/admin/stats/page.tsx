@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { requireAdmin } from '@/lib/auth/guards';
 import { adminStats } from '@/lib/admin/stats';
+import { Nav } from '@/components/Nav';
 
 export const dynamic = 'force-dynamic';
 
@@ -59,11 +60,12 @@ export default async function AdminStatsPage() {
 
   if (!stats) {
     return (
-      <main className="mx-auto w-full max-w-3xl px-5 py-8">
+      <main className="hb-page mx-auto w-full max-w-3xl px-5 py-8">
         <h1 className="font-display text-3xl text-parchment">Statistiques</h1>
         <p className="mt-4 text-sm text-parchment/70">
           Base de données non configurée : aucune statistique à afficher.
         </p>
+        <Nav />
       </main>
     );
   }
@@ -71,7 +73,7 @@ export default async function AdminStatsPage() {
   const { players, economy, chapters, risk } = stats;
 
   return (
-    <main className="mx-auto w-full max-w-3xl px-5 py-8">
+    <main className="hb-page mx-auto w-full max-w-3xl px-5 py-8">
       <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
         Chapter HQ
       </p>
@@ -208,6 +210,7 @@ export default async function AdminStatsPage() {
           </div>
         )}
       </section>
+      <Nav />
     </main>
   );
 }

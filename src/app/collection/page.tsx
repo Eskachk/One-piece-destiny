@@ -12,6 +12,7 @@ import { RARITY_COLOR, RARITY_LABEL, rarityRank } from '@/domain/collection/rari
 import { CRAFT_COST } from '@/domain/collection/crafting';
 import { isAllowedAdmin, requireSession } from '@/lib/auth/guards';
 import { getRepository } from '@/lib/repository';
+import { AdBanner } from '@/components/AdBanner';
 
 export const dynamic = 'force-dynamic';
 
@@ -102,6 +103,7 @@ export default async function CollectionPage() {
               return (
                 <li key={id}>
                   <RarityCard
+                    characterId={character.id}
                     name={character.name}
                     rarity={character.rarity}
                     attributes={attributesOf(character)}
@@ -215,6 +217,7 @@ export default async function CollectionPage() {
           </ul>
         </section>
       )}
+      <AdBanner />
       <Nav />
     </HarborScene>
   );

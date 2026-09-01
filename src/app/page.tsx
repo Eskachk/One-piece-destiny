@@ -12,6 +12,7 @@ import { redirect } from 'next/navigation';
 import { getAuthenticatedSession } from '@/lib/auth/session-store';
 import { getCachedCurrentChapter } from '@/lib/cache';
 import { getRepository } from '@/lib/repository';
+import { AdBanner } from '@/components/AdBanner';
 
 /**
  * Home (cahier §55). Elle doit rester extrêmement simple : le joueur doit
@@ -77,6 +78,7 @@ export default async function HomePage() {
           Aucun chapitre n&apos;est ouvert aux prédictions pour le moment.
           Reviens quand le prochain sera annoncé.
         </p>
+        <AdBanner />
         <Nav />
         <Tutorial />
       </HarborScene>
@@ -145,6 +147,7 @@ export default async function HomePage() {
         )}
       </section>
 
+      <AdBanner />
       <Nav />
 
       <CrewSelector

@@ -184,6 +184,7 @@ export function ChestOpening({
             {ordered.slice(0, shown).map((card, index) => (
               <li key={`${card.characterId}-${index}`} className="hb-card-drop">
                 <RarityCard
+                  characterId={card.characterId}
                   name={card.name}
                   rarity={card.rarity}
                   attributes={card.attributes}

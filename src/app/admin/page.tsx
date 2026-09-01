@@ -7,6 +7,7 @@ import { OpenChapterForm } from '@/components/OpenChapterForm';
 import { isTeamEditable, spoilerState } from '@/domain/chapter/lock';
 import { requireAdmin } from '@/lib/auth/guards';
 import { getRepository, PERSISTENCE_MODE } from '@/lib/repository';
+import { Nav } from '@/components/Nav';
 
 export const dynamic = 'force-dynamic';
 
@@ -51,7 +52,7 @@ export default async function AdminPage() {
     const proposed = await repository.proposeNextChapterNumber();
     const lastPublished = await repository.getLatestPublishedChapter();
     return (
-      <main className="mx-auto w-full max-w-3xl px-5 py-8">
+      <main className="hb-page mx-auto w-full max-w-3xl px-5 py-8">
         <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
           One Piece Quest
         </p>
@@ -91,6 +92,7 @@ export default async function AdminPage() {
             </div>
           </section>
         )}
+        <Nav />
       </main>
     );
   }
@@ -105,7 +107,7 @@ export default async function AdminPage() {
   const published = chapter.status === 'RESULTS_PUBLISHED';
 
   return (
-    <main className="mx-auto w-full max-w-3xl px-5 py-8">
+    <main className="hb-page mx-auto w-full max-w-3xl px-5 py-8">
       <header>
         <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
           One Piece Quest
@@ -242,6 +244,7 @@ export default async function AdminPage() {
           </ol>
         </section>
       )}
+      <Nav />
     </main>
   );
 }
