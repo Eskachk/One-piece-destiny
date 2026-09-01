@@ -146,52 +146,69 @@ export function HarborScene({
           <Cloud className="harbor__cloud harbor__cloud--4" flip />
         </div>
 
-        <div className="harbor__sea">
-          {/* viewBox de 1200 pour une largeur de motif de 1200 : chaque
-              tracé est répété une fois à droite, et l'animation décale
-              exactement de 1200 — la reprise ne se voit pas. */}
-          <svg
-            className="harbor__waves"
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-            aria-hidden="true"
-          >
-            <g className="harbor__wave harbor__wave--back">
-              <path
-                d={`${WAVE_BACK} ${WAVE_BACK.replace('M0', 'M1200')}`}
-                fill="rgba(255,255,255,.13)"
-              />
-            </g>
-            <g className="harbor__wave harbor__wave--front">
-              <path
-                d={`${WAVE_FRONT} ${WAVE_FRONT.replace('M0', 'M1200')}`}
-                fill="rgba(255,255,255,.22)"
-              />
-            </g>
-          </svg>
-        </div>
+        {/*
+          Mer, pont et mât : **uniquement sur la scène d'entrée**.
 
-        {/* Pont : planches en dégradés répétés plutôt qu'une image. */}
-        <div className="harbor__deck">
-          <div className="harbor__deckEdge" />
+          Les pages intérieures les masquaient en CSS (`display: none`). Le
+          serveur les rendait donc, les sérialisait dans le HTML, puis les
+          répétait dans la charge RSC — pour un décor que personne ne voit.
+          Mesuré au tir de charge : 9 Ko sur les 63 Ko de `/classement`, soit
+          14 % de la page, à chaque requête de chaque joueur.
 
-          {/* Chapeau de paille et Éternal Pose posés sur le pont. Ils sont
-              dans le décor, pas dans le contenu : purement ornementaux, ils ne
-              doivent ni être lus par un lecteur d'écran ni capter le moindre
-              clic.
+          `display: none` cache ; il n'économise rien. La différence est de
+          nature, pas de degré.
+        */}
+        {variant === 'hero' && (
+          <>
+            <div className="harbor__sea">
+              {/* viewBox de 1200 pour une largeur de motif de 1200 : chaque
+                  tracé est répété une fois à droite, et l'animation décale
+                  exactement de 1200 — la reprise ne se voit pas. */}
+              <svg
+                className="harbor__waves"
+                viewBox="0 0 1200 120"
+                preserveAspectRatio="none"
+                aria-hidden="true"
+              >
+                <g className="harbor__wave harbor__wave--back">
+                  <path
+                    d={`${WAVE_BACK} ${WAVE_BACK.replace('M0', 'M1200')}`}
+                    fill="rgba(255,255,255,.13)"
+                  />
+                </g>
+                <g className="harbor__wave harbor__wave--front">
+                  <path
+                    d={`${WAVE_FRONT} ${WAVE_FRONT.replace('M0', 'M1200')}`}
+                    fill="rgba(255,255,255,.22)"
+                  />
+                </g>
+              </svg>
+            </div>
 
-              Tous deux sont visibles sur téléphone. Le chapeau y disparaissait
-              sous 560 px — c'est-à-dire sur la quasi-totalité des mobiles,
-              soit la cible du produit (§55) : la seule scène signée du site
-              n'existait que sur ordinateur. Le pont a été rehaussé et la carte
-              remontée pour leur faire place, plutôt que de les masquer. */}
-          <StrawHat className="harbor__hat" />
-          <EternalPose className="harbor__pose" />
-        </div>
+            {/* Pont : planches en dégradés répétés plutôt qu'une image. */}
+            <div className="harbor__deck">
+              <div className="harbor__deckEdge" />
 
-        {/* Mât et cordage, sur le bord gauche. Masqué sur petit écran :
-            il mangerait la place du formulaire. */}
-        <div className="harbor__mast" />
+              {/* Chapeau de paille et Éternal Pose posés sur le pont. Ils sont
+                  dans le décor, pas dans le contenu : purement ornementaux,
+                  ils ne doivent ni être lus par un lecteur d'écran ni capter le
+                  moindre clic.
+
+                  Tous deux sont visibles sur téléphone. Le chapeau y
+                  disparaissait sous 560 px — c'est-à-dire sur la quasi-totalité
+                  des mobiles, soit la cible du produit (§55) : la seule scène
+                  signée du site n'existait que sur ordinateur. Le pont a été
+                  rehaussé et la carte remontée pour leur faire place, plutôt
+                  que de les masquer. */}
+              <StrawHat className="harbor__hat" />
+              <EternalPose className="harbor__pose" />
+            </div>
+
+            {/* Mât et cordage, sur le bord gauche. Masqué sur petit écran :
+                il mangerait la place du formulaire. */}
+            <div className="harbor__mast" />
+          </>
+        )}
       </div>
 
       {/* --- Contenu ------------------------------------------------------ */}

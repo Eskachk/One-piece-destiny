@@ -34,6 +34,7 @@ npm test
 | Tâches planifiées (Vercel Cron) | [docs/cron.md](docs/cron.md) |
 | Déploiement Vercel | [docs/deploiement.md](docs/deploiement.md) |
 | **À faire avant l'ouverture au public** | [docs/lancement.md](docs/lancement.md) |
+| Tenue en charge : chiffres et méthode | [docs/charge.md](docs/charge.md) |
 
 Variables d'environnement : [`.env.example`](.env.example).
 
