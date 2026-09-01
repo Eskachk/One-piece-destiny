@@ -6,6 +6,11 @@ import { CATALOG } from '@/domain/payments/catalog';
 import { RARITY_COLOR, RARITY_LABEL } from '@/domain/collection/rarity';
 import { requireSession } from '@/lib/auth/guards';
 import { paymentsState } from '@/lib/payments/provider';
+import {
+  LAUNCH_DISCOUNT,
+  effectivePriceCents,
+  launchWindow,
+} from '@/domain/payments/promotion';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,18 +35,34 @@ export default async function ShopPage() {
 
   const state = paymentsState();
 
+  // L'offre est décidée **ici**, côté serveur, à partir de l'horloge du
+  // serveur. La calculer dans le navigateur la rendrait dépendante de
+  // l'horloge du téléphone : reculer sa date suffirait à ressusciter une
+  // remise expirée à l'affichage — et le paiement, lui, la refuserait.
+  const now = new Date();
+  const promo = launchWindow(now);
+
   // La couleur est résolue **ici**, côté serveur : le panneau reçoit une
   // valeur toute faite plutôt que la table des raretés, qu'il faudrait sinon
   // embarquer dans le bundle client.
-  const products = Object.values(CATALOG).map((product) => ({
-    id: product.id,
-    category: product.category,
-    label: product.label,
-    price: euros(product.priceCents),
-    description: product.description,
-    rarityColor: product.rarity ? RARITY_COLOR[product.rarity] : null,
-    rarityLabel: product.rarity ? RARITY_LABEL[product.rarity] : null,
-  }));
+  const products = Object.values(CATALOG).map((product) => {
+    const priceCents = effectivePriceCents(product, now, promo);
+
+    return {
+      id: product.id,
+      category: product.category,
+      label: product.label,
+      price: euros(priceCents),
+      // Le prix d'origine n'est transmis que s'il y a réellement une remise :
+      // le panneau ne sait pas en reconstituer un, donc il ne peut pas en
+      // afficher un par erreur.
+      fullPrice:
+        priceCents < product.priceCents ? euros(product.priceCents) : null,
+      description: product.description,
+      rarityColor: product.rarity ? RARITY_COLOR[product.rarity] : null,
+      rarityLabel: product.rarity ? RARITY_LABEL[product.rarity] : null,
+    };
+  });
 
   return (
     <HarborScene variant="page">
@@ -55,6 +76,18 @@ export default async function ShopPage() {
 
       <ShopPanel
         products={products}
+        promotion={
+          promo.active && promo.endsAt
+            ? {
+                discount: Math.round(LAUNCH_DISCOUNT * 100),
+                daysLeft: promo.daysLeft,
+                endsOn: promo.endsAt.toLocaleDateString('fr-FR', {
+                  day: 'numeric',
+                  month: 'long',
+                }),
+              }
+            : null
+        }
         enabled={state.enabled}
         disabledReason={
           state.enabled

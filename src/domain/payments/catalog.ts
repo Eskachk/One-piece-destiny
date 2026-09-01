@@ -196,6 +196,22 @@ export interface WebhookClaim {
   playerId: string | null;
   /** Identifiant d'événement du prestataire, pour l'idempotence. */
   eventId: string;
+  /**
+   * Montant attendu, tel que le serveur l'a écrit dans l'intention de paiement.
+   *
+   * Il ne peut pas être relu dans le catalogue : une offre de lancement fait
+   * payer un coffre moins cher, et le webhook arrive parfois **après** la fin
+   * de l'offre. Comparer au prix courant refuserait alors un paiement
+   * parfaitement légitime.
+   *
+   * Ce montant reste une valeur **serveur** — écrite par nous à l'ouverture du
+   * paiement, jamais transmise par le navigateur. La garantie du §113 tient
+   * donc toujours : le prix n'est pas négociable par le client.
+   *
+   * `null` quand aucune intention n'a été retrouvée : on retombe alors sur le
+   * prix du catalogue, ce qui refuse tout paiement qui ne s'y rattache pas.
+   */
+  expectedCents: number | null;
 }
 
 export type ClaimVerdict =
@@ -216,12 +232,13 @@ export function verifyClaim(claim: WebhookClaim): ClaimVerdict {
     return { ok: false, reason: `Produit inconnu : ${claim.productId}.` };
   }
 
-  // Le montant est comparé au catalogue, pas accepté tel quel : c'est ce qui
-  // rend inopérante la manipulation du prix côté client.
-  if (claim.amountCents !== product.priceCents) {
+  // Le montant est comparé à ce que **le serveur** attendait, pas accepté tel
+  // quel : c'est ce qui rend inopérante la manipulation du prix côté client.
+  const expected = claim.expectedCents ?? product.priceCents;
+  if (claim.amountCents !== expected) {
     return {
       ok: false,
-      reason: `Montant inattendu : ${claim.amountCents} au lieu de ${product.priceCents}.`,
+      reason: `Montant inattendu : ${claim.amountCents} au lieu de ${expected}.`,
     };
   }
 

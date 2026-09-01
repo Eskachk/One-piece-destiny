@@ -76,6 +76,10 @@ export async function POST(request: Request) {
     status: event.status,
     playerId: intent?.player_id ?? null,
     eventId: event.eventId,
+    // Montant écrit par le serveur à l'ouverture du paiement. Il peut être
+    // inférieur au prix du catalogue — offre de lancement — et le webhook
+    // arrive parfois après la fin de l'offre.
+    expectedCents: intent?.amount_cents ?? null,
   });
 
   if (!verdict.ok) {
@@ -138,7 +142,8 @@ export async function POST(request: Request) {
     status: 'SUCCESS',
     metadata: {
       productId: verdict.product.id,
-      amountCents: verdict.product.priceCents,
+      // Le montant réellement encaissé, pas le prix affiché au catalogue.
+      amountCents: event.amountCents,
       eventId: event.eventId,
     },
   });

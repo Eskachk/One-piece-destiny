@@ -2,6 +2,7 @@
 
 import { z } from 'zod';
 import { productOf, withinDailyCap } from '@/domain/payments/catalog';
+import { effectivePriceCents } from '@/domain/payments/promotion';
 import { restrictionsForBirthDate } from '@/domain/compliance/age';
 import { requireSession } from '@/lib/auth/guards';
 import { assertSameOrigin } from '@/lib/auth/request-guard';
@@ -57,6 +58,13 @@ export async function startCheckoutAction(
   const product = productOf(parsed.data);
   if (!product) return { ok: false, error: 'Produit inconnu.' };
 
+  // Prix effectif : le catalogue donne le prix courant, l'offre de lancement
+  // peut le réduire. Il est calculé **une fois**, ici, et sert ensuite à la
+  // fois au plafond journalier, à l'intention en base et à la session de
+  // paiement — trois calculs séparés finiraient par diverger, et c'est le
+  // joueur qui découvrirait l'écart au moment de payer.
+  const priceCents = effectivePriceCents(product, new Date());
+
   // §114 : protection des mineurs. La restriction est recalculée ici, côté
   // serveur, à partir de la date de naissance en base — jamais à partir de ce
   // que le navigateur affirme.
@@ -97,7 +105,7 @@ export async function startCheckoutAction(
     0,
   );
 
-  if (!withinDailyCap(spent, product.priceCents, restrictions.dailySpendCapCents)) {
+  if (!withinDailyCap(spent, priceCents, restrictions.dailySpendCapCents)) {
     return {
       ok: false,
       error: 'Plafond de dépense journalier atteint. Réessaie demain.',
@@ -112,7 +120,7 @@ export async function startCheckoutAction(
     .insert({
       player_id: session.playerId,
       product_id: product.id,
-      amount_cents: product.priceCents,
+      amount_cents: priceCents,
       currency: product.currency,
       provider: state.provider.name,
     })
@@ -126,6 +134,7 @@ export async function startCheckoutAction(
   try {
     const checkout = await state.provider.createCheckout({
       product,
+      amountCents: priceCents,
       playerId: session.playerId,
       intentId: intent.id,
       successUrl: `${baseUrl()}/boutique?paiement=ok`,
@@ -141,7 +150,7 @@ export async function startCheckoutAction(
       playerId: session.playerId,
       action: 'shop.checkout',
       status: 'SUCCESS',
-      metadata: { productId: product.id, intentId: intent.id },
+      metadata: { productId: product.id, intentId: intent.id, amountCents: priceCents },
     });
 
     return { ok: true, url: checkout.url };

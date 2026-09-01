@@ -115,8 +115,11 @@ export function MarketBoard({
                       {listing.price} 🪙
                     </span>
                   </div>
+                  {/* Le pseudo du vendeur est traité comme une identité, pas
+                      comme une mention de bas de carte : c'est l'information
+                      qui permet de reconnaître un habitué du Market. */}
                   <p className="mt-1 text-xs hb-ink-soft">
-                    Vendeur : {listing.sellerHandle}
+                    Vendu par <span className="hb-handle">{listing.sellerHandle}</span>
                   </p>
 
                   {listing.isMine ? (

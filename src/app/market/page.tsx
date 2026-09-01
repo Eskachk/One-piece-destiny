@@ -55,11 +55,12 @@ export default async function MarketPage() {
   }
 
   const repository = getRepository();
-  const [listings, wallet, ownedIds, watchedIds] = await Promise.all([
+  const [listings, wallet, ownedIds, watchedIds, sold] = await Promise.all([
     market.listActiveListings(),
     repository.getWallet(session.playerId),
     repository.getOwnedCharacterIds(session.playerId),
     market.getWatchlist(session.playerId),
+    market.recentSales(),
   ]);
 
   const owned = new Set(ownedIds);
@@ -137,6 +138,46 @@ export default async function MarketPage() {
           berries={wallet.berries}
         />
       </div>
+
+      {/*
+        Ventes conclues.
+
+        Le carnet nomme le vendeur d'une annonce ; une vente, elle, ne nommait
+        personne — le personnage disparaissait simplement de la liste. On voit
+        maintenant qui a vendu quoi, à qui, et à quel prix : c'est ce qui
+        distingue un prix de marché d'un arrangement entre deux comptes.
+      */}
+      {sold.length > 0 && (
+        <section className="mt-8">
+          <h2 className="hb-legend">Ventes récentes</h2>
+          <ul className="mt-3 space-y-2">
+            {sold.map((sale) => (
+              <li key={sale.id} className="rounded-xl hb-surface px-3 py-2">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="hb-ink text-sm">
+                    {CHARACTER_INDEX.get(sale.characterId)?.name ??
+                      sale.characterId}
+                  </span>
+                  <span className="hb-num text-sm">{sale.price} 🪙</span>
+                </div>
+                <p className="mt-0.5 text-xs hb-ink-soft">
+                  <span className="hb-handle">{sale.sellerHandle}</span>
+                  {' → '}
+                  <span className="hb-handle">{sale.buyerHandle}</span>
+                  {' · '}
+                  {/* `fr-FR` en dur : la date est rendue côté serveur, où la
+                      langue du navigateur n'existe pas. Laisser la valeur par
+                      défaut donnerait un format américain à tout le monde. */}
+                  {sale.soldAt.toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'short',
+                  })}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="mt-8">
         <h2 className="hb-legend">

@@ -19,9 +19,17 @@ import {
  *     derrière une monnaie intermédiaire. « 14,99 € » se comprend ;
  *     « 1 500 gemmes » ne se compare à rien ;
  *   — **ce qu'on reçoit est écrit avant l'achat**, pas après ;
- *   — **aucune urgence fabriquée.** Pas de compte à rebours, pas de « plus que
- *     2 en stock », pas de prix barré : ce sont des procédés qui poussent à
+ *   — **aucune urgence fabriquée.** Pas de « plus que 2 en stock », pas de
+ *     minuterie qui redémarre à chaque visite, pas de rabais permanent
+ *     présenté comme exceptionnel : ce sont des procédés qui poussent à
  *     acheter vite plutôt qu'à acheter en connaissance de cause.
+ *
+ * L'offre de lancement ne relève pas de ce dernier point, et la distinction
+ * mérite d'être posée : elle a une **date de fin réelle**, la même pour tout le
+ * monde, écrite en toutes lettres et lisible sans acheter. Un prix barré
+ * accompagné d'une échéance vérifiable est une information ; un prix barré
+ * permanent est un mensonge. C'est pourquoi le prix d'origine n'est affiché
+ * que pendant la fenêtre, et jamais reconstitué après coup.
  */
 
 export interface ShopProduct {
@@ -33,6 +41,13 @@ export interface ShopProduct {
   /** Couleur de rareté du personnage vendu, résolue côté serveur. */
   rarityColor: string | null;
   rarityLabel: string | null;
+  /**
+   * Prix avant remise, seulement si le produit est remisé en ce moment.
+   *
+   * `null` le reste du temps : le composant ne sait pas reconstituer un prix
+   * barré, et c'est voulu — il ne peut donc pas en afficher un par erreur.
+   */
+  fullPrice: string | null;
 }
 
 /**
@@ -87,11 +102,14 @@ export function ShopPanel({
   products,
   enabled,
   disabledReason,
+  promotion,
 }: {
   products: ShopProduct[];
   /** Les paiements réels sont-ils ouverts ? */
   enabled: boolean;
   disabledReason: string;
+  /** Offre de lancement en cours, ou `null`. Décidée côté serveur. */
+  promotion: { discount: number; daysLeft: number; endsOn: string } | null;
 }) {
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -112,6 +130,28 @@ export function ShopPanel({
 
   return (
     <div>
+      {/*
+        Bandeau d'offre, tout en haut de la page.
+
+        Il dit trois choses et s'arrête là : la remise, ce qu'elle couvre, et
+        quand elle finit. Pas de minuterie à la seconde — elle donnerait à une
+        offre d'une semaine l'allure d'une vente flash, et pousserait à décider
+        vite là où il n'y a aucune raison de se presser.
+      */}
+      {promotion && (
+        <p className="hb-promo" role="status">
+          <span className="hb-promo__badge">−{promotion.discount} %</span>
+          <span>
+            <strong>Offre de lancement sur les coffres.</strong>{' '}
+            La première semaine seulement — jusqu&apos;au {promotion.endsOn}, soit{' '}
+            {promotion.daysLeft} jour{promotion.daysLeft > 1 ? 's' : ''} restant
+            {promotion.daysLeft > 1 ? 's' : ''}. Les Berries et les personnages
+            restent au prix habituel, et les probabilités des coffres ne
+            changent pas.
+          </span>
+        </p>
+      )}
+
       {!enabled && (
         <p className="hb-card mt-4 text-sm">
           <strong>La boutique n’est pas encore ouverte.</strong>
@@ -163,6 +203,9 @@ export function ShopPanel({
                           {product.label}
                         </span>
                         <span className="hb-num whitespace-nowrap text-lg">
+                          {product.fullPrice && (
+                            <s className="hb-price-was">{product.fullPrice}</s>
+                          )}
                           {product.price}
                         </span>
                       </div>

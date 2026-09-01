@@ -9,12 +9,34 @@ const VALIDE = {
   status: 'paid',
   playerId: 'joueur-1',
   eventId: 'evt_1',
+  expectedCents: null,
 };
 
 describe('vérification d’un paiement', () => {
   it('accepte un paiement conforme', () => {
     const verdict = verifyClaim(VALIDE);
     expect(verdict.ok).toBe(true);
+  });
+
+  it('accepte le prix remisé écrit dans l’intention', () => {
+    // Offre de lancement : l'intention porte 239 centimes là où le catalogue
+    // en affiche 299. Le webhook arrive parfois après la fin de l'offre —
+    // comparer au prix courant refuserait un paiement légitime.
+    const remise = Math.floor(CATALOG.chest_pack_small.priceCents * 0.8);
+    const verdict = verifyClaim({
+      ...VALIDE,
+      amountCents: remise,
+      expectedCents: remise,
+    });
+
+    expect(verdict.ok).toBe(true);
+  });
+
+  it('refuse un montant qui ne correspond pas à l’intention', () => {
+    // La remise n'ouvre pas la porte à un montant libre : le serveur compare
+    // à ce qu'il a lui-même écrit, jamais à ce que le prestataire annonce.
+    const verdict = verifyClaim({ ...VALIDE, amountCents: 1, expectedCents: 239 });
+    expect(verdict.ok).toBe(false);
   });
 
   it('refuse un montant manipulé', () => {

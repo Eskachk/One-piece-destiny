@@ -25,6 +25,16 @@ import type { Product } from '@/domain/payments/catalog';
 
 export interface CheckoutRequest {
   product: Product;
+  /**
+   * Montant à encaisser, en centimes.
+   *
+   * Distinct de `product.priceCents` : une offre de lancement fait payer moins
+   * cher. Il est passé explicitement plutôt que recalculé ici, pour qu'il n'y
+   * ait **qu'un seul endroit** où le prix effectif est décidé — sinon la
+   * session de paiement, l'intention en base et l'affichage finissent par
+   * diverger, et c'est le joueur qui découvre l'écart au moment de payer.
+   */
+  amountCents: number;
   playerId: string;
   intentId: string;
   successUrl: string;
@@ -122,7 +132,7 @@ function stripeProvider(secretKey: string, webhookSecret: string): PaymentProvid
         success_url: request.successUrl,
         cancel_url: request.cancelUrl,
         'line_items[0][price_data][currency]': request.product.currency.toLowerCase(),
-        'line_items[0][price_data][unit_amount]': String(request.product.priceCents),
+        'line_items[0][price_data][unit_amount]': String(request.amountCents),
         'line_items[0][price_data][product_data][name]': request.product.label,
         'line_items[0][quantity]': '1',
         // Le joueur et l'intention voyagent en métadonnées : au retour du
@@ -132,6 +142,28 @@ function stripeProvider(secretKey: string, webhookSecret: string): PaymentProvid
         'metadata[product_id]': request.product.id,
         client_reference_id: request.intentId,
       });
+
+      /*
+       * Moyens de paiement proposés.
+       *
+       * PayPal est un **moyen de paiement de Stripe Checkout**, pas un second
+       * prestataire : la page hébergée affiche le bouton, Stripe encaisse, et
+       * le même webhook signé remonte le résultat. Ajouter le SDK PayPal
+       * doublerait la chaîne de vérification — deux signatures, deux formats
+       * d'événement, deux façons de rembourser — pour le même résultat.
+       *
+       * Ils sont énumérés plutôt que laissés au réglage automatique du
+       * tableau de bord : ce qui est proposé au joueur doit se lire dans le
+       * code, pas dans une configuration distante qu'un tiers peut changer.
+       *
+       * PayPal exige que la devise du compte corresponde ; en EUR sur un
+       * compte européen, c'est le cas. Il doit aussi être activé dans le
+       * tableau de bord Stripe — sinon Stripe refuse la session, ce que
+       * `createCheckout` remonte comme une erreur explicite plutôt que de
+       * masquer le moyen de paiement en silence.
+       */
+      body.append('payment_method_types[0]', 'card');
+      body.append('payment_method_types[1]', 'paypal');
 
       const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
         method: 'POST',

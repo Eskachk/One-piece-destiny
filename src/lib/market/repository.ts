@@ -231,6 +231,62 @@ export async function purchase(
   return (data as string | null) ?? null;
 }
 
+/**
+ * Dernières ventes conclues, avec le pseudo des deux joueurs (§37, §39).
+ *
+ * Le carnet d'annonces nommait le vendeur, mais **une vente conclue ne nommait
+ * personne** : le personnage disparaissait de la liste, et rien ne disait qui
+ * l'avait acheté ni à qui. Un marché où les transactions sont anonymes ne se
+ * lit pas — le joueur ne sait pas si un prix est un prix de marché ou un
+ * arrangement entre deux comptes.
+ *
+ * C'est aussi ce qui rend le wash trading visible à l'œil nu : deux pseudos
+ * qui reviennent en boucle sur la même carte se remarquent bien avant qu'une
+ * règle automatique ne les attrape.
+ *
+ * Les deux jointures sont nommées explicitement (`seller:players!...`) : sans
+ * cela, PostgREST ne sait pas laquelle des deux clés étrangères vers `players`
+ * suivre, et refuse la requête.
+ */
+export interface RecentSale {
+  id: string;
+  characterId: string;
+  price: number;
+  soldAt: Date;
+  sellerHandle: string;
+  buyerHandle: string;
+}
+
+export async function recentSales(limit = 12): Promise<RecentSale[]> {
+  const { data, error } = await db()
+    .from('market_transactions')
+    .select(
+      'id, character_id, price, sold_at, ' +
+        'seller:players!market_transactions_seller_id_fkey(handle), ' +
+        'buyer:players!market_transactions_buyer_id_fkey(handle)',
+    )
+    .order('sold_at', { ascending: false })
+    .limit(limit);
+
+  if (error) throw new Error(`market_transactions.select : ${error.message}`);
+
+  return (data ?? []).map((row): RecentSale => {
+    const seller = row.seller as unknown as { handle: string } | null;
+    const buyer = row.buyer as unknown as { handle: string } | null;
+
+    return {
+      id: row.id,
+      characterId: row.character_id,
+      price: row.price,
+      soldAt: new Date(row.sold_at),
+      // Un compte supprimé laisse sa transaction derrière lui. Afficher un
+      // tiret vaut mieux que faire échouer toute la section.
+      sellerHandle: seller?.handle ?? '—',
+      buyerHandle: buyer?.handle ?? '—',
+    };
+  });
+}
+
 /** Ventes d'un personnage, pour l'historique des prix (§39). */
 export async function salesFor(characterId: string): Promise<Sale[]> {
   const { data } = await db()
