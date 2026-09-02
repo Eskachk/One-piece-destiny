@@ -53,18 +53,22 @@ export default function PreviewChestPage() {
         ))}
       </ul>
       {/*
-        Les cinq décors d'île côte à côte.
+        Les huit décors d'île côte à côte.
 
-        Chacun ne s'affiche autrement que sur sa propre page, dont quatre sur
-        cinq exigent une session : les comparer demandait de se connecter et de
+        Chacun ne s'affiche autrement que sur sa propre page, et la plupart
+        exigent une session : les comparer demandait de se connecter et de
         naviguer. Ici on voit d'un coup si une silhouette est reconnaissable —
         c'est la seule question qui compte pour un décor.
+
+        Le cadre a exactement le rapport du dessin, 3 pour 1 : c'est aussi ce
+        qu'on vérifie ici, qu'aucun décor ne déborde de sa `viewBox`.
       */}
       <h2 className="mt-10 font-display text-2xl text-parchment">
         Aperçu des îles
       </h2>
       <ul className="mt-4 space-y-4">
         {([
+            'elbaf',
             'alabasta',
             'drum',
             'dressrosa',

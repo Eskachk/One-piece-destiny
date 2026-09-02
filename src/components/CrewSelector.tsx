@@ -106,7 +106,7 @@ export function CrewSelector({
       </p>
 
       {/* Les 3 emplacements — l'action avant tout le reste. */}
-      <ul className="mt-5 grid grid-cols-3 gap-3">
+      <ul className="mt-5 grid grid-cols-3 gap-3 md:grid-cols-6">
         {Array.from({ length: CREW_SIZE }, (_, slot) => {
           const character = crew[slot];
           return (
@@ -258,7 +258,7 @@ export function CrewSelector({
             </p>
           ) : null}
 
-          <ul className="mt-3 grid grid-cols-2 gap-2">
+          <ul className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
             {owned.map((character) => {
               const selected = crew.some((c) => c.id === character.id);
               const full = crew.length >= CREW_SIZE && !selected;

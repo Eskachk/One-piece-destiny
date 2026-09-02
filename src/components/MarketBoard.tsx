@@ -219,7 +219,7 @@ export function MarketBoard({
             </div>
           </div>
         ) : (
-          <ul className="mt-3 grid grid-cols-2 gap-2">
+          <ul className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
             {sellable.map((card) => (
               <li key={card.characterId}>
                 <button

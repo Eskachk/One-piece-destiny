@@ -30,6 +30,7 @@
 
 export type IslandId =
   | 'harbor'
+  | 'elbaf'
   | 'alabasta'
   | 'drum'
   | 'dressrosa'
@@ -56,6 +57,18 @@ export const ISLANDS: Record<IslandId, Island> = {
       'mer et deux rangs de vagues',
       'pont de bois, mât et cordage',
       'chapeau de paille et Éternal Pose posés sur les planches',
+    ],
+  },
+
+  elbaf: {
+    id: 'elbaf',
+    name: 'Elbaf',
+    elements: [
+      'arbre d’Adam, démesuré, qui occupe la moitié du cadre',
+      'arc-en-ciel en six bandes, derrière l’arbre',
+      'huttes de géants, aux toits très hauts',
+      'piques plantées et boucliers ronds',
+      'lande rase et reliefs froids au lointain',
     ],
   },
 
@@ -159,7 +172,11 @@ export const ISLANDS: Record<IslandId, Island> = {
  * par diverger, et l'on aurait vu Wano avec le ciel de Dressrosa.
  */
 const ROUTES: readonly (readonly [string, IslandId])[] = [
-  ['/classement', 'dressrosa'],
+  // Le classement récupère Alabasta : un palais, des dunes, une lumière d'or.
+  // Dressrosa y était, et son colisée disait bien « affrontement » — mais
+  // l'accueil réclamait Elbaf, l'accueil avait Alabasta, et c'est Alabasta qui
+  // convenait le mieux à la page où l'on regarde qui l'emporte.
+  ['/classement', 'alabasta'],
   ['/collection', 'fishman'],
   ['/market', 'wano'],
   ['/boutique', 'logue'],
@@ -175,8 +192,13 @@ export function islandOf(pathname: string): IslandId {
   for (const [prefix, island] of ROUTES) {
     if (pathname.startsWith(prefix)) return island;
   }
-  // L'accueil : Alabasta. C'est la page où l'on compose son équipage, la plus
-  // fréquentée, et la seule qui n'avait aucune île à elle — le décor du port
-  // appartient à l'écran de connexion.
-  return pathname === '/' ? 'alabasta' : 'harbor';
+  // L'accueil : Elbaf. C'est la page où l'on compose son équipage, la plus
+  // fréquentée du produit — elle mérite le décor le plus ample. L'arbre d'Adam
+  // et l'arc-en-ciel donnent une échelle qu'aucune autre île n'a : on lève les
+  // yeux avant de choisir ses six.
+  //
+  // Dressrosa n'est plus attribuée à aucune route. Elle reste dessinée et
+  // visible sur la page d'aperçu : le décor est bon, et il servira à la
+  // prochaine page qui en demandera un.
+  return pathname === '/' ? 'elbaf' : 'harbor';
 }

@@ -4,82 +4,343 @@ import type { IslandId } from '@/domain/islands';
  * Décor d'une île (cahier §50 à §54, §122).
  *
  * Composant **serveur, sans une ligne de JavaScript client**, et surtout : seul
- * le décor de l'île courante est rendu. Les dessiner tous puis en masquer cinq
+ * le décor de l'île courante est rendu. Les dessiner tous puis en masquer sept
  * en CSS coûterait à chaque requête de chaque joueur — c'est exactement le
  * défaut qu'a révélé le tir de charge sur le pont du port.
  *
- * ## Ce qui fait qu'on reconnaît une île
+ * ## Un cadre unique, large, et jamais rogné
  *
- * La **silhouette**, pas la couleur. Un dégradé rose ne dit pas Wano ; un
- * torii, si. Chaque décor pose donc deux ou trois formes franches, lisibles à
- * la taille d'un téléphone, plutôt qu'une profusion de détails qui deviennent
- * du bruit sous 400 px de large.
+ * Tous les décors partagent `viewBox="0 0 900 300"`, soit exactement 3:1, et la
+ * feuille de style donne au SVG le même `aspect-ratio`. Conséquence : le dessin
+ * remplit **toujours** la largeur au pixel près — jamais de bande vide sur les
+ * côtés, jamais de silhouette tranchée.
+ *
+ * C'est ce qui manquait. Les décors étaient dessinés dans un cadre 400×220,
+ * presque carré ; sur un écran de bureau, large et bas, la mise à l'échelle
+ * « entière » les laissait flotter au milieu avec deux cents pixels de vide de
+ * chaque côté. Et plusieurs dessins débordaient de leur propre cadre — le mont
+ * de Wano allait jusqu'à x=410 dans une boîte large de 400, les toits de
+ * Dressrosa jusqu'à 412 : le SVG les tranchait net, quelle que soit la mise à
+ * l'échelle.
+ *
+ * D'où la règle tenue ici sans exception : **toute coordonnée reste dans
+ * `0 ≤ x ≤ 900` et `0 ≤ y ≤ 300`.**
+ *
+ * ## La zone sûre
+ *
+ * Sur un téléphone, un cadre 3:1 réduit à la largeur de l'écran ne ferait plus
+ * qu'une centaine de pixels de haut. La feuille de style l'élargit donc et
+ * laisse les bords sortir du champ. Ce qui **nomme** l'île — le torii, le
+ * colisée, l'échafaud, l'arbre d'Adam — est pour cette raison placé au centre,
+ * entre x=210 et x=690 ; les bords ne reçoivent que du secondaire — palmiers,
+ * sapins, coraux — dont l'absence ne change rien à ce qu'on reconnaît.
  *
  * ## Lisibilité avant décor (§51)
  *
  * Tout est en arrière-plan fixe, `aria-hidden`, sans interception de clic, et
- * **atténué** : le contenu des pages intérieures repose sur un voile opaque, et
- * rien ici ne doit remonter au travers. Un décor qui dispute la lecture d'un
- * classement est un décor raté.
+ * atténué : le contenu des pages intérieures repose sur un voile, et rien ici
+ * ne doit remonter au travers. Un décor qui dispute la lecture d'un classement
+ * est un décor raté.
  *
  * §122 : aucun visuel de l'œuvre. Ce sont des formes géométriques — un torii
  * est deux montants et deux traverses, une pagode trois trapèzes empilés.
  */
 
-/** Dressrosa — le pays des jouets : arènes, tuiles, moulins, confettis. */
+/** Le cadre partagé. 3:1, et la feuille de style tient le même rapport. */
+const CADRE = {
+  viewBox: '0 0 900 300',
+  preserveAspectRatio: 'xMidYMax meet',
+} as const;
+
+/**
+ * Elbaf — l'île des géants : l'arbre d'Adam, l'arc-en-ciel, les huttes.
+ *
+ * L'échelle est le sujet. Un arbre ordinaire au milieu d'un décor ordinaire ne
+ * dirait rien ; ici le tronc fait à lui seul le neuvième de la largeur, la
+ * ramure couvre plus de la moitié du cadre, et les huttes à côté paraissent
+ * petites alors que leur porte fait deux étages.
+ */
+function Elbaf() {
+  return (
+    <svg className="isl isl--elbaf" {...CADRE} aria-hidden="true">
+      {/* Arc-en-ciel, tout au fond : six bandes concentriques centrées sur le
+          bas du cadre, si bien qu'on n'en voit que la voûte. L'arbre passera
+          devant et n'en laissera que les deux flancs — c'est voulu : un
+          arc-en-ciel entier et net lirait comme un autocollant. */}
+      <g fill="none" strokeWidth="11" opacity=".5">
+        {[
+          { teinte: '#d95f4a', r: 296 },
+          { teinte: '#e79a4a', r: 285 },
+          { teinte: '#e9cf5c', r: 274 },
+          { teinte: '#6fae5c', r: 263 },
+          { teinte: '#4d92c4', r: 252 },
+          { teinte: '#7a68b8', r: 241 },
+        ].map(({ teinte, r }) => (
+          <path key={r} d={`M${450 - r} 300 A${r} ${r} 0 0 1 ${450 + r} 300`} stroke={teinte} />
+        ))}
+      </g>
+
+      {/* Reliefs du fond : la lande d'Elbaf, rase et froide. */}
+      <path d="M0 236 L104 182 L196 236Z" fill="#7d94a0" opacity=".38" />
+      <path d="M688 238 L792 174 L892 238Z" fill="#7d94a0" opacity=".34" />
+
+      {/* Huttes de géants. Le toit est démesurément haut par rapport à la
+          largeur, et la porte fait les deux tiers du mur : c'est ce qui les
+          fait lire « bâties pour des géants » plutôt que « chalets ». */}
+      {[
+        { x: 70, y: 196, w: 120, h: 56 },
+        { x: 712, y: 204, w: 110, h: 48 },
+      ].map(({ x, y, w, h }) => (
+        <g key={x} opacity=".6">
+          <rect x={x} y={y} width={w} height={h} fill="#6b4a30" />
+          <path d={`M${x - 12} ${y} L${x + w / 2} ${y - 50} L${x + w + 12} ${y}Z`} fill="#4c3421" />
+          {/* Rondins : trois traits, pas plus — au-delà, on lit une texture au
+              lieu d'un mur. */}
+          <path
+            d={`M${x} ${y + h / 4} h${w} M${x} ${y + h / 2} h${w} M${x} ${y + (h * 3) / 4} h${w}`}
+            stroke="#4c3421"
+            strokeWidth="2"
+            opacity=".5"
+          />
+          <rect x={x + w / 2 - 17} y={y + h - 38} width="34" height="38" fill="#2f2013" opacity=".7" />
+        </g>
+      ))}
+
+      {/* Piques plantées et boucliers ronds posés au sol. Le détail qui dit
+          qu'on est chez des guerriers, sans dessiner un guerrier. */}
+      <g opacity=".5">
+        {[240, 268, 646, 674].map((x) => (
+          <g key={x}>
+            <rect x={x - 2} y="196" width="4" height="60" fill="#5b4630" />
+            <path d={`M${x - 6} 196 L${x} 176 L${x + 6} 196Z`} fill="#8d99a6" />
+          </g>
+        ))}
+        {[302, 612].map((cx) => (
+          <g key={cx}>
+            <circle cx={cx} cy="236" r="16" fill="#8a4b32" />
+            <circle cx={cx} cy="236" r="16" fill="none" stroke="#5b4630" strokeWidth="3" />
+            <circle cx={cx} cy="236" r="4.5" fill="#8d99a6" />
+          </g>
+        ))}
+      </g>
+
+      {/* L'arbre d'Adam. Contreforts d'abord, tronc ensuite, ramure par-dessus
+          — l'ordre de tracé fait la profondeur. */}
+      <g opacity=".72">
+        <path
+          d="M404 262 q-46 -6 -78 14 M496 262 q46 -6 78 14"
+          stroke="#4a3320"
+          strokeWidth="20"
+          strokeLinecap="round"
+          fill="none"
+        />
+        <path d="M400 268 L420 104 L480 104 L500 268Z" fill="#5c422c" />
+        <path
+          d="M430 262 V112 M462 264 V110"
+          stroke="#3d2b1c"
+          strokeWidth="3"
+          opacity=".45"
+          fill="none"
+        />
+        {/* Deux maîtresses branches, qui partent chercher la ramure. */}
+        <path
+          d="M424 150 q-64 -14 -96 -46 M478 142 q66 -16 100 -50"
+          stroke="#5c422c"
+          strokeWidth="13"
+          strokeLinecap="round"
+          fill="none"
+        />
+      </g>
+
+      {/* Ramure : six masses qui se chevauchent. Une seule ellipse lirait comme
+          un nuage ; c'est le chevauchement qui fait le feuillage. */}
+      <g opacity=".62">
+        <ellipse cx="450" cy="66" rx="236" ry="60" fill="#2f6b3c" />
+        <ellipse cx="450" cy="46" rx="168" ry="40" fill="#377a44" />
+        <ellipse cx="322" cy="92" rx="132" ry="44" fill="#356f3f" />
+        <ellipse cx="580" cy="88" rx="144" ry="46" fill="#3b8248" />
+        <ellipse cx="392" cy="118" rx="86" ry="30" fill="#2b6237" />
+        <ellipse cx="522" cy="120" rx="94" ry="30" fill="#2b6237" />
+      </g>
+
+      {/* Sol, en deux plans. */}
+      <path d="M0 258 Q170 240 340 254 T680 246 T900 258 V300 H0Z" fill="#4f7a4a" opacity=".5" />
+      <path d="M0 280 Q230 266 470 278 T900 272 V300 H0Z" fill="#3d6440" opacity=".5" />
+    </svg>
+  );
+}
+
+/** Alabasta — le royaume du désert : dunes, palais, palmiers. */
+function Alabasta() {
+  return (
+    <svg className="isl isl--alabasta" {...CADRE} aria-hidden="true">
+      {/* Dunes, en deux plans dont les crêtes se croisent. Parallèles, elles
+          liraient comme des rayures. */}
+      <path d="M0 214 Q180 176 360 208 T720 190 T900 206 V300 H0Z" fill="#e0b06a" opacity=".55" />
+      <path d="M0 252 Q240 216 480 248 T900 236 V300 H0Z" fill="#d29a52" opacity=".6" />
+
+      {/* Le palais : un corps, deux ailes, deux tours à dôme, un obélisque.
+          C'est cette silhouette qui nomme le lieu, donc elle est au centre du
+          cadre — la seule zone qu'un téléphone montre toujours. */}
+      <g opacity=".66" fill="#e8d5b0">
+        <rect x="330" y="188" width="46" height="64" />
+        <rect x="524" y="188" width="46" height="64" />
+        <rect x="372" y="152" width="156" height="100" />
+        <path d="M372 152 h156 l-16 -18 h-124Z" fill="#c98f52" />
+        {[398, 502].map((x) => (
+          <g key={x}>
+            <rect x={x - 18} y="112" width="36" height="44" />
+            <path d={`M${x - 21} 112 a21 24 0 0 1 42 0Z`} fill="#c98f52" />
+            <rect x={x - 2} y="90" width="4" height="16" fill="#c98f52" />
+          </g>
+        ))}
+        <path d="M442 152 V96 h16 v56Z" />
+        <path d="M442 96 l8 -18 l8 18Z" fill="#c98f52" />
+      </g>
+
+      {/* Palmiers. Trois, jamais alignés ni de même taille : trois copies
+          identiques feraient un motif, pas une oasis. */}
+      {[
+        { x: 108, sens: 1, ech: 1 },
+        { x: 232, sens: -1, ech: 0.8 },
+        { x: 786, sens: -1, ech: 1.05 },
+      ].map(({ x, sens, ech }) => {
+        const cx = x + 6 * sens * ech;
+        const cy = 258 - 68 * ech;
+        return (
+          <g key={x} opacity=".5">
+            <path
+              d={`M${x} 258 q${14 * sens} -34 ${6 * sens} -${62 * ech}`}
+              stroke="#8a6234"
+              strokeWidth={6 * ech}
+              fill="none"
+              strokeLinecap="round"
+            />
+            {[-42, -20, 0, 20, 42].map((a) => (
+              <ellipse
+                key={a}
+                cx={cx}
+                cy={cy}
+                rx={26 * ech}
+                ry={6 * ech}
+                fill="#5f8f4a"
+                transform={`rotate(${a} ${cx} ${cy + 2})`}
+              />
+            ))}
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+/** Drum — le royaume enneigé : aiguilles, château perché, sapins. */
+function Drum() {
+  return (
+    <svg className="isl isl--drum" {...CADRE} aria-hidden="true">
+      {/* Les Drum Rockies : des aiguilles, pas des collines. C'est leur
+          verticalité qui les distingue de n'importe quelle montagne. */}
+      <path d="M0 300 L128 116 L214 206 L308 92 L430 300Z" fill="#b8cadd" opacity=".6" />
+      <path d="M330 300 L470 62 L558 178 L640 104 L790 300Z" fill="#a7bdd3" opacity=".55" />
+      <path d="M716 300 L820 138 L900 262 V300Z" fill="#b8cadd" opacity=".45" />
+
+      {/* Neige des sommets : un triangle blanc qui déborde en festons sur les
+          flancs, sinon on lit un capuchon posé. */}
+      <g fill="#ffffff" opacity=".8">
+        <path d="M288 120 L308 92 L328 120 q-20 11 -40 0Z" />
+        <path d="M446 96 L470 62 L494 96 q-24 12 -48 0Z" />
+        <path d="M800 168 L820 138 L840 168 q-20 11 -40 0Z" />
+      </g>
+
+      {/* Château perché sur la crête, au centre du cadre : donjon, deux tours
+          coiffées, corps de garde en contrebas. */}
+      <g opacity=".66" fill="#dbe6f0">
+        <rect x="448" y="98" width="46" height="58" />
+        <path d="M445 98 h52 l-9 -14 h-34Z" fill="#5d7b9c" />
+        {[440, 502].map((x) => (
+          <g key={x}>
+            <rect x={x - 10} y="110" width="20" height="46" />
+            <path d={`M${x - 13} 110 l13 -18 l13 18Z`} fill="#5d7b9c" />
+          </g>
+        ))}
+        <rect x="424" y="156" width="94" height="26" />
+        <path d="M424 156 h94 l-8 -10 h-78Z" fill="#5d7b9c" />
+      </g>
+
+      {/* Sapins alourdis de neige : trois étages, du plus large au plus étroit,
+          et un liseré clair sur chacun. */}
+      {[
+        { x: 58, ech: 1 },
+        { x: 116, ech: 0.82 },
+        { x: 246, ech: 0.7 },
+        { x: 668, ech: 0.72 },
+        { x: 790, ech: 0.9 },
+        { x: 858, ech: 1 },
+      ].map(({ x, ech }) => (
+        <g key={x} opacity={0.42 + ech * 0.18}>
+          <rect x={x - 3} y="256" width="6" height="22" fill="#4a5f4a" />
+          {[0, 1, 2].map((n) => {
+            const y = 256 - n * 26 * ech;
+            const w = (26 - n * 6) * ech;
+            const h = 34 * ech;
+            return (
+              <g key={n}>
+                <path d={`M${x - w} ${y} L${x} ${y - h} L${x + w} ${y}Z`} fill="#3f5f4a" />
+                <path d={`M${x - w} ${y} L${x} ${y - h / 3} L${x + w} ${y}Z`} fill="#eef5fb" opacity=".7" />
+              </g>
+            );
+          })}
+        </g>
+      ))}
+
+      {/* Congère au premier plan : le blanc rejoint le bas du cadre. */}
+      <path d="M0 274 Q220 258 450 272 T900 266 V300 H0Z" fill="#eef5fb" opacity=".55" />
+    </svg>
+  );
+}
+
+/** Dressrosa — le pays des jouets : arènes, tuiles, moulins, fleurs. */
 function Dressrosa() {
   return (
-    <svg
-      className="isl isl--dressrosa"
-      viewBox="0 0 400 220"
-      preserveAspectRatio="xMidYMax meet"
-      aria-hidden="true"
-    >
+    <svg className="isl isl--dressrosa" {...CADRE} aria-hidden="true">
       {/* Collines et moulins, au fond. */}
-      <path d="M0 150 Q70 118 140 146 T290 138 T400 152 V220 H0Z" fill="#d9a86b" opacity=".5" />
-      {[60, 330].map((x) => (
+      <path d="M0 196 Q150 156 300 190 T620 178 T900 198 V300 H0Z" fill="#d9a86b" opacity=".5" />
+      {[112, 764].map((x) => (
         <g key={x} opacity=".45" fill="#8a5a33">
-          <rect x={x - 3} y="112" width="6" height="38" />
+          <rect x={x - 4} y="146" width="8" height="52" />
           {[0, 90, 180, 270].map((a) => (
-            <rect
-              key={a}
-              x={x - 1.5}
-              y="90"
-              width="3"
-              height="22"
-              transform={`rotate(${a + 25} ${x} 112)`}
-            />
+            <rect key={a} x={x - 2} y="116" width="4" height="30" transform={`rotate(${a + 25} ${x} 146)`} />
           ))}
         </g>
       ))}
 
-      {/* Toits de tuiles, en enfilade. Deux rangs décalés suffisent à faire
-          « ville » ; un troisième deviendrait une texture. */}
+      {/* Toits de tuiles, en enfilade. Deux rangs décalés font « ville » ; un
+          troisième deviendrait une texture. */}
       <g opacity=".55">
-        {[20, 78, 136, 250, 308, 366].map((x, i) => (
+        {[16, 90, 164, 238, 578, 652, 726, 800].map((x, i) => (
           <g key={x}>
-            <rect x={x} y={150 - (i % 2) * 12} width="46" height="70" fill="#e8dcc6" />
+            <rect x={x} y={202 - (i % 2) * 16} width="60" height="98" fill="#e8dcc6" />
             <path
-              d={`M${x - 6} ${150 - (i % 2) * 12} L${x + 23} ${132 - (i % 2) * 12} L${x + 52} ${150 - (i % 2) * 12}Z`}
+              d={`M${x - 8} ${202 - (i % 2) * 16} L${x + 30} ${178 - (i % 2) * 16} L${x + 68} ${202 - (i % 2) * 16}Z`}
               fill="#b8503a"
             />
           </g>
         ))}
       </g>
 
-      {/* Colisée Corrida : deux rangs d'arcades. C'est la forme qui nomme
-          l'île — elle est donc au centre et plus opaque que le reste. */}
-      <g opacity=".72">
-        <rect x="150" y="120" width="100" height="100" fill="#efe3cb" />
-        <path d="M150 120 H250 L244 108 H156Z" fill="#b8503a" />
+      {/* Le Colisée : deux rangs d'arcades. C'est la forme qui nomme l'île, et
+          elle occupe donc le centre — la zone qu'un téléphone montre toujours. */}
+      <g opacity=".74">
+        <rect x="336" y="146" width="228" height="154" fill="#efe3cb" />
+        <path d="M336 146 H564 L550 128 H350Z" fill="#b8503a" />
         {[0, 1].map((rang) =>
-          [0, 1, 2, 3].map((i) => {
-            const x = 158 + i * 22;
-            const y = 132 + rang * 36;
+          [0, 1, 2, 3, 4, 5].map((i) => {
+            const x = 350 + i * 36;
+            const y = 162 + rang * 56;
             return (
               <path
                 key={`arc-${rang}-${i}`}
-                d={`M${x} ${y + 26} V${y + 9} a8 9 0 0 1 16 0 V${y + 26}Z`}
+                d={`M${x} ${y + 42} V${y + 15} a13 15 0 0 1 26 0 V${y + 42}Z`}
                 fill="#8a5a33"
                 opacity=".55"
               />
@@ -88,8 +349,14 @@ function Dressrosa() {
         )}
       </g>
 
-      {/* Champ de fleurs au premier plan. */}
-      <path d="M0 196 Q100 184 200 194 T400 190 V220 H0Z" fill="#d4607a" opacity=".38" />
+      {/* Champ de fleurs au premier plan : un rang de corolles posées sur une
+          bande de terre, plutôt qu'un aplat rose. */}
+      <path d="M0 264 Q200 250 400 262 T900 256 V300 H0Z" fill="#c4593f" opacity=".4" />
+      <g fill="#d4607a" opacity=".45">
+        {[24, 92, 160, 228, 296, 364, 432, 500, 568, 636, 704, 772, 840].map((x, i) => (
+          <circle key={x} cx={x} cy={274 + (i % 3) * 7} r={5 + (i % 2) * 2} />
+        ))}
+      </g>
     </svg>
   );
 }
@@ -97,83 +364,86 @@ function Dressrosa() {
 /** Île des hommes-poissons — sous la mer, mais éclairée. */
 function Fishman() {
   return (
-    <svg
-      className="isl isl--fishman"
-      viewBox="0 0 400 160"
-      preserveAspectRatio="xMidYMax meet"
-      aria-hidden="true"
-    >
+    <svg className="isl isl--fishman" {...CADRE} aria-hidden="true">
       {/* Rayons filtrés depuis la surface : ce qui dit « on est dessous ». Ils
           s'évasent vers le bas — la lumière vient d'un point lointain, au-dessus
           de dix mille mètres d'eau. */}
-      <g opacity=".26" fill="#ffffff">
-        {[20, 110, 200, 290, 350].map((x, i) => (
-          <path key={x} d={`M${x} 0 h${18 + i * 3} l${34 + i * 6} 160 h-${44 + i * 4}Z`} />
+      <g opacity=".24" fill="#ffffff">
+        {[30, 190, 370, 560, 700].map((x, i) => (
+          <path key={x} d={`M${x} 0 h${30 + i * 5} l${58 + i * 10} 300 h-${76 + i * 8}Z`} />
         ))}
       </g>
 
-      {/* Bulle géante qui enferme l'île : un arc large, coupé par le cadre.
-          Un cercle entier lirait comme une bordure décorative. */}
+      {/* La bulle géante qui enferme l'île. Ses deux pieds touchent exactement
+          le bas du cadre : elle est entière, aucun bord ne la tranche. */}
       <path
-        d="M-10 168 A210 150 0 0 1 410 168"
-        fill="rgba(255,255,255,.14)"
-        stroke="rgba(255,255,255,.6)"
-        strokeWidth="2.5"
+        d="M40 300 A420 262 0 0 1 860 300"
+        fill="rgba(255,255,255,.13)"
+        stroke="rgba(255,255,255,.55)"
+        strokeWidth="3"
       />
 
-      {/* Arbre Eve. Sa couronne déborde du cadre par le haut : c'est ce qui
-          donne l'échelle — l'arbre est plus grand que ce qu'on en voit. */}
-      <ellipse cx="200" cy="34" rx="104" ry="46" fill="#2f7f66" opacity=".5" />
-      <ellipse cx="200" cy="46" rx="72" ry="30" fill="#3f9578" opacity=".45" />
-      <path d="M186 160 V64 h28 v96Z" fill="#5c422c" opacity=".55" />
-      {/* Racines contrefortes : un tronc droit poserait comme un poteau. */}
+      {/* L'Arbre Eve, au centre. Racines contrefortes : un tronc droit poserait
+          comme un poteau. */}
       <path
-        d="M186 160 q-16 -22 -34 -30 M214 160 q16 -22 34 -30"
+        d="M424 300 q-40 -46 -84 -66 M476 300 q40 -46 84 -66"
         stroke="#5c422c"
-        strokeWidth="9"
+        strokeWidth="15"
         strokeLinecap="round"
         fill="none"
         opacity=".45"
       />
+      <path d="M420 300 V128 h60 v172Z" fill="#5c422c" opacity=".55" />
+      <ellipse cx="450" cy="80" rx="212" ry="60" fill="#2f7f66" opacity=".5" />
+      <ellipse cx="450" cy="58" rx="146" ry="40" fill="#3f9578" opacity=".45" />
+      <ellipse cx="330" cy="106" rx="106" ry="32" fill="#2f7f66" opacity=".4" />
+      <ellipse cx="572" cy="102" rx="112" ry="34" fill="#3f9578" opacity=".38" />
 
       {/* Coraux, sur le fond. Trois branches par touffe, jamais symétriques. */}
-      <g stroke="#e0748a" strokeWidth="5" strokeLinecap="round" fill="none" opacity=".55">
+      <g stroke="#e0748a" strokeWidth="6" strokeLinecap="round" fill="none" opacity=".55">
         {[
-          [34, -26, -14, 16],
-          [86, -20, -12, 12],
-          [316, -30, -16, 18],
-          [368, -22, -12, 14],
-        ].map(([x, h, g, d]) => (
-          <path key={x} d={`M${x} 160 v${h} m0 ${h / 2} l${g} ${h / 2} m0 ${h / 4} l${d} ${h / 2}`} />
+          { x: 50, h: -44, g: -18, d: 20 },
+          { x: 126, h: -34, g: -16, d: 16 },
+          { x: 240, h: -28, g: -14, d: 14 },
+          { x: 672, h: -30, g: -16, d: 16 },
+          { x: 782, h: -50, g: -20, d: 22 },
+          { x: 856, h: -36, g: -14, d: 18 },
+        ].map(({ x, h, g, d }) => (
+          <path key={x} d={`M${x} 300 v${h} m0 ${h / 2} l${g} ${h / 2} m0 ${h / 4} l${d} ${h / 2}`} />
         ))}
       </g>
 
       {/* Chapelets de bulles qui montent, de plus en plus petites. */}
       <g fill="rgba(255,255,255,.55)">
         {[
-          [118, 130, 5],
-          [124, 108, 3.5],
-          [130, 88, 2.5],
-          [280, 138, 6],
-          [286, 112, 4],
-          [292, 92, 2.6],
+          [200, 240, 7],
+          [210, 206, 5],
+          [220, 174, 3.4],
+          [700, 254, 8],
+          [712, 214, 5.4],
+          [722, 178, 3.6],
         ].map(([cx, cy, r]) => (
           <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r={r} />
         ))}
       </g>
 
       {/* Banc de poissons : des losanges à queue, alignés en biais. */}
-      <g fill="#14555c" opacity=".38">
+      <g fill="#14555c" opacity=".36">
         {[
-          [58, 62],
-          [76, 54],
-          [94, 66],
-          [330, 76],
-          [348, 68],
+          [110, 126],
+          [140, 110],
+          [170, 136],
+          [200, 118],
+          [706, 152],
+          [738, 134],
+          [770, 158],
         ].map(([x, y]) => (
-          <path key={`${x}-${y}`} d={`M${x} ${y} q9 -6 18 0 q-9 6 -18 0Z m0 0 l-7 -5 v10Z`} />
+          <path key={`${x}-${y}`} d={`M${x} ${y} q13 -8 26 0 q-13 8 -26 0Z m0 0 l-10 -7 v14Z`} />
         ))}
       </g>
+
+      {/* Le fond de la fosse. */}
+      <path d="M0 282 Q220 268 450 280 T900 274 V300 H0Z" fill="#14555c" opacity=".3" />
     </svg>
   );
 }
@@ -181,58 +451,74 @@ function Fishman() {
 /** Wano — torii, pagode, mont, cerisiers. */
 function Wano() {
   return (
-    <svg
-      className="isl isl--wano"
-      viewBox="0 0 400 220"
-      preserveAspectRatio="xMidYMax meet"
-      aria-hidden="true"
-    >
-      {/* Mont enneigé, au lointain. */}
-      <path d="M250 220 L330 96 L410 220Z" fill="#b9c6d8" opacity=".5" />
-      <path d="M306 134 L330 96 L354 134 q-12 8 -24 0 q-12 -8 -24 0Z" fill="#ffffff" opacity=".65" />
+    <svg className="isl isl--wano" {...CADRE} aria-hidden="true">
+      {/* Mont enneigé, au lointain. Il s'arrête à x=880 : dans la version
+          précédente il allait jusqu'à 410 dans un cadre large de 400, et le SVG
+          le tranchait net. */}
+      <path d="M556 300 L718 92 L880 300Z" fill="#b9c6d8" opacity=".5" />
+      <path d="M690 134 L718 92 L746 134 q-14 9 -28 0 q-14 -9 -28 0Z" fill="#ffffff" opacity=".65" />
 
-      {/* Pagode : trois toits, du plus large au plus étroit. */}
+      {/* Pagode : trois toits, du plus large en bas au plus étroit en haut, et
+          des avant-toits retroussés. Droits, on lirait une tour. */}
       <g opacity=".55">
-        <rect x="66" y="126" width="52" height="94" fill="#e8d9d2" />
+        <rect x="180" y="170" width="64" height="130" fill="#e8d9d2" />
+        <rect x="210" y="150" width="4" height="22" fill="#8c2b2b" />
         {[
-          [110, 44],
-          [132, 36],
-          [154, 30],
-        ].map(([y, demi], i) => (
+          { y: 170, demi: 44 },
+          { y: 208, demi: 54 },
+          { y: 246, demi: 64 },
+        ].map(({ y, demi }, i) => (
           <path
             key={y}
-            d={`M${92 - demi - 8} ${y + 16} Q${92} ${y + 8} ${92 + demi + 8} ${y + 16} L${92 + demi} ${y} H${92 - demi}Z`}
+            d={`M${212 - demi - 12} ${y + 22} Q212 ${y + 11} ${212 + demi + 12} ${y + 22} L${212 + demi} ${y} H${212 - demi}Z`}
             fill="#8c2b2b"
             opacity={0.9 - i * 0.05}
           />
         ))}
       </g>
 
-      {/* Torii : la forme qui nomme l'arc. Deux montants, deux traverses, une
-          inclinaison sur le linteau — sans elle, on lit « portique ». */}
-      <g fill="#b8332f" opacity=".78">
-        <path d="M232 220 V150 h10 v70Z" />
-        <path d="M330 220 V150 h10 v70Z" />
-        <path d="M218 148 Q286 138 354 148 L352 158 Q286 149 220 158Z" />
-        <rect x="228" y="168" width="116" height="8" />
+      {/* Le torii, au centre. Deux montants, deux traverses, et l'inclinaison
+          du linteau — sans elle, on lit « portique ». */}
+      <g fill="#b8332f" opacity=".8">
+        <path d="M414 300 V190 h18 v110Z" />
+        <path d="M598 300 V190 h18 v110Z" />
+        <path d="M392 186 Q515 170 638 186 L634 202 Q515 187 396 202Z" />
+        <rect x="408" y="220" width="214" height="13" />
       </g>
 
       {/* Lanternes suspendues au linteau. */}
       <g opacity=".6" fill="#f3d06a">
-        {[252, 286, 320].map((x) => (
+        {[452, 515, 578].map((x) => (
           <g key={x}>
-            <rect x={x - 0.5} y="176" width="1" height="8" fill="#8c2b2b" />
-            <ellipse cx={x} cy="190" rx="6" ry="8" />
+            <rect x={x - 1} y="233" width="2" height="12" fill="#8c2b2b" />
+            <ellipse cx={x} cy="256" rx="9" ry="12" />
           </g>
         ))}
       </g>
 
-      {/* Cerisier : un tronc penché et une masse de fleurs. */}
-      <g opacity=".5">
-        <path d="M34 220 q12 -50 36 -70" stroke="#6b4a3a" strokeWidth="9" fill="none" strokeLinecap="round" />
-        <ellipse cx="78" cy="140" rx="46" ry="28" fill="#f0a8bd" />
-        <ellipse cx="46" cy="158" rx="28" ry="18" fill="#f5bccd" />
-      </g>
+      {/* Cerisiers : un tronc penché et une masse de fleurs, aux deux bords.
+          Le rose est franc, presque soutenu : le ciel de Wano est lui-même
+          rose, et des fleurs pâles s'y dissolvaient — on ne voyait plus que
+          deux taches claires sans forme. */}
+      {[
+        { x: 60, sens: 1 },
+        { x: 828, sens: -1 },
+      ].map(({ x, sens }) => (
+        <g key={x} opacity=".62">
+          <path
+            d={`M${x} 300 q${18 * sens} -66 ${54 * sens} -94`}
+            stroke="#6b4a3a"
+            strokeWidth="12"
+            fill="none"
+            strokeLinecap="round"
+          />
+          <ellipse cx={x + 62 * sens} cy="192" rx="62" ry="36" fill="#dd6f90" />
+          <ellipse cx={x + 20 * sens} cy="216" rx="38" ry="24" fill="#e88ba6" />
+        </g>
+      ))}
+
+      {/* Rizière en terrasses, au premier plan. */}
+      <path d="M0 272 Q230 258 460 270 T900 264 V300 H0Z" fill="#8a9a68" opacity=".4" />
     </svg>
   );
 }
@@ -240,54 +526,58 @@ function Wano() {
 /** Logue Town — la ville du commencement et de la fin, sous l'orage. */
 function Logue() {
   return (
-    <svg
-      className="isl isl--logue"
-      viewBox="0 0 400 220"
-      preserveAspectRatio="xMidYMax meet"
-      aria-hidden="true"
-    >
+    <svg className="isl isl--logue" {...CADRE} aria-hidden="true">
       {/* Éclair lointain : Logue Town s'achève sous la foudre. */}
-      <path
-        d="M336 20 l-14 46 h12 l-16 44 30 -50 h-12Z"
-        fill="#fdf4c8"
-        opacity=".5"
-      />
+      <path d="M694 26 l-20 62 h18 l-24 60 44 -70 h-18Z" fill="#fdf4c8" opacity=".5" />
 
-      {/* Phare, sur la droite. */}
+      {/* Phare, sur la droite, hors de la zone centrale : c'est un accent, pas
+          la signature du lieu. */}
       <g opacity=".5" fill="#cbd3de">
-        <path d="M356 220 V96 h18 v124Z" />
-        <rect x="352" y="86" width="26" height="12" />
-        <path d="M358 86 l7 -14 l7 14Z" fill="#8a3b1c" />
+        <path d="M818 300 V116 h26 v184Z" />
+        <rect x="812" y="102" width="38" height="16" />
+        <path d="M820 102 l11 -18 l11 18Z" fill="#8a3b1c" />
       </g>
 
-      {/* Toits et cheminées du port. */}
+      {/* Toits et cheminées du port, de part et d'autre de la place. */}
       <g opacity=".55">
-        {[0, 54, 108, 162, 250, 300].map((x, i) => (
+        {[8, 80, 152, 224, 296, 570, 642, 714, 786].map((x, i) => (
           <g key={x}>
-            <rect x={x} y={148 + (i % 2) * 10} width="48" height="72" fill="#dde3ec" />
+            {/* La hauteur se rétracte d'autant que le toit descend : sinon la
+                rangée basse passait sous le bas du cadre, et le SVG la
+                tranchait. */}
+            <rect x={x} y={200 + (i % 2) * 14} width="62" height={100 - (i % 2) * 14} fill="#dde3ec" />
             <path
-              d={`M${x - 5} ${148 + (i % 2) * 10} L${x + 24} ${130 + (i % 2) * 10} L${x + 53} ${148 + (i % 2) * 10}Z`}
+              d={`M${x - 7} ${200 + (i % 2) * 14} L${x + 31} ${176 + (i % 2) * 14} L${x + 69} ${200 + (i % 2) * 14}Z`}
               fill="#8a4a30"
             />
-            <rect x={x + 34} y={124 + (i % 2) * 10} width="7" height="16" fill="#9aa6b5" />
+            <rect x={x + 44} y={166 + (i % 2) * 14} width="9" height="22" fill="#9aa6b5" />
           </g>
         ))}
       </g>
 
-      {/* Échafaud : plateforme de pierre au centre de la place. La forme est
-          sobre — c'est un lieu, pas une scène. */}
-      <g opacity=".68" fill="#aab4c2">
-        <rect x="186" y="150" width="60" height="70" />
-        <rect x="176" y="140" width="80" height="12" />
-        <rect x="196" y="112" width="8" height="28" />
-        <rect x="228" y="112" width="8" height="28" />
-        <rect x="190" y="106" width="52" height="8" fill="#8f99a8" />
+      {/* L'échafaud, au centre. La forme reste sobre — c'est un lieu, pas une
+          scène — mais l'escalier latéral est nécessaire : sans lui, on lit un
+          socle. */}
+      <g opacity=".7" fill="#aab4c2">
+        <rect x="404" y="204" width="92" height="96" />
+        <rect x="388" y="188" width="124" height="18" />
+        <rect x="414" y="142" width="12" height="46" />
+        <rect x="474" y="142" width="12" height="46" />
+        <rect x="404" y="130" width="92" height="14" fill="#8f99a8" />
+        {[0, 1, 2, 3].map((n) => (
+          <rect key={n} x={496 + n * 16} y={216 + n * 20} width="16" height={84 - n * 20} />
+        ))}
       </g>
 
-      {/* Pluie : quelques traits obliques, pas un rideau. */}
-      <g stroke="#ffffff" strokeWidth="1.4" opacity=".28" strokeLinecap="round">
-        {[30, 96, 158, 214, 272, 340].map((x, i) => (
-          <line key={x} x1={x} y1={20 + i * 9} x2={x - 8} y2={44 + i * 9} />
+      {/* Pavés mouillés, au premier plan. */}
+      <path d="M0 276 Q240 264 470 274 T900 268 V300 H0Z" fill="#5c6a82" opacity=".38" />
+
+      {/* Quelques traits de pluie dans le dessin lui-même. L'averse animée est
+          en CSS ; ceci n'en est que l'amorce, pour que le décor tienne aussi
+          quand le joueur a demandé moins d'animations. */}
+      <g stroke="#ffffff" strokeWidth="1.6" opacity=".26" strokeLinecap="round">
+        {[60, 176, 300, 424, 548, 672, 796].map((x, i) => (
+          <line key={x} x1={x} y1={24 + i * 12} x2={x - 12} y2={60 + i * 12} />
         ))}
       </g>
     </svg>
@@ -297,182 +587,69 @@ function Logue() {
 /** Sabaody — mangroves géantes et bulles de résine. */
 function Sabaody() {
   return (
-    <svg
-      className="isl isl--sabaody"
-      viewBox="0 0 400 160"
-      preserveAspectRatio="xMidYMax meet"
-      aria-hidden="true"
-    >
+    <svg className="isl isl--sabaody" {...CADRE} aria-hidden="true">
       {/* Voûte de feuillage : la lumière arrive filtrée par le haut. */}
-      <path d="M0 0 H400 V30 Q300 58 200 34 Q100 10 0 36Z" fill="#3f6b2c" opacity=".45" />
+      <path d="M0 0 H900 V54 Q676 104 450 62 Q224 20 0 66Z" fill="#3f6b2c" opacity=".45" />
 
       {/* Troncs. Leur **largeur** dit l'échelle : à Sabaody, un arbre fait la
-          taille d'une ville. Deux troncs franchement épais et contrastés valent
-          mieux que six fins, qui liraient comme une forêt ordinaire — première
-          version, ils se confondaient avec le fond. */}
+          taille d'une ville. Deux d'entre eux sont au centre du cadre — sans
+          quoi un téléphone ne montrerait que des bulles. */}
       <g fill="#4a3220" opacity=".62">
-        <path d="M8 160 V26 q26 -16 56 0 V160Z" />
-        <path d="M300 160 V14 q30 -18 62 0 V160Z" />
+        <path d="M14 300 V52 q30 -20 66 0 V300Z" />
+        <path d="M268 300 V36 q36 -22 78 0 V300Z" />
+        <path d="M596 300 V44 q34 -22 74 0 V300Z" />
+        <path d="M822 300 V60 q28 -18 62 0 V300Z" />
       </g>
 
       {/* Veinage : deux traits par tronc suffisent à faire « écorce ». */}
-      <g stroke="#2f1f12" strokeWidth="2" opacity=".3" fill="none">
-        <path d="M26 160 V34 M46 160 V32" />
-        <path d="M318 160 V22 M340 160 V20" />
+      <g stroke="#2f1f12" strokeWidth="2.5" opacity=".3" fill="none">
+        <path d="M34 300 V58 M58 300 V56" />
+        <path d="M292 300 V44 M322 300 V42" />
+        <path d="M618 300 V52 M650 300 V50" />
+        <path d="M842 300 V66 M866 300 V64" />
       </g>
 
       {/* Racines aériennes qui replongent : la signature de la mangrove. */}
-      <g fill="none" stroke="#4a3220" strokeWidth="7" opacity=".45" strokeLinecap="round">
-        <path d="M64 92 q30 26 26 68" />
-        <path d="M300 78 q-34 30 -28 82" />
-        <path d="M362 96 q28 22 24 64" />
+      <g fill="none" stroke="#4a3220" strokeWidth="9" opacity=".45" strokeLinecap="round">
+        <path d="M80 152 q36 32 32 120" />
+        <path d="M268 128 q-40 34 -34 122" />
+        <path d="M346 140 q42 30 38 116" />
+        <path d="M596 136 q-38 32 -32 118" />
+        <path d="M884 158 q22 30 10 116" />
       </g>
 
       {/* Bulles de résine : grandes, rares, avec un reflet franc. Petites et
           nombreuses, elles liraient comme de la mousse. */}
       <g>
         {[
-          [150, 62, 30],
-          [232, 104, 21],
-          [190, 130, 14],
-          [268, 44, 12],
+          [430, 128, 46],
+          [530, 196, 30],
+          [396, 232, 20],
+          [560, 82, 17],
+          [180, 214, 24],
+          [742, 190, 27],
         ].map(([cx, cy, r]) => (
           <g key={`${cx}-${cy}`}>
-            <circle cx={cx} cy={cy} r={r} fill="rgba(255,255,255,.28)" />
-            <circle
-              cx={cx}
-              cy={cy}
-              r={r}
-              fill="none"
-              stroke="rgba(232,220,255,.75)"
-              strokeWidth="1.8"
-            />
+            <circle cx={cx} cy={cy} r={r} fill="rgba(255,255,255,.26)" />
+            <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(232,220,255,.72)" strokeWidth="2" />
             <circle
               cx={cx - r * 0.34}
               cy={cy - r * 0.38}
-              r={Math.max(2, r * 0.22)}
+              r={Math.max(2.5, r * 0.22)}
               fill="rgba(255,255,255,.8)"
             />
           </g>
         ))}
       </g>
-    </svg>
-  );
-}
 
-/** Alabasta — le royaume du désert : dunes, palais, palmiers. */
-function Alabasta() {
-  return (
-    <svg
-      className="isl isl--alabasta"
-      viewBox="0 0 400 220"
-      preserveAspectRatio="xMidYMax meet"
-      aria-hidden="true"
-    >
-      {/* Dunes, en trois plans. Les crêtes se croisent : des vagues parallèles
-          liraient comme des rayures. */}
-      <path d="M0 168 Q90 140 180 164 T400 150 V220 H0Z" fill="#e0b06a" opacity=".55" />
-      <path d="M0 190 Q120 162 240 186 T400 176 V220 H0Z" fill="#d29a52" opacity=".6" />
-
-      {/* Palais : un corps, deux tours à dôme, un obélisque. C'est la
-          silhouette qui nomme le lieu. */}
-      <g opacity=".62" fill="#e8d5b0">
-        <rect x="150" y="120" width="100" height="60" />
-        <path d="M150 120 h100 l-10 -12 h-80Z" fill="#c98f52" />
-        {[168, 232].map((x) => (
-          <g key={x}>
-            <rect x={x - 12} y="96" width="24" height="30" />
-            <path d={`M${x - 14} 96 a14 16 0 0 1 28 0Z`} fill="#c98f52" />
-            <rect x={x - 1.5} y="74" width="3" height="10" fill="#c98f52" />
-          </g>
-        ))}
-        <path d="M196 120 V70 h8 v50Z" />
-        <path d="M196 70 l4 -14 l4 14Z" fill="#c98f52" />
-      </g>
-
-      {/* Palmiers : un tronc courbe et cinq palmes. Deux suffisent — une
-          palmeraie deviendrait une texture. */}
-      {[46, 350].map((x, i) => (
-        <g key={x} opacity=".5">
-          <path
-            d={`M${x} 200 q${i ? 10 : -10} -26 ${i ? 4 : -4} -46`}
-            stroke="#8a6234"
-            strokeWidth="5"
-            fill="none"
-            strokeLinecap="round"
-          />
-          {[-38, -18, 0, 18, 38].map((a) => (
-            <ellipse
-              key={a}
-              cx={x + (i ? 4 : -4)}
-              cy="152"
-              rx="20"
-              ry="5"
-              fill="#5f8f4a"
-              transform={`rotate(${a} ${x + (i ? 4 : -4)} 154)`}
-            />
-          ))}
-        </g>
-      ))}
-    </svg>
-  );
-}
-
-/** Drum — le royaume enneigé : crête, château, sapins. */
-function Drum() {
-  return (
-    <svg
-      className="isl isl--drum"
-      viewBox="0 0 400 220"
-      preserveAspectRatio="xMidYMax meet"
-      aria-hidden="true"
-    >
-      {/* Les Drum Rockies : des aiguilles, pas des collines. C'est leur
-          verticalité qui les distingue de n'importe quelle montagne. */}
-      <path d="M0 220 L60 104 L104 158 L150 86 L206 220Z" fill="#b8cadd" opacity=".6" />
-      <path d="M170 220 L232 70 L286 146 L330 96 L400 220Z" fill="#a7bdd3" opacity=".55" />
-
-      {/* Neige des sommets. */}
-      <g fill="#ffffff" opacity=".8">
-        <path d="M136 106 L150 86 L164 106 q-14 8 -28 0Z" />
-        <path d="M216 92 L232 70 L248 92 q-16 9 -32 0Z" />
-        <path d="M316 114 L330 96 L344 114 q-14 8 -28 0Z" />
-      </g>
-
-      {/* Château perché : un donjon et deux tours coiffées. */}
-      <g opacity=".62" fill="#dbe6f0">
-        <rect x="216" y="96" width="34" height="42" />
-        <path d="M214 96 h38 l-6 -10 h-26Z" fill="#5d7b9c" />
-        {[210, 256].map((x) => (
-          <g key={x}>
-            <rect x={x - 7} y="104" width="14" height="34" />
-            <path d={`M${x - 9} 104 l9 -13 l9 13Z`} fill="#5d7b9c" />
-          </g>
-        ))}
-      </g>
-
-      {/* Sapins alourdis de neige : trois étages, du plus large au plus
-          étroit, avec un liseré clair sur chaque étage. */}
-      {[30, 74, 342, 382].map((x, i) => (
-        <g key={x} opacity={0.55 - (i % 2) * 0.08}>
-          <rect x={x - 2} y="188" width="4" height="16" fill="#4a5f4a" />
-          {[0, 1, 2].map((n) => {
-            const y = 188 - n * 20;
-            const w = 20 - n * 5;
-            return (
-              <g key={n}>
-                <path d={`M${x - w} ${y} L${x} ${y - 26} L${x + w} ${y}Z`} fill="#3f5f4a" />
-                <path d={`M${x - w} ${y} L${x} ${y - 8} L${x + w} ${y}Z`} fill="#eef5fb" opacity=".7" />
-              </g>
-            );
-          })}
-        </g>
-      ))}
+      {/* Sol de bosquet. */}
+      <path d="M0 278 Q220 266 450 276 T900 270 V300 H0Z" fill="#3f6b2c" opacity=".45" />
     </svg>
   );
 }
 
 const DECORS: Partial<Record<IslandId, () => React.ReactElement>> = {
+  elbaf: Elbaf,
   alabasta: Alabasta,
   drum: Drum,
   dressrosa: Dressrosa,

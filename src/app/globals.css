@@ -2525,56 +2525,43 @@ body {
   pointer-events: none;
 }
 
-/* Ancré **en haut**, pas en bas.
+/* **Le décor remplit la largeur, exactement.**
 
-   En bas, la silhouette tombait exactement là où le contenu est le plus dense :
-   on ne voyait qu'un liseré de tuiles dépasser sous les cartes. En haut, elle
-   occupe la bande que le voile du contenu laisse transparente, et sa ligne
-   d'horizon vient mourir juste où le blanc commence. Le décor se lit, le texte
-   aussi. */
+   Trois versions ont échoué avant celle-ci, et toujours sur le même point : le
+   dessin et son cadre n'avaient pas le même rapport. En 400×220 — presque
+   carré — dans une page de bureau large et basse, la mise à l'échelle
+   « entière » laissait deux cents pixels de vide de chaque côté ; la mise à
+   l'échelle « couvrante » tranchait les toits et les sommets.
 
-/* ---------------------------------------------------------------------------
-   Ce qui remplit l'écran sous le décor : **rien**.
-
-   Une première version peignait un sol en dégradés répétés — rangs de fleurs,
-   pavés, rizières. L'intention était de faire descendre le décor jusqu'en bas ;
-   le résultat était un tapis de motifs qui se répétait sous le texte et
-   alourdissait chaque page.
-
-   Le décor descend maintenant parce qu'il est **posé en bas**, entier, et que
-   l'ambiance — neige, pétales, pluie, bulles — occupe tout le reste de la
-   hauteur. C'est le mouvement qui remplit l'écran, pas une texture.
-   --------------------------------------------------------------------------- */
-
-/* La silhouette se pose **à la ligne d'horizon**, vers le tiers supérieur :
-   assez haut pour être vue par-dessus le voile du contenu, assez bas pour que
-   le ciel ait de la place au-dessus d'elle. */
-/* **Ancré en bas, et jamais rogné.**
-
-   Il était ancré en haut et recadré (`slice`) : les toits, les moulins et les
-   sommets se trouvaient coupés par le bord supérieur. Posé en bas et mis à
-   l'échelle pour tenir entier (`meet` dans le SVG), on voit toute la
-   silhouette, et elle descend jusqu'au bas de l'écran. */
+   Les deux défauts avaient la même cause. Les décors sont donc tous redessinés
+   dans un cadre 900×300, et ce bloc donne au SVG le **même rapport** : 3 pour
+   1. Il n'y a plus rien à arbitrer — le dessin remplit la largeur au pixel
+   près, entier, à toutes les tailles d'écran. */
 .isl {
   position: absolute;
   inset: auto 0 0 0;
   width: 100%;
-  /* Le décor occupe le bas du cadre : c'est là qu'est l'horizon, et c'est la
-     zone que le contenu recouvre le moins. Sur une page qui défile, le voile
-     opaque du contenu passe par-dessus sans jamais l'effacer complètement. */
-  height: min(58vh, 30rem);
-  /* Plus présent qu'en bandeau : il est derrière le contenu, et c'est la partie
-     haute de l'écran — celle que le voile laisse transparente — qui doit le
-     faire reconnaître. Trop pâle, on ne voyait plus rien du tout. */
+  height: auto;
+  aspect-ratio: 3 / 1;
+  /* Il est derrière le contenu, et c'est la partie haute de l'écran — celle
+     que le voile laisse transparente — qui doit le faire reconnaître. Trop
+     pâle, on ne voyait plus rien du tout. */
   opacity: 0.85;
 }
 
-/* Sur un écran étroit, le décor est agrandi et recadré au centre : réduit à
-   la largeur d'un téléphone, un colisée de 400 unités devient un trait. */
-@media (max-width: 560px) {
+/* Sur un téléphone, la largeur de l'écran ne fait plus qu'un tiers de la
+   hauteur du dessin : réduit à 100 %, le décor deviendrait un liseré de cent
+   pixels au ras du bas.
+
+   On l'élargit donc au-delà du cadre et on le recentre : la couche parente
+   masque ce qui dépasse. C'est un recadrage, mais **choisi** — les décors sont
+   composés pour ça, avec ce qui nomme l'île entre x=210 et x=690, et rien que
+   du secondaire sur les bords. */
+@media (max-width: 640px) {
   .isl {
-    height: min(50vh, 22rem);
-    opacity: 0.85;
+    width: 190%;
+    left: -45%;
+    right: auto;
   }
 }
 
@@ -2582,6 +2569,18 @@ body {
    Les dégradés de ciel restent définis plus haut, par `[data-island]`. Ce qui
    suit ajoute la lumière propre à chaque lieu, en surimpression.
    ------------------------------------------------------------------------- */
+
+/* Elbaf : le grand nord après l'averse. Un ciel lavé, bleu-vert, sur lequel
+   l'arc-en-ciel du décor a de quoi se détacher — sur un ciel chaud, il aurait
+   disparu dans le fond. */
+[data-island='elbaf'] .harbor--page .harbor__sky {
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.45), transparent 55%),
+    linear-gradient(180deg, #6f9fc4 0%, #a8cfda 45%, #e2f1ee 100%);
+}
+[data-island='elbaf'] {
+  --color-flag: #2f5f3f;
+}
 
 /* Dressrosa : un soleil bas et chaud, côté arène. */
 [data-island='dressrosa'] .harbor--page .harbor__sky {
@@ -2698,18 +2697,24 @@ body {
    aplat sur fond sombre, ce qui ne ressemble à rien de ce que voit un joueur.
    =========================================================================== */
 
+/* La boîte a le rapport du dessin : 3 pour 1. C'est la façon la plus honnête
+   de montrer un décor dont toute la mise au point tient justement à ce
+   rapport-là. */
 .isl-preview {
   position: relative;
-  height: 11rem;
+  aspect-ratio: 3 / 1;
   overflow: hidden;
 }
 
 .isl-preview .isl {
-  /* Ancré en bas ici : la boîte est bien plus courte qu'un écran, et c'est la
-     ligne d'horizon qu'on veut voir, pas le ciel. */
-  inset: auto 0 0 0;
+  inset: 0;
+  width: 100%;
   height: 100%;
   opacity: 1;
+}
+
+[data-island='elbaf'] .isl-preview {
+  background: linear-gradient(180deg, #6f9fc4 0%, #cfe6e2 100%);
 }
 
 [data-island='alabasta'] .isl-preview {
@@ -2773,14 +2778,32 @@ body {
 /* ===========================================================================
    Ambiance de chaque île : ce qui tombe, monte ou dérive.
 
-   C'est cette couche qui occupe la hauteur de l'écran, pas une texture de sol.
-   Neige à Drum, pétales à Wano, sable à Alabasta, pluie à Logue Town, bulles à
-   Sabaody, remous à l'Île des hommes-poissons.
+   C'est cette couche qui occupe la hauteur de l'écran — le décor, lui, est posé
+   en bas. Neige à Drum, pétales à Wano, sable à Alabasta, averse et éclairs à
+   Logue Town, bulles à Sabaody, remous sous la mer, brume et feuilles à Elbaf.
 
-   Tout est en dégradés répétés animés par `background-position` : aucun
-   élément dans le balisage, aucun téléchargement, et le motif se répète
-   verticalement sans couture — la boucle avance exactement d'une hauteur de
-   tuile, donc la reprise ne se voit pas.
+   Tout est en dégradés répétés animés par `background-position` : aucun élément
+   dans le balisage, aucun téléchargement.
+
+   ## Ce qui a été refait, et pourquoi
+
+   **Une seule animation par couche.** La version précédente en déclarait deux
+   sur le même élément — `fx-chute` *et* `fx-chute-lente` — qui animaient toutes
+   deux `background-position`. La seconde écrasait la première : la moitié du
+   mouvement n'existait pas.
+
+   **Trois plans au lieu de deux.** Deux tailles de flocons donnent une trame ;
+   trois, à trois vitesses, donnent une profondeur.
+
+   **Des trajectoires, pas des translations.** Ce qui tombe ne tombe pas droit.
+   Chaque boucle passe par quatre ou cinq positions intermédiaires qui décalent
+   les plans latéralement, chacun à contretemps : le flocon louvoie, le pétale
+   plane, la bourrasque de sable accélère puis retombe. C'est ce zigzag qui fait
+   la différence entre « ça bouge » et « ça vit ».
+
+   **La reprise reste invisible.** Chaque couche avance sur la boucle
+   d'exactement une hauteur (ou une largeur) de tuile, et son décalage latéral
+   revient à zéro : le raccord tombe pile sur le motif.
 
    `will-change` est délibérément **absent** : il forcerait une couche de
    composition permanente pour une animation de fond, sur toutes les pages, y
@@ -2795,128 +2818,320 @@ body {
   opacity: 0.75;
 }
 
-/* Neige — Drum. Deux tailles de flocons à deux vitesses : à une seule, on lit
-   une trame, pas une chute. */
+/* Deuxième couche, pour les îles où deux mouvements coexistent sans avoir la
+   même nature : la brume dérive pendant que les feuilles tombent, les remous
+   ondulent pendant que les bulles montent. Les empiler sur un seul élément
+   obligerait à une seule animation, donc à une seule vitesse. */
+.isl-fx::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Neige — Drum. Trois tailles de flocons, trois vitesses, et un louvoiement
+   inversé d'un plan à l'autre. */
 [data-island='drum'] .isl-fx {
   background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 0.95) 1.6px, transparent 2.2px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.7) 1px, transparent 1.6px);
-  background-size: 90px 120px, 55px 80px;
+    radial-gradient(circle, rgba(255, 255, 255, 0.95) 1.9px, transparent 2.6px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.75) 1.3px, transparent 1.9px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.5) 0.9px, transparent 1.4px);
+  background-size: 130px 170px, 84px 118px, 52px 76px;
 }
 
 /* Pétales — Wano. Des ellipses, pas des disques : un pétale est plus large que
-   haut, et c'est ce qui le distingue d'un flocon. */
+   haut, et c'est ce qui le distingue d'un flocon. Il plane aussi bien plus
+   loin sur les côtés — d'où une dérive latérale trois fois plus ample. */
 [data-island='wano'] .isl-fx {
   background-image:
-    radial-gradient(ellipse 5px 3px, rgba(255, 214, 226, 0.95) 60%, transparent 61%),
-    radial-gradient(ellipse 3.5px 2px, rgba(255, 236, 242, 0.8) 60%, transparent 61%);
-  background-size: 110px 150px, 70px 95px;
+    radial-gradient(ellipse 5.5px 3px, rgba(255, 208, 222, 0.95) 60%, transparent 61%),
+    radial-gradient(ellipse 4px 2.2px, rgba(255, 228, 238, 0.85) 60%, transparent 61%),
+    radial-gradient(ellipse 3px 1.6px, rgba(255, 242, 246, 0.7) 60%, transparent 61%);
+  background-size: 150px 190px, 104px 138px, 68px 96px;
 }
 
 /* Sable — Alabasta. Des traits presque horizontaux : le vent du désert pousse
-   de côté, il ne fait pas tomber. */
+   de côté, il ne fait pas tomber. Et il souffle par rafales, pas à débit
+   constant : la boucle avance vite, ralentit, repart. */
 [data-island='alabasta'] .isl-fx {
+  /* Les angles sont proches de 0° et de 180°, pas de 90° : en CSS l'angle est
+     celui de la **progression** du dégradé, et les bandes lui sont
+     perpendiculaires. À 99°, les traînées tombaient à la verticale — on lisait
+     une averse en plein désert. */
   background-image:
-    linear-gradient(100deg, transparent 0 6px, rgba(240, 214, 160, 0.55) 6px 9px, transparent 9px 34px),
-    linear-gradient(96deg, transparent 0 12px, rgba(226, 196, 138, 0.4) 12px 14px, transparent 14px 52px);
-  background-size: 180px 70px, 240px 110px;
+    linear-gradient(9deg, transparent 0 6px, rgba(242, 216, 162, 0.6) 6px 9px, transparent 9px 40px),
+    linear-gradient(174deg, transparent 0 12px, rgba(228, 198, 140, 0.45) 12px 14px, transparent 14px 60px),
+    linear-gradient(6deg, transparent 0 20px, rgba(214, 180, 120, 0.3) 20px 23px, transparent 23px 44px);
+  background-size: 220px 80px, 300px 130px, 160px 60px;
 }
 
-/* Pluie — Logue Town. Traits obliques, fins et rapides. */
+/* Pluie — Logue Town. Traits obliques, fins et rapides, sur trois plans. */
 [data-island='logue'] .isl-fx {
   background-image:
-    linear-gradient(74deg, transparent 0 10px, rgba(226, 238, 252, 0.5) 10px 11.5px, transparent 11.5px 30px),
-    linear-gradient(78deg, transparent 0 18px, rgba(200, 218, 240, 0.35) 18px 19px, transparent 19px 46px);
-  background-size: 120px 150px, 160px 200px;
+    linear-gradient(74deg, transparent 0 10px, rgba(232, 242, 255, 0.55) 10px 11.5px, transparent 11.5px 30px),
+    linear-gradient(76deg, transparent 0 18px, rgba(206, 224, 244, 0.4) 18px 19.5px, transparent 19.5px 46px),
+    linear-gradient(78deg, transparent 0 26px, rgba(186, 206, 230, 0.28) 26px 27px, transparent 27px 64px);
+  background-size: 120px 150px, 160px 190px, 210px 240px;
 }
 
-/* Bulles — Sabaody. Elles **montent**, d'où l'animation inversée plus bas. */
+/* L'éclair. Il ne se répète pas à intervalle régulier : la boucle est longue et
+   la décharge tient sur trois pour cent de sa durée, avec le double flash
+   caractéristique. Une lueur qui pulse en continu ne serait pas un orage. */
+[data-island='logue'] .isl-fx::after {
+  background-image: radial-gradient(
+    ellipse 60% 45% at 74% 10%,
+    rgba(255, 255, 255, 0.9),
+    transparent 70%
+  );
+  opacity: 0;
+}
+
+/* Bulles — Sabaody. Elles **montent**, et se dandinent en montant : une bulle
+   qui s'élève en ligne droite ne ressemble à rien. */
 [data-island='sabaody'] .isl-fx {
   background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 0.5) 5px, transparent 6px),
-    radial-gradient(circle, rgba(226, 210, 255, 0.55) 2.5px, transparent 3.2px);
-  background-size: 150px 210px, 90px 130px;
+    radial-gradient(circle, rgba(255, 255, 255, 0.5) 5.5px, transparent 6.6px),
+    radial-gradient(circle, rgba(226, 210, 255, 0.55) 3.2px, transparent 4px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.35) 1.8px, transparent 2.4px);
+  background-size: 190px 250px, 120px 168px, 76px 110px;
 }
 
-/* Eau de mer — Île des hommes-poissons. Pas des particules : des **remous**.
-   Deux voiles clairs qui ondulent, comme la lumière à travers la surface. */
+/* Eau de mer — Île des hommes-poissons. Pas des particules : des **remous**,
+   trois voiles clairs qui ondulent comme la lumière à travers la surface… */
 [data-island='fishman'] .isl-fx {
   background-image:
-    radial-gradient(ellipse 60% 18% at 50% 20%, rgba(255, 255, 255, 0.16), transparent 70%),
-    radial-gradient(ellipse 45% 14% at 30% 60%, rgba(190, 245, 255, 0.14), transparent 70%),
-    radial-gradient(circle, rgba(255, 255, 255, 0.45) 3px, transparent 4px);
-  background-size: 100% 55%, 100% 45%, 130px 190px;
+    radial-gradient(ellipse 60% 18% at 50% 20%, rgba(255, 255, 255, 0.18), transparent 70%),
+    radial-gradient(ellipse 45% 14% at 30% 60%, rgba(190, 245, 255, 0.15), transparent 70%),
+    radial-gradient(ellipse 50% 12% at 76% 82%, rgba(255, 255, 255, 0.12), transparent 70%);
+  background-size: 100% 55%, 100% 45%, 100% 40%;
   opacity: 0.9;
+}
+
+/* … et par-dessus, ce qui monte. Séparé, parce qu'une bulle monte à vitesse
+   constante alors qu'un remous va et vient. */
+[data-island='fishman'] .isl-fx::after {
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.5) 3.4px, transparent 4.4px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.32) 2px, transparent 2.8px);
+  background-size: 170px 230px, 110px 150px;
+}
+
+/* Elbaf — le grand nord après l'averse. Deux bancs de brume qui traversent
+   lentement la lande… */
+[data-island='elbaf'] .isl-fx {
+  background-image:
+    radial-gradient(ellipse 70% 12% at 30% 42%, rgba(255, 255, 255, 0.24), transparent 72%),
+    radial-gradient(ellipse 55% 10% at 72% 68%, rgba(255, 255, 255, 0.17), transparent 72%);
+  opacity: 0.85;
+}
+
+/* … et les feuilles que l'arbre d'Adam laisse tomber. Larges, lentes, et qui
+   planent loin de côté : à cette taille d'arbre, une feuille met du temps à
+   arriver. */
+[data-island='elbaf'] .isl-fx::after {
+  background-image:
+    radial-gradient(ellipse 5px 2.6px, rgba(176, 206, 128, 0.8) 60%, transparent 61%),
+    radial-gradient(ellipse 3.4px 1.8px, rgba(214, 228, 164, 0.6) 60%, transparent 61%);
+  background-size: 150px 200px, 96px 132px;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   [data-island='drum'] .isl-fx {
-    animation: fx-chute 14s linear infinite, fx-chute-lente 26s linear infinite;
+    animation: fx-neige 17s linear infinite;
   }
 
   [data-island='wano'] .isl-fx {
-    animation: fx-derive 18s linear infinite, fx-chute-lente 30s linear infinite;
+    animation: fx-petales 21s linear infinite;
   }
 
   [data-island='alabasta'] .isl-fx {
-    animation: fx-vent 9s linear infinite;
+    animation: fx-sable 11s linear infinite;
   }
 
   [data-island='logue'] .isl-fx {
-    animation: fx-averse 1.6s linear infinite;
+    animation: fx-pluie 1.5s linear infinite;
+  }
+
+  [data-island='logue'] .isl-fx::after {
+    animation: fx-eclair 11s linear infinite;
   }
 
   [data-island='sabaody'] .isl-fx {
-    animation: fx-montee 16s linear infinite;
+    animation: fx-bulles 19s linear infinite;
   }
 
   [data-island='fishman'] .isl-fx {
-    animation: fx-remous 11s ease-in-out infinite alternate;
+    animation: fx-remous 13s ease-in-out infinite alternate;
+  }
+
+  [data-island='fishman'] .isl-fx::after {
+    animation: fx-remontee 15s linear infinite;
+  }
+
+  [data-island='elbaf'] .isl-fx {
+    animation: fx-brume 30s ease-in-out infinite alternate;
+  }
+
+  [data-island='elbaf'] .isl-fx::after {
+    animation: fx-feuilles 24s linear infinite;
   }
 }
 
-/* Chaque boucle avance d'exactement une hauteur de tuile : la reprise est
-   invisible. Les deux couches se décalent différemment, ce qui donne la
-   profondeur. */
-@keyframes fx-chute {
-  to {
-    background-position: 12px 120px, -8px 80px;
+/* ---------------------------------------------------------------------------
+   Les boucles.
+
+   Règle tenue partout : à 100 %, chaque couche a avancé d'exactement une tuile
+   et son décalage latéral est revenu à zéro. Le raccord retombe donc pile sur
+   le motif, et la reprise ne se voit pas. Les positions intermédiaires, elles,
+   n'ont pas à être régulières — c'est justement leur irrégularité qui fait le
+   mouvement.
+   --------------------------------------------------------------------------- */
+
+@keyframes fx-neige {
+  0% {
+    background-position: 0 0, 0 0, 0 0;
+  }
+  25% {
+    background-position: 17px 42.5px, -12px 29.5px, 8px 19px;
+  }
+  50% {
+    background-position: 2px 85px, 3px 59px, -3px 38px;
+  }
+  75% {
+    background-position: -17px 127.5px, 12px 88.5px, -8px 57px;
+  }
+  100% {
+    background-position: 0 170px, 0 118px, 0 76px;
   }
 }
 
-@keyframes fx-chute-lente {
-  to {
-    background-position: -20px 150px, 14px 95px;
+@keyframes fx-petales {
+  0% {
+    background-position: 0 0, 0 0, 0 0;
+  }
+  20% {
+    background-position: 38px 38px, -28px 27.6px, 19px 19.2px;
+  }
+  40% {
+    background-position: 11px 76px, 15px 55.2px, -13px 38.4px;
+  }
+  60% {
+    background-position: 48px 114px, -22px 82.8px, 21px 57.6px;
+  }
+  80% {
+    background-position: 13px 152px, 19px 110.4px, -11px 76.8px;
+  }
+  100% {
+    background-position: 0 190px, 0 138px, 0 96px;
   }
 }
 
-@keyframes fx-derive {
-  to {
-    background-position: 90px 150px, -60px 95px;
+@keyframes fx-sable {
+  0% {
+    background-position: 0 0, 0 0, 0 0;
+  }
+  16% {
+    background-position: -72px 5px, -98px -4px, -54px 6px;
+  }
+  34% {
+    background-position: -99px -3px, -135px 5px, -72px -5px;
+  }
+  62% {
+    background-position: -172px 4px, -234px -6px, -122px 5px;
+  }
+  100% {
+    background-position: -220px 0, -300px 0, -160px 0;
   }
 }
 
-@keyframes fx-vent {
+@keyframes fx-pluie {
   to {
-    background-position: 180px 12px, -240px -18px;
+    background-position: -42px 150px, -50px 190px, -58px 240px;
   }
 }
 
-@keyframes fx-averse {
-  to {
-    background-position: -42px 150px, -46px 200px;
+/* Le double flash : une première décharge, un noir très court, une seconde plus
+   forte, puis la rémanence qui s'éteint. Le reste de la boucle est noir. */
+@keyframes fx-eclair {
+  0%,
+  90% {
+    opacity: 0;
+  }
+  90.6% {
+    opacity: 0.5;
+  }
+  91.4% {
+    opacity: 0.06;
+  }
+  92.2% {
+    opacity: 0.72;
+  }
+  95% {
+    opacity: 0.12;
+  }
+  97%,
+  100% {
+    opacity: 0;
   }
 }
 
-@keyframes fx-montee {
-  to {
-    background-position: 18px -210px, -12px -130px;
+@keyframes fx-bulles {
+  0% {
+    background-position: 0 0, 0 0, 0 0;
+  }
+  25% {
+    background-position: 15px -62.5px, -11px -42px, 7px -27.5px;
+  }
+  50% {
+    background-position: -3px -125px, 4px -84px, -4px -55px;
+  }
+  75% {
+    background-position: -15px -187.5px, 11px -126px, -7px -82.5px;
+  }
+  100% {
+    background-position: 0 -250px, 0 -168px, 0 -110px;
   }
 }
 
 @keyframes fx-remous {
   to {
-    background-position: 0 8%, 0 -6%, 10px -190px;
+    background-position: 6% 10%, -8% -8%, 5% 7%;
+  }
+}
+
+@keyframes fx-remontee {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  50% {
+    background-position: 9px -115px, -7px -75px;
+  }
+  100% {
+    background-position: 0 -230px, 0 -150px;
+  }
+}
+
+@keyframes fx-brume {
+  to {
+    background-position: 24% 3%, -20% -3%;
+  }
+}
+
+@keyframes fx-feuilles {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  25% {
+    background-position: 29px 50px, -19px 33px;
+  }
+  50% {
+    background-position: 7px 100px, 13px 66px;
+  }
+  75% {
+    background-position: 35px 150px, -15px 99px;
+  }
+  100% {
+    background-position: 0 200px, 0 132px;
   }
 }
 
@@ -2941,4 +3156,43 @@ body {
 }
 [data-island='alabasta'] {
   --color-flag: #9c4a1f;
+}
+
+/* ===========================================================================
+   L'écran d'ordinateur.
+
+   Le produit est pensé pour le téléphone (§55), et il l'était **exclusivement** :
+   quatre déclarations responsives dans toute l'application, une colonne de
+   contenu bloquée à 30 rem. Sur un écran de 1440 px, cela donnait un ruban de
+   la largeur d'un mobile posé au milieu, avec cinq cents pixels de vide de
+   chaque côté — et le décor, calé sur cette même largeur, n'arrangeait rien.
+
+   Ce bloc élargit la colonne par paliers plutôt que de la libérer d'un coup :
+   au-delà d'une soixantaine de caractères par ligne, un paragraphe cesse de se
+   lire. 44 rem tient une grille de trois cartes, 54 rem en tient quatre, et
+   les deux restent en deçà de ce seuil pour les rares textes suivis.
+
+   Les seuils sont ceux de Tailwind (`md`, `xl`) : les grilles de personnages
+   passent à trois puis quatre colonnes aux mêmes largeurs, et la colonne
+   s'élargit exactement quand elles en ont besoin. Deux jeux de seuils auraient
+   produit des états intermédiaires où l'un attend l'autre.
+   =========================================================================== */
+
+@media (min-width: 768px) {
+  .harbor--page .harbor__header,
+  .hb-nav ul {
+    max-width: 44rem;
+  }
+
+  .harbor--page .harbor__content {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .harbor--page .harbor__header,
+  .hb-nav ul {
+    max-width: 54rem;
+  }
 }

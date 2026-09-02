@@ -95,7 +95,7 @@ export default async function CollectionPage() {
           <h2 className="hb-legend">
             Ton équipage
           </h2>
-          <ul className="mt-3 grid grid-cols-2 gap-2">
+          <ul className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
             {ownedIds.map((id) => {
               const character = CHARACTER_INDEX.get(id);
               if (!character) return null;
@@ -189,7 +189,7 @@ export default async function CollectionPage() {
             {missingAll.length} personnage{missingAll.length > 1 ? 's' : ''} à
             trouver — les {missing.length} plus rares ci-dessous.
           </p>
-          <ul className="mt-3 grid grid-cols-2 gap-2">
+          <ul className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
             {missing.map((character) => (
               <li
                 key={character.id}
