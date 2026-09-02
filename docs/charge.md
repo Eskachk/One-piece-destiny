@@ -87,14 +87,79 @@ remède est d'ajouter des instances, pas d'optimiser le rendu.
 Sur Vercel, chaque requête est traitée par une fonction et la plateforme en
 ajoute sous la charge : cette limite-là ne s'y présente pas sous cette forme.
 
+## Les pages connectées
+
+Elles ajoutent au rendu des **allers-retours vers Supabase**. Mesurés par
+[`scripts/db-latency.mjs`](../scripts/db-latency.mjs), depuis cette machine :
+
+| clients | req/s | p50 | p90 | p99 |
+|---:|---:|---:|---:|---:|
+| 1 | 11 | **92 ms** | 99 ms | 129 ms |
+| 5 | 42 | 113 ms | 142 ms | 197 ms |
+| 10 | 43 | 205 ms | 312 ms | 444 ms |
+| 25 | 44 | 362 ms | 910 ms | 1 651 ms |
+| 50 | 45 | 673 ms | 1 783 ms | 4 060 ms |
+
+⚠️ **Ces 92 ms ne sont pas ceux de la production.** Ils mesurent la liaison
+entre une connexion domestique française et Frankfurt. Sur Vercel, la fonction
+tourne dans la même région que la base : l'aller-retour y est de l'ordre de
+quelques millisecondes. Le plafond de 45 req/s est celui de cette liaison, pas
+celui de Supabase.
+
+Ce qui **se transpose**, en revanche, c'est le **nombre d'allers-retours en
+série** par page : il ne dépend d'aucun réseau, seulement du code.
+
+| page | allers-retours en série |
+|---|---:|
+| `/boutique` | 1 (session) |
+| `/`, `/collection`, `/parametres` | 2 |
+| `/market` | 3 — le second lot dépend de la liste surveillée |
+| `/profil` | **7 → 2** |
+
+`/profil` enchaînait division, historique, inventaire, notifications, code de
+parrainage, état du parrainage, préférences et compte : huit lectures, dont
+sept en série, alors qu'aucune ne dépend de la précédente — toutes ne
+dépendent que de `session.playerId`, connu dès la première.
+
+En série, la page coûte la **somme** des latences ; en parallèle, le
+**maximum**. Sept allers-retours de 92 ms font 650 ms de page blanche ici, et
+resteraient 3,5 fois le nécessaire même en région.
+
+## Un piège de mesure à connaître
+
+Une page protégée demandée **sans session** répond **200**, pas 307 : Next a
+déjà envoyé les en-têtes quand `requireSession()` s'exécute, et la redirection
+part dans le corps du flux. Aucune donnée ne fuite — vérifié : la réponse de
+22 Ko ne contient ni pseudo, ni Berries, ni division — mais un tir de charge
+compte cette coquille comme une page servie et annonce un débit flatteur sur
+une page qu'il n'a jamais rendue.
+
+`load-test.mjs` détecte désormais le marqueur `NEXT_REDIRECT` dans le corps et
+le signale au lieu de le compter comme un succès.
+
+Pour tirer réellement sur une page connectée, il faut le cookie de session —
+`Application → Cookies → opq_session` dans les outils de développement, il est
+`httpOnly` donc invisible depuis la console :
+
+```bash
+$env:OPQ_SESSION="…"
+node scripts/load-test.mjs --url https://…  --chemins /profil --paliers 25,50
+```
+
+Le jeton passe par une variable d'environnement et jamais par un argument :
+les arguments d'un processus sont lisibles par tout utilisateur de la machine
+et finissent dans l'historique du terminal.
+
 ## Ce qui n'a pas été mesuré
 
-- **Les pages authentifiées.** Elles lisent la session en base à chaque
-  requête (`getAuthenticatedSession`, mémorisé par requête). Le tir de charge
-  a porté sur des pages anonymes ; le coût d'un aller-retour Supabase par page
-  vue reste à mesurer, et c'est le prochain endroit à regarder.
+- **Le tir de charge de bout en bout sur une page connectée**, faute de session
+  valide au moment du test — la fenêtre d'inactivité de deux heures avait
+  expiré. Les deux composantes ont été mesurées séparément (rendu : 6 ms ;
+  aller-retour : 92 ms d'ici) et le nombre d'allers-retours est désormais
+  connu et réduit, mais la mesure combinée reste à faire.
 - **Le déploiement réel.** Latence réseau, démarrage à froid des fonctions,
-  limites de connexions Supabase : rien de tout cela n'existe sur localhost.
+  limites de connexions Supabase : rien de tout cela n'existe sur localhost, et
+  la latence vers la base y sera bien plus faible.
 - **Les écritures.** Verrouillage d'équipage, achat au Marché, ouverture de
   coffre passent par des transactions en base et n'ont pas été mises sous
   charge. C'est là que se trouvent les vrais points de contention, pas dans la

@@ -48,11 +48,68 @@ export default async function ProfilePage() {
   const session = await requireSession();
   const repository = getRepository();
 
-  const [divisionState, profiles, ownedIds] = await Promise.all([
+  const available = social.isSocialAvailable();
+
+  /*
+   * Toutes les lectures de la page partent **ensemble**.
+   *
+   * Elles étaient enchaînées : division, historique, inventaire, puis
+   * notifications, puis code de parrainage, puis état du parrainage, puis
+   * préférences, puis compte. Sept allers-retours en série, alors qu'aucun ne
+   * dépend du précédent — chacun ne dépend que de `session.playerId`, connu
+   * avant le premier.
+   *
+   * En série, la page coûte la **somme** des latences ; en parallèle, le
+   * **maximum**. C'est la seule variable qui compte ici : les requêtes sont
+   * toutes indexées et rendent quelques lignes, leur coût est l'aller-retour,
+   * pas le calcul. Mesuré depuis cette machine, l'aller-retour vers Supabase
+   * est de 92 ms — sept en série font 650 ms de page blanche.
+   *
+   * `Promise.all` échouerait en bloc à la première erreur, ce qui est le bon
+   * comportement : une page de profil amputée de son historique ne vaut pas
+   * mieux qu'une page en erreur, et l'erreur, elle, se voit.
+   */
+  const [
+    divisionState,
+    profiles,
+    ownedIds,
+    notificationsBrutes,
+    referralCode,
+    referralState,
+    preferences,
+    compte,
+  ] = await Promise.all([
     repository.getDivisionState(session.playerId),
     repository.getWeeklyProfiles(session.playerId),
     repository.getOwnedCharacterIds(session.playerId),
+    available ? social.listNotifications(session.playerId) : Promise.resolve([]),
+    // Le code est créé au premier affichage : le joueur ne doit pas avoir à
+    // demander son propre lien d'invitation pour l'obtenir.
+    available ? social.ensureReferralCode(session.playerId) : Promise.resolve(null),
+    available
+      ? social.getReferralState(session.playerId)
+      : Promise.resolve({ alreadyReferred: false, referredCount: 0 }),
+    preferencesOf(session.playerId),
+    // Etat du compte (§86, §114). Les restrictions sont recalculees plus bas,
+    // cote serveur : le navigateur ne les recoit que pour affichage.
+    db()
+      .from('user_accounts')
+      .select('email_verified_at, birth_date, players!inner(handle)')
+      .eq('player_id', session.playerId)
+      .maybeSingle(),
   ]);
+
+  const notifications = notificationsBrutes.map((n) => ({
+    id: n.id,
+    title: n.title,
+    body: n.body,
+    href: n.href,
+    read: n.read,
+    createdAt: n.createdAt.toLocaleDateString('fr-FR'),
+  }));
+
+  const currentRank = divisionRank(divisionState.division);
+  const account = compte.data;
 
   const standing = seasonStanding(
     profiles.map((p) => ({ chapterNumber: p.chapterNumber, total: p.total })),
@@ -68,37 +125,6 @@ export default async function ProfilePage() {
   );
 
   const collection = collectionSummary(CHARACTERS, new Set(ownedIds));
-
-  // Notifications (§108) et parrainage (§71) : uniquement avec une base.
-  const available = social.isSocialAvailable();
-  const notifications = available
-    ? (await social.listNotifications(session.playerId)).map((n) => ({
-        id: n.id,
-        title: n.title,
-        body: n.body,
-        href: n.href,
-        read: n.read,
-        createdAt: n.createdAt.toLocaleDateString('fr-FR'),
-      }))
-    : [];
-  // Le code est créé au premier affichage : le joueur ne doit pas avoir à
-  // demander son propre lien d'invitation pour l'obtenir.
-  const referralCode = available
-    ? await social.ensureReferralCode(session.playerId)
-    : null;
-  const referralState = available
-    ? await social.getReferralState(session.playerId)
-    : { alreadyReferred: false, referredCount: 0 };
-  const currentRank = divisionRank(divisionState.division);
-  const preferences = await preferencesOf(session.playerId);
-
-  // Etat du compte (§86, §114). Les restrictions sont recalculees ici, cote
-  // serveur : le navigateur ne les recoit que pour affichage.
-  const { data: account } = await db()
-    .from('user_accounts')
-    .select('email_verified_at, birth_date, players!inner(handle)')
-    .eq('player_id', session.playerId)
-    .maybeSingle();
 
   // Le titre de la page affichait la partie locale de l'adresse e-mail. Le
   // joueur a maintenant un pseudo, choisi par lui : c'est celui-là qu'on

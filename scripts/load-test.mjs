@@ -53,6 +53,29 @@ const SECONDES = Number(arg('seconds', '15'));
 const PALIERS = arg('paliers', '50,200,500').split(',').map(Number);
 const CHEMINS = arg('chemins', '/classement').split(',');
 
+/**
+ * Session, pour tirer sur les pages connectées.
+ *
+ * Lue dans la **variable d'environnement `OPQ_SESSION`**, jamais en argument de
+ * ligne de commande : les arguments d'un processus sont lisibles par tout
+ * utilisateur de la machine (`ps`, gestionnaire des tâches) et finissent dans
+ * l'historique du terminal. Un jeton de session ouvre un compte ; il ne
+ * s'écrit pas là où il reste.
+ *
+ *   Cookie à copier depuis les outils de développement du navigateur :
+ *   Application → Cookies → `opq_session`. Il est `httpOnly`, donc invisible
+ *   depuis la console — il faut passer par ce panneau.
+ *
+ *   PowerShell : $env:OPQ_SESSION="…"; node scripts/load-test.mjs --chemins /profil
+ *   bash       : OPQ_SESSION="…" node scripts/load-test.mjs --chemins /profil
+ *
+ * ⚠️ **Ne viser que des pages en lecture.** Une page de jeu ne fait que lire,
+ * mais la première consultation du profil crée le code de parrainage et le
+ * verrouillage d'équipage écrit. Le tir de charge n'a rien à faire sur une
+ * adresse qui modifie l'état d'un compte.
+ */
+const SESSION = process.env.OPQ_SESSION ?? null;
+
 /** Palier d'échauffement : remplir les caches avant de mesurer quoi que ce soit. */
 const ECHAUFFEMENT_MS = 3_000;
 
@@ -78,15 +101,42 @@ function requete(agent, chemin) {
         port: BASE.port,
         path: chemin,
         method: 'GET',
-        headers: { 'accept-encoding': 'identity' },
+        headers: {
+          'accept-encoding': 'identity',
+          ...(SESSION ? { cookie: `opq_session=${SESSION}` } : {}),
+        },
       },
       (res) => {
         let octets = 0;
+        let redirige = false;
+
         res.on('data', (chunk) => {
           octets += chunk.length;
+
+          /*
+           * Une page protégée rendue sans session répond **200**, pas 307.
+           *
+           * Next a déjà envoyé les en-têtes quand `requireSession()` s'exécute :
+           * le rendu est en flux, et la redirection part donc dans le corps,
+           * pour être exécutée par le navigateur. Aucune donnée ne fuite — on
+           * l'a vérifié — mais un tir de charge compterait cette coquille de
+           * 22 Ko comme une page servie et annoncerait un débit flatteur sur
+           * une page qu'il n'a jamais rendue.
+           *
+           * On cherche le marqueur au fil de l'eau plutôt que d'accumuler le
+           * corps : à plusieurs centaines de requêtes par seconde, garder
+           * chaque réponse en mémoire ferait du générateur le goulot.
+           */
+          if (!redirige && chunk.includes('NEXT_REDIRECT')) redirige = true;
         });
+
         res.on('end', () =>
-          resolve({ ms: performance.now() - debut, status: res.statusCode, octets }),
+          resolve({
+            ms: performance.now() - debut,
+            status: res.statusCode,
+            octets,
+            redirige,
+          }),
         );
       },
     );
@@ -128,6 +178,7 @@ async function palier(concurrence, dureeMs, chemins) {
   const latences = [];
   const statuts = new Map();
   let echecs = 0;
+  let redirections = 0;
   let octetsTotal = 0;
   const fin = performance.now() + dureeMs;
 
@@ -138,8 +189,9 @@ async function palier(concurrence, dureeMs, chemins) {
       i += 1;
       const r = await requete(agent, chemin);
 
-      const cle = r.error ?? String(r.status);
+      const cle = r.error ?? (r.redirige ? 'redirection' : String(r.status));
       statuts.set(cle, (statuts.get(cle) ?? 0) + 1);
+      if (r.redirige) redirections += 1;
 
       if (r.error || r.status === 0 || r.status >= 500) {
         echecs += 1;
@@ -171,6 +223,7 @@ async function palier(concurrence, dureeMs, chemins) {
     concurrence,
     servies: latences.length,
     echecs,
+    redirections,
     rps: latences.length / ecoule,
     p50: q(0.5),
     p90: q(0.9),
@@ -190,7 +243,20 @@ const ms = (v) => `${v.toFixed(0).padStart(6)} ms`;
 async function main() {
   process.stdout.write(`Cible   : ${BASE.origin}\n`);
   process.stdout.write(`Chemins : ${CHEMINS.join(', ')}\n`);
-  process.stdout.write(`Paliers : ${PALIERS.join(', ')} clients · ${SECONDES} s chacun\n\n`);
+  process.stdout.write(`Paliers : ${PALIERS.join(', ')} clients · ${SECONDES} s chacun\n`);
+  process.stdout.write(
+    `Session : ${SESSION ? 'fournie (pages connectées)' : 'aucune (pages anonymes)'}\n\n`,
+  );
+
+  // Une page connectée servie sans session redirige vers la connexion : on
+  // mesurerait alors la redirection, pas la page. Le dire tout de suite évite
+  // un tableau de chiffres qui ne veulent rien dire.
+  if (!SESSION && CHEMINS.some((c) => /^\/(profil|collection|parametres|boutique|market)$/.test(c))) {
+    process.stdout.write(
+      'Ces chemins exigent une session. Sans `OPQ_SESSION`, le serveur répondra\n' +
+        'une redirection vers /login et la mesure portera sur elle.\n\n',
+    );
+  }
 
   // Échauffement. Le premier rendu remplit les caches partagés (chapitre
   // courant, classement, analyse) : le mesurer reviendrait à imputer au
@@ -226,6 +292,15 @@ async function main() {
   // Le débit retenu est celui du meilleur palier **sans aucun échec**. Un
   // palier qui refuse des connexions n'a pas de débit : il a un point de
   // rupture, ce qui est une autre information et se dit autrement.
+  const redirigees = resultats.filter((r) => r.redirections > 0);
+  if (redirigees.length > 0) {
+    process.stdout.write(
+      'Ces requêtes ont reçu une **redirection** rendue en flux, pas la page :\n' +
+        'le serveur répond 200 puis redirige dans le corps. La mesure porte sur une\n' +
+        'coquille vide. Fournir `OPQ_SESSION` pour tirer sur la vraie page.\n\n',
+    );
+  }
+
   const sains = resultats.filter((r) => r.echecs === 0);
   const rompus = resultats.filter((r) => r.echecs > 0);
 
