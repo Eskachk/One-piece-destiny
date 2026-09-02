@@ -216,6 +216,101 @@ export async function renumberOpenChapter(
 }
 
 /**
+ * Déplace l'échéance de verrouillage du chapitre **ouvert**.
+ *
+ * ## Le défaut que ceci corrige
+ *
+ * `team_lock_at` est figé à l'ouverture du chapitre, à « le prochain dimanche
+ * 23:59:59 ». C'est la bonne règle, et rien d'autre ne doit la déplacer : ni
+ * la sortie du chapitre, ni un spoil (§2.2, §76).
+ *
+ * Mais un chapitre ouvert la semaine dernière porte une échéance de la semaine
+ * dernière. Elle est passée, donc les équipages sont verrouillés — un mercredi,
+ * alors que le dimanche n'est pas arrivé. Et rien ne permettait de la
+ * rattraper : poser un ancrage de calendrier ne touche pas au chapitre ouvert,
+ * c'est même écrit noir sur blanc dans son avertissement. Il fallait éditer la
+ * ligne en base à la main.
+ *
+ * ## Ce que ce levier fait, et ce qu'il ne fait pas
+ *
+ * Il déplace **une seule** date, sur **un seul** chapitre, celui qui est
+ * ouvert. Il ne touche à aucune équipe déjà enregistrée : rouvrir laisse les
+ * joueurs modifier la leur, verrouiller la fige telle qu'elle est.
+ *
+ * **Refusé sur un chapitre publié.** Déplacer l'échéance d'un chapitre déjà
+ * jugé rouvrirait des équipes derrière un classement figé (§75, §78) — le
+ * moyen le plus simple de fabriquer un tricheur.
+ *
+ * Chaque déplacement est journalisé avec l'ancienne et la nouvelle date : le
+ * verrouillage décide qui a pu jouer, il ne doit pas pouvoir bouger sans
+ * trace.
+ */
+export async function setTeamLockAt(
+  lockAtIso: unknown,
+): Promise<AdminActionResult> {
+  await assertSameOrigin();
+  const session = await requireAdmin();
+
+  const parsed = z.string().datetime().safeParse(lockAtIso);
+  if (!parsed.success) return { ok: false, error: 'Date de verrouillage invalide.' };
+
+  const lockAt = new Date(parsed.data);
+  if (Number.isNaN(lockAt.getTime())) {
+    return { ok: false, error: 'Date de verrouillage invalide.' };
+  }
+
+  // Garde-fou de saisie : une échéance à cinq ans n'est pas une correction,
+  // c'est une faute de frappe, et elle laisserait les équipages ouverts
+  // indéfiniment.
+  const limite = Date.now() + 366 * 24 * 60 * 60 * 1000;
+  if (lockAt.getTime() > limite) {
+    return { ok: false, error: 'Échéance trop lointaine : un an au maximum.' };
+  }
+
+  const chapter = await getRepository().getCurrentChapter();
+  if (!chapter) return { ok: false, error: 'Aucun chapitre ouvert.' };
+
+  if (chapter.status === 'RESULTS_PUBLISHED') {
+    return {
+      ok: false,
+      error: 'Chapitre publié : son échéance ne peut plus bouger.',
+    };
+  }
+
+  const { error } = await db()
+    .from('chapter_events')
+    .update({ team_lock_at: lockAt.toISOString() })
+    .eq('id', chapter.id)
+    .neq('status', 'RESULTS_PUBLISHED');
+
+  if (error) return { ok: false, error: 'Déplacement impossible.' };
+
+  await audit({
+    playerId: session.playerId,
+    action: 'admin.team_lock_moved',
+    status: 'SUCCESS',
+    metadata: {
+      chapterNumber: chapter.chapterNumber,
+      from: chapter.teamLockAt.toISOString(),
+      to: lockAt.toISOString(),
+    },
+  });
+
+  revalidateTag(CURRENT_CHAPTER_TAG);
+  revalidateTag(chapterTag(chapter.id));
+  revalidatePath('/');
+  revalidatePath('/admin');
+
+  const ouvert = lockAt.getTime() > Date.now();
+  return {
+    ok: true,
+    message: ouvert
+      ? `Équipages rouverts jusqu’au ${lockAt.toISOString()}.`
+      : 'Équipages verrouillés.',
+  };
+}
+
+/**
  * Ouverture d'un chapitre (cahier §4.1).
  *
  * Le numéro est saisi par l'administrateur. Le système ne fait que **proposer**

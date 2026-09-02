@@ -10,6 +10,7 @@ import {
   VERIFIER_COOKIE,
 } from '@/lib/auth/google';
 import { createSession } from '@/lib/auth/session-store';
+import { baseUrl } from '@/lib/email/templates';
 import { db } from '@/lib/supabase-admin';
 
 /**
@@ -26,9 +27,18 @@ import { db } from '@/lib/supabase-admin';
  */
 export const dynamic = 'force-dynamic';
 
+/**
+ * Retour à l'écran de connexion, avec un motif court.
+ *
+ * La base vient de `baseUrl()`, pas de `APP_URL` seule : `APP_URL` n'est pas
+ * renseignée sur l'hébergement, et le repli codé en dur envoyait donc chaque
+ * échec de connexion Google vers `http://localhost:3000` — une page qui
+ * n'existe pas pour le joueur. `baseUrl()` retombe sur l'URL de production
+ * que la plateforme expose elle-même.
+ */
 function back(reason: string): NextResponse {
   return NextResponse.redirect(
-    new URL(`/login?erreur=${encodeURIComponent(reason)}`, process.env.APP_URL ?? 'http://localhost:3000'),
+    new URL(`/login?erreur=${encodeURIComponent(reason)}`, baseUrl()),
   );
 }
 

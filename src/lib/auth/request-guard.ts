@@ -67,8 +67,17 @@ export async function getRequestContext(): Promise<RequestContext> {
   return {
     ip: forwarded?.split(',')[0]?.trim() || undefined,
     userAgent: store.get('user-agent') ?? undefined,
-    // Origine deja validee par `assertSameOrigin` en amont de chaque action :
-    // on ne construit donc jamais un lien vers un domaine arbitraire.
+    /*
+     * Conservée pour la journalisation **seulement**.
+     *
+     * Elle servait à bâtir les liens de réinitialisation et de confirmation.
+     * Le raisonnement — « `assertSameOrigin` l'a validée en amont » — ne
+     * tenait pas : ce contrôle compare `Origin` à `Host`, deux en-têtes que
+     * la même requête transporte. Les forger tous deux sur le domaine d'un
+     * attaquant les rend concordants, et le lien partait avec le jeton de la
+     * victime. Ces liens viennent maintenant de `baseUrl()`, décidé par le
+     * serveur.
+     */
     origin: store.get('origin') ?? undefined,
   };
 }

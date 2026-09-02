@@ -93,6 +93,27 @@ export default async function RootLayout({
           suffit pas de façon fiable — un visiteur non connecté est redirigé
           vers l'écran de connexion, et c'est donc lui que le robot voit.
 
+          ## Pourquoi une balise nue, et pas `next/script`
+
+          C'est la cause de l'échec de validation, et elle ne se voit qu'en
+          lisant le HTML servi. `next/script` en `beforeInteractive` **n'émet
+          aucune balise `<script src>`**. Il émet ceci :
+
+              <link rel="preload" href="…adsbygoogle.js" as="script">
+              <script>(self.__next_s=self.__next_s||[]).push(["…", {…}])</script>
+
+          Le script finit bien par se charger — c'est le bootstrap de Next qui
+          l'injecte à l'exécution. Mais le robot d'AdSense ne fait pas tourner
+          le bootstrap de Next : il lit le document et cherche littéralement
+          `<script src="…adsbygoogle.js…">`. Il ne le trouvait pas, et la
+          validation échouait alors que le script fonctionnait parfaitement
+          dans un navigateur. Le commentaire précédent affirmait le contraire ;
+          il était faux.
+
+          Une balise `<script async src>` écrite telle quelle est en revanche
+          **hissée dans le `<head>` par React 19**, et rendue verbatim dans le
+          HTML du serveur. C'est exactement l'extrait fourni par Google.
+
           Contrepartie, et elle est réelle : les **annonces automatiques**
           s'appliquent partout où le script est présent, y compris sur les
           écrans d'authentification et la boutique. Google fournit pour cela un
@@ -105,14 +126,8 @@ export default async function RootLayout({
           site sans exécution de script, et sert de second chemin si le robot
           n'exécute pas le nôtre.
         */}
-        <Script
-          id="adsense"
+        <script
           async
-          // `beforeInteractive` place la balise dans le `<head>`, à l'identique
-          // de l'extrait fourni par Google. `afterInteractive` la mettait dans
-          // le corps : le script s'exécutait bien, mais un robot de validation
-          // qui se contente de lire l'en-tête ne l'y trouvait pas.
-          strategy="beforeInteractive"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9364111418812673"
           crossOrigin="anonymous"
         />

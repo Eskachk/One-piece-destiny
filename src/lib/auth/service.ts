@@ -193,9 +193,12 @@ export async function register(
   // Message de confirmation mis en file. Il ne bloque pas l'entree : le joueur
   // accede au jeu immediatement, et la verification conditionne les operations
   // sensibles (voir email-verification.ts).
-  if (meta.origin) {
-    await sendVerificationEmail(account.data.id, email, meta.origin);
-  }
+  // Envoyé sans condition. Il l'était « si `meta.origin` » — c'est-à-dire si
+  // la requête portait un en-tête `Origin` — parce que le lien se construisait
+  // dessus. Le lien vient maintenant de la configuration du serveur, donc plus
+  // rien ne justifie de sauter l'envoi : une adresse non confirmée, c'est un
+  // parrainage jamais payé.
+  await sendVerificationEmail(account.data.id, email);
 
   await createSession(account.data.id, meta);
   return { ok: true };

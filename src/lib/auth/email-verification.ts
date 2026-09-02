@@ -2,7 +2,7 @@ import 'server-only';
 
 import { createHash, randomBytes } from 'node:crypto';
 import { queueEmail } from '@/lib/email/outbox';
-import { verifyEmailAddressEmail } from '@/lib/email/templates';
+import { baseUrl, verifyEmailAddressEmail } from '@/lib/email/templates';
 import { db } from '@/lib/supabase-admin';
 
 /**
@@ -27,11 +27,19 @@ function hashToken(token: string): string {
   return createHash('sha256').update(token).digest('hex');
 }
 
-/** Crée un jeton et met le message en file. Silencieuse en cas d'échec. */
+/**
+ * Crée un jeton et met le message en file. Silencieuse en cas d'échec.
+ *
+ * L'origine de la requête n'est plus un paramètre : la base du lien est
+ * décidée par le serveur (`baseUrl()`). Voir `password-reset.ts` pour le
+ * détail — c'est le même défaut, et il avait ici une conséquence de plus :
+ * l'appelant ne postait le message que **si** l'en-tête `Origin` était
+ * présent, si bien qu'une inscription sans cet en-tête ne recevait aucune
+ * confirmation — donc aucun parrainage payé.
+ */
 export async function sendVerificationEmail(
   userId: string,
   email: string,
-  origin: string,
 ): Promise<void> {
   const token = randomBytes(32).toString('base64url');
 
@@ -49,7 +57,7 @@ export async function sendVerificationEmail(
     return;
   }
 
-  const link = `${origin}/verify?token=${token}`;
+  const link = `${baseUrl()}/verify?token=${token}`;
   await queueEmail(verifyEmailAddressEmail(email, link), `verify:${hashToken(token)}`, {
     // L'utilisateur vient de s'inscrire et attend le message : le lui faire
     // attendre un jour reviendrait a ne pas l'envoyer.

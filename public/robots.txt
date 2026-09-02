@@ -1,0 +1,21 @@
+# Le site etait servi sans robots.txt : /robots.txt repondait 404. Rien ne
+# l'interdit (un 404 vaut "tout est autorise"), mais les robots publicitaires
+# de Google ont besoin d'y lire une autorisation explicite pour analyser les
+# pages ou ils diffuseront des annonces.
+#
+# Commentaires sans accents, deliberement : ce fichier est lu par des parseurs
+# qui n'attendent pas d'UTF-8.
+
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+Disallow: /reset
+Disallow: /verify
+Disallow: /login/mfa

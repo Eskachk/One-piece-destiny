@@ -4,8 +4,13 @@ import { AppearanceImportForm } from '@/components/AppearanceImportForm';
 import { ChapterCorrection } from '@/components/ChapterCorrection';
 import { ChapterSimulator } from '@/components/ChapterSimulator';
 import { ChapterNumberControls } from '@/components/ChapterNumberControls';
+import { TeamLockControls } from '@/components/TeamLockControls';
 import { OpenChapterForm } from '@/components/OpenChapterForm';
-import { isTeamEditable, spoilerState } from '@/domain/chapter/lock';
+import {
+  isTeamEditable,
+  nextSundayLockInstant,
+  spoilerState,
+} from '@/domain/chapter/lock';
 import { expectedChapterNumber } from '@/domain/chapter/schedule';
 import { requireAdmin } from '@/lib/auth/guards';
 import { getRepository, PERSISTENCE_MODE } from '@/lib/repository';
@@ -201,6 +206,27 @@ export default async function AdminPage() {
             </dd>
           </div>
         </dl>
+      </section>
+
+      {/*
+        Verrouillage des équipages.
+
+        Juste sous l'état du chapitre : c'est en lisant la ligne
+        « Verrouillage » qu'on s'aperçoit que l'échéance a dérivé, et c'est à
+        cet instant qu'on veut la corriger.
+      */}
+      <section className="mt-6 rounded-xl border border-turquoise/20 bg-navy/40 p-5">
+        <h2 className="text-xs uppercase tracking-widest text-parchment/60">
+          Verrouillage des équipages
+        </h2>
+        <div className="mt-4">
+          <TeamLockControls
+            chapterNumber={chapter.chapterNumber}
+            lockAt={chapter.teamLockAt.toISOString()}
+            nextSunday={nextSundayLockInstant(new Date()).toISOString()}
+            locked={teamsLocked}
+          />
+        </div>
       </section>
 
       {/*

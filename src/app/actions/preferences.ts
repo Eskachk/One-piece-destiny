@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { isPlausibleBirthDate } from '@/domain/compliance/age';
 import type { NotificationPreferences } from '@/domain/notifications/preferences';
-import { assertSameOrigin, getRequestContext } from '@/lib/auth/request-guard';
+import { assertSameOrigin } from '@/lib/auth/request-guard';
 import { sendVerificationEmail } from '@/lib/auth/email-verification';
 import { requireSession } from '@/lib/auth/guards';
 import { savePreferences } from '@/lib/notifications/dispatch';
@@ -136,13 +136,6 @@ export async function resendVerificationAction(): Promise<ResendResult> {
   await assertSameOrigin();
   const session = await requireSession();
 
-  const context = await getRequestContext();
-  const origin = context.origin ?? process.env.APP_URL;
-
-  if (!origin) {
-    return { ok: false, error: 'Origine inconnue : lien impossible à construire.' };
-  }
-
   const { data: account } = await db()
     .from('user_accounts')
     .select('id, email, email_verified_at')
@@ -151,7 +144,7 @@ export async function resendVerificationAction(): Promise<ResendResult> {
 
   // Déjà vérifié : rien à envoyer, mais la réponse ne le dit pas.
   if (account && !account.email_verified_at) {
-    await sendVerificationEmail(account.id, account.email, origin);
+    await sendVerificationEmail(account.id, account.email);
   }
 
   return {

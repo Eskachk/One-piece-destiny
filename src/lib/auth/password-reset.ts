@@ -15,7 +15,7 @@ import {
 } from '@/domain/auth/password-reset';
 import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
 import { queueEmail } from '@/lib/email/outbox';
-import { passwordResetEmail } from '@/lib/email/templates';
+import { baseUrl, passwordResetEmail } from '@/lib/email/templates';
 import { notifySecurityEvent } from '@/lib/notifications/security';
 import { hashPassword } from './password';
 import { revokeAllSessions } from './session-store';
@@ -110,7 +110,23 @@ export async function requestPasswordReset(
   });
   if (error) return;
 
-  const link = `${meta.origin}/reset?token=${token}`;
+  /*
+   * Base décidée par le serveur, **jamais l'origine de la requête**.
+   *
+   * Ce lien était bâti sur `Origin`, l'en-tête que le navigateur — ou
+   * n'importe quel client — envoie avec la requête. Deux conséquences :
+   *
+   *   — sans `Origin`, le lien devenait littéralement
+   *     `undefined/reset?token=…` ;
+   *   — avec un `Origin` et un `Host` forgés sur le même domaine, le contrôle
+   *     d'origine les trouve concordants et laisse passer : le lien partait
+   *     alors vers le domaine de l'attaquant, avec le jeton de la victime.
+   *     C'est l'empoisonnement de réinitialisation de mot de passe. L'hébergeur
+   *     en limite aujourd'hui la portée en refusant les hôtes inconnus — mais
+   *     faire reposer la prise de contrôle d'un compte sur le routage de la
+   *     plateforme n'est pas une défense, c'est une chance.
+   */
+  const link = `${baseUrl()}/reset?token=${token}`;
 
   // La clé de déduplication porte le jeton : chaque demande produit un
   // nouveau jeton, donc un nouveau message — mais un même envoi rejoué

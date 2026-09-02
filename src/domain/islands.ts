@@ -181,10 +181,7 @@ const ROUTES: readonly (readonly [string, IslandId])[] = [
   ['/market', 'wano'],
   ['/boutique', 'logue'],
   ['/profil', 'sabaody'],
-  // Paramètres et profil partageaient Sabaody : deux pages, une seule
-  // identité. Drum donne à l'écran de réglages la sienne — et la neige qui
-  // tombe est ce qui va le mieux à une page où l'on ne fait que régler.
-  ['/parametres', 'drum'],
+  ['/parametres', 'dressrosa'],
   ['/admin', 'hq'],
 ];
 
@@ -197,8 +194,8 @@ export function islandOf(pathname: string): IslandId {
   // et l'arc-en-ciel donnent une échelle qu'aucune autre île n'a : on lève les
   // yeux avant de choisir ses six.
   //
-  // Dressrosa n'est plus attribuée à aucune route. Elle reste dessinée et
-  // visible sur la page d'aperçu : le décor est bon, et il servira à la
-  // prochaine page qui en demandera un.
+  // Drum n'est plus attribuée à aucune route : Dressrosa a pris les
+  // Paramètres. Le décor reste dessiné et visible sur la page d'aperçu — il
+  // est bon, et il servira à la prochaine page qui en demandera un.
   return pathname === '/' ? 'elbaf' : 'harbor';
 }

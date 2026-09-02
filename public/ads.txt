@@ -1,0 +1,8 @@
+# Autorise Google AdSense a vendre l'inventaire publicitaire de ce site.
+# Sans ce fichier, AdSense signale "revenus menaces" et peut refuser de
+# diffuser : c'est la seule preuve, cote vendeur, que l'editeur declare est
+# bien autorise.
+#
+# Format : <domaine de la regie>, <identifiant editeur>, <relation>, <TAG-ID>
+# f08c47fec0942fa0 est l'identifiant TAG de Google, le meme pour tous.
+google.com, pub-9364111418812673, DIRECT, f08c47fec0942fa0
