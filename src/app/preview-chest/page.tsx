@@ -4,7 +4,15 @@ import { RarityCard } from '@/components/RarityCard';
 import { IslandDecor } from '@/components/islands/IslandDecor';
 import { IslandSky } from '@/components/islands/IslandSky';
 import { ISLANDS, type IslandId } from '@/domain/islands';
+import { CharacterArt } from '@/components/CharacterArt';
+import { CHARACTERS } from '@/data/characters';
+import { signatureOf } from '@/domain/collection/signatures';
 import type { RevealedCard } from '@/app/actions/collection';
+
+/** Les cartes dessinées en figurine, dans l'ordre du référentiel. */
+const HEROS = CHARACTERS.filter(
+  (c) => c.rarity === 'LEGENDARY' || c.rarity === 'MYTHIC',
+);
 
 export const dynamic = 'force-dynamic';
 
@@ -64,6 +72,40 @@ export default function PreviewChestPage() {
         Le cadre a exactement le rapport du dessin, 3 pour 1 : c'est aussi ce
         qu'on vérifie ici, qu'aucun décor ne déborde de sa `viewBox`.
       */}
+      {/*
+        Les cinquante-huit figurines côte à côte.
+
+        C'est le seul moyen de répondre à la question qui compte : deux cartes
+        différentes se distinguent-elles ? Le défaut d'origine ne se voyait pas
+        carte par carte — chacune paraissait convenable — mais sautait aux yeux
+        dès qu'on en posait dix l'une à côté de l'autre : c'étaient dix fois le
+        même bonhomme.
+
+        La description physique est affichée sous chaque figurine : on vérifie
+        ainsi que le dessin dit bien ce que la signature annonce.
+      */}
+      <h2 className="mt-10 font-display text-2xl text-parchment">
+        Figurines — Légendaires et Mythiques
+      </h2>
+      <ul className="mt-4 grid grid-cols-3 gap-2 md:grid-cols-4 xl:grid-cols-6">
+        {HEROS.map((hero) => (
+          <li
+            key={hero.id}
+            className="rounded-lg border border-turquoise/20 bg-navy/40 p-1.5"
+          >
+            <CharacterArt
+              characterId={hero.id}
+              rarity={hero.rarity}
+              attributes={[]}
+            />
+            <p className="mt-1 text-[10px] leading-tight text-parchment/80">{hero.name}</p>
+            <p className="text-[9px] leading-tight text-parchment/45">
+              {signatureOf(hero.id)?.note}
+            </p>
+          </li>
+        ))}
+      </ul>
+
       <h2 className="mt-10 font-display text-2xl text-parchment">
         Aperçu des îles
       </h2>

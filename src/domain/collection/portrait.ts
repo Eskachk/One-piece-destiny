@@ -1,5 +1,13 @@
 import type { Rarity } from '../types';
 import type { Attribute } from './attributes';
+import {
+  signatureOf,
+  type Build,
+  type Cut,
+  type Headwear,
+  type Mark,
+  type Prop,
+} from './signatures';
 
 /**
  * Ce dont l'illustration a besoin, et rien de plus.
@@ -207,52 +215,106 @@ export function pixelPortrait(
 // Légendaire et Mythique — figurine
 // ---------------------------------------------------------------------------
 
-export type SpriteBuild = 'slim' | 'broad' | 'giant';
-export type SpriteHair = 'short' | 'long' | 'spiky' | 'hat';
-export type SpriteProp = 'sword' | 'staff' | 'none';
-
-export interface SpriteTraits {
-  build: SpriteBuild;
-  hair: SpriteHair;
-  prop: SpriteProp;
-  /** Effets réservés au Mythique : aura, éclats, cape animée. */
-  effects: boolean;
-}
+export type { Build as SpriteBuild, Cut, Headwear, Mark, Prop } from './signatures';
 
 /**
- * Traits de la figurine.
+ * Traits de la figurine — Légendaire et Mythique.
  *
- * Les trois qui se voient le plus — carrure, coiffure, accessoire — sont
- * **déduits des données** plutôt que tirés au sort, parce que c'est ce qui
- * fait qu'une figurine « ressemble » à son personnage :
+ * ## Ce qui a changé, et pourquoi
  *
- *   — un géant est bâti comme un géant ;
- *   — un épéiste tient une lame, un utilisateur de fruit un bâton de Haki ;
- *   — un pirate au chapeau garde son chapeau.
+ * Ils sortaient de l'empreinte de l'identifiant : trois champs, dont deux tirés
+ * au sort dans des listes de trois ou quatre. Deux cartes différentes donnaient
+ * donc, très souvent, la même figurine à la couleur près — Shanks et Luffy
+ * étaient deux bonshommes interchangeables. Pour les cinquante-huit cartes qui
+ * portent le jeu, ce n'est pas acceptable : ce sont précisément celles qu'un
+ * joueur veut reconnaître d'un coup d'œil dans sa collection.
  *
- * Le reste — la coiffure quand rien ne l'impose — vient de la graine.
+ * Ces cartes ont maintenant une **signature écrite** (`signatures.ts`) : une
+ * description physique en une phrase, et les huit champs qui en découlent. Le
+ * tirage ne sert plus que de repli, pour un personnage qui n'en aurait pas.
+ *
+ * §122 : la signature ne contient que des faits d'apparence — une couleur de
+ * cheveux, un chapeau, une arme. Le dessin, lui, reste la même figurine
+ * géométrique pour tout le monde.
  */
+export interface SpriteTraits {
+  build: Build;
+  cut: Cut;
+  head: Headwear;
+  mark: Mark;
+  prop: Prop;
+  hair: string;
+  skin: string;
+  outfit: string;
+  /** Manteau ouvert par-dessus la tenue, ou `null`. */
+  coat: string | null;
+  /** Couleur du couvre-chef. Jamais celle de la rareté — voir `signatures.ts`. */
+  accessory: string;
+  /** Effets réservés au Mythique : aura et éclats. */
+  effects: boolean;
+  /** Les traits viennent-ils d'une signature écrite, ou du repli ? */
+  named: boolean;
+}
+
 export function spriteTraits(subject: PortraitSubject): SpriteTraits {
+  const signature = signatureOf(subject.id);
+  const effects = subject.rarity === 'MYTHIC';
+
+  if (signature) {
+    return {
+      build: signature.build,
+      cut: signature.cut,
+      head: signature.head,
+      mark: signature.mark,
+      prop: signature.prop,
+      hair: signature.hair,
+      skin: signature.skin,
+      outfit: signature.outfit,
+      coat: signature.coat ?? null,
+      accessory: signature.accessory ?? signature.coat ?? signature.outfit,
+      effects,
+      named: true,
+    };
+  }
+
+  // --- Repli : le tirage d'avant, conservé tel quel ------------------------
+  //
+  // Il ne sert plus qu'aux personnages sans signature. Aujourd'hui il n'y en a
+  // aucun parmi les Légendaires et les Mythiques — mais une carte promue à ce
+  // rang doit continuer d'avoir une figurine, quitte à ce qu'elle soit
+  // générique, plutôt que de faire une page blanche.
   const random = rngOf(seedOf(subject.id) ^ 0x1d0f);
   const ids = new Set(subject.attributes.map((a) => a.id));
 
-  const build: SpriteBuild = ids.has('giant')
+  const build: Build = ids.has('giant')
     ? 'giant'
     : ids.has('fighter') || ids.has('captain')
       ? 'broad'
-      : pick<SpriteBuild>(['slim', 'broad'], random());
+      : pick<Build>(['slim', 'broad'], random());
 
-  const hair: SpriteHair = ids.has('pirate') && random() > 0.55
-    ? 'hat'
-    : pick<SpriteHair>(['short', 'long', 'spiky'], random());
+  const head: Headwear = ids.has('pirate') && random() > 0.55 ? 'brim' : 'none';
+  const cut: Cut = pick<Cut>(['short', 'long', 'spiky'], random());
 
-  const prop: SpriteProp = ids.has('sword')
+  const prop: Prop = ids.has('sword')
     ? 'sword'
     : ids.has('fruit') || ids.has('logia') || ids.has('paramecia') || ids.has('zoan')
       ? 'staff'
       : 'none';
 
-  return { build, hair, prop, effects: subject.rarity === 'MYTHIC' };
+  return {
+    build,
+    cut,
+    head,
+    mark: 'none',
+    prop,
+    hair: pick(HAIR, random()),
+    skin: pick(SKIN, random()),
+    outfit: pick(OUTFIT, random()),
+    coat: null,
+    accessory: pick(OUTFIT, random()),
+    effects,
+    named: false,
+  };
 }
 
 /** Niveau d'illustration attendu pour une rareté. */
