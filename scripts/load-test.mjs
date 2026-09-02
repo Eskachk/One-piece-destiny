@@ -37,6 +37,7 @@
  */
 
 import http from 'node:http';
+import https from 'node:https';
 import { performance } from 'node:perf_hooks';
 
 // ---------------------------------------------------------------------------
@@ -49,6 +50,19 @@ function arg(nom, defaut) {
 }
 
 const BASE = new URL(arg('url', 'http://localhost:3100'));
+
+/**
+ * Pile réseau, choisie d'après l'adresse.
+ *
+ * Le script ne visait que localhost, donc `node:http` en dur. Viser le
+ * déploiement réel — le seul endroit où la latence réseau, les démarrages à
+ * froid et la proximité de la base sont ceux de la production — demande TLS.
+ *
+ * Le port par défaut doit être posé explicitement : `URL.port` est vide quand
+ * l'adresse ne le nomme pas, et `node:https` ne le devine pas.
+ */
+const RESEAU = BASE.protocol === 'https:' ? https : http;
+const PORT = BASE.port || (BASE.protocol === 'https:' ? 443 : 80);
 const SECONDES = Number(arg('seconds', '15'));
 const PALIERS = arg('paliers', '50,200,500').split(',').map(Number);
 const CHEMINS = arg('chemins', '/classement').split(',');
@@ -94,11 +108,11 @@ function requete(agent, chemin) {
   return new Promise((resolve) => {
     const debut = performance.now();
 
-    const req = http.request(
+    const req = RESEAU.request(
       {
         agent,
         host: BASE.hostname,
-        port: BASE.port,
+        port: PORT,
         path: chemin,
         method: 'GET',
         headers: {
@@ -163,7 +177,7 @@ function requete(agent, chemin) {
  * plutôt qu'un débit soutenu.
  */
 async function palier(concurrence, dureeMs, chemins) {
-  const agent = new http.Agent({
+  const agent = new RESEAU.Agent({
     keepAlive: true,
     maxSockets: concurrence,
     maxFreeSockets: concurrence,

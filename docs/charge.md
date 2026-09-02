@@ -157,12 +157,50 @@ et finissent dans l'historique du terminal.
   expiré. Les deux composantes ont été mesurées séparément (rendu : 6 ms ;
   aller-retour : 92 ms d'ici) et le nombre d'allers-retours est désormais
   connu et réduit, mais la mesure combinée reste à faire.
-- **Le déploiement réel.** Latence réseau, démarrage à froid des fonctions,
-  limites de connexions Supabase : rien de tout cela n'existe sur localhost, et
-  la latence vers la base y sera bien plus faible.
+- **La latence vers Supabase depuis la production.** Mesurée depuis cette
+  machine (88 ms), elle sera bien plus faible depuis une fonction Vercel, qui
+  tourne dans la même région que la base. Le nombre d'allers-retours, lui, est
+  connu et réduit.
 - **Le tir de charge de bout en bout sur une écriture**, pour la même raison :
   verrouiller un équipage exige une session. Le coût unitaire, lui, est
   mesuré — voir ci-dessous.
+
+## Le déploiement réel
+
+Même script, cible `https://one-piece-quest.vercel.app`, `/classement` :
+
+| clients | req/s | p50 | p90 | p99 | échecs |
+|---:|---:|---:|---:|---:|---:|
+| 10 | 47 | 184 ms | 258 ms | 603 ms | 0 |
+| 25 | 123 | 182 ms | 247 ms | 403 ms | 0 |
+| 50 | **208** | 208 ms | 291 ms | 892 ms | 0 |
+| 100 | 200 | 369 ms | 771 ms | 2 344 ms | 0 |
+| 200 | 150 | 567 ms | 1 555 ms | 3 996 ms | 0 |
+
+**Le comportement est l'inverse du local, et c'est ce qu'on voulait voir.**
+
+En local, un processus unique donnait un débit *plat* et une latence qui montait
+linéairement : la file d'attente d'un serveur mono-thread. En production, le
+débit **monte** avec la concurrence — 47, puis 123, puis 208 req/s — pendant que
+la latence reste stable autour de 185 ms. C'est la signature d'une montée en
+charge horizontale : Vercel ajoute des instances, chacune traite sa part.
+
+**Zéro échec à tous les paliers**, y compris à 200 clients simultanés. Le point
+de rupture observé en local — la file d'acceptation d'un socket unique — n'existe
+pas ici.
+
+### Pourquoi le plafond à ~208 req/s n'est pas celui du site
+
+208 req/s × 46 Ko = 9,3 Mo/s, soit **75 Mbit/s de descendant**. C'est un débit de
+connexion domestique, pas une limite d'hébergement. Le générateur sature son
+propre lien avant d'inquiéter la plateforme : au-delà de 50 clients, on mesure
+un tuyau, plus un serveur.
+
+Ce test établit donc un **plancher**, pas un plafond : la production encaisse
+*au moins* 208 pages/s avec un p90 sous 300 ms et aucune erreur. Trouver sa
+véritable limite demanderait plusieurs générateurs répartis, ce qui n'a d'intérêt
+que si le trafic réel s'en approche — mille joueurs actifs produisent de l'ordre
+de 100 req/s.
 
 ## Écritures
 
