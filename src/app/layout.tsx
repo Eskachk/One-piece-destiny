@@ -86,25 +86,18 @@ export default async function RootLayout({
         <AppShell>{children}</AppShell>
 
         {/*
-          Publicité AdSense.
+          Le script AdSense n'est **pas** ici.
 
-          `afterInteractive` : le script part une fois la page utilisable. En
-          `beforeInteractive` il retarderait le premier affichage pour un
-          contenu qui n'est pas le produit — et l'accueil est justement ce
-          qu'on a passé du temps à alléger.
+          Il y était, chargé pour tout le site. Avec les annonces automatiques,
+          Google place alors des publicités — bandeaux, ancrages, interstitiels
+          plein écran — sur **chaque** page où le script est présent. Un
+          interstitiel par-dessus un champ de mot de passe, une page de paiement
+          ou le Poste de commandement n'est pas une décision qu'on laisse à un
+          tiers.
 
-          Les emplacements eux-mêmes sont posés page par page (`AdSlot`), pas
-          ici : une régie chargée sans emplacement ne coûte qu'une requête,
-          mais un bandeau posé dans la coquille apparaîtrait aussi sur les
-          écrans de connexion et de paiement, où il n'a rien à faire.
+          Il voyage donc avec `AdBanner`, posé sur les seules pages de jeu.
+          Voir `components/AdBanner.tsx`.
         */}
-        <Script
-          id="adsense"
-          async
-          strategy="afterInteractive"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9364111418812673"
-          crossOrigin="anonymous"
-        />
 
         {/*
           Mesure d'audience Vercel.

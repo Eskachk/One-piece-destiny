@@ -1,32 +1,66 @@
+import Script from 'next/script';
 import { AdSlot } from './AdSlot';
 
 /**
- * Bandeau publicitaire des pages de jeu.
+ * Publicité : le script de la régie **et** l'emplacement, ensemble.
  *
- * ## Pourquoi l'identifiant d'emplacement vient de l'environnement
+ * ## Pourquoi le script n'est plus dans la mise en page
  *
- * Le script AdSense identifie l'éditeur ; l'**emplacement**, lui, est créé
- * dans le tableau de bord AdSense et porte un identifiant qu'aucun code ne
- * peut deviner. Écrire un numéro au hasard ne produirait pas une annonce mais
- * un cadre vide et une erreur dans la console de chaque joueur.
+ * Il y était, chargé pour tout le site. C'était acceptable tant que les
+ * emplacements étaient posés à la main : une régie sans emplacement ne coûte
+ * qu'une requête.
  *
- * Tant que `NEXT_PUBLIC_ADSENSE_SLOT_BANNER` n'est pas renseigné, le bandeau
- * **ne s'affiche pas du tout**. C'est délibéré : mieux vaut aucune publicité
- * qu'un rectangle réservé qui ne se remplit jamais et qui décale la page pour
- * rien.
+ * Avec les **annonces automatiques**, ça ne l'est plus. Google place alors les
+ * annonces lui-même sur toute page où le script est présent — bandeaux,
+ * ancrages, et interstitiels plein écran. Un interstitiel entre la saisie d'un
+ * mot de passe et le tableau de bord d'administration, ou par-dessus une page
+ * de paiement, n'est pas une décision qu'on laisse à un tiers.
  *
- * Le préfixe `NEXT_PUBLIC_` est nécessaire — la valeur est lue par le
- * navigateur. Elle n'a rien de secret : elle apparaît de toute façon dans le
- * balisage servi à tout le monde.
+ * Le script voyage donc avec l'intention d'afficher une publicité. Il n'est
+ * chargé que sur les pages de jeu, où ce composant est posé :
  *
- * ## Où il n'apparaît pas
+ *   accueil · classement · collection · Marché · profil
  *
- * Ni sur les écrans d'authentification, ni sur la boutique, ni dans le
- * poste de commandement. Voir `AdSlot` pour le raisonnement.
+ * Et **jamais** ailleurs :
+ *
+ *   — connexion, inscription, mot de passe oublié, vérification d'adresse :
+ *     ce sont les premiers écrans du produit, et une régie tierce n'a rien à
+ *     charger à côté d'un champ de mot de passe ;
+ *   — la boutique : mêler des annonces tierces à des achats réels brouille ce
+ *     qui est vendu par le site et ce qui ne l'est pas ;
+ *   — les paramètres et le Poste de commandement : aucune audience, et une
+ *     publicité par-dessus un réglage de compte serait absurde.
+ *
+ * ## L'emplacement manuel reste possible
+ *
+ * `NEXT_PUBLIC_ADSENSE_SLOT_BANNER` porte un identifiant créé dans le tableau
+ * de bord AdSense — un numéro qu'aucun code ne peut deviner. Renseigné, un
+ * bandeau maîtrisé s'affiche en plus, à un endroit choisi. Vide, seules les
+ * annonces automatiques s'appliquent : mieux vaut aucun bandeau qu'un cadre
+ * réservé qui ne se remplit jamais et décale la page pour rien.
  */
 export function AdBanner() {
   const slot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_BANNER;
-  if (!slot) return null;
 
-  return <AdSlot slot={slot} />;
+  return (
+    <>
+      {/*
+        `afterInteractive` : le script part une fois la page utilisable. En
+        `beforeInteractive`, il retarderait le premier affichage pour un contenu
+        qui n'est pas le produit.
+
+        L'`id` dédoublonne : Next ne charge le script qu'une fois, même si
+        plusieurs composants le déclarent au cours d'une navigation.
+      */}
+      <Script
+        id="adsense"
+        async
+        strategy="afterInteractive"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9364111418812673"
+        crossOrigin="anonymous"
+      />
+
+      {slot && <AdSlot slot={slot} />}
+    </>
+  );
 }
