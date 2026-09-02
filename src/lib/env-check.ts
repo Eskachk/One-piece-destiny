@@ -113,6 +113,36 @@ export function inspectEnvironment(options: { mfaInUse: boolean }): EnvIssue[] {
       });
     }
 
+    /*
+     * Envoi désactivé en production : ce n'est pas neutre.
+     *
+     * Trois fonctions cessent d'exister pour le joueur, sans le moindre message
+     * d'erreur nulle part — les envois sont mis en file et journalisés, tout a
+     * l'air de marcher :
+     *
+     *   — **la confirmation d'adresse** ne part pas. Or le parrainage l'exige
+     *     (§71) : aucun filleul à mot de passe ne pourra jamais valider son
+     *     adresse, donc **aucun parrainage ne sera récompensé**. Les comptes
+     *     Google échappent à cela, leur adresse étant attestée par Google ;
+     *   — **la réinitialisation de mot de passe** n'arrive pas. Un joueur qui
+     *     oublie le sien perd son compte ;
+     *   — les alertes de sécurité et de prix ne partent pas non plus.
+     *
+     * En avertissement et non en échec fatal : un déploiement de recette sans
+     * fournisseur d'e-mail est légitime. Mais il doit se voir au démarrage,
+     * pas se découvrir par le premier joueur qui perd son mot de passe.
+     */
+    if (process.env.EMAIL_MODE !== 'live') {
+      issues.push({
+        variable: 'EMAIL_MODE',
+        severity: 'WARNING',
+        message:
+          'Aucun e-mail ne part réellement. Conséquences : les adresses ne ' +
+          'peuvent pas être confirmées (donc aucun parrainage payé), et les ' +
+          'réinitialisations de mot de passe n’arrivent jamais.',
+      });
+    }
+
     // Second verrou du Chapter HQ (§86). Sans cette variable, le rôle `ADMIN`
     // décide seul — et il vit dans une colonne, donc à portée de toute
     // écriture malencontreuse en base.
