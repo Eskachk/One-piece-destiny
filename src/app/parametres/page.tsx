@@ -46,7 +46,7 @@ export default async function SettingsPage() {
     MESSAGES[display.locale][key] ?? MESSAGES.fr[key];
 
   return (
-    <HarborScene variant="page" island="sabaody">
+    <HarborScene variant="page" island="drum">
       <p className="hb-eyebrow">Grand Line Weekly</p>
       <h1 className="hb-title mt-1">{t('settings.title')}</h1>
       <p className="hb-muted mt-3 text-sm">{t('settings.subtitle')}</p>

@@ -2534,97 +2534,35 @@ body {
    aussi. */
 
 /* ---------------------------------------------------------------------------
-   Le sol de chaque île.
+   Ce qui remplit l'écran sous le décor : **rien**.
 
-   La silhouette occupe le tiers supérieur. En dessous, un simple dégradé ne
-   « descendait » pas : il délavait. Le bas de l'écran restait un aplat, et le
-   fond paraissait s'arrêter au milieu de la page.
+   Une première version peignait un sol en dégradés répétés — rangs de fleurs,
+   pavés, rizières. L'intention était de faire descendre le décor jusqu'en bas ;
+   le résultat était un tapis de motifs qui se répétait sous le texte et
+   alourdissait chaque page.
 
-   Ce qui manquait, c'est de la **matière** — des rangs de fleurs, des pavés,
-   des bulles, des rizières. Tout est en dégradés répétés : aucun téléchargement,
-   aucun octet ajouté au balisage, et le motif suit la hauteur de l'écran quelle
-   qu'elle soit.
-
-   `background-attachment` n'entre pas en jeu : la couche est déjà dans un
-   arrière-plan `fixed`, donc elle couvre l'écran à tout moment du défilement.
+   Le décor descend maintenant parce qu'il est **posé en bas**, entier, et que
+   l'ambiance — neige, pétales, pluie, bulles — occupe tout le reste de la
+   hauteur. C'est le mouvement qui remplit l'écran, pas une texture.
    --------------------------------------------------------------------------- */
-
-.isl-layer::after {
-  content: '';
-  position: absolute;
-  /* Part sous la ligne d'horizon et va jusqu'en bas. */
-  inset: 34% 0 0 0;
-  pointer-events: none;
-}
-
-/* Dressrosa : champ de fleurs en rangs, sur terre cuite. */
-[data-island='dressrosa'] .isl-layer::after {
-  background:
-    radial-gradient(circle at 20% 40%, rgba(212, 96, 122, 0.55) 3px, transparent 4px),
-    radial-gradient(circle at 70% 70%, rgba(245, 200, 74, 0.5) 2.5px, transparent 3.5px),
-    linear-gradient(180deg, rgba(214, 142, 88, 0.45), rgba(176, 92, 62, 0.65));
-  background-size: 54px 46px, 38px 34px, 100% 100%;
-}
-
-/* Île des hommes-poissons : profondeur, et des bulles qui montent. */
-[data-island='fishman'] .isl-layer::after {
-  background:
-    radial-gradient(circle at 30% 80%, rgba(255, 255, 255, 0.4) 3px, transparent 4px),
-    radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.28) 5px, transparent 6px),
-    linear-gradient(180deg, rgba(46, 138, 150, 0.5), rgba(12, 72, 92, 0.72));
-  background-size: 88px 120px, 140px 180px, 100% 100%;
-}
-
-/* Wano : rizières en terrasses, et des pétales portés par le vent. */
-[data-island='wano'] .isl-layer::after {
-  background:
-    radial-gradient(ellipse 4px 2.5px at 25% 30%, rgba(255, 255, 255, 0.6) 60%, transparent 61%),
-    repeating-linear-gradient(
-      178deg,
-      rgba(120, 148, 104, 0.3) 0 14px,
-      rgba(150, 172, 128, 0.22) 14px 30px
-    ),
-    linear-gradient(180deg, rgba(198, 150, 132, 0.4), rgba(126, 92, 84, 0.6));
-  background-size: 96px 110px, 100% 100%, 100% 100%;
-}
-
-/* Logue Town : pavés mouillés de la place. */
-[data-island='logue'] .isl-layer::after {
-  background:
-    repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.09) 0 26px,
-      transparent 26px 28px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      rgba(40, 52, 70, 0.16) 0 16px,
-      transparent 16px 18px
-    ),
-    linear-gradient(180deg, rgba(108, 122, 146, 0.5), rgba(58, 70, 92, 0.7));
-  background-size: 100% 100%, 100% 100%, 100% 100%;
-}
-
-/* Sabaody : sol de bosquet, et les bulles de résine qui s'en échappent. */
-[data-island='sabaody'] .isl-layer::after {
-  background:
-    radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.32) 7px, transparent 8px),
-    radial-gradient(circle at 80% 25%, rgba(226, 210, 255, 0.3) 4px, transparent 5px),
-    linear-gradient(180deg, rgba(96, 140, 66, 0.5), rgba(44, 76, 32, 0.7));
-  background-size: 150px 170px, 90px 110px, 100% 100%;
-}
 
 /* La silhouette se pose **à la ligne d'horizon**, vers le tiers supérieur :
    assez haut pour être vue par-dessus le voile du contenu, assez bas pour que
    le ciel ait de la place au-dessus d'elle. */
+/* **Ancré en bas, et jamais rogné.**
+
+   Il était ancré en haut et recadré (`slice`) : les toits, les moulins et les
+   sommets se trouvaient coupés par le bord supérieur. Posé en bas et mis à
+   l'échelle pour tenir entier (`meet` dans le SVG), on voit toute la
+   silhouette, et elle descend jusqu'au bas de l'écran. */
 .isl {
   position: absolute;
-  inset: 6vh 0 auto 0;
+  inset: auto 0 0 0;
   width: 100%;
   /* Le décor occupe le bas du cadre : c'est là qu'est l'horizon, et c'est la
      zone que le contenu recouvre le moins. Sur une page qui défile, le voile
      opaque du contenu passe par-dessus sans jamais l'effacer complètement. */
-  height: min(46vh, 24rem);
+  height: min(58vh, 30rem);
   /* Plus présent qu'en bandeau : il est derrière le contenu, et c'est la partie
      haute de l'écran — celle que le voile laisse transparente — qui doit le
      faire reconnaître. Trop pâle, on ne voyait plus rien du tout. */
@@ -2635,7 +2573,7 @@ body {
    la largeur d'un téléphone, un colisée de 400 unités devient un trait. */
 @media (max-width: 560px) {
   .isl {
-    height: min(38vh, 17rem);
+    height: min(50vh, 22rem);
     opacity: 0.85;
   }
 }
@@ -2774,6 +2712,14 @@ body {
   opacity: 1;
 }
 
+[data-island='alabasta'] .isl-preview {
+  background: linear-gradient(180deg, #e8b968 0%, #f6e2b8 100%);
+}
+
+[data-island='drum'] .isl-preview {
+  background: linear-gradient(180deg, #8fb6d8 0%, #dbe9f5 100%);
+}
+
 [data-island='dressrosa'] .isl-preview {
   background: linear-gradient(180deg, #f3b271 0%, #f8d6a6 100%);
 }
@@ -2822,4 +2768,177 @@ body {
     0 2px 0 rgba(255, 255, 255, 0.9),
     0 0 10px rgba(255, 255, 255, 0.95),
     0 0 22px rgba(255, 255, 255, 0.8);
+}
+
+/* ===========================================================================
+   Ambiance de chaque île : ce qui tombe, monte ou dérive.
+
+   C'est cette couche qui occupe la hauteur de l'écran, pas une texture de sol.
+   Neige à Drum, pétales à Wano, sable à Alabasta, pluie à Logue Town, bulles à
+   Sabaody, remous à l'Île des hommes-poissons.
+
+   Tout est en dégradés répétés animés par `background-position` : aucun
+   élément dans le balisage, aucun téléchargement, et le motif se répète
+   verticalement sans couture — la boucle avance exactement d'une hauteur de
+   tuile, donc la reprise ne se voit pas.
+
+   `will-change` est délibérément **absent** : il forcerait une couche de
+   composition permanente pour une animation de fond, sur toutes les pages, y
+   compris sur les téléphones que le réglage « animations réduites » vise
+   justement à ménager.
+   =========================================================================== */
+
+.isl-fx {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+/* Neige — Drum. Deux tailles de flocons à deux vitesses : à une seule, on lit
+   une trame, pas une chute. */
+[data-island='drum'] .isl-fx {
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.95) 1.6px, transparent 2.2px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.7) 1px, transparent 1.6px);
+  background-size: 90px 120px, 55px 80px;
+}
+
+/* Pétales — Wano. Des ellipses, pas des disques : un pétale est plus large que
+   haut, et c'est ce qui le distingue d'un flocon. */
+[data-island='wano'] .isl-fx {
+  background-image:
+    radial-gradient(ellipse 5px 3px, rgba(255, 214, 226, 0.95) 60%, transparent 61%),
+    radial-gradient(ellipse 3.5px 2px, rgba(255, 236, 242, 0.8) 60%, transparent 61%);
+  background-size: 110px 150px, 70px 95px;
+}
+
+/* Sable — Alabasta. Des traits presque horizontaux : le vent du désert pousse
+   de côté, il ne fait pas tomber. */
+[data-island='alabasta'] .isl-fx {
+  background-image:
+    linear-gradient(100deg, transparent 0 6px, rgba(240, 214, 160, 0.55) 6px 9px, transparent 9px 34px),
+    linear-gradient(96deg, transparent 0 12px, rgba(226, 196, 138, 0.4) 12px 14px, transparent 14px 52px);
+  background-size: 180px 70px, 240px 110px;
+}
+
+/* Pluie — Logue Town. Traits obliques, fins et rapides. */
+[data-island='logue'] .isl-fx {
+  background-image:
+    linear-gradient(74deg, transparent 0 10px, rgba(226, 238, 252, 0.5) 10px 11.5px, transparent 11.5px 30px),
+    linear-gradient(78deg, transparent 0 18px, rgba(200, 218, 240, 0.35) 18px 19px, transparent 19px 46px);
+  background-size: 120px 150px, 160px 200px;
+}
+
+/* Bulles — Sabaody. Elles **montent**, d'où l'animation inversée plus bas. */
+[data-island='sabaody'] .isl-fx {
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.5) 5px, transparent 6px),
+    radial-gradient(circle, rgba(226, 210, 255, 0.55) 2.5px, transparent 3.2px);
+  background-size: 150px 210px, 90px 130px;
+}
+
+/* Eau de mer — Île des hommes-poissons. Pas des particules : des **remous**.
+   Deux voiles clairs qui ondulent, comme la lumière à travers la surface. */
+[data-island='fishman'] .isl-fx {
+  background-image:
+    radial-gradient(ellipse 60% 18% at 50% 20%, rgba(255, 255, 255, 0.16), transparent 70%),
+    radial-gradient(ellipse 45% 14% at 30% 60%, rgba(190, 245, 255, 0.14), transparent 70%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.45) 3px, transparent 4px);
+  background-size: 100% 55%, 100% 45%, 130px 190px;
+  opacity: 0.9;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-island='drum'] .isl-fx {
+    animation: fx-chute 14s linear infinite, fx-chute-lente 26s linear infinite;
+  }
+
+  [data-island='wano'] .isl-fx {
+    animation: fx-derive 18s linear infinite, fx-chute-lente 30s linear infinite;
+  }
+
+  [data-island='alabasta'] .isl-fx {
+    animation: fx-vent 9s linear infinite;
+  }
+
+  [data-island='logue'] .isl-fx {
+    animation: fx-averse 1.6s linear infinite;
+  }
+
+  [data-island='sabaody'] .isl-fx {
+    animation: fx-montee 16s linear infinite;
+  }
+
+  [data-island='fishman'] .isl-fx {
+    animation: fx-remous 11s ease-in-out infinite alternate;
+  }
+}
+
+/* Chaque boucle avance d'exactement une hauteur de tuile : la reprise est
+   invisible. Les deux couches se décalent différemment, ce qui donne la
+   profondeur. */
+@keyframes fx-chute {
+  to {
+    background-position: 12px 120px, -8px 80px;
+  }
+}
+
+@keyframes fx-chute-lente {
+  to {
+    background-position: -20px 150px, 14px 95px;
+  }
+}
+
+@keyframes fx-derive {
+  to {
+    background-position: 90px 150px, -60px 95px;
+  }
+}
+
+@keyframes fx-vent {
+  to {
+    background-position: 180px 12px, -240px -18px;
+  }
+}
+
+@keyframes fx-averse {
+  to {
+    background-position: -42px 150px, -46px 200px;
+  }
+}
+
+@keyframes fx-montee {
+  to {
+    background-position: 18px -210px, -12px -130px;
+  }
+}
+
+@keyframes fx-remous {
+  to {
+    background-position: 0 8%, 0 -6%, 10px -190px;
+  }
+}
+
+/* --- Palettes des deux îles ajoutées -------------------------------------- */
+
+/* Drum — le royaume enneigé. Ciel blanc-bleu, très clair : la neige ne se voit
+   que sur un fond qui ne l'est pas moins. */
+[data-island='drum'] .harbor--page .harbor__sky {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent 40%),
+    linear-gradient(180deg, #8fb6d8 0%, #c3d9ea 45%, #eef5fb 100%);
+}
+[data-island='drum'] {
+  --color-flag: #2f5f8f;
+}
+
+/* Alabasta — le désert. Ocre et ciel blanchi de chaleur. */
+[data-island='alabasta'] .harbor--page .harbor__sky {
+  background-image:
+    radial-gradient(circle at 50% 12%, rgba(255, 246, 210, 0.75), transparent 55%),
+    linear-gradient(180deg, #e8b968 0%, #f2d69c 45%, #faeed3 100%);
+}
+[data-island='alabasta'] {
+  --color-flag: #9c4a1f;
 }

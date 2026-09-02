@@ -64,7 +64,15 @@ export default function PreviewChestPage() {
         Aperçu des îles
       </h2>
       <ul className="mt-4 space-y-4">
-        {(['dressrosa', 'fishman', 'wano', 'logue', 'sabaody'] as IslandId[]).map(
+        {([
+            'alabasta',
+            'drum',
+            'dressrosa',
+            'fishman',
+            'wano',
+            'logue',
+            'sabaody',
+          ] as IslandId[]).map(
           (id) => (
             <li key={id}>
               <div
@@ -76,6 +84,9 @@ export default function PreviewChestPage() {
                     une hauteur. */}
                 <div className="isl-preview">
                   <IslandDecor island={id} />
+                  {/* L'ambiance fait partie de l'île autant que sa silhouette :
+                      l'aperçu serait trompeur sans elle. */}
+                  <div className="isl-fx" />
                   <span className="isl-name">{ISLANDS[id].name}</span>
                 </div>
               </div>

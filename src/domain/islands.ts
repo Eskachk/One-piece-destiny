@@ -30,6 +30,8 @@
 
 export type IslandId =
   | 'harbor'
+  | 'alabasta'
+  | 'drum'
   | 'dressrosa'
   | 'fishman'
   | 'wano'
@@ -117,6 +119,28 @@ export const ISLANDS: Record<IslandId, Island> = {
     ],
   },
 
+  alabasta: {
+    id: 'alabasta',
+    name: 'Alabasta',
+    elements: [
+      'dunes en enfilade',
+      'palais aux dômes et à l’obélisque',
+      'palmiers isolés',
+      'sable poussé par le vent, en continu',
+    ],
+  },
+
+  drum: {
+    id: 'drum',
+    name: 'Le royaume de Drum',
+    elements: [
+      'sommets enneigés des Drum Rockies',
+      'château perché sur la crête',
+      'sapins alourdis de neige',
+      'neige qui tombe, en continu',
+    ],
+  },
+
   hq: {
     id: 'hq',
     name: 'Poste de commandement',
@@ -140,7 +164,10 @@ const ROUTES: readonly (readonly [string, IslandId])[] = [
   ['/market', 'wano'],
   ['/boutique', 'logue'],
   ['/profil', 'sabaody'],
-  ['/parametres', 'sabaody'],
+  // Paramètres et profil partageaient Sabaody : deux pages, une seule
+  // identité. Drum donne à l'écran de réglages la sienne — et la neige qui
+  // tombe est ce qui va le mieux à une page où l'on ne fait que régler.
+  ['/parametres', 'drum'],
   ['/admin', 'hq'],
 ];
 
@@ -148,5 +175,8 @@ export function islandOf(pathname: string): IslandId {
   for (const [prefix, island] of ROUTES) {
     if (pathname.startsWith(prefix)) return island;
   }
-  return 'harbor';
+  // L'accueil : Alabasta. C'est la page où l'on compose son équipage, la plus
+  // fréquentée, et la seule qui n'avait aucune île à elle — le décor du port
+  // appartient à l'écran de connexion.
+  return pathname === '/' ? 'alabasta' : 'harbor';
 }

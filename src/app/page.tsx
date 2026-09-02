@@ -71,7 +71,7 @@ export default async function HomePage() {
   // ne dépendent pas d'un chapitre en cours.
   if (!chapter) {
     return (
-      <HarborScene variant="page">
+      <HarborScene variant="page" island="alabasta">
         <Hud />
         <h1 className="hb-title mt-5">Prochain chapitre à venir</h1>
         <p className="hb-card mt-4 text-sm">
@@ -106,7 +106,7 @@ export default async function HomePage() {
     .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 
   return (
-    <HarborScene variant="page">
+    <HarborScene variant="page" island="alabasta">
       <Hud />
 
       <section className="mt-5">

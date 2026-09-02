@@ -164,6 +164,12 @@ export function HarborScene({
           classement » (§51).
         */}
         <IslandDecor island={island} />
+
+        {/* Ambiance : ce qui tombe, monte ou dérive. C'est cette couche qui
+            occupe la hauteur de l'écran — le décor, lui, est posé en bas. Tout
+            est en CSS (`.isl-fx`), donc rien n'est ajouté au balisage. */}
+        <div className="isl-fx" aria-hidden="true" />
+
         <span className="isl-name" aria-hidden="true">
           {island !== 'harbor' && island !== 'hq' ? ISLANDS[island].name : ''}
         </span>

@@ -32,7 +32,7 @@ function Dressrosa() {
     <svg
       className="isl isl--dressrosa"
       viewBox="0 0 400 220"
-      preserveAspectRatio="xMidYMax slice"
+      preserveAspectRatio="xMidYMax meet"
       aria-hidden="true"
     >
       {/* Collines et moulins, au fond. */}
@@ -100,7 +100,7 @@ function Fishman() {
     <svg
       className="isl isl--fishman"
       viewBox="0 0 400 160"
-      preserveAspectRatio="xMidYMax slice"
+      preserveAspectRatio="xMidYMax meet"
       aria-hidden="true"
     >
       {/* Rayons filtrés depuis la surface : ce qui dit « on est dessous ». Ils
@@ -184,7 +184,7 @@ function Wano() {
     <svg
       className="isl isl--wano"
       viewBox="0 0 400 220"
-      preserveAspectRatio="xMidYMax slice"
+      preserveAspectRatio="xMidYMax meet"
       aria-hidden="true"
     >
       {/* Mont enneigé, au lointain. */}
@@ -243,7 +243,7 @@ function Logue() {
     <svg
       className="isl isl--logue"
       viewBox="0 0 400 220"
-      preserveAspectRatio="xMidYMax slice"
+      preserveAspectRatio="xMidYMax meet"
       aria-hidden="true"
     >
       {/* Éclair lointain : Logue Town s'achève sous la foudre. */}
@@ -300,7 +300,7 @@ function Sabaody() {
     <svg
       className="isl isl--sabaody"
       viewBox="0 0 400 160"
-      preserveAspectRatio="xMidYMax slice"
+      preserveAspectRatio="xMidYMax meet"
       aria-hidden="true"
     >
       {/* Voûte de feuillage : la lumière arrive filtrée par le haut. */}
@@ -360,7 +360,121 @@ function Sabaody() {
   );
 }
 
+/** Alabasta — le royaume du désert : dunes, palais, palmiers. */
+function Alabasta() {
+  return (
+    <svg
+      className="isl isl--alabasta"
+      viewBox="0 0 400 220"
+      preserveAspectRatio="xMidYMax meet"
+      aria-hidden="true"
+    >
+      {/* Dunes, en trois plans. Les crêtes se croisent : des vagues parallèles
+          liraient comme des rayures. */}
+      <path d="M0 168 Q90 140 180 164 T400 150 V220 H0Z" fill="#e0b06a" opacity=".55" />
+      <path d="M0 190 Q120 162 240 186 T400 176 V220 H0Z" fill="#d29a52" opacity=".6" />
+
+      {/* Palais : un corps, deux tours à dôme, un obélisque. C'est la
+          silhouette qui nomme le lieu. */}
+      <g opacity=".62" fill="#e8d5b0">
+        <rect x="150" y="120" width="100" height="60" />
+        <path d="M150 120 h100 l-10 -12 h-80Z" fill="#c98f52" />
+        {[168, 232].map((x) => (
+          <g key={x}>
+            <rect x={x - 12} y="96" width="24" height="30" />
+            <path d={`M${x - 14} 96 a14 16 0 0 1 28 0Z`} fill="#c98f52" />
+            <rect x={x - 1.5} y="74" width="3" height="10" fill="#c98f52" />
+          </g>
+        ))}
+        <path d="M196 120 V70 h8 v50Z" />
+        <path d="M196 70 l4 -14 l4 14Z" fill="#c98f52" />
+      </g>
+
+      {/* Palmiers : un tronc courbe et cinq palmes. Deux suffisent — une
+          palmeraie deviendrait une texture. */}
+      {[46, 350].map((x, i) => (
+        <g key={x} opacity=".5">
+          <path
+            d={`M${x} 200 q${i ? 10 : -10} -26 ${i ? 4 : -4} -46`}
+            stroke="#8a6234"
+            strokeWidth="5"
+            fill="none"
+            strokeLinecap="round"
+          />
+          {[-38, -18, 0, 18, 38].map((a) => (
+            <ellipse
+              key={a}
+              cx={x + (i ? 4 : -4)}
+              cy="152"
+              rx="20"
+              ry="5"
+              fill="#5f8f4a"
+              transform={`rotate(${a} ${x + (i ? 4 : -4)} 154)`}
+            />
+          ))}
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+/** Drum — le royaume enneigé : crête, château, sapins. */
+function Drum() {
+  return (
+    <svg
+      className="isl isl--drum"
+      viewBox="0 0 400 220"
+      preserveAspectRatio="xMidYMax meet"
+      aria-hidden="true"
+    >
+      {/* Les Drum Rockies : des aiguilles, pas des collines. C'est leur
+          verticalité qui les distingue de n'importe quelle montagne. */}
+      <path d="M0 220 L60 104 L104 158 L150 86 L206 220Z" fill="#b8cadd" opacity=".6" />
+      <path d="M170 220 L232 70 L286 146 L330 96 L400 220Z" fill="#a7bdd3" opacity=".55" />
+
+      {/* Neige des sommets. */}
+      <g fill="#ffffff" opacity=".8">
+        <path d="M136 106 L150 86 L164 106 q-14 8 -28 0Z" />
+        <path d="M216 92 L232 70 L248 92 q-16 9 -32 0Z" />
+        <path d="M316 114 L330 96 L344 114 q-14 8 -28 0Z" />
+      </g>
+
+      {/* Château perché : un donjon et deux tours coiffées. */}
+      <g opacity=".62" fill="#dbe6f0">
+        <rect x="216" y="96" width="34" height="42" />
+        <path d="M214 96 h38 l-6 -10 h-26Z" fill="#5d7b9c" />
+        {[210, 256].map((x) => (
+          <g key={x}>
+            <rect x={x - 7} y="104" width="14" height="34" />
+            <path d={`M${x - 9} 104 l9 -13 l9 13Z`} fill="#5d7b9c" />
+          </g>
+        ))}
+      </g>
+
+      {/* Sapins alourdis de neige : trois étages, du plus large au plus
+          étroit, avec un liseré clair sur chaque étage. */}
+      {[30, 74, 342, 382].map((x, i) => (
+        <g key={x} opacity={0.55 - (i % 2) * 0.08}>
+          <rect x={x - 2} y="188" width="4" height="16" fill="#4a5f4a" />
+          {[0, 1, 2].map((n) => {
+            const y = 188 - n * 20;
+            const w = 20 - n * 5;
+            return (
+              <g key={n}>
+                <path d={`M${x - w} ${y} L${x} ${y - 26} L${x + w} ${y}Z`} fill="#3f5f4a" />
+                <path d={`M${x - w} ${y} L${x} ${y - 8} L${x + w} ${y}Z`} fill="#eef5fb" opacity=".7" />
+              </g>
+            );
+          })}
+        </g>
+      ))}
+    </svg>
+  );
+}
+
 const DECORS: Partial<Record<IslandId, () => React.ReactElement>> = {
+  alabasta: Alabasta,
+  drum: Drum,
   dressrosa: Dressrosa,
   fishman: Fishman,
   wano: Wano,
