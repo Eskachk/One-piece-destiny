@@ -479,6 +479,55 @@ function ExtrasTorse({ traits, shoulders }: { traits: SpriteTraits; shoulders: n
           <path d="M32 31v14" strokeWidth="1.8" />
         </g>
       )}
+      {/* Taille dégagée : une bande de peau entre le haut et le bas. Sans
+          elle, toutes les tenues courtes lisent comme une combinaison. */}
+      {a.has('bare-midriff') && (
+        <rect x={g} y="43" width={shoulders} height="7" fill={traits.skin} />
+      )}
+      {/* Bras croisés sur la poitrine : c'est une **posture**, et c'est
+          justement ce qui identifie le personnage mieux qu'un vêtement. */}
+      {a.has('crossed-arms') && (
+        <g fill={traits.skin} stroke="#00000022" strokeWidth="0.5">
+          <rect x={g + 1} y="35" width={shoulders - 2} height="4.4" rx="2.2" transform={`rotate(-9 32 37)`} />
+          <rect x={g + 1} y="40" width={shoulders - 2} height="4.4" rx="2.2" transform={`rotate(9 32 42)`} />
+        </g>
+      )}
+      {/* Épaulettes : le galon d'un officier. Deux traits, et l'uniforme cesse
+          d'être une chemise. */}
+      {a.has('epaulettes') && (
+        <g fill={traits.accessory}>
+          <rect x={g - 3} y="29.5" width="8" height="3.4" rx="1.4" />
+          <rect x={d - 5} y="29.5" width="8" height="3.4" rx="1.4" />
+        </g>
+      )}
+      {/* Bandoulière et besace : ce qui trahit celui qui transporte son
+          matériel. */}
+      {a.has('satchel') && (
+        <>
+          <path d={`M${g + 1} 31 L${d - 1} 46`} stroke="#7a5a34" strokeWidth="2.4" fill="none" />
+          <rect x={d - 4} y="45" width="8" height="7" rx="1.6" fill="#7a5a34" />
+        </>
+      )}
+      {a.has('pendant') && (
+        <>
+          <path d="M28 30q4 4 8 0" fill="none" stroke="#c9ced8" strokeWidth="0.8" />
+          <path d="M31.2 33h1.6v3h-1.6Z M30 34h4v1.4h-4Z" fill="#c9ced8" />
+        </>
+      )}
+      {a.has('cards') && (
+        <g fill="#f0ece2" stroke="#8a6a3a" strokeWidth="0.5">
+          {[-14, 0, 14].map((r) => (
+            <rect key={r} x={g - 8} y="40" width="5" height="8" rx="0.8" transform={`rotate(${r} ${g - 5.5} 48)`} />
+          ))}
+        </g>
+      )}
+      {a.has('arm-tattoo') && (
+        <g fill={traits.accessory} opacity="0.85">
+          <circle cx={g - 2} cy="36" r="1.6" />
+          <path d={`M${g - 4.4} 39h5v1.4h-5Z`} />
+        </g>
+      )}
+
       {/* Nageoires d'avant-bras : la marque de l'homme-poisson. */}
       {a.has('fins') && (
         <g fill={traits.skin} opacity="0.9">
@@ -517,6 +566,67 @@ function ExtrasTete({ traits }: { traits: SpriteTraits }) {
       )}
       {a.has('sharp-teeth') && (
         <path d="M26 24h12l-1.5 3-1.5-2-1.5 2-1.5-2-1.5 2-1.5-2-1.5 2Z" fill="#f2efe6" />
+      )}
+      {/* Sourcil en spirale : le trait le plus reconnaissable de tout le
+          casting, et il tient en une courbe. */}
+      {a.has('curly-brow') && (
+        <path
+          d="M34.4 14.2q2.6-2.6 3.6 0t-2.4 1.2"
+          fill="none"
+          stroke={traits.hair}
+          strokeWidth="1.1"
+          strokeLinecap="round"
+        />
+      )}
+      {/* Trois anneaux à l'oreille gauche : ils tintent, on les voit. */}
+      {a.has('earrings') && (
+        <g fill="none" stroke="#e8c85a" strokeWidth="0.9">
+          <circle cx="23.4" cy="21" r="1.5" />
+          <circle cx="23.4" cy="24" r="1.5" />
+          <circle cx="23.4" cy="27" r="1.5" />
+        </g>
+      )}
+      {/* Deux couettes, une de chaque côté : c'est la symétrie qui les
+          distingue d'une queue. */}
+      {a.has('twin-tails') && (
+        <g fill={traits.hair}>
+          <path d="M22 16q-7 3-6 12t4 10q-4-14 3-18Z" />
+          <path d="M42 16q7 3 6 12t-4 10q4-14-3-18Z" />
+        </g>
+      )}
+      {/* Taches de la toque de fourrure. */}
+      {a.has('spotted-hat') && (
+        <g fill="#4a4a52" opacity="0.75">
+          <circle cx="27" cy="6" r="1.6" />
+          <circle cx="34" cy="4.4" r="1.4" />
+          <circle cx="38" cy="8" r="1.5" />
+        </g>
+      )}
+      {/* Points de suture : deux croix sur la joue. */}
+      {a.has('stitches') && (
+        <g stroke="#3a2a2a" strokeWidth="0.8" strokeLinecap="round">
+          <path d="M25.4 15.6 27.8 18M27.8 15.6 25.4 18" />
+          <path d="M24.6 20.6 27 23M27 20.6 24.6 23" />
+        </g>
+      )}
+      {a.has('cravat') && (
+        <path d="M29 26h6l-1 5-2-2-2 2Z" fill="#eee8db" />
+      )}
+      {/* Lunettes d'aviateur, relevées sur le chapeau — pas sur les yeux. */}
+      {a.has('goggles') && (
+        <g>
+          <rect x="23" y="4.6" width="18" height="2.6" rx="1.2" fill="#5a4a34" />
+          <circle cx="27.4" cy="5.9" r="2.4" fill="#8ab8c8" stroke="#5a4a34" strokeWidth="0.9" />
+          <circle cx="36.6" cy="5.9" r="2.4" fill="#8ab8c8" stroke="#5a4a34" strokeWidth="0.9" />
+        </g>
+      )}
+      {/* Perles enfilées dans la chevelure ou au cou. */}
+      {a.has('beads') && (
+        <g fill="#e8c85a">
+          {[24, 28, 32, 36, 40].map((x, i) => (
+            <circle key={x} cx={x} cy={27 + (i % 2) * 1.2} r="1.3" />
+          ))}
+        </g>
       )}
       {a.has('tusks') && (
         <g fill="#e6e0d0">

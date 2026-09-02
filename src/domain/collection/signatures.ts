@@ -135,7 +135,27 @@ export type Extra =
   | 'cape'
   | 'wings'
   | 'snake'
-  | 'pigeon';
+  | 'pigeon'
+  // Seconde série. Treize personnages n'avaient encore aucun signe
+  // particulier — Nami, Sanji, Robin, Law, Perona, Sabo… — et le reste s'en
+  // tenait à un seul. Ce sont pourtant des traits qu'une phrase énonce sans
+  // effort : le sourcil en spirale, le tatouage du bras, les trois boucles
+  // d'oreille, les points de suture.
+  | 'curly-brow'
+  | 'arm-tattoo'
+  | 'crossed-arms'
+  | 'twin-tails'
+  | 'spotted-hat'
+  | 'bare-midriff'
+  | 'cards'
+  | 'beads'
+  | 'stitches'
+  | 'cravat'
+  | 'goggles'
+  | 'epaulettes'
+  | 'earrings'
+  | 'pendant'
+  | 'satchel';
 
 export interface Signature {
   /** Description physique en une phrase. Sert de source à tout le reste. */
@@ -161,7 +181,11 @@ export interface Signature {
   build: Build;
   /** Plan du corps. Absent, on dessine un humain. */
   frame?: Frame;
-  /** Détails ajoutés au patron. Deux au maximum. */
+  /**
+   * Détails ajoutés au patron. **Trois au maximum**, et jamais deux au même
+   * endroit : un sur la tête, un sur le torse, un sur un bras. Au-delà, la
+   * vignette sature et l'on perd ce qu'on cherchait à gagner.
+   */
   extras?: readonly Extra[];
 }
 
@@ -187,24 +211,27 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     note: 'Cheveux verts courts, ceinture ventrale verte, trois sabres à la hanche, cicatrice verticale sur l’œil gauche.',
     hair: '#4c8b45', cut: 'short', skin: HALE, outfit: '#1f4034', coat: '#12261f',
     accessory: '#17301f',
-    extras: ['haramaki'],
+    extras: ['haramaki', 'earrings'],
     head: 'bandana', mark: 'scar-eye', prop: 'katana3', build: 'broad',
   },
   nami: {
     note: 'Longs cheveux orange, tenue bleue et blanche, bâton climatique en trois sections.',
     hair: '#e8842c', cut: 'long', skin: CLAIR, outfit: '#2f6fb5',
+    extras: ['arm-tattoo', 'bare-midriff'],
+    accessory: '#e8842c',
     head: 'none', mark: 'none', prop: 'staff', build: 'slim',
   },
   usopp: {
     note: 'Cheveux noirs crépus noués en arrière, bandana, teint sombre, long nez, lance-pierres.',
     hair: '#241a12', cut: 'ponytail', skin: SOMBRE, outfit: '#c8a02c',
     accessory: '#5a4a2a',
-    extras: ['long-nose'],
+    extras: ['long-nose', 'satchel'],
     head: 'bandana', mark: 'none', prop: 'gun', build: 'slim',
   },
   sanji: {
     note: 'Cheveux blonds couvrant l’œil droit, costume noir, cigarette au coin des lèvres, sourcil en spirale.',
     hair: '#e0be5a', cut: 'short', skin: PALE, outfit: '#23232b', coat: '#15151a',
+    extras: ['curly-brow'],
     head: 'none', mark: 'cigarette', prop: 'none', build: 'slim',
   },
   chopper: {
@@ -218,6 +245,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   robin: {
     note: 'Longs cheveux noirs, teint mat, manteau violet, lunettes relevées sur le front.',
     hair: '#141018', cut: 'long', skin: HALE, outfit: '#5a3a7a', coat: '#3d2455',
+    extras: ['crossed-arms'],
     head: 'none', mark: 'shades', prop: 'none', build: 'slim',
   },
   franky: {
@@ -344,17 +372,22 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   smoker: {
     note: 'Cheveux blancs hérissés, deux cigares aux lèvres, veste ouverte sur le torse, jitte.',
     hair: '#ddd9cf', cut: 'spiky', skin: HALE, outfit: '#3d4652', coat: '#2a323c',
-    extras: ['bare-chest'],
+    extras: ['bare-chest', 'epaulettes'],
+    accessory: '#c8ccd4',
     head: 'none', mark: 'cigar', prop: 'staff', build: 'broad',
   },
   tashigi: {
     note: 'Cheveux bleu-noir aux épaules, lunettes rectangulaires, sabre au côté.',
     hair: '#26303f', cut: 'long', skin: PALE, outfit: '#4a5a6e',
+    extras: ['epaulettes'],
+    accessory: '#e8e2d4',
     head: 'none', mark: 'glasses', prop: 'sword', build: 'slim',
   },
   koby: {
     note: 'Cheveux roses courts, lunettes rondes, uniforme de la Marine.',
     hair: '#e88fa8', cut: 'short', skin: PALE, outfit: '#e8e2d4',
+    extras: ['epaulettes'],
+    accessory: '#2d3a4a',
     head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
   },
   'rob-lucci': {
@@ -385,7 +418,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   mihawk: {
     note: 'Cheveux noirs courts, yeux jaunes de rapace, chapeau à large bord et plume, immense lame noire.',
     hair: '#161616', cut: 'short', skin: PALE, outfit: '#2a1f2e', coat: '#171020',
-    extras: ['cape'],
+    extras: ['cape', 'pendant'],
     head: 'brim', mark: 'goatee', prop: 'greatsword', build: 'slim',
   },
   crocodile: {
@@ -403,13 +436,13 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   'boa-hancock': {
     note: 'Très longs cheveux noirs, teint pâle, robe rouge fendue, boucles en forme de serpent.',
     hair: '#131018', cut: 'long', skin: PALE, outfit: '#c0243c', coat: '#8a1a30',
-    extras: ['snake'],
+    extras: ['snake', 'earrings'],
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   'gecko-moria': {
     note: 'Silhouette démesurée, cheveux noirs en cornes, teint blafard, sourire dentelé.',
     hair: '#1a1a22', cut: 'spiky', skin: '#b9c4b0', outfit: '#3a2a4a', coat: '#241a30',
-    extras: ['sharp-teeth'],
+    extras: ['sharp-teeth', 'stitches'],
     head: 'horns', mark: 'none', prop: 'none', build: 'giant',
   },
   buggy: {
@@ -429,7 +462,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   'silvers-rayleigh': {
     note: 'Longs cheveux gris tirés en arrière, barbe, lunettes rondes, sabre.',
     hair: '#c8c4bb', cut: 'ponytail', skin: HALE, outfit: '#3a4250', coat: '#252b36',
-    extras: ['cape'],
+    extras: ['cape', 'earrings'],
     head: 'none', mark: 'beard', prop: 'sword', build: 'broad',
   },
 
@@ -439,11 +472,13 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     note: 'Bouc taillé, toque de fourrure blanche tachetée, mains tatouées, nodachi.',
     hair: '#1a1a1a', cut: 'short', skin: HALE, outfit: '#2a4a5a', coat: '#f0ece2',
     accessory: '#f0ece2',
+    extras: ['spotted-hat'],
     head: 'cap', mark: 'goatee', prop: 'sword', build: 'slim',
   },
   'trafalgar-d-water-law': {
     note: 'Voir `law` : bouc, toque de fourrure tachetée, mains tatouées, nodachi.',
     hair: '#1a1a1a', cut: 'short', skin: HALE, outfit: '#2a4a5a', coat: '#f0ece2',
+    extras: ['spotted-hat'],
     head: 'cap', mark: 'goatee', prop: 'sword', build: 'slim',
   },
   kid: {
@@ -455,43 +490,47 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   killer: {
     note: 'Longs cheveux blonds, casque cylindrique percé de trous, deux faux à main.',
     hair: '#e0c05a', cut: 'long', skin: PALE, outfit: '#3a4250',
+    extras: ['epaulettes'],
+    accessory: '#8a94a4',
     head: 'mask', mark: 'none', prop: 'knives', build: 'slim',
   },
   'basil-hawkins': {
     note: 'Longs cheveux blonds raides, visage impassible, manteau sombre, cartes de tarot.',
     hair: '#e6d08a', cut: 'long', skin: PALE, outfit: '#2a2a38', coat: '#4a2a3a',
-    extras: ['cape'],
+    extras: ['cape', 'cards'],
     head: 'none', mark: 'none', prop: 'sword', build: 'slim',
   },
   'x-drake': {
     note: 'Cheveux roux courts, cicatrice sur le visage, tricorne, cape, épée.',
     hair: '#b0562c', cut: 'short', skin: HALE, outfit: '#3a4a3a', coat: '#2a3a2a',
-    accessory: '#241c18',
-    extras: ['cape'],
+    accessory: '#c8a04a',
+    extras: ['cape', 'epaulettes'],
     head: 'tricorne', mark: 'scar-face', prop: 'sword', build: 'broad',
   },
   urouge: {
     note: 'Moine massif au crâne rasé surmonté d’un chignon, tatouages, jambes courtes et torse énorme.',
     hair: '#2a2018', cut: 'topknot', skin: MAT, outfit: '#8a5a2a', coat: '#5a3a1a',
-    extras: ['bare-chest'],
+    extras: ['bare-chest', 'beads'],
     head: 'none', mark: 'none', prop: 'staff', build: 'giant',
   },
   'scratchmen-apoo': {
     note: 'Longs cheveux sombres tressés de perles, mâchoire large et dentée, tenue bariolée.',
     hair: '#1f1a2a', cut: 'long', skin: MAT, outfit: '#4a7a4a', coat: '#2a5a3a',
-    extras: ['sharp-teeth'],
+    extras: ['sharp-teeth', 'beads'],
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   bonney: {
     note: 'Longs cheveux roses, casquette plate, tenue courte, teint hâlé.',
     hair: '#e87aa8', cut: 'long', skin: HALE, outfit: '#c0546a',
     accessory: '#f0ece2',
+    extras: ['bare-midriff'],
     head: 'cap', mark: 'none', prop: 'none', build: 'slim',
   },
   'capone-bege': {
     note: 'Cheveux noirs plaqués, costume rayé, chapeau mou, cigare, arme à feu.',
     hair: '#1a1a1a', cut: 'short', skin: CLAIR, outfit: '#3a3a48', coat: '#22222c',
     accessory: '#22222c',
+    extras: ['pendant'],
     head: 'brim', mark: 'cigar', prop: 'gun', build: 'broad',
   },
 
@@ -500,7 +539,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   cavendish: {
     note: 'Longs cheveux blonds ondulés, tenue blanche, rapière.',
     hair: '#e8cf6a', cut: 'wavy', skin: PALE, outfit: '#f0ece2', coat: '#d8c8a8',
-    extras: ['cape'],
+    extras: ['cape', 'cravat'],
     head: 'none', mark: 'none', prop: 'sword', build: 'slim',
   },
   bartolomeo: {
@@ -512,6 +551,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   perona: {
     note: 'Longs cheveux roses en couettes, robe gothique noire et blanche, ombrelle.',
     hair: '#e87aa8', cut: 'long', skin: PALE, outfit: '#22222c', coat: '#3a2a3a',
+    extras: ['twin-tails'],
     head: 'none', mark: 'none', prop: 'cane', build: 'slim',
   },
   king: {
@@ -523,6 +563,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   queen: {
     note: 'Longs cheveux blonds, lunettes teintées, corpulence énorme, tenue voyante.',
     hair: '#e0c05a', cut: 'long', skin: CLAIR, outfit: '#c0243c', coat: '#8a1a30',
+    extras: ['open-vest'],
     head: 'none', mark: 'shades', prop: 'none', build: 'giant',
   },
   jack: {
@@ -545,6 +586,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     note: 'Cheveux blonds ondulés, haut-de-forme à lunettes d’aviateur, brûlure sur l’œil gauche, manteau bleu, tuyau de fer.',
     hair: '#e8cf6a', cut: 'wavy', skin: PALE, outfit: '#2f5a8a', coat: '#1f3d5f',
     accessory: '#1b1620',
+    extras: ['cravat', 'goggles'],
     head: 'tophat', mark: 'scar-eye', prop: 'staff', build: 'slim',
   },
   arlong: {
