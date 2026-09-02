@@ -35,11 +35,21 @@ function Message({ message }: { message: { ok: boolean; text: string } | null })
 
 export function ChapterNumberControls({
   openChapterNumber,
+  calendarNumber,
   anchor,
   anchorIsStored,
 }: {
   /** Chapitre ouvert, ou `null` s'il n'y en a pas. */
   openChapterNumber: number | null;
+  /**
+   * Ce que le calendrier déduit de l'ancrage, aujourd'hui.
+   *
+   * C'est le chiffre qui manquait : poser un ancrage ne change **pas** le
+   * chapitre déjà ouvert, et rien ne le disait assez fort. On posait un
+   * ancrage, on retournait sur l'onglet Équipage, et le numéro n'avait pas
+   * bougé — sans comprendre pourquoi.
+   */
+  calendarNumber: number;
   anchor: { chapterNumber: number; weekOf: string };
   /** L'ancrage vient-il de la base, ou du repli codé en dur ? */
   anchorIsStored: boolean;
@@ -66,6 +76,32 @@ export function ChapterNumberControls({
   return (
     <div className="space-y-6">
       <Message message={message} />
+
+      {/*
+        L'écart entre ce que le calendrier déduit et ce qui est réellement
+        ouvert. C'est le seul endroit où les deux réglages se rencontrent, et
+        le bouton fait en un clic ce que la lecture de deux paragraphes
+        laissait deviner.
+      */}
+      {openChapterNumber !== null && calendarNumber !== openChapterNumber && (
+        <div className="rounded-lg border border-orange/50 bg-orange/10 p-3">
+          <p className="text-sm text-parchment/85">
+            Le calendrier en est au <strong>chapitre {calendarNumber}</strong>,
+            mais le chapitre ouvert est le{' '}
+            <strong>{openChapterNumber}</strong>. Poser un ancrage ne touche
+            jamais à un chapitre déjà ouvert — c’est ce bouton qui le corrige,
+            et c’est lui que voient les joueurs.
+          </p>
+          <button
+            type="button"
+            disabled={pending}
+            onClick={() => lancer(() => renumberOpenChapter(calendarNumber))}
+            className="transition-quick mt-2 w-full rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-abyss disabled:opacity-40"
+          >
+            Passer le chapitre ouvert au {calendarNumber}
+          </button>
+        </div>
+      )}
 
       {/* --- Chapitre ouvert -------------------------------------------- */}
       <section>
@@ -171,8 +207,11 @@ export function ChapterNumberControls({
         </button>
 
         <p className="mt-2 text-xs text-parchment/45">
-          Sans effet sur le chapitre ouvert ni sur un classement publié : une
-          correction de calendrier ne doit pas pouvoir réécrire un résultat.
+          <strong>Sans effet immédiat sur ce que voient les joueurs.</strong>{' '}
+          L’ancrage sert à déduire les numéros à venir ; il ne touche ni au
+          chapitre déjà ouvert ni à un classement publié — une correction de
+          calendrier ne doit pas pouvoir réécrire un résultat. Pour changer le
+          numéro affiché maintenant, utilise « Renuméroter » ci-dessus.
         </p>
       </section>
     </div>

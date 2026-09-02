@@ -6,6 +6,7 @@ import { ChapterSimulator } from '@/components/ChapterSimulator';
 import { ChapterNumberControls } from '@/components/ChapterNumberControls';
 import { OpenChapterForm } from '@/components/OpenChapterForm';
 import { isTeamEditable, spoilerState } from '@/domain/chapter/lock';
+import { expectedChapterNumber } from '@/domain/chapter/schedule';
 import { requireAdmin } from '@/lib/auth/guards';
 import { getRepository, PERSISTENCE_MODE } from '@/lib/repository';
 import { chapterAnchorIsStored, getChapterAnchor } from '@/lib/settings/anchor';
@@ -58,6 +59,11 @@ export default async function AdminPage() {
   // `<input type="date">` attend AAAA-MM-JJ, pas un instant ISO complet.
   const anchorDay = anchor.weekOf.toISOString().slice(0, 10);
 
+  // Ce que le calendrier déduit de l'ancrage, maintenant. Comparé au
+  // chapitre ouvert, c'est ce qui explique qu'un ancrage posé ne change rien
+  // pour les joueurs tant qu'on n'a pas renuméroté.
+  const calendarNumber = expectedChapterNumber(new Date(), anchor);
+
   // Aucun chapitre ouvert : on propose d'en ouvrir un — et on garde l'accès
   // à la correction du dernier chapitre publié, qui n'est plus « courant »
   // mais reste corrigeable (§79).
@@ -102,6 +108,7 @@ export default async function AdminPage() {
           <div className="mt-4">
             <ChapterNumberControls
               openChapterNumber={null}
+              calendarNumber={calendarNumber}
               anchor={{ chapterNumber: anchor.chapterNumber, weekOf: anchorDay }}
               anchorIsStored={anchorIsStored}
             />
@@ -210,6 +217,7 @@ export default async function AdminPage() {
         <div className="mt-4">
           <ChapterNumberControls
             openChapterNumber={chapter.chapterNumber}
+            calendarNumber={calendarNumber}
             anchor={{ chapterNumber: anchor.chapterNumber, weekOf: anchorDay }}
             anchorIsStored={anchorIsStored}
           />

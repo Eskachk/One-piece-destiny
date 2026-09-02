@@ -2533,27 +2533,85 @@ body {
    d'horizon vient mourir juste où le blanc commence. Le décor se lit, le texte
    aussi. */
 
-/* Sol de chaque île : ce qui prolonge le décor sous la ligne d'horizon et
-   jusqu'au bas de la page. Sans lui, le fond s'arrêtait au bas de la
-   silhouette et le reste de la page était vide. */
-[data-island='dressrosa'] .isl-layer {
-  background: linear-gradient(180deg, transparent 30%, rgba(212, 138, 86, 0.5) 62%, rgba(184, 96, 70, 0.55) 100%);
+/* ---------------------------------------------------------------------------
+   Le sol de chaque île.
+
+   La silhouette occupe le tiers supérieur. En dessous, un simple dégradé ne
+   « descendait » pas : il délavait. Le bas de l'écran restait un aplat, et le
+   fond paraissait s'arrêter au milieu de la page.
+
+   Ce qui manquait, c'est de la **matière** — des rangs de fleurs, des pavés,
+   des bulles, des rizières. Tout est en dégradés répétés : aucun téléchargement,
+   aucun octet ajouté au balisage, et le motif suit la hauteur de l'écran quelle
+   qu'elle soit.
+
+   `background-attachment` n'entre pas en jeu : la couche est déjà dans un
+   arrière-plan `fixed`, donc elle couvre l'écran à tout moment du défilement.
+   --------------------------------------------------------------------------- */
+
+.isl-layer::after {
+  content: '';
+  position: absolute;
+  /* Part sous la ligne d'horizon et va jusqu'en bas. */
+  inset: 34% 0 0 0;
+  pointer-events: none;
 }
 
-[data-island='fishman'] .isl-layer {
-  background: linear-gradient(180deg, transparent 26%, rgba(46, 138, 150, 0.5) 60%, rgba(20, 92, 110, 0.6) 100%);
+/* Dressrosa : champ de fleurs en rangs, sur terre cuite. */
+[data-island='dressrosa'] .isl-layer::after {
+  background:
+    radial-gradient(circle at 20% 40%, rgba(212, 96, 122, 0.55) 3px, transparent 4px),
+    radial-gradient(circle at 70% 70%, rgba(245, 200, 74, 0.5) 2.5px, transparent 3.5px),
+    linear-gradient(180deg, rgba(214, 142, 88, 0.45), rgba(176, 92, 62, 0.65));
+  background-size: 54px 46px, 38px 34px, 100% 100%;
 }
 
-[data-island='wano'] .isl-layer {
-  background: linear-gradient(180deg, transparent 30%, rgba(198, 140, 122, 0.42) 64%, rgba(150, 96, 88, 0.5) 100%);
+/* Île des hommes-poissons : profondeur, et des bulles qui montent. */
+[data-island='fishman'] .isl-layer::after {
+  background:
+    radial-gradient(circle at 30% 80%, rgba(255, 255, 255, 0.4) 3px, transparent 4px),
+    radial-gradient(circle at 75% 30%, rgba(255, 255, 255, 0.28) 5px, transparent 6px),
+    linear-gradient(180deg, rgba(46, 138, 150, 0.5), rgba(12, 72, 92, 0.72));
+  background-size: 88px 120px, 140px 180px, 100% 100%;
 }
 
-[data-island='logue'] .isl-layer {
-  background: linear-gradient(180deg, transparent 30%, rgba(112, 126, 148, 0.5) 62%, rgba(74, 86, 106, 0.58) 100%);
+/* Wano : rizières en terrasses, et des pétales portés par le vent. */
+[data-island='wano'] .isl-layer::after {
+  background:
+    radial-gradient(ellipse 4px 2.5px at 25% 30%, rgba(255, 255, 255, 0.6) 60%, transparent 61%),
+    repeating-linear-gradient(
+      178deg,
+      rgba(120, 148, 104, 0.3) 0 14px,
+      rgba(150, 172, 128, 0.22) 14px 30px
+    ),
+    linear-gradient(180deg, rgba(198, 150, 132, 0.4), rgba(126, 92, 84, 0.6));
+  background-size: 96px 110px, 100% 100%, 100% 100%;
 }
 
-[data-island='sabaody'] .isl-layer {
-  background: linear-gradient(180deg, transparent 26%, rgba(96, 132, 66, 0.48) 60%, rgba(60, 92, 40, 0.58) 100%);
+/* Logue Town : pavés mouillés de la place. */
+[data-island='logue'] .isl-layer::after {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.09) 0 26px,
+      transparent 26px 28px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(40, 52, 70, 0.16) 0 16px,
+      transparent 16px 18px
+    ),
+    linear-gradient(180deg, rgba(108, 122, 146, 0.5), rgba(58, 70, 92, 0.7));
+  background-size: 100% 100%, 100% 100%, 100% 100%;
+}
+
+/* Sabaody : sol de bosquet, et les bulles de résine qui s'en échappent. */
+[data-island='sabaody'] .isl-layer::after {
+  background:
+    radial-gradient(circle at 40% 60%, rgba(255, 255, 255, 0.32) 7px, transparent 8px),
+    radial-gradient(circle at 80% 25%, rgba(226, 210, 255, 0.3) 4px, transparent 5px),
+    linear-gradient(180deg, rgba(96, 140, 66, 0.5), rgba(44, 76, 32, 0.7));
+  background-size: 150px 170px, 90px 110px, 100% 100%;
 }
 
 /* La silhouette se pose **à la ligne d'horizon**, vers le tiers supérieur :
@@ -2561,7 +2619,7 @@ body {
    le ciel ait de la place au-dessus d'elle. */
 .isl {
   position: absolute;
-  inset: 4vh 0 auto 0;
+  inset: 6vh 0 auto 0;
   width: 100%;
   /* Le décor occupe le bas du cadre : c'est là qu'est l'horizon, et c'est la
      zone que le contenu recouvre le moins. Sur une page qui défile, le voile
