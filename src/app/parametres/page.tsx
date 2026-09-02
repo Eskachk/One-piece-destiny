@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
+import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
 import { NotificationPreferences } from '@/components/NotificationPreferences';
 import { SettingsPanel } from '@/components/SettingsPanel';
@@ -46,7 +47,7 @@ export default async function SettingsPage() {
     MESSAGES[display.locale][key] ?? MESSAGES.fr[key];
 
   return (
-    <HarborScene variant="page" island="drum">
+    <HarborScene variant="page" island={islandOf('/parametres')}>
       <p className="hb-eyebrow">Grand Line Weekly</p>
       <h1 className="hb-title mt-1">{t('settings.title')}</h1>
       <p className="hb-muted mt-3 text-sm">{t('settings.subtitle')}</p>

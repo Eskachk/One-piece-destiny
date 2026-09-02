@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { HarborScene } from '@/components/HarborScene';
+import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
 import { collectionSummary } from '@/domain/collection/sets';
 import { CHARACTERS } from '@/data/characters';
@@ -138,7 +139,7 @@ export default async function ProfilePage() {
   );
 
   return (
-    <HarborScene variant="page" island="sabaody">
+    <HarborScene variant="page" island={islandOf('/profil')}>
       <p className="hb-eyebrow">
         Journal de bord
       </p>

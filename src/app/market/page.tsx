@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
+import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
 import Link from 'next/link';
 import { MarketBoard } from '@/components/MarketBoard';
@@ -36,7 +37,7 @@ export default async function MarketPage() {
 
   if (!market.isMarketAvailable()) {
     return (
-      <HarborScene variant="page" island="wano">
+      <HarborScene variant="page" island={islandOf('/market')}>
         <h1 className="hb-title">
           Marché de la Grand Line
         </h1>
@@ -109,7 +110,7 @@ export default async function MarketPage() {
     }));
 
   return (
-    <HarborScene variant="page" island="wano">
+    <HarborScene variant="page" island={islandOf('/market')}>
       <div className="flex items-baseline justify-between">
         <p className="hb-eyebrow">
           🏴 Grand Line

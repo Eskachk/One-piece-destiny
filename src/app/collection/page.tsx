@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
+import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
 import { ChestPanel } from '@/components/ChestPanel';
 import { chestOdds } from '@/domain/collection/odds';
@@ -65,7 +66,7 @@ export default async function CollectionPage() {
     .slice(0, MOST_WANTED_SHOWN);
 
   return (
-    <HarborScene variant="page" island="fishman">
+    <HarborScene variant="page" island={islandOf('/collection')}>
       <p className="hb-eyebrow">
         Grand Line Weekly
       </p>

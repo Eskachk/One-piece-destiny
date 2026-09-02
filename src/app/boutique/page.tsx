@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
+import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
 import { ShopPanel } from '@/components/ShopPanel';
 import { CATALOG } from '@/domain/payments/catalog';
@@ -65,7 +66,7 @@ export default async function ShopPage() {
   });
 
   return (
-    <HarborScene variant="page" island="logue">
+    <HarborScene variant="page" island={islandOf('/boutique')}>
       <p className="hb-eyebrow">Grand Line Weekly</p>
       <h1 className="hb-title mt-1">Boutique</h1>
 

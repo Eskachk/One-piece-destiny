@@ -3,6 +3,7 @@ import { logoutAction } from '@/app/actions/auth';
 import { Countdown } from '@/components/Countdown';
 import { CrewSelector } from '@/components/CrewSelector';
 import { HarborScene } from '@/components/HarborScene';
+import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
 import { Tutorial } from '@/components/Tutorial';
 import { CHARACTER_INDEX } from '@/data/characters';
@@ -71,7 +72,7 @@ export default async function HomePage() {
   // ne dépendent pas d'un chapitre en cours.
   if (!chapter) {
     return (
-      <HarborScene variant="page" island="alabasta">
+      <HarborScene variant="page" island={islandOf('/')}>
         <Hud />
         <h1 className="hb-title mt-5">Prochain chapitre à venir</h1>
         <p className="hb-card mt-4 text-sm">
@@ -106,7 +107,7 @@ export default async function HomePage() {
     .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 
   return (
-    <HarborScene variant="page" island="alabasta">
+    <HarborScene variant="page" island={islandOf('/')}>
       <Hud />
 
       <section className="mt-5">
