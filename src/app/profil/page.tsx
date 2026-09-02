@@ -138,7 +138,7 @@ export default async function ProfilePage() {
   );
 
   return (
-    <HarborScene variant="page">
+    <HarborScene variant="page" island="sabaody">
       <p className="hb-eyebrow">
         Journal de bord
       </p>

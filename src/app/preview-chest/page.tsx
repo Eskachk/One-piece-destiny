@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { ChestOpening } from '@/components/chest3d/ChestOpening';
 import { RarityCard } from '@/components/RarityCard';
+import { IslandDecor } from '@/components/islands/IslandDecor';
+import { ISLANDS, type IslandId } from '@/domain/islands';
 import type { RevealedCard } from '@/app/actions/collection';
 
 export const dynamic = 'force-dynamic';
@@ -49,6 +51,41 @@ export default function PreviewChestPage() {
             />
           </li>
         ))}
+      </ul>
+      {/*
+        Les cinq décors d'île côte à côte.
+
+        Chacun ne s'affiche autrement que sur sa propre page, dont quatre sur
+        cinq exigent une session : les comparer demandait de se connecter et de
+        naviguer. Ici on voit d'un coup si une silhouette est reconnaissable —
+        c'est la seule question qui compte pour un décor.
+      */}
+      <h2 className="mt-10 font-display text-2xl text-parchment">
+        Aperçu des îles
+      </h2>
+      <ul className="mt-4 space-y-4">
+        {(['dressrosa', 'fishman', 'wano', 'logue', 'sabaody'] as IslandId[]).map(
+          (id) => (
+            <li key={id}>
+              <div
+                data-island={id}
+                className="overflow-hidden rounded-xl border border-turquoise/25"
+              >
+                <div className="isl-band" style={{ marginBottom: 0 }}>
+                  <IslandDecor island={id} />
+                  <span className="isl-band__name" style={{ bottom: '0.6rem' }}>
+                    {ISLANDS[id].name}
+                  </span>
+                </div>
+              </div>
+              <ul className="mt-1 px-1 text-[11px] text-parchment/55">
+                {ISLANDS[id].elements.map((element) => (
+                  <li key={element}>· {element}</li>
+                ))}
+              </ul>
+            </li>
+          ),
+        )}
       </ul>
     </main>
   );

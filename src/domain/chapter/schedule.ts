@@ -28,12 +28,35 @@
  * L'administrateur garde la main : il peut corriger le numéro proposé.
  */
 
-/** Ancrage. Chapitre connu, et la semaine où il a été jugé. */
-export const ANCHOR = {
-  chapterNumber: 1182,
+export interface ChapterAnchor {
+  chapterNumber: number;
   /** Dimanche de verrouillage de ce chapitre, en UTC. */
+  weekOf: Date;
+}
+
+/**
+ * Ancrage de **repli**, figé dans le code.
+ *
+ * Il ne sert que si la base ne porte aucun ancrage : première installation,
+ * base non configurée, ou table de réglages vide. Dès qu'un administrateur en
+ * pose un depuis le Poste de commandement, c'est celui-là qui décide.
+ *
+ * Cette distinction n'est pas cosmétique. Avec l'ancrage dans le code, une
+ * correction de calendrier — pause non annoncée, renumérotation, ancrage saisi
+ * de travers — exigeait une modification du source et un redéploiement, un
+ * dimanche soir, pendant que les joueurs attendent. Et la source externe ne
+ * rattrape rien : api-onepiece.com est figée au chapitre 1085.
+ */
+export const FALLBACK_ANCHOR: ChapterAnchor = {
+  chapterNumber: 1182,
   weekOf: new Date('2026-08-30T21:59:59.000Z'),
-} as const;
+};
+
+/**
+ * Conservé pour les tests et la compatibilité des appels existants.
+ * Préférer `FALLBACK_ANCHOR`, dont le nom dit ce que c'est.
+ */
+export const ANCHOR = FALLBACK_ANCHOR;
 
 /**
  * Pauses annoncées, en dates de verrouillage sautées.
@@ -71,17 +94,20 @@ function breaksBetween(from: Date, to: Date): number {
  * Renvoie le chapitre dont les prédictions sont **ouvertes** : celui qui sera
  * jugé au prochain verrouillage.
  */
-export function expectedChapterNumber(now: Date): number {
-  const elapsed = now.getTime() - ANCHOR.weekOf.getTime();
+export function expectedChapterNumber(
+  now: Date,
+  anchor: ChapterAnchor = FALLBACK_ANCHOR,
+): number {
+  const elapsed = now.getTime() - anchor.weekOf.getTime();
 
   // Avant l'ancrage, on ne remonte pas le temps : le calendrier sert à ouvrir
   // les chapitres à venir, pas à réécrire le passé.
-  if (elapsed <= 0) return ANCHOR.chapterNumber;
+  if (elapsed <= 0) return anchor.chapterNumber;
 
   const weeks = Math.ceil(elapsed / WEEK_MS);
-  const skipped = breaksBetween(ANCHOR.weekOf, now);
+  const skipped = breaksBetween(anchor.weekOf, now);
 
-  return ANCHOR.chapterNumber + weeks - skipped;
+  return anchor.chapterNumber + weeks - skipped;
 }
 
 export type ScheduleConfidence =
@@ -130,8 +156,9 @@ export function proposeChapter(
   now: Date,
   latestKnown: number | null,
   title: string | null = null,
+  anchor: ChapterAnchor = FALLBACK_ANCHOR,
 ): ScheduleProposal {
-  const chapterNumber = expectedChapterNumber(now);
+  const chapterNumber = expectedChapterNumber(now, anchor);
 
   if (latestKnown === null) {
     return {

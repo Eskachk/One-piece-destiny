@@ -12,6 +12,8 @@
  * ensuite dans la Grand Line. Le contraste raconte le passage.
  */
 
+import { ISLANDS, type IslandId } from '@/domain/islands';
+import { IslandDecor } from './islands/IslandDecor';
 import { EternalPose } from './EternalPose';
 import { StrawHat } from './StrawHat';
 
@@ -117,8 +119,18 @@ function ShipWheel({ className }: { className?: string }) {
 export function HarborScene({
   children,
   variant = 'hero',
+  island = 'harbor',
 }: {
   children: React.ReactNode;
+  /**
+   * Île dont le décor est rendu.
+   *
+   * Passée **explicitement** par chaque page plutôt que déduite du chemin :
+   * ce composant est rendu côté serveur, où il n'y a pas de `pathname`, et
+   * seul le décor demandé doit être fabriqué. Les rendre tous puis en masquer
+   * cinq en CSS, c'est le défaut que le tir de charge a trouvé sur le pont.
+   */
+  island?: IslandId;
   /**
    * `hero` — scène complète, pour l'entrée dans le produit.
    * `page` — même monde, mais rayons atténués, mer plus basse et pont plus
@@ -220,7 +232,33 @@ export function HarborScene({
             {children}
           </header>
         ) : (
-          <div className="harbor__header">{children}</div>
+          /* Une seule colonne, et c'est nécessaire : `harbor__content` est un
+             conteneur flex. Sans cette enveloppe, le bandeau d'île et le
+             contenu deviennent deux colonnes côte à côte — la page se retrouve
+             coupée en deux dans le sens de la largeur. Constaté à l'écran. */
+          <div className="harbor__column">
+            {/*
+              Bandeau d'île, **au-dessus** du contenu et non derrière lui.
+
+              Première version : le décor était dans l'arrière-plan fixe, comme
+              le ciel. Vérifié à l'écran, il n'en restait rien — le voile opaque
+              du contenu occupe la quasi-totalité d'un écran de téléphone, et
+              une silhouette qu'on ne distingue pas ne dit pas où l'on est.
+
+              En bandeau, il est entièrement visible, il ne passe jamais sous du
+              texte, et il donne à chaque page une accroche qu'on reconnaît
+              avant d'avoir lu le titre. Le nom de l'arc est écrit dessus :
+              c'est ce qui transforme une silhouette en repère.
+            */}
+            {island !== 'harbor' && island !== 'hq' && (
+              <div className="isl-band">
+                <IslandDecor island={island} />
+                <span className="isl-band__name">{ISLANDS[island].name}</span>
+              </div>
+            )}
+
+            <div className="harbor__header">{children}</div>
+          </div>
         )}
       </main>
     </div>

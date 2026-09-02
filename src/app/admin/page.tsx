@@ -3,10 +3,12 @@ import Link from 'next/link';
 import { AppearanceImportForm } from '@/components/AppearanceImportForm';
 import { ChapterCorrection } from '@/components/ChapterCorrection';
 import { ChapterSimulator } from '@/components/ChapterSimulator';
+import { ChapterNumberControls } from '@/components/ChapterNumberControls';
 import { OpenChapterForm } from '@/components/OpenChapterForm';
 import { isTeamEditable, spoilerState } from '@/domain/chapter/lock';
 import { requireAdmin } from '@/lib/auth/guards';
 import { getRepository, PERSISTENCE_MODE } from '@/lib/repository';
+import { chapterAnchorIsStored, getChapterAnchor } from '@/lib/settings/anchor';
 import { Nav } from '@/components/Nav';
 
 export const dynamic = 'force-dynamic';
@@ -43,7 +45,18 @@ export default async function AdminPage() {
   const session = await requireAdmin();
 
   const repository = getRepository();
-  const chapter = await repository.getCurrentChapter();
+
+  // L'ancrage part avec le chapitre : les deux branches de cette page
+  // l'affichent, et les enchaîner ajouterait un aller-retour à un écran déjà
+  // bavard.
+  const [chapter, anchor, anchorIsStored] = await Promise.all([
+    repository.getCurrentChapter(),
+    getChapterAnchor(),
+    chapterAnchorIsStored(),
+  ]);
+
+  // `<input type="date">` attend AAAA-MM-JJ, pas un instant ISO complet.
+  const anchorDay = anchor.weekOf.toISOString().slice(0, 10);
 
   // Aucun chapitre ouvert : on propose d'en ouvrir un — et on garde l'accès
   // à la correction du dernier chapitre publié, qui n'est plus « courant »
@@ -79,6 +92,19 @@ export default async function AdminPage() {
           </h2>
           <div className="mt-4">
             <OpenChapterForm proposed={proposed} />
+          </div>
+        </section>
+
+        <section className="mt-6 max-w-md rounded-xl border border-turquoise/20 bg-navy/40 p-5">
+          <h2 className="text-xs uppercase tracking-widest text-parchment/60">
+            Numéro de chapitre
+          </h2>
+          <div className="mt-4">
+            <ChapterNumberControls
+              openChapterNumber={null}
+              anchor={{ chapterNumber: anchor.chapterNumber, weekOf: anchorDay }}
+              anchorIsStored={anchorIsStored}
+            />
           </div>
         </section>
 
@@ -168,6 +194,26 @@ export default async function AdminPage() {
             </dd>
           </div>
         </dl>
+      </section>
+
+      {/*
+        Maîtrise du numéro de chapitre.
+
+        Placée juste après l'état du chapitre courant : c'est en le lisant qu'on
+        s'aperçoit qu'il est faux, et c'est à ce moment-là qu'on veut le
+        corriger. L'enterrer en bas de page reviendrait à demander de chercher.
+      */}
+      <section className="mt-6 rounded-xl border border-turquoise/20 bg-navy/40 p-5">
+        <h2 className="text-xs uppercase tracking-widest text-parchment/60">
+          Numéro de chapitre
+        </h2>
+        <div className="mt-4">
+          <ChapterNumberControls
+            openChapterNumber={chapter.chapterNumber}
+            anchor={{ chapterNumber: anchor.chapterNumber, weekOf: anchorDay }}
+            anchorIsStored={anchorIsStored}
+          />
+        </div>
       </section>
 
       {/* Health Dashboard (cahier §82) */}

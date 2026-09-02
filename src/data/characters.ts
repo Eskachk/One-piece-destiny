@@ -855,7 +855,7 @@ const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: [],
+    abilities: ['Pirate'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -864,7 +864,7 @@ const ALL_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: [],
     relations: [],
-    abilities: [],
+    abilities: ['Pirate', 'Capitaine'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -2691,7 +2691,7 @@ const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: [],
+    abilities: ['Pirate'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4572,7 +4572,7 @@ const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: [],
+    abilities: ['Résident'],
     presenceExpectation: 'LOW',
   },
   {
@@ -6831,7 +6831,7 @@ const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: [],
+    abilities: ['Pays des Wa'],
     presenceExpectation: 'LOW',
   },
   {

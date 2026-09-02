@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { proposeChapter, type ScheduleProposal } from '@/domain/chapter/schedule';
+import { getChapterAnchor } from '@/lib/settings/anchor';
 
 /**
  * Source externe du numéro de chapitre (cahier §4).
@@ -78,10 +79,24 @@ export async function latestKnownChapter(): Promise<{
   }
 }
 
-/** Proposition complète : calendrier confronté à la source. */
+/**
+ * Proposition complète : calendrier confronté à la source.
+ *
+ * L'ancrage vient de la base (migration 0026) et non plus d'une constante du
+ * code : c'est ce qui permet de corriger le calendrier depuis le Poste de
+ * commandement, sans redéployer.
+ *
+ * Les deux lectures partent ensemble. La source externe a huit secondes de
+ * délai ; les enchaîner ferait attendre l'ancrage — qui est en cache — derrière
+ * un appel réseau qui peut ne jamais répondre.
+ */
 export async function proposeNextChapter(
   now: Date = new Date(),
 ): Promise<ScheduleProposal> {
-  const known = await latestKnownChapter();
-  return proposeChapter(now, known?.number ?? null, known?.title ?? null);
+  const [known, anchor] = await Promise.all([
+    latestKnownChapter(),
+    getChapterAnchor(),
+  ]);
+
+  return proposeChapter(now, known?.number ?? null, known?.title ?? null, anchor);
 }

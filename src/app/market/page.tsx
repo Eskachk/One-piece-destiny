@@ -36,7 +36,7 @@ export default async function MarketPage() {
 
   if (!market.isMarketAvailable()) {
     return (
-      <HarborScene variant="page">
+      <HarborScene variant="page" island="wano">
         <h1 className="hb-title">
           Marché de la Grand Line
         </h1>
@@ -109,7 +109,7 @@ export default async function MarketPage() {
     }));
 
   return (
-    <HarborScene variant="page">
+    <HarborScene variant="page" island="wano">
       <div className="flex items-baseline justify-between">
         <p className="hb-eyebrow">
           🏴 Grand Line

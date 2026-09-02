@@ -13,7 +13,12 @@
     "Les valeurs alimentent les symboles de carte (domain/collection/",
     "attributes.ts) et n'entrent JAMAIS dans le score (§25).",
     "",
-    "Appliquer : node scripts/enrich-abilities.mjs"
+    "Appliquer : node scripts/enrich-abilities.mjs",
+    "",
+    "Les clés « pirate », « captain », « resident » et « wano » servent aux",
+    "entrées dont la source ne dit RIEN — ni poste, ni équipage, ni fruit.",
+    "Elles n'ajoutent que ce qui est certain, jamais une supposition : un",
+    "attribut inventé serait pire qu'une carte muette."
   ],
   "conqueror": [
     "luffy",
@@ -254,5 +259,19 @@
     "john-giant",
     "sentomaru",
     "brandnew"
+  ],
+  "pirate": [
+    "das-bones",
+    "sarquiss",
+    "edward-weeble"
+  ],
+  "captain": [
+    "edward-weeble"
+  ],
+  "resident": [
+    "portgas-d-rouge"
+  ],
+  "wano": [
+    "bokuden"
   ]
 }

@@ -41,6 +41,10 @@ const LABELS = {
   royal: 'Royauté',
   revolutionary: 'Révolutionnaire',
   marine: 'Marine',
+  pirate: 'Pirate',
+  captain: 'Capitaine',
+  resident: 'Résident',
+  wano: 'Pays des Wa',
 };
 
 function main() {
@@ -71,7 +75,24 @@ function main() {
     console.warn(`⚠ clés sans libellé : ${unknownKeys.join(', ')}`);
   }
 
-  const source = readFileSync(TARGET, 'utf8');
+  const brut = readFileSync(TARGET, 'utf8');
+
+  /*
+   * Fins de ligne normalisées avant tout découpage.
+   *
+   * Le référentiel est en CRLF dès que Git le récupère sur Windows, et les
+   * motifs ci-dessous cherchent `\\n  {`. Ils ne trouvaient alors **aucun**
+   * personnage : le script annonçait « 0 enrichi » et listait les 149
+   * identifiants de la table comme inconnus du référentiel. Sans erreur et
+   * sans échec — il ne faisait simplement rien.
+   *
+   * On travaille en LF et on restitue la fin de ligne d'origine à
+   * l'écriture, pour ne pas transformer tout le fichier en une seule ligne
+   * de diff.
+   */
+  const crlf = brut.includes('\r\n');
+  const source = crlf ? brut.replace(/\r\n/g, '\n') : brut;
+
   const blocks = source.split(/(?=\n  \{\n    id: ')/);
 
   const seen = new Set();
@@ -115,7 +136,10 @@ function main() {
     );
   }
 
-  if (!dry) writeFileSync(TARGET, rewritten.join(''));
+  if (!dry) {
+    const sortie = rewritten.join('');
+    writeFileSync(TARGET, crlf ? sortie.replace(/\n/g, '\r\n') : sortie);
+  }
 
   console.log(
     `${seen.size} personnages · ${touched} enrichis · ${added} capacités ajoutées${dry ? ' (simulation)' : ''}`,

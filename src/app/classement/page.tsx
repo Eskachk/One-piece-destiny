@@ -61,7 +61,7 @@ export default async function LeaderboardPage() {
 
   if (!chapter) {
     return (
-      <HarborScene variant="page">
+      <HarborScene variant="page" island="dressrosa">
         <h1 className="hb-title">
           Classement hebdomadaire
         </h1>
@@ -77,7 +77,7 @@ export default async function LeaderboardPage() {
   // Anti-spoiler : avant publication, la page existe mais ne révèle rien.
   if (spoilerState(chapter) === 'SPOILER_LOCK') {
     return (
-      <HarborScene variant="page">
+      <HarborScene variant="page" island="dressrosa">
         <h1 className="hb-title">
           Classement hebdomadaire
         </h1>
@@ -110,7 +110,7 @@ export default async function LeaderboardPage() {
     myIndex >= 0 ? percentileFromRank(myIndex + 1, leaderboard.length) : null;
 
   return (
-    <HarborScene variant="page">
+    <HarborScene variant="page" island="dressrosa">
       <p className="hb-eyebrow">
         Chapitre {chapter.chapterNumber}
       </p>

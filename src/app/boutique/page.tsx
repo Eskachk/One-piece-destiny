@@ -65,7 +65,7 @@ export default async function ShopPage() {
   });
 
   return (
-    <HarborScene variant="page">
+    <HarborScene variant="page" island="logue">
       <p className="hb-eyebrow">Grand Line Weekly</p>
       <h1 className="hb-title mt-1">Boutique</h1>
 

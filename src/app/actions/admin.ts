@@ -27,11 +27,13 @@ import * as social from '@/lib/social/repository';
 import { dispatch } from '@/lib/notifications/dispatch';
 import { resultsReadyEmail, rewardReadyEmail } from '@/lib/email/templates';
 import { getRepository } from '@/lib/repository';
+import { setChapterAnchor } from '@/lib/settings/anchor';
 import { requireAdmin } from '@/lib/auth/guards';
 import { requiresReauthentication } from '@/lib/auth/session-store';
 import { assertSameOrigin } from '@/lib/auth/request-guard';
 import { audit } from '@/lib/audit';
 import { chapterTag, CURRENT_CHAPTER_TAG } from '@/lib/cache';
+import { db } from '@/lib/supabase-admin';
 
 /**
  * Pipeline hebdomadaire côté administration (cahier §5.2).
@@ -89,6 +91,127 @@ export async function validateAppearances(
   return {
     ok: true,
     message: `${appearances.length} personnage(s) enregistré(s).`,
+  };
+}
+
+/**
+ * Ancrage du calendrier de parution (cahier §4).
+ *
+ * « Le chapitre N a été jugé le dimanche D. » Tout le numéro de la semaine en
+ * découle. Il vivait dans une constante du code : le corriger demandait un
+ * redéploiement, un dimanche soir, pendant que les joueurs attendent — et la
+ * source externe ne rattrape rien, elle est figée au chapitre 1085.
+ *
+ * Poser un ancrage **ne change aucun chapitre déjà ouvert ni aucun résultat
+ * publié** : il ne sert qu'à proposer le numéro du prochain. C'est délibéré —
+ * une correction de calendrier ne doit pas pouvoir réécrire un classement.
+ */
+export async function setChapterAnchorAction(
+  chapterNumber: unknown,
+  weekOfIso: unknown,
+): Promise<AdminActionResult> {
+  await assertSameOrigin();
+  const session = await requireAdmin();
+
+  const numero = z.number().int().min(1).max(9999).safeParse(chapterNumber);
+  if (!numero.success) return { ok: false, error: 'Numéro de chapitre invalide.' };
+
+  const jour = z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Date attendue au format AAAA-MM-JJ')
+    .safeParse(weekOfIso);
+  if (!jour.success) return { ok: false, error: 'Date invalide (AAAA-MM-JJ).' };
+
+  // L'instant de verrouillage est celui du produit : dimanche 23:59:59 en
+  // heure de Paris, soit 21:59:59 UTC en été. On ne demande pas l'heure à
+  // l'administrateur — elle est la même chaque semaine, et la lui faire saisir
+  // n'ouvrirait qu'une occasion de se tromper.
+  const weekOf = new Date(`${jour.data}T21:59:59.000Z`);
+  if (Number.isNaN(weekOf.getTime())) {
+    return { ok: false, error: 'Date invalide.' };
+  }
+
+  if (weekOf.getUTCDay() !== 0) {
+    return {
+      ok: false,
+      error: 'L’ancrage doit tomber un dimanche : c’est le jour de verrouillage.',
+    };
+  }
+
+  await setChapterAnchor(
+    { chapterNumber: numero.data, weekOf },
+    session.playerId,
+  );
+
+  await audit({
+    playerId: session.playerId,
+    action: 'admin.chapter_anchor',
+    status: 'SUCCESS',
+    metadata: { chapterNumber: numero.data, weekOf: weekOf.toISOString() },
+  });
+
+  revalidatePath('/admin');
+  return {
+    ok: true,
+    message: `Ancrage posé : chapitre ${numero.data} au ${jour.data}.`,
+  };
+}
+
+/**
+ * Renumérote le chapitre **ouvert**.
+ *
+ * L'ouverture laissait déjà saisir le numéro, mais une fois le chapitre ouvert
+ * il n'y avait plus de recours : une erreur de saisie exigeait de supprimer la
+ * ligne en base à la main. Or c'est justement le moment où l'on s'aperçoit de
+ * l'erreur — quand les joueurs la signalent.
+ *
+ * **Refusé après publication.** Renuméroter un chapitre déjà jugé changerait
+ * l'identité d'un classement figé (§75, §78). La correction d'un chapitre
+ * publié passe par `correctChapter`, qui recalcule et prévient les joueurs.
+ */
+export async function renumberOpenChapter(
+  chapterNumber: unknown,
+): Promise<AdminActionResult> {
+  await assertSameOrigin();
+  const session = await requireAdmin();
+
+  const parsed = z.number().int().min(1).max(9999).safeParse(chapterNumber);
+  if (!parsed.success) return { ok: false, error: 'Numéro de chapitre invalide.' };
+
+  const chapter = await getRepository().getCurrentChapter();
+  if (!chapter) return { ok: false, error: 'Aucun chapitre ouvert.' };
+
+  if (chapter.chapterNumber === parsed.data) {
+    return { ok: true, message: 'C’est déjà ce numéro.' };
+  }
+
+  const { error } = await db()
+    .from('chapter_events')
+    .update({ chapter_number: parsed.data })
+    .eq('id', chapter.id)
+    .neq('status', 'RESULTS_PUBLISHED');
+
+  if (error) {
+    // `chapter_number` est UNIQUE (§4.3).
+    if (error.code === '23505') {
+      return { ok: false, error: `Le chapitre ${parsed.data} existe déjà.` };
+    }
+    return { ok: false, error: 'Renumérotation impossible.' };
+  }
+
+  await audit({
+    playerId: session.playerId,
+    action: 'admin.chapter_renumber',
+    status: 'SUCCESS',
+    metadata: { from: chapter.chapterNumber, to: parsed.data },
+  });
+
+  revalidateTag(CURRENT_CHAPTER_TAG);
+  revalidatePath('/');
+  revalidatePath('/admin');
+  return {
+    ok: true,
+    message: `Chapitre ${chapter.chapterNumber} renuméroté en ${parsed.data}.`,
   };
 }
 

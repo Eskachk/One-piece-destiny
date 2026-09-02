@@ -65,7 +65,7 @@ export default async function CollectionPage() {
     .slice(0, MOST_WANTED_SHOWN);
 
   return (
-    <HarborScene variant="page">
+    <HarborScene variant="page" island="fishman">
       <p className="hb-eyebrow">
         Grand Line Weekly
       </p>

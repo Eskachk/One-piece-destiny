@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { islandOf } from '@/domain/islands';
 
 /**
  * Enveloppe de toutes les pages : île courante et fondu de transition.
@@ -36,23 +37,6 @@ import { usePathname } from 'next/navigation';
  * L'animation est déclarée en CSS et neutralisée par
  * `prefers-reduced-motion` (§60).
  */
-
-/** Île associée à chaque section. L'ordre compte : le plus spécifique d'abord. */
-const ISLANDS: readonly (readonly [string, string])[] = [
-  ['/classement', 'dressrosa'],
-  ['/collection', 'fishman'],
-  ['/market', 'wano'],
-  ['/boutique', 'logue'],
-  ['/profil', 'sabaody'],
-  ['/admin', 'hq'],
-];
-
-export function islandOf(pathname: string): string {
-  for (const [prefix, island] of ISLANDS) {
-    if (pathname.startsWith(prefix)) return island;
-  }
-  return 'harbor';
-}
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
