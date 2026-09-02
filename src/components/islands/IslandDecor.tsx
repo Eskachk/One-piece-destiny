@@ -67,7 +67,7 @@ function Elbaf() {
           bas du cadre, si bien qu'on n'en voit que la voûte. L'arbre passera
           devant et n'en laissera que les deux flancs — c'est voulu : un
           arc-en-ciel entier et net lirait comme un autocollant. */}
-      <g fill="none" strokeWidth="11" opacity=".5">
+      <g className="elbaf-arc" fill="none" strokeWidth="11" opacity=".5">
         {[
           { teinte: '#d95f4a', r: 296 },
           { teinte: '#e79a4a', r: 285 },
@@ -105,6 +105,27 @@ function Elbaf() {
           <rect x={x + w / 2 - 17} y={y + h - 38} width="34" height="38" fill="#2f2013" opacity=".7" />
         </g>
       ))}
+
+      {/* Fumée des foyers. C'est le détail qui dit qu'on **habite** là : une
+          hutte sans fumée est une maquette. Trois bouffées par toit, décalées
+          dans le temps — synchronisées, on lirait un clignotant. */}
+      <g className="elbaf-fumee" fill="#ffffff">
+        {[
+          { x: 130, y: 146 },
+          { x: 767, y: 154 },
+        ].flatMap(({ x, y }) =>
+          [0, 1, 2].map((n) => (
+            <circle
+              key={`${x}-${n}`}
+              className="elbaf-bouffee"
+              cx={x}
+              cy={y - 6}
+              r={5 + n}
+              style={{ animationDelay: `${n * 2.3 + (x > 400 ? 1.1 : 0)}s` }}
+            />
+          )),
+        )}
+      </g>
 
       {/* Piques plantées et boucliers ronds posés au sol. Le détail qui dit
           qu'on est chez des guerriers, sans dessiner un guerrier. */}
@@ -153,14 +174,38 @@ function Elbaf() {
       </g>
 
       {/* Ramure : six masses qui se chevauchent. Une seule ellipse lirait comme
-          un nuage ; c'est le chevauchement qui fait le feuillage. */}
-      <g opacity=".62">
+          un nuage ; c'est le chevauchement qui fait le feuillage.
+
+          Elle se balance (`elbaf-ramure`), très peu — moins d'un degré — mais
+          autour du **pied du tronc**, si bien que le haut parcourt plusieurs
+          pixels quand la base ne bouge pas. C'est ce qu'on voit d'un arbre de
+          cette taille : la cime respire, le tronc non. */}
+      <g className="elbaf-ramure" opacity=".62">
         <ellipse cx="450" cy="66" rx="236" ry="60" fill="#2f6b3c" />
         <ellipse cx="450" cy="46" rx="168" ry="40" fill="#377a44" />
         <ellipse cx="322" cy="92" rx="132" ry="44" fill="#356f3f" />
         <ellipse cx="580" cy="88" rx="144" ry="46" fill="#3b8248" />
         <ellipse cx="392" cy="118" rx="86" ry="30" fill="#2b6237" />
         <ellipse cx="522" cy="120" rx="94" ry="30" fill="#2b6237" />
+      </g>
+
+      {/* Un vol qui traverse. Rien ne dit « vivant » comme quelque chose qui
+          entre par un bord et sort par l'autre : les oiseaux partent hors du
+          cadre et y reviennent, et c'est le SVG qui les rogne aux bords. */}
+      <g className="elbaf-vol" fill="none" stroke="#2f4658" strokeWidth="2.4" strokeLinecap="round">
+        {[
+          { x: 60, y: 42, e: 1 },
+          { x: 96, y: 58, e: 0.8 },
+          { x: 134, y: 36, e: 0.9 },
+          { x: 168, y: 62, e: 0.7 },
+        ].map(({ x, y, e }) => (
+          <path
+            key={x}
+            className="elbaf-oiseau"
+            d={`M${x - 9 * e} ${y} q${9 * e} ${-7 * e} ${9 * e} 0 q0 ${-7 * e} ${9 * e} 0`}
+            style={{ animationDelay: `${(x % 40) * 0.09}s` }}
+          />
+        ))}
       </g>
 
       {/* Sol, en deux plans. */}
