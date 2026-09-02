@@ -121,6 +121,13 @@ function Frange({ traits }: { traits: SpriteTraits }) {
   if (cut === 'spiky') {
     return <path d="M23 15 26 6l3 6 3-8 3 8 3-6 3 9c-4 1.5-14 1.5-18 0Z" fill={hair} />;
   }
+  if (cut === 'pompadour') {
+    // Une masse qui monte et retombe en avant. Des épis en donneraient une
+    // tout autre : la banane est lisse, et c'est sa courbe qui la nomme.
+    return (
+      <path d="M23 15q-1-13 9-13t9 11q-2-6-9-5t-9 7Z" fill={hair} />
+    );
+  }
   if (cut === 'wavy') {
     // Deux creux dans la frange : c'est ce qui distingue l'ondulé du lisse à
     // cette taille.
@@ -222,6 +229,13 @@ function Marque({ traits }: { traits: SpriteTraits }) {
   switch (traits.mark) {
     case 'scar-eye':
       return <path d="M27.6 13.6 27.6 23.4" stroke="#8a3a30" strokeWidth="1" strokeLinecap="round" />;
+    case 'scar-triple':
+      // Trois parallèles, pas une : c'est leur nombre qui fait la signature.
+      return (
+        <g stroke="#8a3a30" strokeWidth="0.9" strokeLinecap="round">
+          <path d="M25.4 13.4 25.4 23.6M27.8 13 27.8 23.2M30.2 13.4 30.2 23.6" />
+        </g>
+      );
     case 'scar-face':
       return <path d="M24 24 41 13" stroke="#8a3a30" strokeWidth="1.1" strokeLinecap="round" />;
     case 'beard':
@@ -528,6 +542,84 @@ function ExtrasTorse({ traits, shoulders }: { traits: SpriteTraits; shoulders: n
         </g>
       )}
 
+      {/* Col haut, **derrière** la nuque : posé avant la tête, il l'encadre au
+          lieu de la recouvrir. */}
+      {a.has('high-collar') && (
+        <path
+          d={`M${g + 1} 31 L${g + 3} 19 L${g + 8} 24 L${d - 8} 24 L${d - 3} 19 L${d - 1} 31 Z`}
+          fill={traits.coat ?? traits.outfit}
+        />
+      )}
+      {/* Épaulières, écharpe et cravate portent une couleur **fixe**, pas
+          celle de la signature.
+
+          `accessory` vaut par défaut la couleur du manteau : ces trois-là
+          disparaissaient donc sur le vêtement qui les porte — épaulières
+          blanches sur le manteau blanc de Sengoku, écharpe rouge sur le gilet
+          rouge de Luffy, cravate noire sur le costume noir de Sanji. Un
+          accessoire qui prend la teinte de son support n'est pas un
+          accessoire.
+
+          Épaulières : deux plaques bombées. Elles élargissent la silhouette
+          bien plus que la carrure ne le fait. */}
+      {a.has('pauldrons') && (
+        <g fill="#8a94a4">
+          <path d={`M${g - 4} 33q1-6 8-5l1 6Z`} />
+          <path d={`M${d + 4} 33q-1-6-8-5l-1 6Z`} />
+        </g>
+      )}
+      {/* Costume rayé : quatre traits verticaux. Plus, et le torse devient un
+          code-barres. */}
+      {a.has('striped-suit') && (
+        <g stroke="#ffffff" strokeWidth="0.8" opacity="0.3">
+          {[-6, -2, 2, 6].map((dx) => (
+            <path key={dx} d={`M${32 + dx} 31v25`} />
+          ))}
+        </g>
+      )}
+      {/* Écharpe en travers, de l'épaule à la hanche : elle coupe le torse en
+          diagonale, ce qu'aucune ceinture ne fait. */}
+      {a.has('sash') && (
+        <path
+          d={`M${g} 31 L${g + 7} 31 L${d} 54 L${d - 7} 54 Z`}
+          fill="#d8b04a"
+          opacity="0.9"
+        />
+      )}
+      {a.has('belt') && (
+        <>
+          <rect x={g - 1} y="50" width={shoulders + 2} height="4" fill="#3a2a1c" />
+          <rect x="30" y="49.4" width="4" height="5.2" rx="0.8" fill="#d8b04a" />
+        </>
+      )}
+      {a.has('necktie') && (
+        <>
+          <path d="M30 29h4l-1 3h-2Z" fill="#a83a3a" />
+          <path d="M31 32h2l1.4 8-2.4 3-2.4-3Z" fill="#a83a3a" />
+        </>
+      )}
+      {/* Cicatrice du torse : une diagonale franche. Elle passe **par-dessus**
+          la peau nue comme par-dessus l'étoffe — c'est une marque, pas un
+          vêtement. */}
+      {a.has('chest-scar') && (
+        <path d={`M${g + 2} 33 L${d - 2} 46`} stroke="#8a3a30" strokeWidth="1.3" strokeLinecap="round" />
+      )}
+      {a.has('x-scar') && (
+        <g stroke="#8a3a30" strokeWidth="1.2" strokeLinecap="round">
+          <path d="M29 34 35 42M35 34 29 42" />
+        </g>
+      )}
+      {/* Gants : des poignets plus sombres. La main n'est pas dessinée, c'est
+          donc le poignet qui doit la dire. */}
+      {a.has('gloves') && (
+        <g fill="#2a2a33">
+          {!a.has('missing-arm') && (
+            <rect x={g - 4.6} y="45" width="5.2" height="6.4" rx="1.6" />
+          )}
+          <rect x={d - 0.6} y="45" width="5.2" height="6.4" rx="1.6" />
+        </g>
+      )}
+
       {/* Nageoires d'avant-bras : la marque de l'homme-poisson. */}
       {a.has('fins') && (
         <g fill={traits.skin} opacity="0.9">
@@ -555,6 +647,14 @@ function ExtrasTete({ traits }: { traits: SpriteTraits }) {
       {a.has('antlers') && (
         <g stroke="#b98a52" strokeWidth="2" fill="none" strokeLinecap="round">
           <path d="M26 8 22 1M24 4.6 19.5 4M38 8 42 1M40 4.6 44.5 4" />
+        </g>
+      )}
+      {/* Tatouage de la moitié gauche du visage. La capuche le recouvrait
+          entièrement : on ne voyait qu'une silhouette noire, et c'est pourtant
+          le trait le plus identifiable du personnage. La capuche a sauté. */}
+      {a.has('face-tattoo') && (
+        <g stroke="#a83a30" strokeWidth="1.2" strokeLinecap="round" fill="none" opacity="0.85">
+          <path d="M25 12q3 4 2 9M28.5 10.5q2 5 1 10M22.8 15.5q2 3 1.6 6" />
         </g>
       )}
       {a.has('long-nose') && (
@@ -817,6 +917,15 @@ function SpriteFigure({ traits, accent }: { traits: SpriteTraits; accent: string
         {/* Jambes */}
         <rect x={32 - torso / 2 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill="#2b2f38" />
         <rect x={32 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill="#2b2f38" />
+
+        {/* Bottes : elles débordent la jambe des deux côtés, sinon on lit une
+            chaussette. */}
+        {traits.extras.includes('boots') && (
+          <g fill="#1c1f26">
+            <rect x={32 - torso / 2} y="62" width={torso / 2} height="8" rx="1.6" />
+            <rect x={32} y="62" width={torso / 2} height="8" rx="1.6" />
+          </g>
+        )}
 
         {/* Torse, puis manteau ouvert par-dessus. Le manteau tombe plus bas et
             s'évase : une veste droite donnerait une boîte. */}
