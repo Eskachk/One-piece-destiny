@@ -410,14 +410,14 @@ function Dressrosa() {
 function Fishman() {
   return (
     <svg className="isl isl--fishman" {...CADRE} aria-hidden="true">
-      {/* Rayons filtrés depuis la surface : ce qui dit « on est dessous ». Ils
-          s'évasent vers le bas — la lumière vient d'un point lointain, au-dessus
-          de dix mille mètres d'eau. */}
-      <g opacity=".24" fill="#ffffff">
-        {[30, 190, 370, 560, 700].map((x, i) => (
-          <path key={x} d={`M${x} 0 h${30 + i * 5} l${58 + i * 10} 300 h-${76 + i * 8}Z`} />
-        ))}
-      </g>
+      {/* Les rais de lumière sont **dans le ciel**, pas ici.
+
+          Ils partaient de y=0 et descendaient jusqu'en bas de ce cadre — mais
+          ce cadre ne fait que le tiers inférieur de la page. Leur sommet se
+          trouvait donc tranché net, à l'horizontale, en plein milieu de
+          l'écran. Une colonne de lumière qui commence au milieu de nulle part
+          ne ressemble à rien. Voir `IslandSky`, où ils traversent toute la
+          hauteur. */}
 
       {/* La bulle géante qui enferme l'île. Ses deux pieds touchent exactement
           le bas du cadre : elle est entière, aucun bord ne la tranche. */}

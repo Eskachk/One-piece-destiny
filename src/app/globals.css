@@ -3303,3 +3303,169 @@ body {
     max-width: 54rem;
   }
 }
+
+/* ===========================================================================
+   Le ciel de chaque île : ce qui nage, vole, monte ou dérive.
+
+   La silhouette (`.isl`) occupe le tiers inférieur de l'écran. Au-dessus, il
+   n'y avait qu'un tapis de dégradés animés. C'est le bon outil pour ce qui est
+   innombrable — pluie, neige, pétales — et le mauvais pour tout le reste : un
+   banc de poissons a une direction et une silhouette, ce n'est pas une trame.
+
+   Cette couche couvre toute la page et ne porte que du vivant. Elle est en
+   `slice` : elle doit **couvrir** le cadre quelles que soient ses proportions,
+   et le recadrage est ici sans conséquence — ces éléments sont faits pour
+   entrer et sortir du champ.
+
+   ## Trois animations, pas trente
+
+   Chaque élément passe ses paramètres en variables CSS (`--duree`, `--retard`,
+   `--depart`, `--arrivee`). Quarante poissons, cinq lanternes et trois bancs
+   ne coûtent donc que les quelques règles ci-dessous. Écrire une classe par
+   trajectoire aurait produit une feuille de style illisible et impossible à
+   régler.
+   =========================================================================== */
+
+.isl-ciel {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* Derrière la silhouette et sous le contenu : c'est un fond, pas un premier
+     plan. Le décor du bas reste ce qu'on lit en premier. */
+  opacity: 0.72;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Traversée horizontale : entrer par un bord, sortir par l'autre. */
+  .ciel-traverse {
+    animation: ciel-traverse var(--duree, 40s) linear infinite;
+    animation-delay: var(--retard, 0s);
+  }
+
+  /* Montée : bulles, lanternes, méduses. Le balancement est une animation
+     distincte, posée sur un groupe intérieur, pour que les deux se composent
+     sans se marcher dessus — deux `transform` sur le même élément, et le
+     second efface le premier. */
+  .ciel-monte {
+    animation: ciel-monte var(--duree, 30s) linear infinite;
+    animation-delay: var(--retard, 0s);
+  }
+
+  .ciel-balance {
+    animation: ciel-balance 5.5s ease-in-out infinite alternate;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* Battement d'ailes : une compression verticale, pas une rotation. À cette
+     taille, un oiseau qui tourne lit comme un oiseau qui tombe. */
+  .ciel-bat {
+    animation: ciel-bat 0.9s ease-in-out infinite alternate;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* Rais de lumière : ils varient d'intensité et de largeur, très lentement. */
+  .ciel-respire {
+    animation: ciel-respire var(--duree, 20s) ease-in-out infinite alternate;
+    transform-box: fill-box;
+    transform-origin: top center;
+  }
+
+  .ciel-pulse {
+    animation: ciel-pulse var(--duree, 6s) ease-in-out infinite alternate;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* Vol circulaire : un rapace tourne, il ne traverse pas. C'est ce qui le
+     distingue d'une mouette. */
+  .ciel-orbite {
+    animation: ciel-orbite var(--duree, 40s) linear infinite;
+  }
+
+  .ciel-onduleuse {
+    animation: ciel-onduleuse var(--duree, 8s) ease-in-out infinite alternate;
+    animation-delay: var(--retard, 0s);
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+}
+
+@keyframes ciel-traverse {
+  from {
+    transform: translateX(var(--depart, -400px));
+  }
+  to {
+    transform: translateX(var(--arrivee, 1400px));
+  }
+}
+
+@keyframes ciel-monte {
+  from {
+    transform: translateY(var(--depart, 120px));
+  }
+  to {
+    transform: translateY(var(--arrivee, -900px));
+  }
+}
+
+@keyframes ciel-balance {
+  from {
+    transform: translateX(-16px) rotate(-3deg);
+  }
+  to {
+    transform: translateX(16px) rotate(3deg);
+  }
+}
+
+@keyframes ciel-bat {
+  from {
+    transform: scaleY(0.6);
+  }
+  to {
+    transform: scaleY(1.15);
+  }
+}
+
+@keyframes ciel-respire {
+  from {
+    transform: scaleX(0.82);
+    opacity: 0.55;
+  }
+  to {
+    transform: scaleX(1.12);
+    opacity: 1;
+  }
+}
+
+@keyframes ciel-pulse {
+  from {
+    transform: scale(0.94);
+    opacity: 0.75;
+  }
+  to {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+@keyframes ciel-orbite {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ciel-onduleuse {
+  from {
+    transform: translateY(-7px) scaleY(0.97);
+  }
+  to {
+    transform: translateY(7px) scaleY(1.03);
+  }
+}

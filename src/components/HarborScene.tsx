@@ -14,6 +14,7 @@
 
 import { ISLANDS, type IslandId } from '@/domain/islands';
 import { IslandDecor } from './islands/IslandDecor';
+import { IslandSky } from './islands/IslandSky';
 import { EternalPose } from './EternalPose';
 import { StrawHat } from './StrawHat';
 
@@ -145,11 +146,26 @@ export function HarborScene({
       <div className="harbor__backdrop" aria-hidden="true">
         <div className="harbor__sky" />
 
-        {/* Signature de la page : le lever de soleil. Les rayons tournent
-            très lentement — assez pour que la scène respire, pas assez pour
-            distraire d'un formulaire. */}
-        <div className="harbor__sunrays" />
-        <div className="harbor__sun" />
+        {/*
+          Le lever de soleil, **et lui seul sur la scène d'entrée**.
+
+          Il était rendu partout. Sur les pages intérieures, où il n'y a plus
+          ni mer ni horizon pour l'accueillir, son disque de 26 vmax se
+          retrouvait posé n'importe où — le plus souvent à moitié hors du
+          cadre, coupé net par un bord. Et il n'y avait aucune raison qu'un
+          soleil levant traîne au fond de l'Île des hommes-poissons, à dix
+          mille mètres sous la surface.
+
+          Chaque île a désormais son ciel à elle (`IslandSky`), avec ce qui lui
+          revient : des rais de lumière sous la mer, un soleil de plomb à
+          Alabasta, des nuages d'orage à Logue Town.
+        */}
+        {variant === 'hero' && (
+          <>
+            <div className="harbor__sunrays" />
+            <div className="harbor__sun" />
+          </>
+        )}
 
         {/*
           Décor de l'île, **dans le fond**, derrière tout le contenu.
@@ -164,6 +180,14 @@ export function HarborScene({
           classement » (§51).
         */}
         <IslandDecor island={island} />
+
+        {/* Le haut et le milieu du décor : ce qui nage, vole, monte ou dérive.
+
+            La silhouette occupe le tiers inférieur ; au-dessus, il n'y avait
+            qu'un tapis de dégradés. Convenable pour ce qui est innombrable —
+            pluie, neige, pétales — et inapte au reste : un banc de poissons a
+            une direction et une silhouette, ce n'est pas une trame. */}
+        <IslandSky island={island} />
 
         {/* Ambiance : ce qui tombe, monte ou dérive. C'est cette couche qui
             occupe la hauteur de l'écran — le décor, lui, est posé en bas. Tout

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { ChestOpening } from '@/components/chest3d/ChestOpening';
 import { RarityCard } from '@/components/RarityCard';
 import { IslandDecor } from '@/components/islands/IslandDecor';
+import { IslandSky } from '@/components/islands/IslandSky';
 import { ISLANDS, type IslandId } from '@/domain/islands';
 import type { RevealedCard } from '@/app/actions/collection';
 
@@ -87,6 +88,9 @@ export default function PreviewChestPage() {
                     page réelle, il lui faut donc ici un conteneur qui lui donne
                     une hauteur. */}
                 <div className="isl-preview">
+                  {/* Le ciel d'abord : il est derrière la silhouette, comme
+                      sur une vraie page. */}
+                  <IslandSky island={id} />
                   <IslandDecor island={id} />
                   {/* L'ambiance fait partie de l'île autant que sa silhouette :
                       l'aperçu serait trompeur sans elle. */}
