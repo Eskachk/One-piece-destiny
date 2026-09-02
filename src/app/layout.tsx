@@ -108,7 +108,11 @@ export default async function RootLayout({
         <Script
           id="adsense"
           async
-          strategy="afterInteractive"
+          // `beforeInteractive` place la balise dans le `<head>`, à l'identique
+          // de l'extrait fourni par Google. `afterInteractive` la mettait dans
+          // le corps : le script s'exécutait bien, mais un robot de validation
+          // qui se contente de lire l'en-tête ne l'y trouvait pas.
+          strategy="beforeInteractive"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9364111418812673"
           crossOrigin="anonymous"
         />

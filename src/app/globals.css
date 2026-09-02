@@ -2134,8 +2134,8 @@ body {
     180deg,
     rgba(255, 255, 255, 0) 0,
     rgba(255, 255, 255, 0) 6rem,
-    rgba(255, 255, 255, 0.8) 9.5rem,
-    rgba(255, 255, 255, 0.86) 100%
+    rgba(255, 255, 255, 0.42) 10rem,
+    rgba(255, 255, 255, 0.34) 100%
   );
   box-shadow: 0 8px 26px rgba(12, 45, 80, 0.1);
 }
@@ -2512,6 +2512,12 @@ body {
    que le placer et l'atténuer.
    =========================================================================== */
 
+/* La couche occupe **toute** la page, pas une bande en haut.
+
+   Le dessin, lui, garde ses proportions : l'étirer sur 800 px de haut le
+   déformerait grotesquement. C'est donc le dégradé de cette couche qui prolonge
+   l'île jusqu'en bas — ciel au-dessus de la ligne d'horizon, sol en dessous.
+   La silhouette fait la jonction. */
 .isl-layer {
   position: absolute;
   inset: 0;
@@ -2526,9 +2532,36 @@ body {
    occupe la bande que le voile du contenu laisse transparente, et sa ligne
    d'horizon vient mourir juste où le blanc commence. Le décor se lit, le texte
    aussi. */
+
+/* Sol de chaque île : ce qui prolonge le décor sous la ligne d'horizon et
+   jusqu'au bas de la page. Sans lui, le fond s'arrêtait au bas de la
+   silhouette et le reste de la page était vide. */
+[data-island='dressrosa'] .isl-layer {
+  background: linear-gradient(180deg, transparent 30%, rgba(212, 138, 86, 0.5) 62%, rgba(184, 96, 70, 0.55) 100%);
+}
+
+[data-island='fishman'] .isl-layer {
+  background: linear-gradient(180deg, transparent 26%, rgba(46, 138, 150, 0.5) 60%, rgba(20, 92, 110, 0.6) 100%);
+}
+
+[data-island='wano'] .isl-layer {
+  background: linear-gradient(180deg, transparent 30%, rgba(198, 140, 122, 0.42) 64%, rgba(150, 96, 88, 0.5) 100%);
+}
+
+[data-island='logue'] .isl-layer {
+  background: linear-gradient(180deg, transparent 30%, rgba(112, 126, 148, 0.5) 62%, rgba(74, 86, 106, 0.58) 100%);
+}
+
+[data-island='sabaody'] .isl-layer {
+  background: linear-gradient(180deg, transparent 26%, rgba(96, 132, 66, 0.48) 60%, rgba(60, 92, 40, 0.58) 100%);
+}
+
+/* La silhouette se pose **à la ligne d'horizon**, vers le tiers supérieur :
+   assez haut pour être vue par-dessus le voile du contenu, assez bas pour que
+   le ciel ait de la place au-dessus d'elle. */
 .isl {
   position: absolute;
-  inset: 0 0 auto 0;
+  inset: 4vh 0 auto 0;
   width: 100%;
   /* Le décor occupe le bas du cadre : c'est là qu'est l'horizon, et c'est la
      zone que le contenu recouvre le moins. Sur une page qui défile, le voile
@@ -2701,4 +2734,34 @@ body {
 
 [data-island='sabaody'] .isl-preview {
   background: linear-gradient(180deg, #7fb35c 0%, #c6e2ab 100%);
+}
+
+/* ===========================================================================
+   Lisibilité par-dessus un fond qui traverse toute la page.
+
+   Le voile du contenu est passé d'un aplat à 86 % à un voile à 34 % : c'est ce
+   qui laisse voir le décor de bout en bout. Le prix à payer, c'est que les
+   textes qui reposent **directement** dessus — intitulé, titre, intitulés de
+   section — n'ont plus de fond franc derrière eux.
+
+   Les cartes et les tuiles n'ont pas ce problème : elles portent leur propre
+   parchemin opaque. Seuls les quelques textes nus ci-dessous ont besoin d'un
+   halo, et un halo blanc dense suffit — il rend le tracé net sans poser de
+   rectangle qui redécouperait la page.
+   =========================================================================== */
+
+.harbor--page .hb-eyebrow,
+.harbor--page .hb-legend,
+.harbor--page .hb-muted {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95),
+    0 0 6px rgba(255, 255, 255, 0.9),
+    0 0 12px rgba(255, 255, 255, 0.7);
+}
+
+.harbor--page .hb-title {
+  text-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.9),
+    0 0 10px rgba(255, 255, 255, 0.95),
+    0 0 22px rgba(255, 255, 255, 0.8);
 }
