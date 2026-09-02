@@ -1,35 +1,19 @@
-import Script from 'next/script';
 import { AdSlot } from './AdSlot';
 
 /**
  * Publicité : le script de la régie **et** l'emplacement, ensemble.
  *
- * ## Pourquoi le script n'est plus dans la mise en page
+ * ## Le script n'est plus ici
  *
- * Il y était, chargé pour tout le site. C'était acceptable tant que les
- * emplacements étaient posés à la main : une régie sans emplacement ne coûte
- * qu'une requête.
+ * Il est de retour dans la mise en page : c'est la méthode de validation du
+ * site par Google, et le robot d'AdSense doit le trouver sur n'importe quelle
+ * page — y compris l'écran de connexion, seul visible d'un visiteur non
+ * authentifié.
  *
- * Avec les **annonces automatiques**, ça ne l'est plus. Google place alors les
- * annonces lui-même sur toute page où le script est présent — bandeaux,
- * ancrages, et interstitiels plein écran. Un interstitiel entre la saisie d'un
- * mot de passe et le tableau de bord d'administration, ou par-dessus une page
- * de paiement, n'est pas une décision qu'on laisse à un tiers.
- *
- * Le script voyage donc avec l'intention d'afficher une publicité. Il n'est
- * chargé que sur les pages de jeu, où ce composant est posé :
- *
- *   accueil · classement · collection · Marché · profil
- *
- * Et **jamais** ailleurs :
- *
- *   — connexion, inscription, mot de passe oublié, vérification d'adresse :
- *     ce sont les premiers écrans du produit, et une régie tierce n'a rien à
- *     charger à côté d'un champ de mot de passe ;
- *   — la boutique : mêler des annonces tierces à des achats réels brouille ce
- *     qui est vendu par le site et ce qui ne l'est pas ;
- *   — les paramètres et le Poste de commandement : aucune audience, et une
- *     publicité par-dessus un réglage de compte serait absurde.
+ * Les pages à écarter des annonces automatiques se règlent donc dans le
+ * tableau de bord AdSense (exclusions de pages), pas ici. C'est le seul
+ * mécanisme qui laisse la validation fonctionner tout en maîtrisant les
+ * emplacements.
  *
  * ## L'emplacement manuel reste possible
  *
@@ -42,25 +26,6 @@ import { AdSlot } from './AdSlot';
 export function AdBanner() {
   const slot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_BANNER;
 
-  return (
-    <>
-      {/*
-        `afterInteractive` : le script part une fois la page utilisable. En
-        `beforeInteractive`, il retarderait le premier affichage pour un contenu
-        qui n'est pas le produit.
-
-        L'`id` dédoublonne : Next ne charge le script qu'une fois, même si
-        plusieurs composants le déclarent au cours d'une navigation.
-      */}
-      <Script
-        id="adsense"
-        async
-        strategy="afterInteractive"
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9364111418812673"
-        crossOrigin="anonymous"
-      />
-
-      {slot && <AdSlot slot={slot} />}
-    </>
-  );
+  if (!slot) return null;
+  return <AdSlot slot={slot} />;
 }

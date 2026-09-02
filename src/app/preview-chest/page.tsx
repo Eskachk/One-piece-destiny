@@ -71,11 +71,12 @@ export default function PreviewChestPage() {
                 data-island={id}
                 className="overflow-hidden rounded-xl border border-turquoise/25"
               >
-                <div className="isl-band" style={{ marginBottom: 0 }}>
+                {/* Cadre d'aperçu : le décor est en position absolue dans la
+                    page réelle, il lui faut donc ici un conteneur qui lui donne
+                    une hauteur. */}
+                <div className="isl-preview">
                   <IslandDecor island={id} />
-                  <span className="isl-band__name" style={{ bottom: '0.6rem' }}>
-                    {ISLANDS[id].name}
-                  </span>
+                  <span className="isl-name">{ISLANDS[id].name}</span>
                 </div>
               </div>
               <ul className="mt-1 px-1 text-[11px] text-parchment/55">

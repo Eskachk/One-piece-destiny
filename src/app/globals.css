@@ -2121,14 +2121,23 @@ body {
    d'onglets est un descendant de cet en-tête. Elle se retrouvait ancrée au bas
    du bloc de contenu au lieu du bas de l'écran, donc au milieu de la page.
 
-   Le voile opaque suffit de toute façon : ce qu'on veut, c'est que le texte ne
-   repose pas directement sur les nuages, pas que le décor soit flou. */
+   Le voile s'arrête **en haut du contenu**, pas en haut de l'écran. C'est ce
+   qui laisse voir le décor : il commence transparent, se charge à hauteur du
+   premier texte, et reste opaque en dessous. Le titre repose donc sur l'île,
+   le reste sur du blanc — et l'on garde les deux, la reconnaissance du lieu et
+   la lecture d'un classement (§51). */
 .harbor--page .harbor__header {
   position: relative;
-  padding: 1.1rem 1rem 1.4rem;
+  padding: 9.5rem 1rem 1.4rem;
   border-radius: 1.15rem;
-  background: rgba(255, 255, 255, 0.66);
-  box-shadow: 0 8px 26px rgba(12, 45, 80, 0.12);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0) 6rem,
+    rgba(255, 255, 255, 0.8) 9.5rem,
+    rgba(255, 255, 255, 0.86) 100%
+  );
+  box-shadow: 0 8px 26px rgba(12, 45, 80, 0.1);
 }
 
 /* Le titre d'affiche gagne un halo clair : sur un ciel chargé, une lettre
@@ -2510,26 +2519,33 @@ body {
   pointer-events: none;
 }
 
+/* Ancré **en haut**, pas en bas.
+
+   En bas, la silhouette tombait exactement là où le contenu est le plus dense :
+   on ne voyait qu'un liseré de tuiles dépasser sous les cartes. En haut, elle
+   occupe la bande que le voile du contenu laisse transparente, et sa ligne
+   d'horizon vient mourir juste où le blanc commence. Le décor se lit, le texte
+   aussi. */
 .isl {
   position: absolute;
-  inset: auto 0 0 0;
+  inset: 0 0 auto 0;
   width: 100%;
   /* Le décor occupe le bas du cadre : c'est là qu'est l'horizon, et c'est la
      zone que le contenu recouvre le moins. Sur une page qui défile, le voile
      opaque du contenu passe par-dessus sans jamais l'effacer complètement. */
-  height: min(62vh, 30rem);
-  /* Atténué franchement. Le décor doit se remarquer au premier coup d'œil puis
-     s'oublier : à pleine opacité, il dispute la lecture d'un classement, ce
-     que le §51 interdit. */
-  opacity: 0.5;
+  height: min(46vh, 24rem);
+  /* Plus présent qu'en bandeau : il est derrière le contenu, et c'est la partie
+     haute de l'écran — celle que le voile laisse transparente — qui doit le
+     faire reconnaître. Trop pâle, on ne voyait plus rien du tout. */
+  opacity: 0.85;
 }
 
 /* Sur un écran étroit, le décor est agrandi et recadré au centre : réduit à
    la largeur d'un téléphone, un colisée de 400 unités devient un trait. */
 @media (max-width: 560px) {
   .isl {
-    height: min(48vh, 22rem);
-    opacity: 0.42;
+    height: min(38vh, 17rem);
+    opacity: 0.85;
   }
 }
 
@@ -2607,86 +2623,82 @@ body {
 }
 
 /* ===========================================================================
-   Bandeau d'île.
+   Nom de l'arc, dans le fond.
 
-   Le décor était d'abord dans l'arrière-plan fixe, derrière le contenu.
-   Vérifié à l'écran : il n'en restait rien. Le voile opaque du contenu occupe
-   la quasi-totalité d'un écran de téléphone, et une silhouette qu'on ne
-   distingue pas ne dit pas où l'on est.
+   Il était posé sur le bandeau. Le bandeau a disparu — le décor est retourné
+   en arrière-plan — mais le nom reste utile : c'est lui qui transforme une
+   silhouette en repère, « des arcades » devient « Dressrosa ».
 
-   En bandeau, il est entièrement visible, il ne passe jamais sous du texte, et
-   il donne à chaque page une accroche qu'on reconnaît avant d'avoir lu le
-   titre.
+   En haut à droite, hors de la colonne de contenu : la seule zone de l'écran
+   qu'aucun texte n'occupe.
    =========================================================================== */
 
-.isl-band {
-  position: relative;
-  width: 100%;
-  height: clamp(7rem, 22vw, 10rem);
-  margin-bottom: -1.25rem;
-  border-radius: 1.15rem 1.15rem 0 0;
-  overflow: hidden;
-  /* Le bandeau se fond dans le voile du contenu, juste dessous : sans ce
-     dégradé, la jonction fait une arête nette au milieu de la page. */
-  mask-image: linear-gradient(180deg, #000 62%, transparent 100%);
-}
-
-/* Dans le bandeau, le décor remplit et n'a plus à s'effacer : il est seul,
-   rien ne se lit par-dessus. */
-.isl-band .isl {
+.isl-name {
   position: absolute;
-  inset: 0;
-  height: 100%;
-  opacity: 0.95;
-}
-
-/* Nom de l'arc. C'est lui qui transforme une silhouette en repère : « des
-   arcades » devient « Dressrosa ». Posé en bas à gauche, sur un fond translucide
-   — sur un ciel clair, une capitale blanche seule disparaît. */
-.isl-band__name {
-  position: absolute;
-  left: 0.7rem;
-  bottom: 1.9rem;
-  padding: 0.2rem 0.55rem;
+  top: 0.9rem;
+  right: 0.9rem;
+  z-index: 1;
+  padding: 0.22rem 0.55rem;
   border-radius: 0.4rem;
   font-family: var(--font-poster), system-ui, sans-serif;
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #10233c;
-  background: rgba(255, 255, 255, 0.72);
+  color: #16304f;
+  background: rgba(255, 255, 255, 0.62);
+  pointer-events: none;
 }
 
-/* Colonne unique des pages intérieures : bandeau d'île puis contenu.
-   `harbor__content` est un conteneur flex ; sans cette enveloppe, les deux se
-   rangent côte à côte et la page se coupe en deux dans la largeur. */
-.harbor__column {
-  width: 100%;
-  max-width: 30rem;
+/* Sur écran étroit, la colonne prend toute la largeur : le nom se glisse
+   au-dessus d'elle plutôt qu'à côté. */
+@media (max-width: 560px) {
+  .isl-name {
+    top: 0.5rem;
+    right: 0.6rem;
+    font-size: 0.58rem;
+  }
 }
 
-/* Ciel propre au bandeau.
 
-   Il en a besoin pour lui-même : le bandeau est au-dessus du contenu, pas dans
-   l'arrière-plan, et il ne reçoit donc pas le dégradé de `.harbor__sky`. Lui
-   donner sa propre lumière le rend aussi utilisable hors de la scène — c'est ce
-   qui permet de comparer les cinq îles sur la page d'aperçu. */
-[data-island='dressrosa'] .isl-band {
+/* ===========================================================================
+   Cadre d'aperçu des îles (page de développement).
+
+   Le décor est en position absolue dans une page réelle, où il occupe le haut
+   de l'écran sur 46 vh. Le montrer dans une boîte demande donc de lui rendre
+   deux choses : une hauteur, et le ciel de son île — sans quoi on obtient un
+   aplat sur fond sombre, ce qui ne ressemble à rien de ce que voit un joueur.
+   =========================================================================== */
+
+.isl-preview {
+  position: relative;
+  height: 11rem;
+  overflow: hidden;
+}
+
+.isl-preview .isl {
+  /* Ancré en bas ici : la boîte est bien plus courte qu'un écran, et c'est la
+     ligne d'horizon qu'on veut voir, pas le ciel. */
+  inset: auto 0 0 0;
+  height: 100%;
+  opacity: 1;
+}
+
+[data-island='dressrosa'] .isl-preview {
   background: linear-gradient(180deg, #f3b271 0%, #f8d6a6 100%);
 }
 
-[data-island='fishman'] .isl-band {
+[data-island='fishman'] .isl-preview {
   background: linear-gradient(180deg, #3aa6b0 0%, #8ed8da 100%);
 }
 
-[data-island='wano'] .isl-band {
+[data-island='wano'] .isl-preview {
   background: linear-gradient(180deg, #e88fa8 0%, #f6d2da 100%);
 }
 
-[data-island='logue'] .isl-band {
+[data-island='logue'] .isl-preview {
   background: linear-gradient(180deg, #6d82a4 0%, #b3c1d4 100%);
 }
 
-[data-island='sabaody'] .isl-band {
+[data-island='sabaody'] .isl-preview {
   background: linear-gradient(180deg, #7fb35c 0%, #c6e2ab 100%);
 }

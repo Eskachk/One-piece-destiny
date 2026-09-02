@@ -86,18 +86,32 @@ export default async function RootLayout({
         <AppShell>{children}</AppShell>
 
         {/*
-          Le script AdSense n'est **pas** ici.
+          Script AdSense, pour tout le site.
 
-          Il y était, chargé pour tout le site. Avec les annonces automatiques,
-          Google place alors des publicités — bandeaux, ancrages, interstitiels
-          plein écran — sur **chaque** page où le script est présent. Un
-          interstitiel par-dessus un champ de mot de passe, une page de paiement
-          ou le Poste de commandement n'est pas une décision qu'on laisse à un
-          tiers.
+          C'est **la méthode de validation du site** par Google : le robot
+          d'AdSense lit une page et y cherche ce script. Une page seulement ne
+          suffit pas de façon fiable — un visiteur non connecté est redirigé
+          vers l'écran de connexion, et c'est donc lui que le robot voit.
 
-          Il voyage donc avec `AdBanner`, posé sur les seules pages de jeu.
-          Voir `components/AdBanner.tsx`.
+          Contrepartie, et elle est réelle : les **annonces automatiques**
+          s'appliquent partout où le script est présent, y compris sur les
+          écrans d'authentification et la boutique. Google fournit pour cela un
+          réglage d'exclusion par URL — AdSense → Annonces → Paramètres des
+          annonces automatiques → Gérer les exclusions de pages. C'est là qu'il
+          faut écarter /login, /register, /forgot, /reset, /verify, /boutique,
+          /parametres et /admin.
+
+          La balise `google-adsense-account` ci-dessus reste : elle valide le
+          site sans exécution de script, et sert de second chemin si le robot
+          n'exécute pas le nôtre.
         */}
+        <Script
+          id="adsense"
+          async
+          strategy="afterInteractive"
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9364111418812673"
+          crossOrigin="anonymous"
+        />
 
         {/*
           Mesure d'audience Vercel.

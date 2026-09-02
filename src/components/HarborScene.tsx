@@ -151,6 +151,23 @@ export function HarborScene({
         <div className="harbor__sunrays" />
         <div className="harbor__sun" />
 
+        {/*
+          Décor de l'île, **dans le fond**, derrière tout le contenu.
+
+          Il est posé avant les nuages, donc sous eux : les nuages appartiennent
+          au ciel, l'île à l'horizon.
+
+          Ce qui rend cela lisible n'est pas le décor mais ce qui passe
+          par-dessus : le voile du contenu s'est allégé et ne couvre plus que
+          la colonne de texte. Voir `.harbor__header` dans `globals.css` — c'est
+          là que se joue l'équilibre entre « on voit l'île » et « on lit le
+          classement » (§51).
+        */}
+        <IslandDecor island={island} />
+        <span className="isl-name" aria-hidden="true">
+          {island !== 'harbor' && island !== 'hq' ? ISLANDS[island].name : ''}
+        </span>
+
         <div className="harbor__clouds">
           <Cloud className="harbor__cloud harbor__cloud--1" />
           <Cloud className="harbor__cloud harbor__cloud--2" flip />
@@ -232,31 +249,9 @@ export function HarborScene({
             {children}
           </header>
         ) : (
-          /* Une seule colonne, et c'est nécessaire : `harbor__content` est un
-             conteneur flex. Sans cette enveloppe, le bandeau d'île et le
-             contenu deviennent deux colonnes côte à côte — la page se retrouve
-             coupée en deux dans le sens de la largeur. Constaté à l'écran. */
+          /* `harbor__content` est un conteneur flex : cette colonne porte la
+             largeur du contenu et le garde sur un seul rang. */
           <div className="harbor__column">
-            {/*
-              Bandeau d'île, **au-dessus** du contenu et non derrière lui.
-
-              Première version : le décor était dans l'arrière-plan fixe, comme
-              le ciel. Vérifié à l'écran, il n'en restait rien — le voile opaque
-              du contenu occupe la quasi-totalité d'un écran de téléphone, et
-              une silhouette qu'on ne distingue pas ne dit pas où l'on est.
-
-              En bandeau, il est entièrement visible, il ne passe jamais sous du
-              texte, et il donne à chaque page une accroche qu'on reconnaît
-              avant d'avoir lu le titre. Le nom de l'arc est écrit dessus :
-              c'est ce qui transforme une silhouette en repère.
-            */}
-            {island !== 'harbor' && island !== 'hq' && (
-              <div className="isl-band">
-                <IslandDecor island={island} />
-                <span className="isl-band__name">{ISLANDS[island].name}</span>
-              </div>
-            )}
-
             <div className="harbor__header">{children}</div>
           </div>
         )}
