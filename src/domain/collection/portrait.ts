@@ -2,11 +2,15 @@ import type { Rarity } from '../types';
 import type { Attribute } from './attributes';
 import {
   signatureOf,
+  type Brow,
   type Build,
   type Cut,
   type Extra,
+  type Eyes,
+  type Face,
   type Frame,
   type Headwear,
+  type Height,
   type Mark,
   type Prop,
 } from './signatures';
@@ -217,7 +221,19 @@ export function pixelPortrait(
 // Légendaire et Mythique — figurine
 // ---------------------------------------------------------------------------
 
-export type { Build as SpriteBuild, Cut, Extra, Frame, Headwear, Mark, Prop } from './signatures';
+export type {
+  Build as SpriteBuild,
+  Brow,
+  Cut,
+  Extra,
+  Eyes,
+  Face,
+  Frame,
+  Headwear,
+  Height,
+  Mark,
+  Prop,
+} from './signatures';
 
 /**
  * Traits de la figurine — Légendaire et Mythique.
@@ -262,6 +278,19 @@ export interface SpriteTraits {
   frame: Frame;
   /** Détails ajoutés au patron : long nez, bois, ailes, bras mécanique… */
   extras: readonly Extra[];
+  /**
+   * Le visage lui-même.
+   *
+   * Les cinquante-huit avaient rigoureusement la même tête. On pouvait empiler
+   * les accessoires : deux figurines se ressemblaient toujours dès qu'on
+   * retirait le chapeau, parce que ce qu'on reconnaît d'abord d'un visage,
+   * c'est sa forme.
+   */
+  face: Face;
+  eyes: Eyes;
+  brow: Brow;
+  /** `build` ne disait que la largeur : Kaidô et Nami avaient la même hauteur. */
+  height: Height;
   /** Effets réservés au Mythique : aura et éclats. */
   effects: boolean;
   /** Les traits viennent-ils d'une signature écrite, ou du repli ? */
@@ -286,6 +315,10 @@ export function spriteTraits(subject: PortraitSubject): SpriteTraits {
       accessory: signature.accessory ?? signature.coat ?? signature.outfit,
       frame: signature.frame ?? 'human',
       extras: signature.extras ?? [],
+      face: signature.face ?? 'round',
+      eyes: signature.eyes ?? 'normal',
+      brow: signature.brow ?? 'neutral',
+      height: signature.height ?? 'normal',
       effects,
       named: true,
     };
@@ -328,6 +361,10 @@ export function spriteTraits(subject: PortraitSubject): SpriteTraits {
     accessory: pick(OUTFIT, random()),
     frame: 'human',
     extras: [],
+    face: 'round',
+    eyes: 'normal',
+    brow: 'neutral',
+    height: 'normal',
     effects,
     named: false,
   };

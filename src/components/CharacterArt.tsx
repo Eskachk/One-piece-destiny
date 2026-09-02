@@ -311,12 +311,57 @@ function Regard({ traits }: { traits: SpriteTraits }) {
   // yeux par-dessus donnerait une figure à quatre yeux.
   if (traits.head === 'mask' || traits.mark === 'blind' || traits.mark === 'skull') return null;
 
+  // Quatre regards. Deux traits identiques donnaient cinquante-huit fois la
+  // même expression, et c'est ce qui faisait le plus « série » de tout.
+  const blanc =
+    traits.eyes === 'narrow'
+      ? { y: 18.4, h: 2.2, r: 1 }
+      : traits.eyes === 'wide'
+        ? { y: 16.8, h: 4.8, r: 2 }
+        : { y: 17.4, h: 3.8, r: 1.4 };
+
   return (
     <>
-      <rect x="27.4" y="17.4" width="3.2" height="3.8" rx="1.4" fill="#ffffff" opacity="0.9" />
-      <rect x="33.4" y="17.4" width="3.2" height="3.8" rx="1.4" fill="#ffffff" opacity="0.9" />
-      <rect x="28.2" y="18" width="1.6" height="2.6" rx="0.8" fill="#171a20" />
-      <rect x="34.2" y="18" width="1.6" height="2.6" rx="0.8" fill="#171a20" />
+      <rect x="27.4" y={blanc.y} width="3.2" height={blanc.h} rx={blanc.r} fill="#ffffff" opacity="0.9" />
+      <rect x="33.4" y={blanc.y} width="3.2" height={blanc.h} rx={blanc.r} fill="#ffffff" opacity="0.9" />
+
+      {/* La pupille suit : dans un œil étroit, une pupille ronde déborde. */}
+      <rect
+        x="28.2"
+        y={blanc.y + 0.6}
+        width="1.6"
+        height={Math.max(1.4, blanc.h - 1.2)}
+        rx="0.8"
+        fill="#171a20"
+      />
+      <rect
+        x="34.2"
+        y={blanc.y + 0.6}
+        width="1.6"
+        height={Math.max(1.4, blanc.h - 1.2)}
+        rx="0.8"
+        fill="#171a20"
+      />
+
+      {/* Un regard perçant, c'est une paupière qui coupe le haut de l'œil —
+          pas un œil plus petit. */}
+      {traits.eyes === 'sharp' && (
+        <g fill={traits.skin}>
+          <path d="M27.2 17.2h3.6l-3.6 2Z" />
+          <path d="M36.8 17.2h-3.6l3.6 2Z" />
+        </g>
+      )}
+
+      {/* Les sourcils : deux segments, et toute l'humeur du personnage. Ils
+          sont dessinés dans la couleur des cheveux, sans quoi un blond a des
+          sourcils noirs. */}
+      {traits.brow !== 'neutral' && (
+        <g stroke={traits.hair} strokeWidth="1.3" strokeLinecap="round">
+          {traits.brow === 'fierce' && <path d="M26.4 15.4 30.6 16.8M37.6 15.4 33.4 16.8" />}
+          {traits.brow === 'calm' && <path d="M26.6 15.6h4M33.4 15.6h4" />}
+          {traits.brow === 'arched' && <path d="M26.6 16.2q2-2 4-0.4M37.4 16.2q-2-2-4-0.4" />}
+        </g>
+      )}
     </>
   );
 }
@@ -865,6 +910,20 @@ function Tete({ traits }: { traits: SpriteTraits }) {
 
   // Humain et oni : la même tête ; l'oni se distingue par ses cornes, sa
   // crinière et sa carrure, qui sont posées ailleurs.
+  //
+  // Sa **forme**, en revanche, change. Une mâchoire carrée, un visage long ou
+  // un menton pointu ne se confondent pas, et c'est ce qu'on reconnaît d'un
+  // visage avant tout ce qu'il porte.
+  if (traits.face === 'square') {
+    return <path d="M23 12q0-9 9-9t9 9v9q0 7-9 7t-9-7Z" fill={skin} />;
+  }
+  if (traits.face === 'long') {
+    return <ellipse cx="32" cy="18" rx="7.8" ry="11.4" fill={skin} />;
+  }
+  if (traits.face === 'sharp') {
+    // Pommettes hautes, menton fuyant : le tracé descend en pointe.
+    return <path d="M23 15q0-12 9-12t9 12q0 6-9 13t-9-13Z" fill={skin} />;
+  }
   return <ellipse cx="32" cy="18" rx="9" ry="10" fill={skin} />;
 }
 
@@ -877,9 +936,24 @@ function SpriteFigure({ traits, accent }: { traits: SpriteTraits; accent: string
   const shoulders = torso + 6;
   const clothId = `cloth-${traits.outfit.slice(1)}`;
 
-  // Un renne de la taille d'un enfant : le plan du corps change aussi
-  // l'échelle, pas seulement les formes.
-  const echelle = traits.frame === 'reindeer' ? 0.78 : 1;
+  /*
+   * La taille.
+   *
+   * `build` ne disait que la **largeur** : Kaidô et Nami avaient donc
+   * rigoureusement la même hauteur, ce qui est le plus visible des
+   * contresens dans une grille où les figurines sont côte à côte.
+   *
+   * L'échelle est prise depuis le **sol**, pas depuis le centre : sans cela,
+   * un géant flotte au-dessus de son halo et un petit s'y enfonce.
+   */
+  const echelle =
+    traits.frame === 'reindeer' || traits.height === 'short'
+      ? 0.78
+      : traits.height === 'towering'
+        ? 1.14
+        : traits.height === 'tall'
+          ? 1.07
+          : 1;
 
   return (
     <svg viewBox="0 0 64 80" className="hb-art__svg" aria-hidden="true" focusable="false">
