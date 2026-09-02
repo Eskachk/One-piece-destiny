@@ -56,6 +56,28 @@ describe('signatures physiques', () => {
     expect(uniques / empreintes.length).toBeGreaterThan(0.75);
   });
 
+  it('ne décrit personne qui n’existe pas', () => {
+    // Une signature orpheline est du travail perdu qui ne se voit nulle part :
+    // le personnage a été renommé ou retiré du référentiel, et le portrait
+    // écrit pour lui ne sera jamais rendu.
+    const connus = new Set(CHARACTERS.map((c) => c.id));
+    const orphelines = Object.keys(SIGNATURES).filter((id) => !connus.has(id));
+    expect(orphelines).toEqual([]);
+  });
+
+  it('décrit une part substantielle des Épiques', () => {
+    // Les cent quarante-neuf Épiques ne sont pas tous décrits, et c'est
+    // assumé : je n'écris une signature que pour un personnage dont
+    // l'apparence est établie. Les autres passent par le repli déterministe.
+    //
+    // Ce seuil n'est pas une cible à atteindre, c'est un cliquet : il empêche
+    // qu'une refonte du référentiel fasse silencieusement retomber la
+    // couverture à zéro.
+    const epiques = CHARACTERS.filter((c) => c.rarity === 'EPIC');
+    const decrits = epiques.filter((c) => signatureOf(c.id) !== null);
+    expect(decrits.length / epiques.length).toBeGreaterThan(0.4);
+  });
+
   it('marque les héros comme nommés, jamais comme repli', () => {
     for (const c of HEROS) {
       const t = spriteTraits({ id: c.id, rarity: c.rarity, attributes: [] });

@@ -124,6 +124,13 @@ export function emojiFor(subject: PortraitSubject): string {
 // Épique et au-delà — palette du personnage
 // ---------------------------------------------------------------------------
 
+/**
+ * Palette d'un personnage.
+ *
+ * Elle ne sert plus qu'au fond du portrait en pixels : le dessin lui-même lit
+ * désormais les mêmes `SpriteTraits` que la figurine, pour qu'un Épique et un
+ * Légendaire du même personnage ne se contredisent pas.
+ */
 export interface PortraitPalette {
   hair: string;
   skin: string;
@@ -163,56 +170,177 @@ export function paletteOf(subject: PortraitSubject, rarityColor: string): Portra
 // Épique — portrait en pixels
 // ---------------------------------------------------------------------------
 
-/** Côté de la grille du portrait en pixels. */
-export const PIXEL_GRID = 12;
+/**
+ * Côté de la grille du portrait en pixels.
+ *
+ * Passé de 12 à 16. Ce n'est pas de la coquetterie : à douze, une fois la
+ * chevelure et les épaules posées, il restait six rangées pour le visage —
+ * de quoi loger deux yeux et rien d'autre. Un chapeau, une barbe ou une paire
+ * de lunettes n'avaient nulle part où aller, et c'est précisément ce qui
+ * distingue un personnage d'un autre.
+ */
+export const PIXEL_GRID = 16;
 
 /**
- * Grille du portrait en pixels : `null` pour un pixel vide, une couleur sinon.
+ * Portrait en pixels — Épique.
  *
- * Le visage est construit par **symétrie sur l'axe vertical** : on ne tire que
- * la moitié gauche et on la reflète. Sans cela, un tirage libre donne des
- * visages bancals — un œil plus haut que l'autre, une mèche d'un seul côté —
- * et le résultat ne se lit plus comme un visage.
+ * ## Ce qui a changé
+ *
+ * Il était bâti sur une palette tirée de l'empreinte de l'identifiant : trois
+ * couleurs prises au hasard dans des listes de huit, cinq et sept, sur un
+ * ovale toujours identique. Cent quarante-neuf personnages, et un seul visage
+ * décliné en couleurs. C'était le même défaut que sur les figurines, une
+ * rareté plus bas.
+ *
+ * Il lit maintenant les mêmes `SpriteTraits` que la figurine : quand le
+ * personnage a une signature écrite, sa teinte de cheveux, son teint, sa
+ * tenue, sa coupe, son couvre-chef et sa marque de visage sont les siens.
+ * Sinon le repli déterministe s'applique — mais sur un dessin qui a de la
+ * place pour les porter.
+ *
+ * ## Ce qui n'a pas changé
+ *
+ * La **symétrie**. On ne calcule que la moitié gauche et on la reflète : sans
+ * cela, un tirage libre donne des visages bancals — un œil plus haut que
+ * l'autre, une mèche d'un seul côté — et le résultat ne se lit plus comme un
+ * visage.
  */
-export function pixelPortrait(
-  subject: PortraitSubject,
-  palette: PortraitPalette,
-): (string | null)[][] {
-  const random = rngOf(seedOf(subject.id) ^ 0x5f3a);
-  const grid: (string | null)[][] = [];
+export function pixelPortrait(traits: SpriteTraits): (string | null)[][] {
+  const N = PIXEL_GRID;
+  const half = N / 2;
+  const grid: (string | null)[][] = Array.from({ length: N }, () =>
+    new Array<string | null>(N).fill(null),
+  );
 
-  // Silhouette : un ovale, tiré large ou étroit selon la graine.
-  const width = 3 + Math.floor(random() * 2); // demi-largeur du visage
-  const hairLine = 2 + Math.floor(random() * 2);
-  const half = PIXEL_GRID / 2;
+  const poser = (x: number, y: number, couleur: string) => {
+    if (x < 0 || y < 0 || x >= half || y >= N) return;
+    grid[y][x] = couleur;
+    grid[y][N - 1 - x] = couleur;
+  };
 
-  for (let y = 0; y < PIXEL_GRID; y += 1) {
-    const row: (string | null)[] = new Array(PIXEL_GRID).fill(null);
+  // Largeur du visage selon sa forme. C'est le premier trait qu'on lit.
+  const joue =
+    traits.face === 'long' ? 4 : traits.face === 'square' ? 6 : traits.face === 'sharp' ? 5 : 5;
 
+  const hautVisage = 4;
+  const basVisage = traits.face === 'long' ? 13 : 12;
+
+  // --- Le visage -----------------------------------------------------------
+  for (let y = hautVisage; y <= basVisage; y += 1) {
     for (let x = 0; x < half; x += 1) {
-      const dx = half - 1 - x; // distance à l'axe
-      const inFace = y >= 1 && y <= PIXEL_GRID - 3 && dx <= width;
+      const dx = half - 1 - x;
+      if (dx > joue) continue;
 
-      if (!inFace) continue;
+      // Les coins sont retirés : sans eux le visage est un rectangle. Un
+      // menton anguleux se rétrécit en plus sur les deux dernières rangées.
+      const coinHaut = y <= hautVisage + 1 && dx === joue;
+      const coinBas = y >= basVisage - 1 && dx === joue;
+      const menton = traits.face === 'sharp' && y >= basVisage - 1 && dx >= joue - 1;
+      if (coinHaut || coinBas || menton) continue;
 
-      // Les coins du haut et du bas sont retirés : sans eux, le visage est un
-      // rectangle et pas une tête.
-      const corner = (y <= 2 || y >= PIXEL_GRID - 4) && dx === width;
-      if (corner) continue;
+      poser(x, y, traits.skin);
+    }
+  }
 
-      let colour = palette.skin;
-      if (y <= hairLine) colour = palette.hair;
-      // Les yeux, deux pixels sombres à hauteur fixe : les tirer au sort les
-      // fait glisser sur le front ou sur le menton.
-      else if (y === hairLine + 2 && dx === width - 1) colour = '#1a1a22';
-      else if (y >= PIXEL_GRID - 4) colour = palette.outfit;
+  // --- La chevelure --------------------------------------------------------
+  const frange = traits.cut === 'bald' ? -1 : traits.cut === 'spiky' ? 6 : 5;
 
-      row[x] = colour;
-      row[PIXEL_GRID - 1 - x] = colour;
+  if (traits.cut !== 'bald') {
+    for (let y = 2; y <= frange; y += 1) {
+      for (let x = 0; x < half; x += 1) {
+        const dx = half - 1 - x;
+        if (dx > joue) continue;
+        // La banane et les épis montent d'une rangée au centre ; la coupe
+        // droite s'arrête net.
+        if (y === 2 && traits.cut !== 'spiky' && traits.cut !== 'pompadour') continue;
+        if (y <= 3 && dx > joue - 2) continue;
+        poser(x, y, traits.hair);
+      }
     }
 
-    grid.push(row);
+    // Ce qui descend sur les côtés : long, ondulé, queue, couettes.
+    const descend =
+      traits.cut === 'long' || traits.cut === 'wavy'
+        ? basVisage
+        : traits.cut === 'ponytail' || traits.extras.includes('twin-tails')
+          ? basVisage - 2
+          : traits.cut === 'afro'
+            ? basVisage - 4
+            : -1;
+    for (let y = frange + 1; y <= descend; y += 1) {
+      poser(half - 1 - joue, y, traits.hair);
+      if (traits.cut === 'afro') poser(half - 2 - joue, y, traits.hair);
+    }
   }
+
+  // --- Le regard -----------------------------------------------------------
+  const yeux = traits.eyes === 'wide' ? 7 : 8;
+  poser(half - 1 - (joue - 1), yeux, '#ffffffdd');
+  poser(half - 1 - (joue - 2), yeux, '#1a1a22');
+  if (traits.eyes === 'wide') {
+    poser(half - 1 - (joue - 1), yeux + 1, '#1a1a22');
+    poser(half - 1 - (joue - 2), yeux + 1, '#1a1a22');
+  }
+
+  // --- La marque du visage -------------------------------------------------
+  if (traits.mark === 'glasses' || traits.mark === 'shades' || traits.mark === 'blind') {
+    const teinte = traits.mark === 'glasses' ? '#33333d' : traits.mark === 'blind' ? '#e6e0d2' : '#15151c';
+    for (let dx = 0; dx <= joue; dx += 1) poser(half - 1 - dx, yeux, teinte);
+  }
+  if (traits.mark === 'beard' || traits.mark === 'moustache' || traits.mark === 'goatee') {
+    const depart = traits.mark === 'moustache' ? basVisage - 2 : basVisage - 1;
+    const largeur = traits.mark === 'goatee' ? 1 : joue - 1;
+    for (let y = depart; y <= basVisage; y += 1) {
+      for (let dx = 0; dx <= largeur; dx += 1) poser(half - 1 - dx, y, traits.hair);
+    }
+  }
+  if (traits.mark === 'scar-eye' || traits.mark === 'scar-triple') {
+    poser(half - 1 - (joue - 1), yeux - 1, '#8a3a30');
+    poser(half - 1 - (joue - 1), yeux + 1, '#8a3a30');
+  }
+
+  // --- Le couvre-chef ------------------------------------------------------
+  const chapeau: Partial<Record<Headwear, { hauteur: number; bord: boolean }>> = {
+    strawhat: { hauteur: 2, bord: true },
+    brim: { hauteur: 2, bord: true },
+    tricorne: { hauteur: 2, bord: true },
+    tophat: { hauteur: 4, bord: true },
+    cap: { hauteur: 2, bord: false },
+    bandana: { hauteur: 1, bord: false },
+    hood: { hauteur: 3, bord: false },
+    crown: { hauteur: 2, bord: false },
+    mask: { hauteur: 0, bord: false },
+  };
+  const forme = chapeau[traits.head];
+  if (forme) {
+    const teinte = traits.head === 'strawhat' ? '#e8c87a' : traits.accessory;
+    const bas = traits.head === 'bandana' ? 4 : 3;
+    for (let y = bas - forme.hauteur + 1; y <= bas; y += 1) {
+      for (let dx = 0; dx <= joue; dx += 1) poser(half - 1 - dx, y, teinte);
+    }
+    if (forme.bord) {
+      for (let dx = 0; dx <= joue + 2; dx += 1) poser(half - 1 - dx, bas + 1, teinte);
+    }
+  }
+  // Le masque couvre le visage entier, il ne se pose pas dessus.
+  if (traits.head === 'mask') {
+    for (let y = hautVisage; y <= yeux + 1; y += 1) {
+      for (let dx = 0; dx <= joue; dx += 1) poser(half - 1 - dx, y, '#2a2a33');
+    }
+    poser(half - 1 - (joue - 2), yeux, traits.accessory);
+  }
+
+  // --- Les épaules ---------------------------------------------------------
+  for (let y = basVisage + 1; y < N; y += 1) {
+    for (let x = 0; x < half; x += 1) {
+      const dx = half - 1 - x;
+      if (dx > joue + 2) continue;
+      if (y === basVisage + 1 && dx > joue) continue;
+      poser(x, y, traits.coat ?? traits.outfit);
+    }
+  }
+  // Un col, pour que les épaules ne soient pas un bloc.
+  for (let dx = 0; dx <= 1; dx += 1) poser(half - 1 - dx, basVisage + 1, traits.skin);
 
   return grid;
 }
@@ -324,12 +452,29 @@ export function spriteTraits(subject: PortraitSubject): SpriteTraits {
     };
   }
 
-  // --- Repli : le tirage d'avant, conservé tel quel ------------------------
-  //
-  // Il ne sert plus qu'aux personnages sans signature. Aujourd'hui il n'y en a
-  // aucun parmi les Légendaires et les Mythiques — mais une carte promue à ce
-  // rang doit continuer d'avoir une figurine, quitte à ce qu'elle soit
-  // générique, plutôt que de faire une page blanche.
+  /*
+   * --- Repli déterministe -------------------------------------------------
+   *
+   * Il sert aux cent quarante-neuf cartes Épiques dont l'apparence n'est pas
+   * décrite, et à toute carte qui serait promue à un rang dessiné sans avoir
+   * de signature.
+   *
+   * L'ancienne version ne tirait que trois champs — carrure, coupe parmi
+   * trois, accessoire — et laissait tout le reste figé : même visage, même
+   * regard, aucune marque, aucun couvre-chef. Cent quarante-neuf portraits
+   * pour un seul dessin décliné en couleurs, ce qui était exactement le défaut
+   * corrigé un cran plus haut chez les Légendaires.
+   *
+   * Il tire maintenant **tout ce que le dessin sait rendre**. Ce n'est pas une
+   * description — personne n'a décrit ces personnages — mais deux cartes
+   * différentes donnent deux portraits différents, ce qui est le minimum
+   * qu'on leur doit.
+   *
+   * Les probabilités ne sont pas uniformes : « rien » revient plusieurs fois
+   * dans les listes de couvre-chefs et de marques. Une population où trois
+   * personnages sur quatre portent un chapeau ne ressemble pas à une
+   * population, elle ressemble à un défilé.
+   */
   const random = rngOf(seedOf(subject.id) ^ 0x1d0f);
   const ids = new Set(subject.attributes.map((a) => a.id));
 
@@ -339,32 +484,45 @@ export function spriteTraits(subject: PortraitSubject): SpriteTraits {
       ? 'broad'
       : pick<Build>(['slim', 'broad'], random());
 
-  const head: Headwear = ids.has('pirate') && random() > 0.55 ? 'brim' : 'none';
-  const cut: Cut = pick<Cut>(['short', 'long', 'spiky'], random());
+  // Ce que les attributs savent réellement dire prime sur le tirage : un
+  // épéiste tient une lame, un pirate porte plus souvent un couvre-chef.
+  const head: Headwear = ids.has('pirate')
+    ? pick<Headwear>(['none', 'brim', 'bandana', 'cap', 'tricorne'], random())
+    : pick<Headwear>(['none', 'none', 'none', 'cap', 'bandana'], random());
 
   const prop: Prop = ids.has('sword')
     ? 'sword'
     : ids.has('fruit') || ids.has('logia') || ids.has('paramecia') || ids.has('zoan')
       ? 'staff'
-      : 'none';
+      : pick<Prop>(['none', 'none', 'none', 'gun', 'knives'], random());
+
+  const teinteCheveux = pick(HAIR, random());
 
   return {
     build,
-    cut,
+    cut: pick<Cut>(
+      ['short', 'short', 'long', 'spiky', 'wavy', 'ponytail', 'afro', 'bald'],
+      random(),
+    ),
     head,
-    mark: 'none',
+    mark: pick<Mark>(
+      ['none', 'none', 'none', 'none', 'beard', 'moustache', 'goatee', 'glasses', 'scar-eye'],
+      random(),
+    ),
     prop,
-    hair: pick(HAIR, random()),
+    hair: teinteCheveux,
     skin: pick(SKIN, random()),
     outfit: pick(OUTFIT, random()),
     coat: null,
-    accessory: pick(OUTFIT, random()),
+    // L'accessoire doit trancher avec la tenue, sinon le chapeau disparaît sur
+    // les épaules qui le portent : on le tire dans une gamme claire.
+    accessory: pick(['#e8e2d4', '#d8b04a', '#2a2a33', '#8a94a4'], random()),
     frame: 'human',
     extras: [],
-    face: 'round',
-    eyes: 'normal',
-    brow: 'neutral',
-    height: 'normal',
+    face: pick<Face>(['round', 'round', 'square', 'long', 'sharp'], random()),
+    eyes: pick<Eyes>(['normal', 'normal', 'sharp', 'narrow', 'wide'], random()),
+    brow: pick<Brow>(['neutral', 'neutral', 'fierce', 'calm', 'arched'], random()),
+    height: pick<Height>(['normal', 'normal', 'normal', 'short', 'tall'], random()),
     effects,
     named: false,
   };

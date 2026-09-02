@@ -14,6 +14,9 @@ const HEROS = CHARACTERS.filter(
   (c) => c.rarity === 'LEGENDARY' || c.rarity === 'MYTHIC',
 );
 
+/** Un échantillon d'Épiques : décrits et repli mêlés, pour comparer les deux. */
+const EPIQUES = CHARACTERS.filter((c) => c.rarity === 'EPIC').slice(0, 40);
+
 export const dynamic = 'force-dynamic';
 
 /** Page de vérification visuelle, indisponible hors développement. */
@@ -101,6 +104,28 @@ export default function PreviewChestPage() {
             <p className="mt-1 text-[10px] leading-tight text-parchment/80">{hero.name}</p>
             <p className="text-[9px] leading-tight text-parchment/45">
               {signatureOf(hero.id)?.note}
+            </p>
+          </li>
+        ))}
+      </ul>
+
+      {/*
+        Les portraits en pixels des Épiques.
+
+        Même raison que pour les figurines : la monotonie ne se voit jamais
+        carte par carte. Trente suffisent à juger — au-delà, la page devient
+        elle-même illisible.
+      */}
+      <h2 className="mt-10 font-display text-2xl text-parchment">
+        Portraits — Épiques
+      </h2>
+      <ul className="mt-4 grid grid-cols-4 gap-2 md:grid-cols-6 xl:grid-cols-8">
+        {EPIQUES.map((c) => (
+          <li key={c.id} className="rounded-lg border border-turquoise/20 bg-navy/40 p-1">
+            <CharacterArt characterId={c.id} rarity={c.rarity} attributes={[]} />
+            <p className="mt-1 text-[9px] leading-tight text-parchment/75">{c.name}</p>
+            <p className="text-[8px] leading-tight text-parchment/40">
+              {signatureOf(c.id) ? 'décrit' : 'repli'}
             </p>
           </li>
         ))}

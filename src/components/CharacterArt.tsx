@@ -5,10 +5,8 @@ import {
   PIXEL_GRID,
   artLevelOf,
   emojiFor,
-  paletteOf,
   pixelPortrait,
   spriteTraits,
-  type PortraitPalette,
   type PortraitSubject,
   type SpriteTraits,
 } from '@/domain/collection/portrait';
@@ -29,13 +27,7 @@ import { signatureOf } from '@/domain/collection/signatures';
  */
 
 /** Portrait en pixels — Épique. */
-function PixelPortrait({
-  grid,
-  palette,
-}: {
-  grid: (string | null)[][];
-  palette: PortraitPalette;
-}) {
+function PixelPortrait({ grid, accent }: { grid: (string | null)[][]; accent: string }) {
   return (
     <svg
       viewBox={`0 0 ${PIXEL_GRID} ${PIXEL_GRID}`}
@@ -47,7 +39,7 @@ function PixelPortrait({
       // l'effet recherché.
       shapeRendering="crispEdges"
     >
-      <rect width={PIXEL_GRID} height={PIXEL_GRID} fill={palette.accent} opacity="0.14" />
+      <rect width={PIXEL_GRID} height={PIXEL_GRID} fill={accent} opacity="0.14" />
       {grid.map((row, y) =>
         row.map((colour, x) =>
           colour === null ? null : (
@@ -1090,10 +1082,7 @@ export function CharacterArt({
         </span>
       )}
       {level === 'pixel' && (
-        <PixelPortrait
-          grid={pixelPortrait(subject, paletteOf(subject, RARITY_COLOR[rarity]))}
-          palette={paletteOf(subject, RARITY_COLOR[rarity])}
-        />
+        <PixelPortrait grid={pixelPortrait(spriteTraits(subject))} accent={RARITY_COLOR[rarity]} />
       )}
       {level === 'sprite' && (
         <SpriteFigure traits={spriteTraits(subject)} accent={RARITY_COLOR[rarity]} />
