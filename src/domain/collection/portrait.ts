@@ -4,6 +4,8 @@ import {
   signatureOf,
   type Build,
   type Cut,
+  type Extra,
+  type Frame,
   type Headwear,
   type Mark,
   type Prop,
@@ -215,7 +217,7 @@ export function pixelPortrait(
 // Légendaire et Mythique — figurine
 // ---------------------------------------------------------------------------
 
-export type { Build as SpriteBuild, Cut, Headwear, Mark, Prop } from './signatures';
+export type { Build as SpriteBuild, Cut, Extra, Frame, Headwear, Mark, Prop } from './signatures';
 
 /**
  * Traits de la figurine — Légendaire et Mythique.
@@ -250,6 +252,16 @@ export interface SpriteTraits {
   coat: string | null;
   /** Couleur du couvre-chef. Jamais celle de la rareté — voir `signatures.ts`. */
   accessory: string;
+  /**
+   * Plan du corps.
+   *
+   * Tout le monde était dessiné sur le patron humain, ce qui donnait un petit
+   * bonhomme à casquette rose pour un renne et un homme au visage de crâne pour
+   * un squelette. Aucune couleur ne rattrape une silhouette fausse.
+   */
+  frame: Frame;
+  /** Détails ajoutés au patron : long nez, bois, ailes, bras mécanique… */
+  extras: readonly Extra[];
   /** Effets réservés au Mythique : aura et éclats. */
   effects: boolean;
   /** Les traits viennent-ils d'une signature écrite, ou du repli ? */
@@ -272,6 +284,8 @@ export function spriteTraits(subject: PortraitSubject): SpriteTraits {
       outfit: signature.outfit,
       coat: signature.coat ?? null,
       accessory: signature.accessory ?? signature.coat ?? signature.outfit,
+      frame: signature.frame ?? 'human',
+      extras: signature.extras ?? [],
       effects,
       named: true,
     };
@@ -312,6 +326,8 @@ export function spriteTraits(subject: PortraitSubject): SpriteTraits {
     outfit: pick(OUTFIT, random()),
     coat: null,
     accessory: pick(OUTFIT, random()),
+    frame: 'human',
+    extras: [],
     effects,
     named: false,
   };

@@ -396,6 +396,268 @@ function Arme({ traits, accent }: { traits: SpriteTraits; accent: string }) {
   }
 }
 
+/* ---------------------------------------------------------------------------
+   Les détails ajoutés au patron.
+
+   Ils sont répartis en quatre groupes, et l'ordre de tracé n'est pas
+   indifférent : ce qui passe derrière la figurine — cape, ailes — doit être
+   posé avant elle, ce qui se pose sur le torse après lui, et ce qui touche au
+   visage tout à la fin.
+   --------------------------------------------------------------------------- */
+
+/** Ce qui passe **derrière** la figurine. */
+function ExtrasArriere({ traits }: { traits: SpriteTraits }) {
+  const a = new Set(traits.extras);
+  return (
+    <>
+      {a.has('cape') && (
+        <path d="M20 30q12-6 24 0l7 32q-19 5-38 0Z" fill={traits.coat ?? '#1b1b22'} opacity="0.9" />
+      )}
+      {a.has('wings') && (
+        <g fill={traits.coat ?? '#15151c'} opacity="0.85">
+          <path d="M22 30 4 20q-2 18 14 24Z" />
+          <path d="M42 30 60 20q2 18-14 24Z" />
+        </g>
+      )}
+    </>
+  );
+}
+
+/** Ce qui se pose sur le torse. */
+function ExtrasTorse({ traits, shoulders }: { traits: SpriteTraits; shoulders: number }) {
+  const a = new Set(traits.extras);
+  const g = 32 - shoulders / 2;
+  const d = 32 + shoulders / 2;
+
+  return (
+    <>
+      {/* Torse nu : on repeint le buste à la couleur de peau et on garde la
+          tenue en bas. Sans quoi Barbe Blanche et Kaidô portent une chemise. */}
+      {a.has('bare-chest') && (
+        <>
+          <path d={`M${g} 30 L${d} 30 L${d + 1} 46 L${g - 1} 46 Z`} fill={traits.skin} />
+          <path d="M27 34q5 4 10 0" fill="none" stroke="#00000033" strokeWidth="1.2" />
+        </>
+      )}
+      {/* Gilet ou chemise ouverte : deux pans, et la peau entre les deux. */}
+      {a.has('open-vest') && (
+        <>
+          <path d="M28 30 L36 30 L35 48 L29 48 Z" fill={traits.skin} />
+          <path d={`M${g} 30 L29 30 L28 52 L${g - 1} 52 Z`} fill={traits.outfit} />
+          <path d={`M35 30 L${d} 30 L${d + 1} 52 L36 52 Z`} fill={traits.outfit} />
+        </>
+      )}
+      {/* Ceinture ventrale : une bande large en bas du torse. */}
+      {a.has('haramaki') && (
+        <rect x={g} y="44" width={shoulders} height="9" rx="1.5" fill={traits.accessory} />
+      )}
+      {a.has('fur-collar') && (
+        <path d={`M${g - 2} 31q10-6 20 0-4 6-10 6t-10-6Z`} fill="#c9bda6" />
+      )}
+      {/* Manteau de plumes : une frange dentelée sur les épaules, qui est ce
+          qu'on en voit en vignette. */}
+      {a.has('feather-coat') && (
+        <path
+          d={`M${g - 4} 30 L${d + 4} 30 L${d + 5} 40 l-4-4-4 5-4-5-4 5-4-5-4 5-4-4Z`}
+          fill={traits.coat ?? '#e87aa8'}
+        />
+      )}
+      {/* Manteau porté sur les épaules, manches vides : la silhouette de la
+          Marine. */}
+      {a.has('coat-shoulders') && (
+        <>
+          <path d={`M${g - 3} 29 L${d + 3} 29 L${d + 5} 56 L${d - 1} 56 L${d - 2} 34 Z`} fill="#f0ede4" />
+          <path d={`M${g - 3} 29 L${g + 2} 34 L${g + 1} 56 L${g - 5} 56 Z`} fill="#f0ede4" />
+        </>
+      )}
+      {/* Côtes : un squelette n'a pas de torse plein. */}
+      {a.has('ribs') && (
+        <g stroke={traits.skin} strokeWidth="1.4" strokeLinecap="round" fill="none">
+          {[34, 38, 42].map((y) => (
+            <path key={y} d={`M27 ${y}h10`} />
+          ))}
+          <path d="M32 31v14" strokeWidth="1.8" />
+        </g>
+      )}
+      {/* Nageoires d'avant-bras : la marque de l'homme-poisson. */}
+      {a.has('fins') && (
+        <g fill={traits.skin} opacity="0.9">
+          <path d={`M${g - 5} 38 l-5 6 5 3Z`} />
+          <path d={`M${d + 5} 38 l5 6-5 3Z`} />
+        </g>
+      )}
+    </>
+  );
+}
+
+/** Ce qui touche au visage et à la tête. */
+function ExtrasTete({ traits }: { traits: SpriteTraits }) {
+  const a = new Set(traits.extras);
+  return (
+    <>
+      {/* Crinière : une masse derrière et autour du visage. */}
+      {a.has('mane') && (
+        <path
+          d="M19 20q0-16 13-16t13 16q0 10-4 14 2-10-9-10t-9 10q-4-4-4-14Z"
+          fill={traits.hair}
+          opacity="0.9"
+        />
+      )}
+      {a.has('antlers') && (
+        <g stroke="#b98a52" strokeWidth="2" fill="none" strokeLinecap="round">
+          <path d="M26 8 22 1M24 4.6 19.5 4M38 8 42 1M40 4.6 44.5 4" />
+        </g>
+      )}
+      {a.has('long-nose') && (
+        <path d="M41 19q10 1.5 12 3-12 3.5-12 2Z" fill={traits.skin} stroke="#00000022" strokeWidth="0.6" />
+      )}
+      {a.has('clown-nose') && <circle cx="32" cy="21.5" r="3" fill="#d0342c" />}
+      {a.has('sawnose') && (
+        <path d="M41 20 55 21l-2 2 2 2-2 2 2 2-14 1Z" fill={traits.skin} stroke="#00000033" strokeWidth="0.5" />
+      )}
+      {a.has('sharp-teeth') && (
+        <path d="M26 24h12l-1.5 3-1.5-2-1.5 2-1.5-2-1.5 2-1.5-2-1.5 2Z" fill="#f2efe6" />
+      )}
+      {a.has('tusks') && (
+        <g fill="#e6e0d0">
+          <path d="M27 24q-2 5 0 7 2-3 2-7Z" />
+          <path d="M37 24q2 5 0 7-2-3-2-7Z" />
+        </g>
+      )}
+    </>
+  );
+}
+
+/** Ce qui se perche sur une épaule. */
+function ExtrasEpaule({ traits, shoulders }: { traits: SpriteTraits; shoulders: number }) {
+  const a = new Set(traits.extras);
+  const d = 32 + shoulders / 2;
+  return (
+    <>
+      {a.has('pigeon') && (
+        <g>
+          <ellipse cx={d + 2} cy="26" rx="4.5" ry="3.4" fill="#e2e6ec" />
+          <circle cx={d + 5.6} cy="23.6" r="2.4" fill="#e2e6ec" />
+          <path d={`M${d + 7.6} 23.4 l3 0.8-3 1Z`} fill="#d8a03a" />
+          <circle cx={d + 6.2} cy="23.2" r="0.6" fill="#171a20" />
+        </g>
+      )}
+      {a.has('snake') && (
+        <path
+          d={`M${32 - shoulders / 2 - 2} 30q-8 4-4 10t10 2`}
+          fill="none"
+          stroke="#7a9a4a"
+          strokeWidth="2.6"
+          strokeLinecap="round"
+        />
+      )}
+    </>
+  );
+}
+
+/** Les bras : entiers, mécaniques, ou manquants. */
+function Bras({ traits, shoulders }: { traits: SpriteTraits; shoulders: number }) {
+  const a = new Set(traits.extras);
+  const etoffe = traits.coat ?? traits.outfit;
+  const metal = '#9aa6b8';
+  const gaucheEstMetal = a.has('metal-arm') || a.has('metal-arms');
+
+  return (
+    <>
+      {!a.has('missing-arm') && (
+        <rect
+          x={32 - shoulders / 2 - 4}
+          y="31"
+          width="4"
+          height="20"
+          rx="2"
+          fill={gaucheEstMetal ? metal : etoffe}
+        />
+      )}
+      <rect
+        x={32 + shoulders / 2}
+        y="31"
+        width="4"
+        height="20"
+        rx="2"
+        fill={a.has('metal-arms') ? metal : etoffe}
+      />
+      {/* Un avant-bras mécanique est plus **épais** que l'autre : c'est la
+          différence de section qui se lit en vignette, pas la teinte. */}
+      {gaucheEstMetal && (
+        <rect x={32 - shoulders / 2 - 5.5} y="38" width="7" height="13" rx="2" fill={metal} />
+      )}
+      {a.has('metal-arms') && (
+        <rect x={32 + shoulders / 2 - 1.5} y="38" width="7" height="13" rx="2" fill={metal} />
+      )}
+      {/* Une manche vide plutôt qu'un moignon : c'est ainsi qu'on lit un bras
+          perdu sans dessiner de blessure. */}
+      {a.has('missing-arm') && (
+        <path
+          d={`M${32 - shoulders / 2 - 3} 31 L${32 - shoulders / 2 + 1} 31 L${32 - shoulders / 2} 40 L${32 - shoulders / 2 - 4} 39 Z`}
+          fill={etoffe}
+        />
+      )}
+    </>
+  );
+}
+
+/** La tête, selon le plan du corps. */
+function Tete({ traits }: { traits: SpriteTraits }) {
+  const { frame, skin } = traits;
+
+  if (frame === 'reindeer') {
+    return (
+      <>
+        {/* Oreilles avant la tête, pour qu'elles passent dessous. */}
+        <ellipse cx="21" cy="17" rx="4" ry="2.6" fill={skin} />
+        <ellipse cx="43" cy="17" rx="4" ry="2.6" fill={skin} />
+        <ellipse cx="32" cy="17" rx="9.5" ry="9" fill={skin} />
+        {/* Museau : c'est lui qui fait le renne. Une tête ronde seule reste un
+            visage d'enfant. */}
+        <ellipse cx="32" cy="22.5" rx="6" ry="4" fill="#e8d2b0" />
+        <ellipse cx="32" cy="21.6" rx="2" ry="1.5" fill="#3a2a22" />
+      </>
+    );
+  }
+
+  if (frame === 'skeleton') {
+    return (
+      <>
+        <ellipse cx="32" cy="17" rx="8.5" ry="9.5" fill={skin} />
+        {/* Mâchoire : un crâne sans mâchoire lit comme un œuf. */}
+        <path d="M25 23q7 7 14 0v3q-7 6-14 0Z" fill={skin} />
+      </>
+    );
+  }
+
+  if (frame === 'fishman') {
+    return (
+      <>
+        <ellipse cx="32" cy="18" rx="9.5" ry="10" fill={skin} />
+        {/* Branchies : trois fentes sur la joue. */}
+        <g stroke="#00000044" strokeWidth="1" strokeLinecap="round">
+          <path d="M23.5 20h3M23.2 22.4h3M23.6 24.6h3" />
+        </g>
+      </>
+    );
+  }
+
+  if (frame === 'bear') {
+    return (
+      <>
+        <circle cx="23" cy="10" r="4" fill={skin} />
+        <circle cx="41" cy="10" r="4" fill={skin} />
+        <ellipse cx="32" cy="18" rx="10" ry="10" fill={skin} />
+      </>
+    );
+  }
+
+  // Humain et oni : la même tête ; l'oni se distingue par ses cornes, sa
+  // crinière et sa carrure, qui sont posées ailleurs.
+  return <ellipse cx="32" cy="18" rx="9" ry="10" fill={skin} />;
+}
+
 /** Figurine en pied — Légendaire et Mythique. */
 function SpriteFigure({ traits, accent }: { traits: SpriteTraits; accent: string }) {
   // La carrure ne change que deux nombres : la largeur du torse et celle des
@@ -404,6 +666,10 @@ function SpriteFigure({ traits, accent }: { traits: SpriteTraits; accent: string
   const torso = traits.build === 'giant' ? 21 : traits.build === 'broad' ? 17 : 13;
   const shoulders = torso + 6;
   const clothId = `cloth-${traits.outfit.slice(1)}`;
+
+  // Un renne de la taille d'un enfant : le plan du corps change aussi
+  // l'échelle, pas seulement les formes.
+  const echelle = traits.frame === 'reindeer' ? 0.78 : 1;
 
   return (
     <svg viewBox="0 0 64 80" className="hb-art__svg" aria-hidden="true" focusable="false">
@@ -435,70 +701,66 @@ function SpriteFigure({ traits, accent }: { traits: SpriteTraits; accent: string
         </>
       )}
 
-      {/* Jambes */}
-      <rect x={32 - torso / 2 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill="#2b2f38" />
-      <rect x={32 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill="#2b2f38" />
+      <g transform={echelle === 1 ? undefined : `translate(32 70) scale(${echelle}) translate(-32 -70)`}>
+        <ExtrasArriere traits={traits} />
 
-      {/* Torse, puis manteau ouvert par-dessus. Le manteau tombe plus bas et
-          s'évase : une veste droite donnerait une boîte. */}
-      <path
-        d={`M${32 - shoulders / 2} 30 L${32 + shoulders / 2} 30 L${32 + shoulders / 2 + 3} 58 L${32 - shoulders / 2 - 3} 58 Z`}
-        fill={`url(#${clothId})`}
-      />
-      {traits.coat && (
-        <>
-          <path
-            d={`M${32 - shoulders / 2} 30 L${32 - 3} 30 L${32 - 4} 58 L${32 - shoulders / 2 - 3} 58 Z`}
-            fill={traits.coat}
-          />
-          <path
-            d={`M${32 + 3} 30 L${32 + shoulders / 2} 30 L${32 + shoulders / 2 + 3} 58 L${32 + 4} 58 Z`}
-            fill={traits.coat}
-          />
-        </>
-      )}
+        {/* Jambes */}
+        <rect x={32 - torso / 2 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill="#2b2f38" />
+        <rect x={32 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill="#2b2f38" />
 
-      {/* Bras */}
-      <rect
-        x={32 - shoulders / 2 - 4}
-        y="31"
-        width="4"
-        height="20"
-        rx="2"
-        fill={traits.coat ?? traits.outfit}
-      />
-      <rect
-        x={32 + shoulders / 2}
-        y="31"
-        width="4"
-        height="20"
-        rx="2"
-        fill={traits.coat ?? traits.outfit}
-      />
-
-      {/* Le crochet remplace la main gauche : c'est le seul accessoire qui
-          tient lieu de membre, il ne peut donc pas aller avec les autres. */}
-      {traits.prop === 'hook' && (
+        {/* Torse, puis manteau ouvert par-dessus. Le manteau tombe plus bas et
+            s'évase : une veste droite donnerait une boîte. */}
         <path
-          d={`M${32 - shoulders / 2 - 2} 51q0 7 5 7t3-5`}
-          fill="none"
-          stroke="#c9ced8"
-          strokeWidth="2.2"
-          strokeLinecap="round"
+          d={`M${32 - shoulders / 2} 30 L${32 + shoulders / 2} 30 L${32 + shoulders / 2 + 3} 58 L${32 - shoulders / 2 - 3} 58 Z`}
+          fill={`url(#${clothId})`}
         />
-      )}
+        {traits.coat && (
+          <>
+            <path
+              d={`M${32 - shoulders / 2} 30 L29 30 L28 58 L${32 - shoulders / 2 - 3} 58 Z`}
+              fill={traits.coat}
+            />
+            <path
+              d={`M35 30 L${32 + shoulders / 2} 30 L${32 + shoulders / 2 + 3} 58 L36 58 Z`}
+              fill={traits.coat}
+            />
+          </>
+        )}
 
-      <ArriereChevelure traits={traits} />
+        <Bras traits={traits} shoulders={shoulders} />
+        <ExtrasTorse traits={traits} shoulders={shoulders} />
 
-      {/* Cou et tête */}
-      <rect x="30" y="24" width="4" height="6" fill={traits.skin} />
-      <ellipse cx="32" cy="18" rx="9" ry="10" fill={traits.skin} />
+        {/* Le crochet remplace la main gauche : c'est le seul accessoire qui
+            tient lieu de membre, il ne peut donc pas aller avec les autres. */}
+        {traits.prop === 'hook' && (
+          <path
+            d={`M${32 - shoulders / 2 - 2} 51q0 7 5 7t3-5`}
+            fill="none"
+            stroke="#c9ced8"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+          />
+        )}
 
-      <Frange traits={traits} />
-      <Couvrechef traits={traits} accent={accent} />
-      <Regard traits={traits} />
-      <Marque traits={traits} />
-      <Arme traits={traits} accent={accent} />
+        <ArriereChevelure traits={traits} />
+
+        {/* Cou : un squelette n'en a d'autre qu'une vertèbre. */}
+        {traits.frame === 'skeleton' ? (
+          <rect x="31" y="24" width="2" height="6" fill={traits.skin} />
+        ) : (
+          <rect x="30" y="24" width="4" height="6" fill={traits.skin} />
+        )}
+
+        <Tete traits={traits} />
+
+        <Frange traits={traits} />
+        <ExtrasTete traits={traits} />
+        <Couvrechef traits={traits} accent={accent} />
+        <Regard traits={traits} />
+        <Marque traits={traits} />
+        <ExtrasEpaule traits={traits} shoulders={shoulders} />
+        <Arme traits={traits} accent={accent} />
+      </g>
     </svg>
   );
 }
