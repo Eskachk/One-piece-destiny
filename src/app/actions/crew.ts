@@ -47,7 +47,26 @@ export async function saveCrew(characterIds: unknown): Promise<SaveCrewResult> {
   }
 
   const repository = getRepository();
-  const chapter = await repository.getCurrentChapter();
+
+  /*
+   * Le chapitre et l'inventaire partent **ensemble**.
+   *
+   * Ils étaient enchaînés, séparés par les contrôles de verrouillage. Or aucun
+   * des deux ne dépend de l'autre : le chapitre vient du cache partagé,
+   * l'inventaire ne dépend que de `session.playerId`, connu depuis la ligne
+   * précédente. En série, la page paie la somme des latences ; en parallèle, le
+   * maximum — et un aller-retour vers Supabase coûte bien plus que tout le
+   * reste de cette fonction.
+   *
+   * L'ordre des **contrôles** ne bouge pas : chapitre ouvert, puis verrouillage,
+   * puis propriété. Ce sont deux choses distinctes — quand on lit n'est pas
+   * quand on décide.
+   */
+  const [chapter, ownedIds] = await Promise.all([
+    repository.getCurrentChapter(),
+    repository.getOwnedCharacterIds(session.playerId),
+  ]);
+
   if (!chapter) {
     return { ok: false, error: 'Aucun chapitre n\'est ouvert aux prédictions.' };
   }
@@ -66,7 +85,7 @@ export async function saveCrew(characterIds: unknown): Promise<SaveCrewResult> {
   // Propriété vérifiée **côté serveur**. La liste affichée par le navigateur
   // n'est qu'un confort : une requête forgée peut nommer n'importe quel
   // personnage du référentiel, et seul ce contrôle l'en empêche.
-  const owned = new Set(await repository.getOwnedCharacterIds(session.playerId));
+  const owned = new Set(ownedIds);
   const notOwned = ids.filter((id) => !owned.has(id));
 
   if (notOwned.length > 0) {
@@ -86,14 +105,30 @@ export async function saveCrew(characterIds: unknown): Promise<SaveCrewResult> {
   // fera pas : c'est donc le bon moment pour récompenser celui qui l'a amené.
   // L'échec de ce versement n'a rien à voir avec l'enregistrement de
   // l'équipage, qui est déjà acquis — il ne doit pas le faire échouer.
-  await recordEvent(session.playerId, 'FIRST_CREW_LOCKED', {
-    chapterId: chapter.id,
-  });
+  /*
+   * Journal anti-abus et versement du parrain : **en parallèle**, et après
+   * l'enregistrement.
+   *
+   * Après, parce que la maturité du filleul se mesure au nombre de chapitres
+   * joués : compter avant l'écriture manquerait celui qu'on vient de faire.
+   *
+   * En parallèle l'un de l'autre, parce qu'ils ne se lisent pas entre eux — le
+   * journal enregistre un fait, le versement lit un état.
+   *
+   * Ni l'un ni l'autre ne doit faire échouer la réponse : l'équipage est déjà
+   * enregistré en base, et un joueur à qui l'on répond « échec » sur un
+   * équipage bien verrouillé le rejouerait — ou pire, croirait l'avoir perdu.
+   */
+  const [journal, versement] = await Promise.allSettled([
+    recordEvent(session.playerId, 'FIRST_CREW_LOCKED', { chapterId: chapter.id }),
+    payReferrerOnFirstCrew(session.playerId),
+  ]);
 
-  try {
-    await payReferrerOnFirstCrew(session.playerId);
-  } catch (error) {
-    console.warn('[referral] PAYOUT_FAILED', (error as Error).message);
+  if (journal.status === 'rejected') {
+    console.warn('[antiabuse] EVENT_FAILED', String(journal.reason));
+  }
+  if (versement.status === 'rejected') {
+    console.warn('[referral] PAYOUT_FAILED', String(versement.reason));
   }
 
   revalidatePath('/');

@@ -160,7 +160,39 @@ et finissent dans l'historique du terminal.
 - **Le déploiement réel.** Latence réseau, démarrage à froid des fonctions,
   limites de connexions Supabase : rien de tout cela n'existe sur localhost, et
   la latence vers la base y sera bien plus faible.
-- **Les écritures.** Verrouillage d'équipage, achat au Marché, ouverture de
-  coffre passent par des transactions en base et n'ont pas été mises sous
-  charge. C'est là que se trouvent les vrais points de contention, pas dans la
-  lecture.
+- **Le tir de charge de bout en bout sur une écriture**, pour la même raison :
+  verrouiller un équipage exige une session. Le coût unitaire, lui, est
+  mesuré — voir ci-dessous.
+
+## Écritures
+
+Mesurée sur une clé de sonde de `app_settings` (supprimée après coup, aucune
+donnée de joueur touchée), une écriture coûte **exactement ce que coûte une
+lecture** : 213 ms de p50 à 10 clients, contre 209 ms pour la lecture de
+session. Ce n'est pas le disque qui décide, c'est le réseau.
+
+Conséquence directe : sur les chemins d'écriture aussi, le seul levier est le
+**nombre d'allers-retours en série**. Trois ont été aplatis :
+
+| chemin | avant | après |
+|---|---:|---:|
+| verrouillage d'équipage | 6 | **4** |
+| versement au parrain | 4 | **2** |
+| achat au Marché | 5 | **4** |
+
+Le verrouillage lisait le chapitre puis l'inventaire, alors qu'aucun ne dépend
+de l'autre ; puis il journalisait l'événement anti-abus **avant** de verser au
+parrain, alors que ni l'un ni l'autre ne se lit. Le versement enchaînait
+libération de la dotation, lecture du parrain, plafond et maturité — quatre
+lectures dont deux paires indépendantes. L'achat lisait l'annonce puis le droit
+d'acheter, qui ne dépend que du joueur.
+
+Dans les trois cas, **l'ordre des refus n'a pas bougé** : annonce introuvable
+avant compte restreint, chapitre ouvert avant verrouillage. Quand on lit n'est
+pas quand on décide — et c'est précisément ce qui rend la mise en parallèle
+sûre.
+
+Le journal anti-abus et le versement passent par `Promise.allSettled` : ni l'un
+ni l'autre ne doit faire échouer la réponse. L'équipage est déjà enregistré en
+base, et répondre « échec » sur un équipage bien verrouillé pousserait le
+joueur à le rejouer — ou à croire qu'il l'a perdu.

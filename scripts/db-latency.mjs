@@ -22,10 +22,13 @@
  * **déjà saturé**. Seule la courbe distingue la latence d'un aller-retour de la
  * file d'attente qui se forme devant.
  *
- * ## Écriture : aucune
+ * ## Ce que le script touche
  *
- * Toutes les requêtes sont des lectures. Le script ne crée, ne modifie et ne
- * supprime rien.
+ * Des lectures, et **une seule écriture** : un `upsert` sur la clé de sonde
+ * `_sonde_latence` de `app_settings`, supprimée à la fin. Aucune donnée de
+ * joueur n'est modifiée — un banc d'essai n'a rien à faire dans l'économie du
+ * jeu, et mesurer une écriture sur `wallets` reviendrait à créditer quelqu'un
+ * pour voir combien de temps ça prend.
  */
 
 import { createClient } from '@supabase/supabase-js';
@@ -130,6 +133,23 @@ const REQUETES = (playerId, tokenHash) => [
     note: 'Profil : division, saison, style de jeu.',
     executer: () =>
       db.from('weekly_profiles').select('chapter_id, total').eq('player_id', playerId).limit(60),
+  },
+  {
+    // Écriture, sur une table de réglages faite pour ça : `app_settings` porte
+    // une clé de sonde qui n'est lue par aucun code. Mesurer une écriture sur
+    // `wallets` ou `teams` toucherait des données de joueurs — un banc d'essai
+    // n'a rien à faire dans l'économie du jeu.
+    nom: 'écriture (upsert)',
+    note: 'Coût d’un aller-retour en écriture, à comparer aux lectures.',
+    executer: () =>
+      db.from('app_settings').upsert(
+        {
+          key: '_sonde_latence',
+          value: { at: Date.now() },
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: 'key' },
+      ),
   },
   {
     nom: 'notifications non lues',
@@ -248,6 +268,9 @@ async function main() {
       `Débit maximal de la base     : ${plafond.parSeconde.toFixed(0)} req/s ` +
       `a ${plafond.concurrence} clients\n`,
   );
+
+  // La sonde d'écriture ne laisse rien derrière elle.
+  await db.from('app_settings').delete().eq('key', '_sonde_latence');
 
   const enErreur = resultats.filter((r) => r.erreurs > 0);
   if (enErreur.length > 0) {

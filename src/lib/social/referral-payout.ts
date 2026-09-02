@@ -51,20 +51,32 @@ export async function payReferrerOnFirstCrew(
   //
   // La fonction en base est idempotente (verrou de ligne + remise à zéro) :
   // l'appeler à chaque enregistrement d'équipage ne crédite qu'une fois.
-  await releasePendingBerries(playerId);
+  //
+  // La libération et la lecture du parrain partent **ensemble** : elles ne se
+  // lisent pas l'une l'autre. La première crédite le joueur, la seconde
+  // regarde qui l'a amené.
+  const [, referrerId] = await Promise.all([
+    releasePendingBerries(playerId),
+    pendingReferrerOf(playerId),
+  ]);
 
-  const referrerId = await pendingReferrerOf(playerId);
   if (!referrerId) return;
 
   // Plafond atteint : le lien reste enregistré, mais il ne rapporte plus. On
   // laisse la ligne en attente plutôt que de la consommer pour rien.
-  if ((await rewardedReferralCount(referrerId)) >= MAX_REWARDED_REFERRALS) {
-    return;
-  }
+  //
+  // Plafond et maturité se lisent ensemble : deux refus indépendants, dont
+  // aucun ne conditionne l'autre. Les enchaîner faisait payer deux
+  // allers-retours pour une décision qui n'en demande qu'un.
+  const [rewarded, maturity] = await Promise.all([
+    rewardedReferralCount(referrerId),
+    referralMaturityOf(playerId, referrerId),
+  ]);
+
+  if (rewarded >= MAX_REWARDED_REFERRALS) return;
 
   // Le filleul a-t-il assez joué ? Sans ce contrôle, fabriquer un compte et
   // cliquer trois personnages suffisait à encaisser 800 Berries.
-  const maturity = await referralMaturityOf(playerId, referrerId);
   if (!evaluateReferralPayout(maturity).pay) return;
 
   const claimed = await confirmReferral(playerId);

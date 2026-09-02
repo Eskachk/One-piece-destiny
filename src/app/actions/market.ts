@@ -167,13 +167,26 @@ export async function buyListingAction(
   const parsed = z.string().uuid().safeParse(listingId);
   if (!parsed.success) return { ok: false, error: 'Annonce introuvable.' };
 
-  const listing = await market.getListing(parsed.data);
+  /*
+   * L'annonce et le droit d'acheter se lisent **ensemble** : l'une dépend de
+   * l'identifiant reçu, l'autre du seul joueur. Les enchaîner faisait payer
+   * deux allers-retours vers Supabase là où un seul suffit — et sur le chemin
+   * d'un achat, chaque aller-retour est du temps pendant lequel l'annonce peut
+   * partir chez quelqu'un d'autre.
+   *
+   * L'ordre des **refus** ne bouge pas : annonce introuvable d'abord, compte
+   * restreint ensuite. Quand on lit n'est pas quand on décide.
+   */
+  const [listing, buyGate] = await Promise.all([
+    market.getListing(parsed.data),
+    // Un compte restreint ne peut pas acheter non plus : sans cela, la
+    // restriction n'empêcherait que le sens sortant du transfert, et la
+    // valeur continuerait de se concentrer — dans l’autre sens.
+    canBuyOnMarket(session.playerId),
+  ]);
+
   if (!listing) return { ok: false, error: 'Annonce introuvable ou déjà vendue.' };
 
-  // Un compte restreint ne peut pas acheter non plus : sans cela, la
-  // restriction n'empêcherait que le sens sortant du transfert, et la
-  // valeur continuerait de se concentrer — dans l’autre sens.
-  const buyGate = await canBuyOnMarket(session.playerId);
   if (!buyGate.allowed) {
     await audit({
       playerId: session.playerId,
