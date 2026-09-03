@@ -8,6 +8,7 @@
 
 import * as v1 from './v1';
 import * as v2 from './v2';
+import * as v3 from './v3';
 import type { ScoringContext, TeamScore } from './v1';
 
 export type { ScoringContext, TeamScore, CharacterScore } from './v1';
@@ -20,16 +21,19 @@ export interface ScoringEngine {
 const ENGINES = new Map<string, ScoringEngine>([
   [v1.SCORING_VERSION, { version: v1.SCORING_VERSION, scoreTeam: v1.scoreTeam }],
   [v2.SCORING_VERSION, { version: v2.SCORING_VERSION, scoreTeam: v2.scoreTeam }],
+  [v3.SCORING_VERSION, { version: v3.SCORING_VERSION, scoreTeam: v3.scoreTeam }],
 ]);
 
 /**
  * Version utilisée pour les **nouveaux** chapitres.
  *
- * Le v1 reste enregistré, et ce n'est pas de la politesse : les chapitres déjà
- * publiés portent leur version en base. Retirer le v1 rendrait leur classement
- * irrecalculable, donc incontestable — l'inverse de ce que demande le §78.
+ * Le v1 et le v2 restent enregistrés, et ce n'est pas de la politesse : les
+ * chapitres déjà publiés portent leur version en base. Les retirer rendrait
+ * leur classement irrecalculable, donc incontestable — l'inverse de ce que
+ * demande le §78. Un chapitre ouvert avant ce changement continue donc d'être
+ * jugé selon les règles qui étaient affichées quand les joueurs ont composé.
  */
-export const CURRENT_SCORING_VERSION = v2.SCORING_VERSION;
+export const CURRENT_SCORING_VERSION = v3.SCORING_VERSION;
 
 export function getScoringEngine(version: string): ScoringEngine {
   const engine = ENGINES.get(version);

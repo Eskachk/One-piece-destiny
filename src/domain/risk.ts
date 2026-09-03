@@ -10,14 +10,8 @@
  * et un libellé Low/Medium/High côté joueur casual.
  */
 
+import { riskFactorOf } from './scoring/prominence';
 import type { Character, PresenceExpectation } from './types';
-
-/** Contribution au risque, de 0 (choix évident) à 1 (pari total). */
-const PRESENCE_RISK: Record<PresenceExpectation, number> = {
-  HIGH: 0.15,
-  MEDIUM: 0.5,
-  LOW: 1,
-};
 
 export type RiskBand = 'SAFE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'EXTREME';
 
@@ -47,12 +41,22 @@ export function teamRisk(
 ): RiskMeter {
   if (picked.length === 0) return { value: 0, band: 'SAFE' };
 
-  const perCharacter = picked.map((character) => {
-    const presence = PRESENCE_RISK[character.presenceExpectation];
-    const pickRate = pickRates?.get(character.id);
-    // Un personnage boudé par la communauté augmente le risque assumé.
-    return pickRate === undefined ? presence : (presence + (1 - pickRate)) / 2;
-  });
+  /*
+   * La jauge et les points lisent désormais **la même** formule.
+   *
+   * Elles étaient calculées séparément : ici l'attendu de présence et le taux
+   * de sélection, dans le moteur de score la même chose recopiée. Deux
+   * formules pour une seule question finissent par diverger, et c'est le
+   * joueur qui découvre l'écart après la publication — il compose sur une
+   * jauge qui ne dit pas ce qui sera compté.
+   *
+   * `riskFactorOf` croise quatre estimateurs : l'attendu de présence, la
+   * rareté de la carte, la stature que décrivent ses attributs, et le taux de
+   * sélection de la semaine. Voir `scoring/prominence.ts`.
+   */
+  const perCharacter = picked.map(
+    (character) => riskFactorOf(character, pickRates?.get(character.id)).factor,
+  );
 
   const average = perCharacter.reduce((a, b) => a + b, 0) / perCharacter.length;
   const value = Math.round(average * 100);
