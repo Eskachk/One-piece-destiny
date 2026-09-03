@@ -2,7 +2,7 @@
 
 import { attempt } from './attempt';
 import { useState, useTransition } from 'react';
-import { setPriceAlertAction, toggleWatchAction } from '@/app/actions/market';
+import { setPriceAlertAction, setWatchAction } from '@/app/actions/market';
 
 /**
  * Watchlist (cahier §41).
@@ -32,7 +32,7 @@ export function Watchlist({ watched }: { watched: WatchedCharacter[] }) {
 
   const unwatch = (characterId: string) => {
     startTransition(async () => {
-      const result = await attempt(toggleWatchAction(characterId));
+      const result = await attempt(setWatchAction(characterId, false));
       setError(result.ok ? null : result.error);
     });
   };
@@ -112,20 +112,51 @@ export function WatchToggle({
 }) {
   const [pending, startTransition] = useTransition();
 
+  /*
+   * L'étoile affichée est **locale**, et c'est ce qui rend le bouton
+   * utilisable.
+   *
+   * Trois défauts se tenaient ensemble ici. Le premier : la transition était
+   * lancée sur une fonction **synchrone** — `startTransition(() => void
+   * action())` — qui rend la main aussitôt. React considérait donc la
+   * transition terminée avant même que la requête ne parte, `pending`
+   * retombait dans la milliseconde, et le `disabled` posé juste au-dessus ne
+   * protégeait rien du tout.
+   *
+   * Le deuxième : rien ne changeait à l'écran avant le retour du serveur. Le
+   * joueur cliquait, ne voyait rien, recliquait — le comportement qui produit
+   * précisément le martèlement.
+   *
+   * Le troisième, le vrai : l'action était une **bascule**. Dix clics
+   * envoyaient dix inversions, et l'état final dépendait de l'ordre d'arrivée.
+   * Elle pose désormais un état voulu, calculé ici : dix fois « surveille »
+   * valent une fois.
+   */
+  const [voulu, setVoulu] = useState(watching);
+
   return (
     <button
       type="button"
       disabled={pending}
-      aria-pressed={watching}
+      aria-pressed={voulu}
       aria-label={
-        watching ? 'Retirer de la liste de surveillance' : 'Ajouter à la liste de surveillance'
+        voulu ? 'Retirer de la liste de surveillance' : 'Ajouter à la liste de surveillance'
       }
-      onClick={() => startTransition(() => void toggleWatchAction(characterId))}
+      onClick={() => {
+        const cible = !voulu;
+        setVoulu(cible);
+        startTransition(async () => {
+          const result = await attempt(setWatchAction(characterId, cible));
+          // Le serveur a refusé : on revient à l'affichage précédent plutôt
+          // que de laisser une étoile qui ment.
+          if (!result.ok) setVoulu(!cible);
+        });
+      }}
       className={`transition-quick text-sm disabled:opacity-40 ${
-        watching ? 'hb-gold' : 'hb-ink-soft'
+        voulu ? 'hb-gold' : 'hb-ink-soft'
       }`}
     >
-      {watching ? '★' : '☆'}
+      {voulu ? '★' : '☆'}
     </button>
   );
 }

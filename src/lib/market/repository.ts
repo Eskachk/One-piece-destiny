@@ -351,36 +351,53 @@ export async function getAlertThresholds(
 }
 
 /** Ajoute ou retire de la watchlist. Retourne le nouvel état. */
-export async function toggleWatch(
+/**
+ * Pose l'état de surveillance d'un personnage — **sans le basculer**.
+ *
+ * ## Le défaut corrigé
+ *
+ * La fonction s'appelait `toggleWatch` et faisait exactement ce que son nom
+ * disait : elle lisait la ligne, puis l'insérait ou la supprimait selon
+ * qu'elle existait. Deux problèmes, et le second est le vrai.
+ *
+ * D'abord trois allers-retours vers la base pour un clic — un `select`, puis
+ * un `delete` ou un `insert` — là où un seul suffit.
+ *
+ * Ensuite, et surtout : une bascule est **intrinsèquement racée**. Deux clics
+ * rapprochés lisent tous deux le même état de départ, et l'état final dépend
+ * de l'ordre dans lequel la base applique les deux écritures. En martelant le
+ * bouton, on obtenait une étoile qui n'était plus d'accord avec la base — et
+ * le sens de l'écart changeait d'une fois sur l'autre. Aucune protection côté
+ * navigateur ne rattrape cela : deux onglets suffisent à le reproduire.
+ *
+ * En posant un **état voulu** plutôt qu'une inversion, l'opération devient
+ * idempotente : dix appels « surveille » concurrents donnent le même résultat
+ * qu'un seul.
+ */
+export async function setWatch(
   playerId: string,
   characterId: string,
-): Promise<'watching' | 'not-watching'> {
-  const { data: existing } = await db()
-    .from('market_watchlist')
-    .select('character_id')
-    .eq('player_id', playerId)
-    .eq('character_id', characterId)
-    .maybeSingle();
-
-  if (existing) {
+  watching: boolean,
+): Promise<void> {
+  if (!watching) {
     await db()
       .from('market_watchlist')
       .delete()
       .eq('player_id', playerId)
       .eq('character_id', characterId);
-    return 'not-watching';
+    return;
   }
 
   const { error } = await db()
     .from('market_watchlist')
     .insert({ player_id: playerId, character_id: characterId });
 
-  // Deux clics simultanés : la clé primaire tranche, l'état final est le bon.
+  // 23505 : la ligne existait déjà. C'est le résultat demandé, pas une erreur.
   if (error && error.code !== '23505') {
     throw new Error(`market_watchlist.insert : ${error.message}`);
   }
-  return 'watching';
 }
+
 
 /** Prix demandé le plus bas actuellement, par personnage. */
 export async function lowestAsks(

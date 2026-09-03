@@ -44,8 +44,18 @@ export type MarketResult = { ok: true } | { ok: false; error: string };
  * alerte serait mentir. La watchlist affiche le prix le plus bas et la
  * tendance ; le joueur revient les consulter.
  */
-export async function toggleWatchAction(
+/**
+ * Pose la surveillance d'un personnage.
+ *
+ * L'état voulu est un **paramètre**, pas une inversion de l'état courant.
+ * C'est ce qui rend l'appel idempotent : marteler le bouton envoie dix fois
+ * « surveille », et dix fois « surveille » valent une fois. Une bascule, elle,
+ * dépendait de l'ordre d'arrivée des requêtes — l'étoile finissait par
+ * contredire la base, dans un sens ou dans l'autre selon la course.
+ */
+export async function setWatchAction(
   characterId: unknown,
+  watching: unknown,
 ): Promise<MarketResult> {
   await assertSameOrigin();
   const session = await requireSession();
@@ -56,7 +66,10 @@ export async function toggleWatchAction(
     return { ok: false, error: 'Personnage inconnu.' };
   }
 
-  await market.toggleWatch(session.playerId, parsed.data);
+  const voulu = z.boolean().safeParse(watching);
+  if (!voulu.success) return { ok: false, error: 'État de surveillance invalide.' };
+
+  await market.setWatch(session.playerId, parsed.data, voulu.data);
   revalidatePath('/market');
   return { ok: true };
 }

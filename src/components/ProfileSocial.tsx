@@ -35,8 +35,15 @@ export function NotificationCenter({
           <button
             type="button"
             disabled={pending}
+            // `startTransition` sur une fonction **synchrone** rend la main
+            // aussitôt : `pending` retombait avant que la requête ne parte, et
+            // le `disabled` juste au-dessus ne protégeait rien. Marquer comme
+            // lu est idempotent, donc rien ne se cassait — mais le bouton
+            // partait autant de fois qu'on cliquait.
             onClick={() =>
-              startTransition(() => void markNotificationsReadAction())
+              startTransition(async () => {
+                await markNotificationsReadAction();
+              })
             }
             className="text-xs hb-accent underline disabled:opacity-40"
           >
