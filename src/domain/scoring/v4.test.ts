@@ -90,7 +90,10 @@ describe('moteur v4 — les anciens chapitres ne bougent pas', () => {
     }
   });
 
-  it('ouvre les nouveaux chapitres en v4', () => {
-    expect(CURRENT_SCORING_VERSION).toBe(SCORING_VERSION);
+  it('reste rejouable une fois dépassé par le v5', () => {
+    // Ce qui doit tenir dans la durée n'est pas qu'une version soit la plus
+    // récente, mais qu'elle reste jouable quand elle ne l'est plus (§78).
+    expect(getScoringEngine(SCORING_VERSION).version).toBe(SCORING_VERSION);
+    expect(CURRENT_SCORING_VERSION).not.toBe(SCORING_VERSION);
   });
 });

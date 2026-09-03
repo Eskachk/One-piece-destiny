@@ -10,6 +10,7 @@ import * as v1 from './v1';
 import * as v2 from './v2';
 import * as v3 from './v3';
 import * as v4 from './v4';
+import * as v5 from './v5';
 import type { ScoringContext, TeamScore } from './v1';
 
 export type { ScoringContext, TeamScore, CharacterScore } from './v1';
@@ -24,6 +25,7 @@ const ENGINES = new Map<string, ScoringEngine>([
   [v2.SCORING_VERSION, { version: v2.SCORING_VERSION, scoreTeam: v2.scoreTeam }],
   [v3.SCORING_VERSION, { version: v3.SCORING_VERSION, scoreTeam: v3.scoreTeam }],
   [v4.SCORING_VERSION, { version: v4.SCORING_VERSION, scoreTeam: v4.scoreTeam }],
+  [v5.SCORING_VERSION, { version: v5.SCORING_VERSION, scoreTeam: v5.scoreTeam }],
 ]);
 
 /**
@@ -35,7 +37,7 @@ const ENGINES = new Map<string, ScoringEngine>([
  * demande le §78. Un chapitre ouvert avant ce changement continue donc d'être
  * jugé selon les règles qui étaient affichées quand les joueurs ont composé.
  */
-export const CURRENT_SCORING_VERSION = v4.SCORING_VERSION;
+export const CURRENT_SCORING_VERSION = v5.SCORING_VERSION;
 
 export function getScoringEngine(version: string): ScoringEngine {
   const engine = ENGINES.get(version);
