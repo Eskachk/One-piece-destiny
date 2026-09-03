@@ -182,3 +182,24 @@ export async function accountJournal(playerId: string): Promise<AccountJournal |
     truncated: brut.length > MAX_LINES,
   };
 }
+
+/**
+ * Nombre de comptes inscrits.
+ *
+ * Sert de dénominateur au taux de participation du Poste de commandement :
+ * « douze équipes » ne dit rien tant qu'on ignore s'il y a quinze inscrits ou
+ * quinze cents.
+ *
+ * Compté par la base (`head: true`) plutôt qu'en ramenant les lignes : on ne
+ * veut que le nombre, et rapatrier tous les joueurs pour les compter dans le
+ * navigateur serait absurde dès la première centaine.
+ */
+export async function playerCount(): Promise<number> {
+  if (!isDatabaseConfigured()) return 0;
+
+  const { count } = await db()
+    .from('players')
+    .select('id', { count: 'exact', head: true });
+
+  return count ?? 0;
+}

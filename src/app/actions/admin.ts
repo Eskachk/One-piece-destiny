@@ -525,7 +525,7 @@ export async function publishResults(): Promise<AdminActionResult> {
     chapter.id,
     results.map((result, index) => {
       const percentile = percentileFromRank(index + 1, results.length);
-      const reward = weeklyReward({ participated: true, percentile });
+      const reward = weeklyReward({ participated: true, rank: index + 1 });
       return {
         playerId: result.playerId,
         berries: reward.berries,
@@ -597,7 +597,7 @@ export async function publishResults(): Promise<AdminActionResult> {
   if (social.isSocialAvailable()) {
     for (const [index, result] of results.entries()) {
       const percentile = percentileFromRank(index + 1, results.length);
-      const reward = weeklyReward({ participated: true, percentile });
+      const reward = weeklyReward({ participated: true, rank: index + 1 });
 
       // Les deux canaux passent par `dispatch` : les préférences du joueur
       // s'appliquent, et l'e-mail n'annonce que l'existence des résultats —

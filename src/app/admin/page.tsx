@@ -15,6 +15,7 @@ import { expectedChapterNumber } from '@/domain/chapter/schedule';
 import { requireAdmin } from '@/lib/auth/guards';
 import { getRepository, PERSISTENCE_MODE } from '@/lib/repository';
 import { CURRENT_SCORING_VERSION } from '@/domain/scoring';
+import { playerCount } from '@/lib/admin/account-journal';
 import { chapterAnchorIsStored, getChapterAnchor } from '@/lib/settings/anchor';
 import { Nav } from '@/components/Nav';
 
@@ -141,6 +142,7 @@ export default async function AdminPage() {
   const now = new Date();
 
   const teams = await repository.listTeams(chapter.id);
+  const inscrits = await playerCount();
   const appearances = await repository.getAppearances(chapter.id);
   const leaderboard = await repository.getLeaderboard(chapter.id);
 
@@ -193,10 +195,6 @@ export default async function AdminPage() {
             </dd>
           </div>
           <div>
-            <dt className="text-parchment/50">Équipes</dt>
-            <dd className="font-mono text-treasure">{teams.length}</dd>
-          </div>
-          <div>
             <dt className="text-parchment/50">Moteur de score</dt>
             <dd className="font-mono text-parchment/90">
               {chapter.scoringVersion}
@@ -209,6 +207,36 @@ export default async function AdminPage() {
             </dd>
           </div>
         </dl>
+
+        {/*
+          La participation de la semaine.
+
+          Le nombre d'équipes tenait dans un coin de la grille ci-dessus, sans
+          rien à quoi le comparer : « douze équipes » ne dit pas si c'est bien
+          ou non tant qu'on ignore combien de joueurs sont inscrits. Sorti de la
+          grille et rapporté au total, il devient le chiffre qu'on regarde en
+          premier le dimanche soir — celui qui dit s'il faut relancer les
+          absents avant le verrouillage.
+        */}
+        <div className="mt-4 rounded-lg border border-turquoise/20 bg-abyss/30 p-4">
+          <p className="text-xs uppercase tracking-widest text-parchment/60">
+            Équipes validées
+          </p>
+          <p className="mt-1">
+            <span className="font-display text-4xl text-treasure">{teams.length}</span>
+            <span className="ml-2 text-sm text-parchment/60">
+              sur {inscrits} inscrit{inscrits > 1 ? 's' : ''}
+              {inscrits > 0 && ` · ${Math.round((teams.length / inscrits) * 100)} %`}
+            </span>
+          </p>
+          <p className="mt-1 text-xs text-parchment/45">
+            {teamsLocked
+              ? 'Les équipages sont verrouillés : ce nombre ne bougera plus.'
+              : `Encore modifiables jusqu’au verrouillage. ${
+                  inscrits - teams.length
+                } joueur(s) n’ont pas encore composé.`}
+          </p>
+        </div>
       </section>
 
       {/*

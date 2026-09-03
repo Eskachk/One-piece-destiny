@@ -9,6 +9,7 @@ import {
   PARTICIPATION_BERRIES,
   PARTICIPATION_CHESTS,
   weeklyReward,
+  berriesForRank,
 } from './rewards';
 
 describe('coût de fabrication (§29)', () => {
@@ -84,8 +85,8 @@ describe('evaluateCraft', () => {
 });
 
 describe('récompenses hebdomadaires (§72)', () => {
-  it('ne donne rien à qui n\'a pas joué', () => {
-    expect(weeklyReward({ participated: false, percentile: 1 })).toEqual({
+  it("ne donne rien à qui n'a pas joué", () => {
+    expect(weeklyReward({ participated: false, rank: 1 })).toEqual({
       berries: 0,
       chests: 0,
       tiers: [],
@@ -93,37 +94,61 @@ describe('récompenses hebdomadaires (§72)', () => {
   });
 
   it('accorde un coffre à tout participant, même dernier', () => {
-    const reward = weeklyReward({ participated: true, percentile: 100 });
+    const reward = weeklyReward({ participated: true, rank: 5_000 });
     expect(reward.chests).toBe(PARTICIPATION_CHESTS);
     expect(reward.berries).toBe(PARTICIPATION_BERRIES);
   });
 
   it('accorde un coffre même sans classement', () => {
-    const reward = weeklyReward({ participated: true, percentile: null });
+    const reward = weeklyReward({ participated: true, rank: null });
     expect(reward.chests).toBe(PARTICIPATION_CHESTS);
+    expect(reward.berries).toBe(PARTICIPATION_BERRIES);
   });
 
-  it('cumule les paliers vers le haut', () => {
-    const top1 = weeklyReward({ participated: true, percentile: 0.5 });
-    expect(top1.tiers).toEqual(['Participation', 'Top 1%', 'Top 10%', 'Top 50%']);
-    expect(top1.berries).toBe(PARTICIPATION_BERRIES + 800 + 300 + 100);
+  it('récompense le podium par des montants distincts', () => {
+    /*
+     * Le défaut du barème au percentile, sur une communauté réelle. Le rang 1
+     * parmi douze joueurs vaut un percentile d'environ huit : le palier
+     * « top 1 % » était mathématiquement inatteignable, et le vainqueur
+     * touchait exactement la même chose que le troisième. Le classement
+     * existait sans jamais récompenser le fait de le gagner.
+     */
+    const [premier, deuxieme, troisieme] = [1, 2, 3].map((rank) =>
+      weeklyReward({ participated: true, rank }).berries,
+    );
+
+    expect(premier).toBeGreaterThan(deuxieme);
+    expect(deuxieme).toBeGreaterThan(troisieme);
+    expect(troisieme).toBeGreaterThan(berriesForRank(4));
   });
 
-  it('classe le meilleur au-dessus du médian, sans écart abyssal', () => {
-    const best = weeklyReward({ participated: true, percentile: 1 });
-    const median = weeklyReward({ participated: true, percentile: 50 });
-    const last = weeklyReward({ participated: true, percentile: 100 });
+  it('décroît sans jamais remonter, palier après palier', () => {
+    const rangs = [1, 2, 3, 4, 10, 11, 30, 31, 100, 101, 1_000];
+    const gains = rangs.map(berriesForRank);
+    for (let i = 1; i < gains.length; i += 1) {
+      expect(gains[i], `rang ${rangs[i]}`).toBeLessThanOrEqual(gains[i - 1]);
+    }
+  });
 
-    expect(best.berries).toBeGreaterThan(median.berries);
-    expect(median.berries).toBeGreaterThan(last.berries);
-    // Le meilleur ne doit pas décrocher au point de rendre le jeu inatteignable.
-    expect(best.berries).toBeLessThanOrEqual(last.berries * 10);
+  it("n'accorde qu'un seul palier par joueur", () => {
+    // L'ancien barème empilait « Participation + Top 1% + Top 10% + Top 50% ».
+    // Un seul palier se lit d'un coup d'œil, et se promet avant la publication.
+    expect(weeklyReward({ participated: true, rank: 1 }).tiers).toEqual(['1er']);
+    expect(weeklyReward({ participated: true, rank: 7 }).tiers).toEqual(['Top 10']);
+    expect(weeklyReward({ participated: true, rank: 900 }).tiers).toEqual(['Participation']);
+  });
+
+  it('garde le vainqueur à portée du participant régulier', () => {
+    // Les Berries accélèrent la collection, elles n'y donnent pas accès : tout
+    // participant reçoit déjà un coffre. Un écart de vingt-cinq fois entre le
+    // premier et le dernier resterait supportable ; au-delà, jouer sans gagner
+    // n'aurait plus de sens.
+    expect(berriesForRank(1)).toBeLessThanOrEqual(PARTICIPATION_BERRIES * 25);
   });
 
   it('donne le même nombre de coffres à tous les participants', () => {
-    const percentiles = [1, 25, 50, 75, 100];
-    const chests = percentiles.map(
-      (percentile) => weeklyReward({ participated: true, percentile }).chests,
+    const chests = [1, 3, 10, 50, 500].map(
+      (rank) => weeklyReward({ participated: true, rank }).chests,
     );
     expect(new Set(chests).size).toBe(1);
   });
