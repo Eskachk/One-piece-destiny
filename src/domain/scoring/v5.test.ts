@@ -66,7 +66,11 @@ describe('moteur v5 — les anciens chapitres ne bougent pas', () => {
     }
   });
 
-  it('ouvre les nouveaux chapitres en v5', () => {
-    expect(CURRENT_SCORING_VERSION).toBe(SCORING_VERSION);
+  it('n’ouvre plus les nouveaux chapitres, mais reste rejouable', () => {
+    // Le v6 a pris la suite. Le v5 doit rester enregistré : les chapitres déjà
+    // publiés portent sa version en base, et la retirer rendrait leur
+    // classement irrecalculable — donc incontestable, l'inverse du §78.
+    expect(CURRENT_SCORING_VERSION).not.toBe(SCORING_VERSION);
+    expect(getScoringEngine(SCORING_VERSION).version).toBe(SCORING_VERSION);
   });
 });

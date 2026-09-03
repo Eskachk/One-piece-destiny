@@ -563,11 +563,12 @@ export async function publishResults(): Promise<AdminActionResult> {
       playerId: result.playerId,
       chapterId: chapter.id,
       chapterNumber: chapter.chapterNumber,
+      // Le taux de sélection ne modifie plus le risque : au v6 il escompte le
+      // score entier. Le passer ici le compterait deux fois.
       risk: team ? teamRisk(
         team.characterIds
           .map((id) => CHARACTER_INDEX.get(id))
           .filter((c): c is NonNullable<typeof c> => c !== undefined),
-        pickRates,
       ).value : 0,
       synergyShare: synergyShare(result),
       averagePickRate: team

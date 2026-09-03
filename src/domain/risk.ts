@@ -10,7 +10,7 @@
  * et un libellé Low/Medium/High côté joueur casual.
  */
 
-import { riskFactorOf } from './scoring/prominence';
+import { riskRankOf } from './scoring/prominence';
 import type { Character, PresenceExpectation } from './types';
 
 export type RiskBand = 'SAFE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'EXTREME';
@@ -32,13 +32,9 @@ function bandOf(value: number): RiskBand {
 /**
  * Risque d'une équipe de 3 personnages.
  *
- * @param picked      les personnages sélectionnés
- * @param pickRates   taux de sélection observés (0–1) de la semaine en cours
+ * @param picked les personnages sélectionnés
  */
-export function teamRisk(
-  picked: Character[],
-  pickRates?: Map<string, number>,
-): RiskMeter {
+export function teamRisk(picked: Character[]): RiskMeter {
   if (picked.length === 0) return { value: 0, band: 'SAFE' };
 
   /*
@@ -50,13 +46,21 @@ export function teamRisk(
    * joueur qui découvre l'écart après la publication — il compose sur une
    * jauge qui ne dit pas ce qui sera compté.
    *
-   * `riskFactorOf` croise quatre estimateurs : l'attendu de présence, la
-   * rareté de la carte, la stature que décrivent ses attributs, et le taux de
-   * sélection de la semaine. Voir `scoring/prominence.ts`.
+   * `riskRankOf` croise quatre estimateurs — attendu de présence, rareté de
+   * la carte, stature décrite par les attributs, taux de sélection — puis lit
+   * le résultat comme un **rang** parmi tout le référentiel.
+   *
+   * Ce dernier point est ce qui rend la jauge honnête. Sur la valeur brute, la
+   * médiane du référentiel est à 84 sur 100 : la jauge annonçait « risque
+   * extrême » pour un choix parfaitement banal, et le joueur qui la croyait
+   * composait à l'aveugle. Sur le rang, 50 veut dire cinquante — la moitié du
+   * référentiel est plus sûre, l'autre moitié plus hasardeuse.
+   *
+   * Le taux de sélection n'entre plus ici : au v6 il ne modifie plus le
+   * risque, il escompte le score entier (voir `scoring/v6.ts`). L'y laisser
+   * ferait compter deux fois la même chose.
    */
-  const perCharacter = picked.map(
-    (character) => riskFactorOf(character, pickRates?.get(character.id)).factor,
-  );
+  const perCharacter = picked.map((character) => riskRankOf(character));
 
   const average = perCharacter.reduce((a, b) => a + b, 0) / perCharacter.length;
   const value = Math.round(average * 100);

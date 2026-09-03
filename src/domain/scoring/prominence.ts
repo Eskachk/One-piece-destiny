@@ -1,3 +1,5 @@
+import { CHARACTERS } from '../../data/characters';
+import { isCanon } from '../../data/non-canon';
 import { attributesOf } from '../collection/attributes';
 import type { Character, PresenceExpectation, Rarity } from '../types';
 
@@ -163,4 +165,70 @@ export function riskFactorOf(
     attributes,
     pickRate: pickRate ?? null,
   };
+}
+
+
+/* ===========================================================================
+   L'improbabilité, lue comme un rang
+   ---------------------------------------------------------------------------
+   `riskFactorOf` renvoie une moyenne pondérée de quatre grandeurs. Sur ce
+   référentiel-ci, elles valent presque toutes 1 : 428 personnages sur 737 sont
+   en présence basse, 358 sont Communs, et la plupart n'ont qu'un ou deux
+   attributs. La moyenne de valeurs hautes est haute — mesuré, la médiane du
+   facteur est de **0,84**, et 17 % des personnages sont au maximum.
+
+   Autrement dit, le nombre était juste et inutilisable : il déclarait tout le
+   monde risqué, donc ne distinguait personne. Une prime versée à tous n'est
+   plus une prime, c'est un socle.
+
+   On garde la formule — ses quatre estimateurs restent le bon jugement — mais
+   on la lit comme un **classement**. Le rang d'un personnage parmi tous les
+   autres est uniformément réparti par construction : médiane 0,5, autant de
+   personnages au-dessus qu'en dessous. Le risque recommence à trier.
+
+   Deuxième vertu, moins visible : le barème s'ajuste tout seul. Si le
+   référentiel s'enrichit de deux cents figurants, la médiane reste 0,5 au lieu
+   de dériver vers 1.
+   =========================================================================== */
+
+let rangs: Map<string, number> | null = null;
+
+function construireRangs(): Map<string, number> {
+  const jouables = CHARACTERS.filter((c) => isCanon(c.id));
+  const classes = jouables
+    .map((c) => ({ id: c.id, f: riskFactorOf(c).factor }))
+    .sort((a, b) => a.f - b.f);
+
+  const out = new Map<string, number>();
+  const n = classes.length;
+
+  for (let i = 0; i < n; i += 1) {
+    // Les ex æquo reçoivent le même rang. Sans cela, deux personnages aux
+    // données identiques n'auraient pas la même improbabilité, et l'écart
+    // dépendrait de leur ordre dans le fichier — c'est-à-dire de rien.
+    let j = i;
+    while (j + 1 < n && classes[j + 1].f === classes[i].f) j += 1;
+    const rang = n > 1 ? (i + j) / 2 / (n - 1) : 0.5;
+    for (let k = i; k <= j; k += 1) out.set(classes[k].id, rang);
+    i = j;
+  }
+  return out;
+}
+
+/**
+ * Place d'un personnage dans le classement de l'improbabilité, entre 0 et 1.
+ *
+ * Zéro pour le choix le plus évident du référentiel, un pour le plus obscur.
+ *
+ * La table est construite une fois, à la première demande : le référentiel est
+ * figé à la compilation, et la reconstruire à chaque joueur coûterait sept
+ * cents tris au moment de publier, pour un résultat identique.
+ *
+ * Un personnage hors référentiel — un test, une carte retirée après coup —
+ * retombe sur son facteur brut. Mieux vaut une valeur approchée qu'une
+ * exception au milieu d'une publication de classement.
+ */
+export function riskRankOf(character: Character): number {
+  rangs ??= construireRangs();
+  return rangs.get(character.id) ?? riskFactorOf(character).factor;
 }
