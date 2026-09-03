@@ -39,7 +39,7 @@ export const dynamic = 'force-dynamic';
 function Hud() {
   return (
     <header className="flex items-center justify-between">
-      <span className="hb-eyebrow">Grand Line Weekly</span>
+      <span className="hb-eyebrow">One Piece Quest</span>
       <form action={logoutAction}>
         <button type="submit" className="hb-link" style={{ fontSize: '0.78rem' }}>
           Déconnexion

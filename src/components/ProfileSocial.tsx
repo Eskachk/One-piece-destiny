@@ -146,7 +146,7 @@ export function ReferralPanel({
     try {
       if (typeof navigator !== 'undefined' && navigator.share) {
         await navigator.share({
-          title: 'Grand Line Weekly',
+          title: 'One Piece Quest',
           text: `Rejoins-moi : tu démarres avec ${referredBerries} Berries.`,
           url: link,
         });

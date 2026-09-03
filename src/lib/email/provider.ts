@@ -119,7 +119,7 @@ let cached: EmailConfig | null = null;
 export function emailConfig(): EmailConfig {
   if (cached) return cached;
 
-  const from = process.env.EMAIL_FROM ?? 'Grand Line Weekly <onboarding@resend.dev>';
+  const from = process.env.EMAIL_FROM ?? 'One Piece Quest <onboarding@resend.dev>';
   const replyTo = process.env.EMAIL_REPLY_TO;
   const mode = process.env.EMAIL_MODE ?? 'development';
   const apiKey = process.env.EMAIL_API_KEY;

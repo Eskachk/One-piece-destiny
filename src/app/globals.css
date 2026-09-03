@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 /**
- * Direction artistique « Grand Line Weekly » (cahier §50 à §54).
+ * Direction artistique « One Piece Quest » (cahier §50 à §54).
  *
  * Le jaune trésor est réservé aux éléments à forte valeur : récompenses,
  * points, coffres, raretés, classement. L'utiliser partout le viderait de
@@ -317,10 +317,118 @@ body {
     0 0 34px rgba(10, 40, 70, 0.3);
 }
 
+/* --- Pavillon -------------------------------------------------------------
+
+   Le mât portait un cordage et rien d'autre. Un mât sans pavillon, sur une
+   page qui s'appelle « Connexion » et qui ouvre un jeu de pirates, c'est un
+   décor qui s'arrête juste avant de dire quelque chose.
+
+   Le mouvement est décrit en détail dans `PirateFlag` (HarborScene.tsx) :
+   douze lés, une onde qui les parcourt du guindant vers le battant, et une
+   ombre en opposition de phase. Ici on ne fait que le poser et le dimensionner.
+   =========================================================================== */
+
+.harbor__flag {
+  position: absolute;
+  /* Le guindant part du bord droit du mât : le drapeau est hissé *sur* lui,
+     il ne flotte pas à côté. */
+  left: 62%;
+  top: 7vh;
+  width: clamp(7.5rem, 15vw, 12rem);
+  height: auto;
+  /* Les lés débordent du cadre en montant : sans cela, la crête est rognée. */
+  overflow: visible;
+  filter: drop-shadow(0 7px 14px rgba(10, 38, 68, 0.38));
+}
+
+.harbor__flagLe {
+  /* Sans transform-box, la translation reste juste, mais on la fixe pour que
+     l'origine soit celle du viewBox si un jour on y ajoute une échelle. */
+  transform-box: view-box;
+}
+
+/* Le pli : noir, opacité nulle au repos, révélé quand le lé descend.
+
+   L'opacité est basse — un quart plutôt que le tiers essayé d'abord. Douze
+   aplats noirs à bords francs se lisent comme des barreaux dès qu'ils sont
+   marqués ; il faut qu'on devine le creux, pas qu'on compte les lés. */
+.harbor__flagPli {
+  fill: #000;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .harbor__flagLe {
+    animation: pavillon-onde 1.9s ease-in-out infinite;
+    /* Décalage négatif : l'onde est déjà en cours au premier rendu, on ne
+       voit jamais le drapeau démarrer à plat. */
+    animation-delay: calc(var(--i) * -0.085s);
+  }
+
+  .harbor__flagPli {
+    animation: pavillon-pli 1.9s ease-in-out infinite;
+    animation-delay: calc(var(--i) * -0.085s);
+  }
+
+  /* Respiration d'ensemble : le vent ne souffle pas à débit constant, et une
+     onde parfaitement régulière trahit la boucle au bout de dix secondes. */
+  .harbor__flag {
+    animation: pavillon-souffle 7.5s ease-in-out infinite alternate;
+    transform-origin: 0% 20%;
+  }
+}
+
+@keyframes pavillon-onde {
+  0%,
+  100% {
+    transform: translateY(calc(var(--amp) * -1));
+  }
+  50% {
+    transform: translateY(var(--amp));
+  }
+}
+
+/* En opposition de phase avec l'onde : le creux du pli est au plus bas du lé. */
+@keyframes pavillon-pli {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.22;
+  }
+}
+
+@keyframes pavillon-souffle {
+  from {
+    transform: rotate(-1.6deg) scaleX(0.985);
+  }
+  to {
+    transform: rotate(1.1deg) scaleX(1);
+  }
+}
+
 @media (max-width: 720px) {
-  /* Sur mobile, le mât mangerait la largeur du formulaire. */
+  /* Le mât mangeait la largeur du formulaire — à cause de ses 46 px, pas de
+     son existence. On l'amincit et on le colle au bord : il reste visible, le
+     pavillon avec lui, et le formulaire retrouve sa place. */
   .harbor__mast {
-    display: none;
+    left: 0;
+    width: 16px;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .harbor__flag {
+    left: 70%;
+    top: 4.5vh;
+    width: 5.5rem;
+  }
+}
+
+/* Sous 380 px, le pavillon croiserait le titre. */
+@media (max-width: 380px) {
+  .harbor__flag {
+    width: 4.4rem;
   }
 }
 
@@ -2190,14 +2298,23 @@ button[aria-busy='true']:not(.hb-btn)::before {
   position: relative;
   padding: 9.5rem 1rem 1.4rem;
   border-radius: 1.15rem;
+  /* Le voile était à 0,42 puis 0,34 : les dunes d'Alabasta se lisaient à
+     travers un tableau de scores, et la trame du décor passait *sous* les
+     chiffres au lieu de rester derrière eux.
+
+     À 0,74 puis 0,68, le décor reste franchement visible autour de la colonne
+     et perceptible dessous — on n'a pas posé une feuille blanche sur l'île —
+     mais le texte a enfin un fond uni sur lequel se détacher. Le dégradé du
+     haut est conservé tel quel : c'est lui qui laisse le titre reposer
+     directement sur l'île (§51). */
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0) 0,
     rgba(255, 255, 255, 0) 6rem,
-    rgba(255, 255, 255, 0.42) 10rem,
-    rgba(255, 255, 255, 0.34) 100%
+    rgba(255, 255, 255, 0.74) 10rem,
+    rgba(255, 255, 255, 0.68) 100%
   );
-  box-shadow: 0 8px 26px rgba(12, 45, 80, 0.1);
+  box-shadow: 0 8px 26px rgba(12, 45, 80, 0.14);
 }
 
 /* Le titre d'affiche gagne un halo clair : sur un ciel chargé, une lettre
@@ -3528,4 +3645,377 @@ button[aria-busy='true']:not(.hb-btn)::before {
   to {
     transform: translateY(7px) scaleY(1.03);
   }
+}
+
+/* ===========================================================================
+   Les jeux de lumière.
+   ---------------------------------------------------------------------------
+   Le grief tenait en une phrase : « il n'y a rien qui bouge ». Les ambiances
+   (`.isl-fx`) et les ciels (`IslandSky`) avaient déjà répondu pour ce qui
+   traverse le cadre — la pluie, les poissons, les feuilles. Restait le fond
+   lui-même, un dégradé rigoureusement immobile derrière tout le reste.
+
+   Or ce qui fait qu'un extérieur est vivant, avant même ce qui s'y déplace,
+   c'est que **la lumière y change**. Un nuage passe et la lande s'assombrit ;
+   le soleil bouge et l'ombre du grand arbre tourne. C'est lent, on ne le
+   regarde jamais directement, et son absence se remarque immédiatement.
+
+   ## Deux couches, deux natures
+
+   - **Les nappes** (l'élément) : de larges taches de couleur qui dérivent et
+     respirent. Elles portent la teinte de l'île.
+   - **Les rais** (`::after`) : un peigne de bandes claires qui bascule
+     lentement. C'est ce qui donne la direction de la lumière.
+
+   ## Pourquoi une couche séparée de `.isl-fx`
+
+   Le mode de fusion. La lumière se compose en `screen` — elle *ajoute* de la
+   clarté à ce qu'il y a dessous, sans jamais l'assombrir, ce qui est
+   exactement le comportement d'une lueur. La pluie et les pétales, eux, sont
+   des objets opaques posés par-dessus. Un seul élément n'a qu'un seul
+   `mix-blend-mode` : les réunir reviendrait à renoncer à l'un des deux effets.
+
+   ## Ce que cela ne doit jamais faire
+
+   Gêner la lecture (§51). La couche est **sous** le voile de contenu, et le
+   `screen` sur un fond déjà clair sature très vite : les opacités sont donc
+   basses et les nappes très étalées. Aucun bord franc, jamais, sinon on
+   fabrique une forme là où on voulait une atmosphère.
+
+   `will-change` est absent, pour la raison qui vaut déjà pour `.isl-fx` :
+   c'est un fond, présent sur toutes les pages, y compris sur les téléphones
+   que le réglage « animations réduites » cherche justement à ménager.
+   =========================================================================== */
+
+.isl-lux {
+  position: absolute;
+  /* Débordement volontaire : les nappes dérivent, et un bord de nappe qui
+     rentre dans le cadre se verrait comme un objet. */
+  inset: -18%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.55;
+
+  /* Repli, si une île venait à n'avoir aucune teinte déclarée. Ce n'est pas
+     la teinte du port : celui-ci a la sienne, écrite plus bas comme les
+     autres. Un défaut qui sert aussi de valeur à une île réelle est un piège —
+     on le retouche pour cette île, et huit autres pages changent avec. */
+  --lux-a: rgba(255, 226, 168, 0.85);
+  --lux-b: rgba(168, 226, 255, 0.7);
+  --lux-rais: rgba(255, 246, 220, 0.16);
+  --lux-angle: 100deg;
+
+  background-image:
+    radial-gradient(closest-side circle at 50% 50%, var(--lux-a), transparent),
+    radial-gradient(closest-side circle at 50% 50%, var(--lux-b), transparent),
+    radial-gradient(closest-side circle at 50% 50%, var(--lux-a), transparent);
+  background-size: 78% 78%, 62% 62%, 96% 66%;
+  background-repeat: no-repeat;
+  background-position: 8% 4%, 82% 26%, 44% 88%;
+}
+
+.isl-lux::after {
+  content: '';
+  position: absolute;
+  /* Plus large que son parent : la couche pivote, et un peigne de la taille du
+     cadre découvrirait ses coins en tournant. */
+  inset: -30%;
+  background-image: repeating-linear-gradient(
+    var(--lux-angle),
+    transparent 0 64px,
+    var(--lux-rais) 64px 104px,
+    transparent 104px 168px
+  );
+  transform-origin: 50% 0%;
+  opacity: 0.5;
+}
+
+/* --- Une lumière par île --------------------------------------------------
+
+   Ce ne sont pas des variations décoratives : c'est ce qui distingue midi au
+   désert de dix mille mètres sous la mer. La teinte de la lumière en dit plus
+   long sur le lieu que la silhouette posée en bas de page. */
+
+/* Le port — l'aube. Chaude et rasante, avec le contre-jour froid de la mer.
+   Déclarée explicitement bien qu'identique au repli ci-dessus : c'est une île
+   comme les autres, et la ranger dans le défaut la rendrait invisible à
+   quiconque relit cette liste — c'est exactement ainsi que Dressrosa est
+   restée sans ambiance pendant des semaines. */
+[data-island='harbor'] .isl-lux {
+  --lux-a: rgba(255, 226, 168, 0.85);
+  --lux-b: rgba(168, 226, 255, 0.7);
+  --lux-rais: rgba(255, 246, 220, 0.16);
+  --lux-angle: 100deg;
+  opacity: 0.55;
+}
+
+/* Elbaf — le grand nord. Lumière basse, froide, presque sans rais : sous un
+   ciel couvert, il n'y a pas de faisceau, seulement une clarté diffuse. */
+[data-island='elbaf'] .isl-lux {
+  --lux-a: rgba(226, 245, 226, 0.7);
+  --lux-b: rgba(180, 214, 240, 0.62);
+  --lux-rais: rgba(240, 250, 240, 0.09);
+  --lux-angle: 96deg;
+  opacity: 0.45;
+}
+
+/* Alabasta — le soleil de plomb. Chaud, dur, presque blanc, et des rais très
+   marqués : dans un désert, l'air est chargé de poussière et le faisceau se
+   voit. */
+[data-island='alabasta'] .isl-lux {
+  --lux-a: rgba(255, 224, 150, 0.95);
+  --lux-b: rgba(255, 186, 120, 0.7);
+  --lux-rais: rgba(255, 240, 200, 0.22);
+  --lux-angle: 104deg;
+  opacity: 0.62;
+}
+
+/* Île des hommes-poissons — la lumière traverse dix mille mètres d'eau. Les
+   rais sont presque verticaux et bien plus serrés : c'est la caustique, la
+   figure que dessine la surface au fond de l'eau. */
+[data-island='fishman'] .isl-lux {
+  --lux-a: rgba(150, 240, 255, 0.75);
+  --lux-b: rgba(120, 190, 255, 0.6);
+  --lux-rais: rgba(210, 250, 255, 0.17);
+  --lux-angle: 84deg;
+  opacity: 0.58;
+}
+
+[data-island='fishman'] .isl-lux::after {
+  background-image: repeating-linear-gradient(
+    var(--lux-angle),
+    transparent 0 34px,
+    var(--lux-rais) 34px 56px,
+    transparent 56px 96px
+  );
+}
+
+/* Wano — la laque et les cerisiers. Or et rose, lumière de fin d'après-midi. */
+[data-island='wano'] .isl-lux {
+  --lux-a: rgba(255, 214, 226, 0.8);
+  --lux-b: rgba(255, 224, 168, 0.72);
+  --lux-rais: rgba(255, 236, 226, 0.13);
+  --lux-angle: 108deg;
+  opacity: 0.5;
+}
+
+/* Logue Town — l'orage. Argent froid, et des rais à peine visibles : sous une
+   averse, la lumière ne vient de nulle part en particulier. L'éclair, lui, est
+   déjà porté par `.isl-fx::after` — deux sources de flash se contrarieraient. */
+[data-island='logue'] .isl-lux {
+  --lux-a: rgba(214, 230, 250, 0.6);
+  --lux-b: rgba(180, 196, 220, 0.55);
+  --lux-rais: rgba(230, 240, 255, 0.07);
+  --lux-angle: 112deg;
+  opacity: 0.38;
+}
+
+/* Sabaody — les bulles et la mangrove. Violine et nacre. */
+[data-island='sabaody'] .isl-lux {
+  --lux-a: rgba(226, 196, 255, 0.8);
+  --lux-b: rgba(168, 236, 255, 0.65);
+  --lux-rais: rgba(244, 230, 255, 0.14);
+  --lux-angle: 92deg;
+  opacity: 0.52;
+}
+
+/* Dressrosa — la fête. Or et rouge, la lumière la plus chaude du site. */
+[data-island='dressrosa'] .isl-lux {
+  --lux-a: rgba(255, 206, 150, 0.9);
+  --lux-b: rgba(255, 168, 178, 0.7);
+  --lux-rais: rgba(255, 232, 196, 0.18);
+  --lux-angle: 100deg;
+  opacity: 0.56;
+}
+
+/* Drum — la neige. Bleu très pâle, rais nuls : un ciel de neige est une boîte
+   à lumière, il n'a pas de direction. */
+[data-island='drum'] .isl-lux {
+  --lux-a: rgba(238, 248, 255, 0.75);
+  --lux-b: rgba(198, 224, 246, 0.6);
+  --lux-rais: rgba(255, 255, 255, 0.06);
+  opacity: 0.42;
+}
+
+/* Le QG. Il n'a **pas** de décor, et c'est délibéré : on doit voir qu'on a
+   quitté le jeu. Mais « pas de décor » ne veut pas dire une page morte — une
+   seule nappe froide, très basse, qui respire. C'est le néon d'une salle de
+   commandement, pas une île. */
+[data-island='hq'] .isl-lux {
+  --lux-a: rgba(120, 200, 236, 0.5);
+  --lux-b: rgba(96, 150, 210, 0.4);
+  --lux-rais: rgba(180, 226, 250, 0.05);
+  --lux-angle: 90deg;
+  opacity: 0.3;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .isl-lux {
+    /* Très lent, et de durées premières entre elles avec les rais : les deux
+       couches ne doivent jamais retomber en phase, sinon la boucle se voit. */
+    animation: fx-lux-nappes 41s ease-in-out infinite alternate;
+  }
+
+  .isl-lux::after {
+    animation: fx-lux-rais 29s ease-in-out infinite alternate;
+  }
+}
+
+/* Les nappes dérivent **et** changent d'intensité. La dérive seule donne un
+   décor qui glisse ; c'est la variation d'intensité qui donne le nuage qui
+   passe. */
+@keyframes fx-lux-nappes {
+  from {
+    background-position: 8% 4%, 82% 26%, 44% 88%;
+    opacity: 0.4;
+  }
+  to {
+    background-position: 26% 14%, 62% 8%, 24% 74%;
+    opacity: 0.72;
+  }
+}
+
+@keyframes fx-lux-rais {
+  from {
+    transform: rotate(-3.5deg) translate3d(-3%, 0, 0);
+    opacity: 0.28;
+  }
+  to {
+    transform: rotate(3.5deg) translate3d(3%, 0, 0);
+    opacity: 0.72;
+  }
+}
+
+/* --- Deux ambiances qui manquaient ----------------------------------------
+
+   `.isl-fx` couvrait sept îles sur dix. Dressrosa et le port n'avaient rien :
+   sur ces deux pages, tout le mouvement reposait sur les nuages. */
+
+/* Dressrosa — les confettis. C'est l'île de la fête, et la note d'intention du
+   produit le dit depuis le début (« ses ors et ses confettis ») ; seule
+   l'ambiance manquait. Des rectangles, pas des disques : un confetti est un
+   bout de papier, et c'est ce qui le distingue d'un flocon. */
+[data-island='dressrosa'] .isl-fx {
+  background-image:
+    linear-gradient(38deg, transparent 0 3px, rgba(255, 92, 108, 0.85) 3px 9px, transparent 9px),
+    linear-gradient(-24deg, transparent 0 2px, rgba(255, 206, 92, 0.85) 2px 7px, transparent 7px),
+    linear-gradient(64deg, transparent 0 2px, rgba(126, 216, 255, 0.75) 2px 6px, transparent 6px);
+  background-size: 116px 152px, 84px 118px, 62px 92px;
+  opacity: 0.7;
+}
+
+/* Le port — la poussière d'aube dans la lumière rasante. Rien qui tombe : à
+   l'aube au bord de l'eau, ce qu'on voit flotter monte plus qu'il ne descend. */
+[data-island='harbor'] .isl-fx {
+  background-image:
+    radial-gradient(circle, rgba(255, 245, 214, 0.85) 1.6px, transparent 2.3px),
+    radial-gradient(circle, rgba(255, 250, 232, 0.6) 1.1px, transparent 1.6px);
+  background-size: 176px 232px, 108px 146px;
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-island='dressrosa'] .isl-fx {
+    animation: fx-confettis 15s linear infinite;
+  }
+
+  [data-island='harbor'] .isl-fx {
+    animation: fx-poussiere 26s linear infinite;
+  }
+}
+
+/* Le confetti tombe en tournoyant : la dérive latérale change de signe en
+   cours de chute, ce qu'une translation droite ne rend pas. */
+@keyframes fx-confettis {
+  0% {
+    background-position: 0 -152px, 0 -118px, 0 -92px;
+  }
+  50% {
+    background-position: 26px 0, -18px -20px, 14px -10px;
+  }
+  100% {
+    background-position: 0 152px, 0 118px, 0 92px;
+  }
+}
+
+@keyframes fx-poussiere {
+  0% {
+    background-position: 0 232px, 0 146px;
+  }
+  100% {
+    background-position: 22px 0, -16px 0;
+  }
+}
+
+/* ===========================================================================
+   Les ombres de texte, et où elles servent.
+   ---------------------------------------------------------------------------
+   ## Le principe
+
+   Une ombre portée n'améliore la lisibilité que dans un sens : **texte clair
+   sur fond moyen ou sombre**. Elle rend alors au caractère un contour que le
+   fond lui mangeait.
+
+   Dans l'autre sens — texte sombre sur fond clair, qui est le cas de la quasi-
+   totalité de ce site — elle fait l'inverse. Le halo noir se mélange à l'encre,
+   épaissit les fûts, comble les contreformes, et un corps de 12 px devient une
+   tache. Le rehaut correct y est **clair**, pas noir : c'est ce que font déjà
+   `.harbor__title` et `.hb-eyebrow` avec leur liseré blanc.
+
+   Les ombres noires sont donc posées ici aux quatre seuls endroits du produit
+   où du texte clair repose sur autre chose que du blanc — et nulle part sur le
+   voile de contenu, où elles ne feraient que salir.
+
+   ## Le cas qui a changé
+
+   Les jeux de lumière (`.isl-lux`) font maintenant **varier** la clarté du
+   fond au fil des secondes. Un texte posé directement sur le décor voyait donc
+   son contraste changer avec elle. Un liseré clair seul ne suffit plus : quand
+   la nappe passe, le fond monte vers le blanc et le liseré disparaît dedans.
+   Il faut les deux — le rehaut clair par le haut, l'assise sombre par le bas —
+   pour que le contraste tienne aux deux extrêmes du cycle.
+   =========================================================================== */
+
+:root {
+  /* Assise sombre : diffuse et à peine décalée vers le bas. Un décalage franc
+     donnerait un relief de titre d'affiche ; ici on ne veut qu'un sol. */
+  --ombre-sur-decor: 0 1px 2px rgba(9, 26, 45, 0.45), 0 2px 10px rgba(9, 26, 45, 0.25);
+}
+
+/* 1. Le titre d'affiche de la scène d'entrée. Encre marine sur un ciel qui
+      s'éclaircit et s'assombrit maintenant tout seul : on garde le rehaut
+      blanc par le haut et on lui ajoute une assise. */
+.harbor__title {
+  text-shadow:
+    0 3px 0 rgba(255, 255, 255, 0.35),
+    0 4px 14px rgba(9, 26, 45, 0.28);
+}
+
+/* 2. La bannière peinte. Crème sur rouge : c'est le cas d'école, et elle n'en
+      avait pas. */
+.harbor__banner span {
+  text-shadow: 0 1px 2px rgba(88, 14, 10, 0.55);
+}
+
+/* 3. La barre d'onglets. Crème sur bois — 4,2:1 sur le haut de la planche, en
+      corps 0,62 rem gras, c'est-à-dire juste sous le seuil. L'ombre passe le
+      texte au-dessus sans toucher à la palette de la barre, qui est le seul
+      élément en bois du produit et qu'on ne veut pas éclaircir. */
+.hb-nav__item {
+  text-shadow: 0 1px 2px rgba(30, 15, 4, 0.55);
+}
+
+/* L'onglet actif est en encre sur or : la règle s'inverse, l'ombre sombre
+   doit disparaître. */
+.hb-nav__item--active {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+/* 4. Le nom de l'île, en haut à droite. Il repose sur une pastille blanche à
+      62 % — donc sur le décor pour plus d'un tiers, et sur un décor dont la
+      clarté bouge. On densifie la pastille plutôt que d'ombrer le texte :
+      l'encre y est sombre, une ombre noire la boucherait. */
+.isl-name {
+  background: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 1px 6px rgba(9, 26, 45, 0.18);
 }

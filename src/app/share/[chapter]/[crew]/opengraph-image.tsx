@@ -66,7 +66,7 @@ export default async function ShareImage({
               textTransform: 'uppercase',
             }}
           >
-            Grand Line Weekly
+            One Piece Quest
           </span>
           <span style={{ fontSize: 64, marginTop: 8 }}>
             Chapitre {chapter}

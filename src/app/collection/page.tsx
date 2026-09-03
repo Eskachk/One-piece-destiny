@@ -68,7 +68,7 @@ export default async function CollectionPage() {
   return (
     <HarborScene variant="page" island={islandOf('/collection')}>
       <p className="hb-eyebrow">
-        Grand Line Weekly
+        One Piece Quest
       </p>
       <h1 className="hb-title mt-1">Collection</h1>
 

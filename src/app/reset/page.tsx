@@ -26,7 +26,7 @@ export default async function ResetPasswordPage({
   return (
     <main className="mx-auto w-full max-w-[430px] px-5 py-12">
       <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
-        Grand Line Weekly
+        One Piece Quest
       </p>
       <h1 className="mt-1 font-display text-3xl text-parchment">
         Nouveau mot de passe

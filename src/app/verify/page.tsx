@@ -30,7 +30,7 @@ export default async function VerifyPage({
   return (
     <main className="mx-auto w-full max-w-[430px] px-5 py-16">
       <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
-        Grand Line Weekly
+        One Piece Quest
       </p>
       <h1 className="mt-1 font-display text-3xl text-parchment">
         {result.ok ? 'Adresse confirmée' : 'Confirmation impossible'}

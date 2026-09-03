@@ -117,6 +117,132 @@ function ShipWheel({ className }: { className?: string }) {
   );
 }
 
+/**
+ * Nombre de lés du pavillon.
+ *
+ * Douze : en dessous, l'onde se lit comme une succession de marches ; au-delà,
+ * on paie des nœuds de plus pour un mouvement que l'œil ne distingue plus.
+ */
+const LES = 12;
+const LARGEUR_LE = 132 / LES;
+
+/**
+ * Pavillon pirate, hissé au mât du ponton.
+ *
+ * ## Comment on fait flotter un drapeau sans une ligne de JavaScript
+ *
+ * Une étoffe qui claque, ce n'est pas un rectangle qui oscille : c'est une
+ * **onde qui la parcourt**, de la drisse vers le battant. Un seul élément
+ * animé en rotation donnerait un panneau rigide qui bascule — l'effet
+ * girouette, pas l'effet drapeau.
+ *
+ * On découpe donc le dessin en douze lés verticaux. Chacun est le **même**
+ * dessin, vu par une fenêtre différente (`clipPath`), et chacun monte et
+ * descend avec un décalage de phase constant. La crête voyage ainsi de gauche
+ * à droite, comme le vent.
+ *
+ * Deux détails font tout le reste :
+ *
+ * - **L'amplitude croît avec la distance au mât.** Près de la drisse l'étoffe
+ *   est tenue, elle ne bouge presque pas ; au battant elle est libre. Une
+ *   amplitude constante donnerait une tôle ondulée.
+ * - **Chaque lé s'assombrit quand il descend.** Un pli qui se creuse tourne le
+ *   dos à la lumière. Sans cette ombre en opposition de phase, l'onde est
+ *   géométriquement juste et visuellement plate.
+ *
+ * §122 : tête de mort et tibias croisés, l'emblème pirate du domaine public.
+ * Ce n'est le pavillon d'aucun équipage de l'œuvre.
+ */
+function PirateFlag() {
+  return (
+    <svg
+      className="harbor__flag"
+      viewBox="0 0 132 88"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        {/* Le dessin, une seule fois. Les douze lés le réutilisent. */}
+        <g id="pav-art">
+          <rect width="132" height="88" rx="2" fill="#141a24" />
+          {/* Liseré clair au guindant : l'ourlet cousu sur la drisse. */}
+          <rect width="5" height="88" fill="#2b3546" />
+
+          <g fill="#f6f2e6">
+            {/* Tibias croisés, derrière le crâne. */}
+            <g stroke="#f6f2e6" strokeWidth="7" strokeLinecap="round">
+              <line x1="36" y1="30" x2="98" y2="66" />
+              <line x1="98" y1="30" x2="36" y2="66" />
+            </g>
+            <g>
+              <circle cx="36" cy="27" r="6" />
+              <circle cx="36" cy="69" r="6" />
+              <circle cx="98" cy="27" r="6" />
+              <circle cx="98" cy="69" r="6" />
+            </g>
+
+            {/* Crâne : calotte, pommettes, mâchoire. */}
+            <path d="M67 20c14 0 24 10 24 23 0 8-4 13-8 16v7c0 3-3 5-6 5H57c-3 0-6-2-6-5v-7c-4-3-8-8-8-16 0-13 10-23 24-23Z" />
+          </g>
+
+          {/* Orbites et cavité nasale, évidées dans le crâne. */}
+          <g fill="#141a24">
+            <ellipse cx="58" cy="42" rx="6.5" ry="7.5" />
+            <ellipse cx="76" cy="42" rx="6.5" ry="7.5" />
+            <path d="M67 50l4 8h-8Z" />
+            {/* Dents : trois fentes, pas un peigne régulier. */}
+            <rect x="60" y="62" width="2.4" height="9" rx="1" />
+            <rect x="66" y="62" width="2.4" height="9" rx="1" />
+            <rect x="72" y="62" width="2.4" height="9" rx="1" />
+          </g>
+        </g>
+
+        {/* Une fenêtre par lé. Elles débordent en haut et en bas : le lé se
+            déplace verticalement, et une fenêtre à ras du dessin laisserait
+            apparaître un liseré vide au sommet de l'onde. */}
+        {Array.from({ length: LES }, (_, i) => (
+          <clipPath key={i} id={`pav-le-${i}`}>
+            <rect
+              x={i * LARGEUR_LE}
+              y="-12"
+              /* Un demi-pixel de recouvrement : sans lui, l'anticrénelage
+                 laisse un trait clair entre deux lés. */
+              width={LARGEUR_LE + 0.5}
+              height="112"
+            />
+          </clipPath>
+        ))}
+      </defs>
+
+      {Array.from({ length: LES }, (_, i) => {
+        const style = {
+          '--i': i,
+          // Tenue au mât, libre au battant.
+          '--amp': `${(i / (LES - 1)) ** 1.4 * 5.5}px`,
+        } as React.CSSProperties;
+
+        return (
+          <g
+            key={i}
+            className="harbor__flagLe"
+            clipPath={`url(#pav-le-${i})`}
+            style={style}
+          >
+            <use href="#pav-art" />
+            <rect
+              className="harbor__flagPli"
+              x={i * LARGEUR_LE}
+              y="-12"
+              width={LARGEUR_LE + 0.5}
+              height="112"
+            />
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
 export function HarborScene({
   children,
   variant = 'hero',
@@ -188,6 +314,15 @@ export function HarborScene({
             pluie, neige, pétales — et inapte au reste : un banc de poissons a
             une direction et une silhouette, ce n'est pas une trame. */}
         <IslandSky island={island} />
+
+        {/* Les jeux de lumière : nappes qui dérivent et rais qui balaient.
+
+            Couche à part, et non un dégradé de plus sur `.isl-fx` : la lumière
+            se compose en `screen` avec ce qu'il y a dessous, alors que la pluie
+            ou les pétales se posent dessus en opaque. Les mêler sur un seul
+            élément imposerait un seul mode de fusion, donc de renoncer à l'un
+            des deux. Voir `.isl-lux` dans `globals.css`. */}
+        <div className="isl-lux" aria-hidden="true" />
 
         {/* Ambiance : ce qui tombe, monte ou dérive. C'est cette couche qui
             occupe la hauteur de l'écran — le décor, lui, est posé en bas. Tout
@@ -263,9 +398,15 @@ export function HarborScene({
               <EternalPose className="harbor__pose" />
             </div>
 
-            {/* Mât et cordage, sur le bord gauche. Masqué sur petit écran :
-                il mangerait la place du formulaire. */}
-            <div className="harbor__mast" />
+            {/* Mât et pavillon, sur le bord gauche. Le mât s'amincit sur
+                petit écran plutôt que de disparaître : il ne mangeait la
+                largeur du formulaire qu'à cause de ses 46 px, et le supprimer
+                emportait le pavillon avec lui — c'est-à-dire le seul élément
+                animé de la scène, sur la plateforme d'où viennent la plupart
+                des joueurs (§55). */}
+            <div className="harbor__mast">
+              <PirateFlag />
+            </div>
           </>
         )}
       </div>
@@ -274,7 +415,7 @@ export function HarborScene({
       <main className="harbor__content">
         {variant === 'hero' ? (
           <header className="harbor__header">
-            <p className="harbor__eyebrow">Grand Line Weekly</p>
+            <p className="harbor__eyebrow">One Piece Quest</p>
             <ShipWheel className="harbor__wheel" />
             {children}
           </header>

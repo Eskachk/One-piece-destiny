@@ -120,7 +120,7 @@ describe('verifyTotp', () => {
 
 describe('otpauthUri', () => {
   it('produit une URI exploitable par une application d\'authentification', () => {
-    const uri = otpauthUri(RFC_SECRET, 'Grand Line Weekly', 'admin@example.com');
+    const uri = otpauthUri(RFC_SECRET, 'One Piece Quest', 'admin@example.com');
     expect(uri.startsWith('otpauth://totp/')).toBe(true);
     expect(uri).toContain(`digits=${DIGITS}`);
     expect(uri).toContain('period=30');

@@ -67,7 +67,7 @@ export default async function ShopPage() {
 
   return (
     <HarborScene variant="page" island={islandOf('/boutique')}>
-      <p className="hb-eyebrow">Grand Line Weekly</p>
+      <p className="hb-eyebrow">One Piece Quest</p>
       <h1 className="hb-title mt-1">Boutique</h1>
 
       <p className="hb-muted mt-3 text-sm">

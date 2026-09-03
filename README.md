@@ -1,4 +1,4 @@
-# One Piece Quest — Grand Line Weekly
+# One Piece Quest
 
 > Le chapitre est le spectacle. Ta prédiction est le jeu.
 
@@ -163,7 +163,7 @@ l'accès au panel.
 | Risk Meter d'équipe, sans spoiler | §11, §12 | ✅ |
 | Schéma Postgres complet | §4, §74, §77, §83, §92, §93 | ✅ SQL |
 | Home mobile-first + HUD + countdown | §54, §55, §59, §63 | ✅ |
-| Palette « Grand Line Weekly » | §52 | ✅ |
+| Palette « One Piece Quest » | §52 | ✅ |
 | En-têtes de sécurité, `X-Powered-By` retiré | §84.2 | ✅ partiel |
 | Hachage Argon2id, politique de mot de passe | §86 | ✅ 6 tests |
 | Rate limit connexion par compte **et** par IP | §86, §98 | ✅ 7 tests |

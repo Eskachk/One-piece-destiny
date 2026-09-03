@@ -8,13 +8,13 @@ import './globals.css';
 /** SEO : titres uniques, Open Graph, canonical (cahier §106). */
 export const metadata: Metadata = {
   title: {
-    default: 'Grand Line Weekly — One Piece Quest',
-    template: '%s — Grand Line Weekly',
+    default: 'One Piece Quest',
+    template: '%s — One Piece Quest',
   },
   description:
     'Le chapitre est le spectacle. Ta prédiction est le jeu. Choisis 3 personnages avant dimanche 23:59:59 et affronte le classement hebdomadaire.',
   openGraph: {
-    title: 'Grand Line Weekly — One Piece Quest',
+    title: 'One Piece Quest',
     description: 'Devine qui apparaîtra dans le prochain chapitre.',
     type: 'website',
   },

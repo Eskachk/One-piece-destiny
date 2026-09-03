@@ -14,7 +14,7 @@ import { notifySecurityEvent } from '@/lib/notifications/security';
  * message, et pas d'exposition au détournement de carte SIM.
  */
 
-export const ISSUER = 'Grand Line Weekly';
+export const ISSUER = 'One Piece Quest';
 
 /** 20 octets = 160 bits, la taille recommandée par la RFC 4226. */
 const SECRET_BYTES = 20;

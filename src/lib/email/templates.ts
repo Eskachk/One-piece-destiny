@@ -102,7 +102,7 @@ function layout(input: LayoutInput): { html: string; text: string } {
 <tr><td align="center">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:${NAVY};border-radius:16px;padding:28px;">
     <tr><td>
-      <p style="margin:0 0 4px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:${TURQUOISE};">Grand Line Weekly</p>
+      <p style="margin:0 0 4px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:${TURQUOISE};">One Piece Quest</p>
       <h1 style="margin:0 0 16px;font-size:22px;line-height:1.3;color:${PARCHMENT};font-family:Georgia,'Times New Roman',serif;">${escapeHtml(input.title)}</h1>
       <p style="margin:0 0 14px;font-size:15px;line-height:1.6;color:${PARCHMENT};">${escapeHtml(input.intro)}</p>
       ${bodyHtml}
@@ -111,7 +111,7 @@ function layout(input: LayoutInput): { html: string; text: string } {
     </td></tr>
   </table>
   <p style="max-width:560px;margin:16px auto 0;font-size:11px;line-height:1.7;color:rgba(245,232,200,0.45);text-align:center;">
-    ${preferencesHtml}Message envoyé par Grand Line Weekly.<br>
+    ${preferencesHtml}Message envoyé par One Piece Quest.<br>
     Jeu de prédiction non officiel, sans lien avec les ayants droit de l’œuvre.
   </p>
 </td></tr></table>
@@ -148,7 +148,7 @@ export function passwordResetEmail(to: string, link: string): EmailMessage {
     footnote: 'Nous ne te demanderons jamais ton mot de passe par e-mail.',
   });
 
-  return { to, subject: 'Réinitialiser ton mot de passe — Grand Line Weekly', html, text };
+  return { to, subject: 'Réinitialiser ton mot de passe — One Piece Quest', html, text };
 }
 
 export function securityAlertEmail(
@@ -171,7 +171,7 @@ export function securityAlertEmail(
       'Les alertes de sécurité ne peuvent pas être désactivées : elles protègent l’accès à ton compte.',
   });
 
-  return { to, subject: '🔐 Changement de sécurité — Grand Line Weekly', html, text };
+  return { to, subject: '🔐 Changement de sécurité — One Piece Quest', html, text };
 }
 
 export function crewLockSoonEmail(to: string, chapterNumber: number): EmailMessage {
@@ -237,7 +237,7 @@ export function rewardReadyEmail(
 export function verifyEmailAddressEmail(to: string, link: string): EmailMessage {
   const { html, text } = layout({
     title: 'Confirme ton adresse e-mail',
-    intro: 'Bienvenue sur Grand Line Weekly.',
+    intro: 'Bienvenue sur One Piece Quest.',
     lines: [
       'Confirme cette adresse pour sécuriser ton compte : c’est elle qui recevra les liens de réinitialisation et les alertes de sécurité.',
       'Ce lien expire dans 24 heures.',
@@ -246,7 +246,7 @@ export function verifyEmailAddressEmail(to: string, link: string): EmailMessage 
     action: { label: 'Confirmer mon adresse', href: link },
   });
 
-  return { to, subject: 'Confirme ton adresse — Grand Line Weekly', html, text };
+  return { to, subject: 'Confirme ton adresse — One Piece Quest', html, text };
 }
 
 /**
