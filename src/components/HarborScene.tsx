@@ -16,6 +16,7 @@ import { ISLANDS, type IslandId } from '@/domain/islands';
 import { IslandDecor } from './islands/IslandDecor';
 import { IslandSky } from './islands/IslandSky';
 import { EternalPose } from './EternalPose';
+import { HatMark } from './ChopperHat';
 import { StrawHat } from './StrawHat';
 
 /**
@@ -74,45 +75,6 @@ function Cloud({
         <circle cx="150" cy="54" r="22" />
         <circle cx="44" cy="60" r="20" />
       </g>
-    </svg>
-  );
-}
-
-/** Roue de gouvernail — emblème du produit. Dessin original. */
-function ShipWheel({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 48 48"
-      className={className}
-      aria-hidden="true"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.4"
-      strokeLinecap="round"
-    >
-      <circle cx="24" cy="24" r="9" />
-      <circle cx="24" cy="24" r="3.2" fill="currentColor" stroke="none" />
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-        <line
-          key={angle}
-          x1="24"
-          y1="24"
-          x2="24"
-          y2="6"
-          transform={`rotate(${angle} 24 24)`}
-        />
-      ))}
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
-        <circle
-          key={`h-${angle}`}
-          cx="24"
-          cy="6"
-          r="2.1"
-          fill="currentColor"
-          stroke="none"
-          transform={`rotate(${angle} 24 24)`}
-        />
-      ))}
     </svg>
   );
 }
@@ -449,7 +411,10 @@ export function HarborScene({
         {variant === 'hero' ? (
           <header className="harbor__header">
             <p className="harbor__eyebrow">One Piece Quest</p>
-            <ShipWheel className="harbor__wheel" />
+            {/* La marque du site. Elle a remplacé la roue de gouvernail, qui
+                était un dessin correct mais que rien ne rattachait à ce jeu-ci :
+                une roue de gouvernail va sur n'importe quel site maritime. */}
+            <HatMark className="harbor__marque" />
             {children}
           </header>
         ) : (

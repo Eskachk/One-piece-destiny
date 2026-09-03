@@ -459,13 +459,6 @@ body {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
-.harbor__wheel {
-  width: 2.6rem;
-  height: 2.6rem;
-  margin: 0.35rem auto 0.1rem;
-  color: var(--color-ink);
-  opacity: 0.9;
-}
 
 .harbor__title {
   font-family: var(--font-poster), system-ui, sans-serif;
@@ -4238,4 +4231,55 @@ button[aria-busy='true']:not(.hb-btn)::before {
 .isl-name {
   background: rgba(255, 255, 255, 0.78);
   box-shadow: 0 1px 6px rgba(9, 26, 45, 0.18);
+}
+
+/* ===========================================================================
+   Le chapeau : marque et attente.
+   =========================================================================== */
+
+/* En tête de la scène d'entrée, à la place de l'ancienne roue de gouvernail.
+   Un peu plus large qu'elle : le dessin est en largeur, une hauteur égale le
+   rendrait deux fois plus petit à l'œil. */
+.harbor__marque {
+  display: block;
+  width: clamp(4.6rem, 17vw, 6.4rem);
+  height: auto;
+  margin: 0.35rem auto 0.15rem;
+  filter: drop-shadow(0 4px 8px rgba(12, 45, 80, 0.28));
+}
+
+/* --- L'écran d'attente ---------------------------------------------------
+
+   Le chapeau flotte doucement au-dessus des blocs gris. Le mouvement est en
+   `transform` seul : sur un écran d'attente, tout ce qui déclenche une reprise
+   de mise en page retarde la page qu'on attend. */
+
+.hb-attente {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.4rem;
+}
+
+.hb-attente__chapeau {
+  width: clamp(6.5rem, 26vw, 9rem);
+  height: auto;
+  filter: drop-shadow(0 8px 14px rgba(12, 45, 80, 0.22));
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hb-attente__chapeau {
+    animation: chapeau-flotte 2.6s ease-in-out infinite;
+  }
+}
+
+/* Une amplitude volontairement faible. Le dessin frémit déjà de lui-même ;
+   ajouter une grande course ferait deux mouvements qui se disputent. */
+@keyframes chapeau-flotte {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-1.5deg);
+  }
+  50% {
+    transform: translate3d(0, -7px, 0) rotate(1.5deg);
+  }
 }

@@ -1,4 +1,5 @@
 import { HarborScene } from '@/components/HarborScene';
+import { HatLoader } from '@/components/ChopperHat';
 import { MainNav } from '@/components/MainNav';
 
 /**
@@ -52,6 +53,13 @@ export default function Loading() {
           les autres devraient voir clignoter à chaque navigation. */}
       <div aria-busy="true" aria-live="polite">
         <span className="sr-only">Chargement de la page…</span>
+
+        {/* Le seul moment du produit où l'on demande au joueur d'attendre est
+            aussi le seul où une animation gagne sa place. Le chapeau frémit
+            pendant la seconde où il n'y a rien à lire. */}
+        <div className="hb-attente">
+          <HatLoader className="hb-attente__chapeau" />
+        </div>
 
         <Bar width="7rem" height="0.7rem" />
         <div className="mt-3">
