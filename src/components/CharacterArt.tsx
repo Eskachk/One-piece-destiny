@@ -27,7 +27,19 @@ import { signatureOf } from '@/domain/collection/signatures';
  */
 
 /** Portrait en pixels — Épique. */
-function PixelPortrait({ grid, accent }: { grid: (string | null)[][]; accent: string }) {
+function PixelPortrait({
+  grid,
+  accent,
+  characterId,
+}: {
+  grid: (string | null)[][];
+  accent: string;
+  /** Nomme le masque de lumière, qui doit être unique dans la page. */
+  characterId: string;
+}) {
+  const uid = characterId.replace(/[^a-zA-Z0-9_-]/g, '');
+  const masqueId = `pmask-${uid}`;
+  const lumiereId = `plux-${uid}`;
   return (
     <svg
       viewBox={`0 0 ${PIXEL_GRID} ${PIXEL_GRID}`}
@@ -39,7 +51,26 @@ function PixelPortrait({ grid, accent }: { grid: (string | null)[][]; accent: st
       // l'effet recherché.
       shapeRendering="crispEdges"
     >
+      <defs>
+        {/*
+          La même lumière que sur les figurines, à la même inclinaison. Deux
+          niveaux de rareté éclairés différemment se liraient comme deux jeux
+          différents.
+        */}
+        <linearGradient id={lumiereId} x1="0.12" y1="0" x2="0.88" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.3" />
+          <stop offset="38%" stopColor="#ffffff" stopOpacity="0.06" />
+          <stop offset="54%" stopColor="#ffffff" stopOpacity="0" />
+          <stop offset="68%" stopColor="#000000" stopOpacity="0" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.26" />
+        </linearGradient>
+        <mask id={masqueId} maskUnits="userSpaceOnUse" style={{ maskType: 'alpha' }}>
+          <use href={`#px-${uid}`} />
+        </mask>
+      </defs>
+
       <rect width={PIXEL_GRID} height={PIXEL_GRID} fill={accent} opacity="0.14" />
+      <g id={`px-${uid}`}>
       {grid.map((row, y) =>
         row.map((colour, x) =>
           colour === null ? null : (
@@ -47,6 +78,17 @@ function PixelPortrait({ grid, accent }: { grid: (string | null)[][]; accent: st
           ),
         ),
       )}
+      </g>
+
+      {/* La lumière, découpée aux seuls pixels dessinés : le fond de rareté ne
+          doit pas s'assombrir avec le personnage. */}
+      <rect
+        width={PIXEL_GRID}
+        height={PIXEL_GRID}
+        fill={`url(#${lumiereId})`}
+        mask={`url(#${masqueId})`}
+        pointerEvents="none"
+      />
     </svg>
   );
 }
@@ -955,13 +997,43 @@ function Tete({ traits }: { traits: SpriteTraits }) {
 }
 
 /** Figurine en pied — Légendaire et Mythique. */
-function SpriteFigure({ traits, accent }: { traits: SpriteTraits; accent: string }) {
+function SpriteFigure({
+  traits,
+  accent,
+  characterId,
+}: {
+  traits: SpriteTraits;
+  accent: string;
+  /** Sert à nommer le masque de lumière, qui doit être unique dans la page. */
+  characterId: string;
+}) {
   // La carrure ne change que deux nombres : la largeur du torse et celle des
   // épaules. Au-delà, il faudrait redessiner chaque membre, et la figurine
   // cesserait d'être lisible en vignette.
   const torso = traits.build === 'giant' ? 21 : traits.build === 'broad' ? 17 : 13;
   const shoulders = torso + 6;
   const clothId = `cloth-${traits.outfit.slice(1)}`;
+  /*
+   * Identifiants propres à cette figurine.
+   *
+   * Le masque et le dégradé sont référencés par `url(#…)`, qui est **global au
+   * document** : deux figurines portant le même identifiant se partageraient le
+   * masque de la première.
+   *
+   * On le dérive donc du personnage. `useId` serait plus court, mais c'est un
+   * hook : il n'existe pas dans un composant serveur, et cette figurine est
+   * dessinée par le serveur — c'est même tout l'intérêt du travail fait sur la
+   * Collection, où les cartes sont rendues côté serveur pour ne pas envoyer la
+   * table des signatures au navigateur.
+   *
+   * Deux cartes du **même** personnage sur une même page partagent alors leur
+   * masque, et c'est sans conséquence : à identifiant égal, la silhouette est
+   * la même. C'est précisément ce qu'un masque partagé exige.
+   */
+  const uid = characterId.replace(/[^a-zA-Z0-9_-]/g, '');
+  const masqueId = `sil-${uid}`;
+  const lumiereId = `lux-${uid}`;
+  const figureId = `fig-${uid}`;
 
   /*
    * La taille.
@@ -989,6 +1061,38 @@ function SpriteFigure({ traits, accent }: { traits: SpriteTraits; accent: string
           <stop offset="0%" stopColor={traits.outfit} />
           <stop offset="100%" stopColor="#00000055" />
         </linearGradient>
+
+        {/*
+          La lumière. Elle vient du haut à gauche — l'orientation par défaut de
+          presque toute l'illustration, parce que c'est celle qu'on lit sans y
+          penser.
+
+          Le dégradé va du blanc au noir en passant par **deux paliers
+          transparents** au milieu. Sans eux, la moitié claire et la moitié
+          sombre se rejoindraient en une ligne diagonale nette au travers du
+          personnage ; avec, il reste une plage neutre où la couleur d'origine
+          est intacte, et le relief se lit sans qu'on voie le dégradé.
+        */}
+        <linearGradient id={lumiereId} x1="0.12" y1="0" x2="0.88" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.34" />
+          <stop offset="34%" stopColor="#ffffff" stopOpacity="0.08" />
+          <stop offset="52%" stopColor="#ffffff" stopOpacity="0" />
+          <stop offset="66%" stopColor="#000000" stopOpacity="0" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.3" />
+        </linearGradient>
+
+        {/*
+          La silhouette, pour n'éclairer que la figurine.
+
+          `maskType: alpha` est indispensable. Un masque SVG se lit par défaut
+          en **luminance** : un personnage vêtu de noir serait alors considéré
+          comme transparent et n'aurait pas d'ombre du tout, tandis qu'un
+          personnage en blanc en aurait le double. On veut la forme, pas la
+          clarté.
+        */}
+        <mask id={masqueId} maskUnits="userSpaceOnUse" style={{ maskType: 'alpha' }}>
+          <use href={`#${figureId}`} />
+        </mask>
       </defs>
 
       {/* Halo de rareté : il donne son assise à la figurine, qui sans lui
@@ -1012,7 +1116,10 @@ function SpriteFigure({ traits, accent }: { traits: SpriteTraits; accent: string
         </>
       )}
 
-      <g transform={echelle === 1 ? undefined : `translate(32 70) scale(${echelle}) translate(-32 -70)`}>
+      <g
+        id={figureId}
+        transform={echelle === 1 ? undefined : `translate(32 70) scale(${echelle}) translate(-32 -70)`}
+      >
         <ExtrasArriere traits={traits} />
 
         {/* Jambes. Elles étaient d'un gris unique, écrit en dur : tout le monde
@@ -1098,6 +1205,22 @@ function SpriteFigure({ traits, accent }: { traits: SpriteTraits; accent: string
         <ExtrasEpaule traits={traits} shoulders={shoulders} />
         <Arme traits={traits} accent={accent} />
       </g>
+
+      {/*
+        La lumière, posée **après** tout le reste et découpée à la silhouette.
+
+        C'est ce qui donne du volume aux 204 figurines sans qu'aucune de leurs
+        couleurs ait changé : chaque tête, chaque manteau, chaque jambe reçoit
+        son éclat en haut à gauche et son ombre en bas à droite, du seul fait
+        d'appartenir au dessin.
+      */}
+      <rect
+        width="64"
+        height="80"
+        fill={`url(#${lumiereId})`}
+        mask={`url(#${masqueId})`}
+        pointerEvents="none"
+      />
     </svg>
   );
 }
@@ -1134,10 +1257,18 @@ export function CharacterArt({
         </span>
       )}
       {level === 'pixel' && (
-        <PixelPortrait grid={pixelPortrait(spriteTraits(subject))} accent={RARITY_COLOR[rarity]} />
+        <PixelPortrait
+          grid={pixelPortrait(spriteTraits(subject))}
+          accent={RARITY_COLOR[rarity]}
+          characterId={characterId}
+        />
       )}
       {level === 'sprite' && (
-        <SpriteFigure traits={spriteTraits(subject)} accent={RARITY_COLOR[rarity]} />
+        <SpriteFigure
+          traits={spriteTraits(subject)}
+          accent={RARITY_COLOR[rarity]}
+          characterId={characterId}
+        />
       )}
     </div>
   );

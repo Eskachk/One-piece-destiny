@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { isCanon } from '../../data/non-canon';
 import { CHARACTERS } from '../../data/characters';
 import { SIGNATURES, signatureOf } from './signatures';
 import { spriteTraits } from './portrait';
@@ -65,17 +66,22 @@ describe('signatures physiques', () => {
     expect(orphelines).toEqual([]);
   });
 
-  it('décrit une part substantielle des Épiques', () => {
-    // Les cent quarante-neuf Épiques ne sont pas tous décrits, et c'est
-    // assumé : je n'écris une signature que pour un personnage dont
-    // l'apparence est établie. Les autres passent par le repli déterministe.
+  it('décrit **tous** les Épiques, les Légendaires et les Mythiques', () => {
+    // La règle a changé : ces trois raretés sont celles qui portent le jeu, et
+    // ce sont les seules où l'on investit dans la ressemblance. Le repli
+    // déterministe reste pour les Communs et les Rares.
     //
-    // Ce seuil n'est pas une cible à atteindre, c'est un cliquet : il empêche
-    // qu'une refonte du référentiel fasse silencieusement retomber la
-    // couverture à zéro.
-    const epiques = CHARACTERS.filter((c) => c.rarity === 'EPIC');
-    const decrits = epiques.filter((c) => signatureOf(c.id) !== null);
-    expect(decrits.length / epiques.length).toBeGreaterThan(0.4);
+    // Ce n'est plus un cliquet mais une exigence : un personnage ajouté à l'une
+    // de ces raretés sans signature sortirait un visage tiré de l'empreinte de
+    // son identifiant, au milieu de cartes qui ont toutes la leur. L'écart se
+    // verrait immédiatement, et rien ne l'aurait signalé.
+    const manquants = CHARACTERS.filter(
+      (c) =>
+        isCanon(c.id) &&
+        (c.rarity === 'EPIC' || c.rarity === 'LEGENDARY' || c.rarity === 'MYTHIC') &&
+        signatureOf(c.id) === null,
+    );
+    expect(manquants.map((c) => `${c.rarity} ${c.id}`)).toEqual([]);
   });
 
   it('ne laisse aucune relation pendante', () => {

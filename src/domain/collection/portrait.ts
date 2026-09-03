@@ -282,6 +282,34 @@ export function pixelPortrait(traits: SpriteTraits): (string | null)[][] {
     poser(half - 1 - (joue - 2), yeux + 1, '#1a1a22');
   }
 
+  /* --- Les sourcils --------------------------------------------------------
+   *
+   * `brow` était écrit dans les signatures et n'était lu nulle part : les
+   * Épiques avaient tous exactement la même expression, alors que la donnée
+   * qui les sépare existait déjà.
+   *
+   * Deux pixels par œil suffisent. Ce qui porte l'humeur n'est pas le dessin
+   * du sourcil mais son **inclinaison** : abaissé vers le nez pour la colère,
+   * relevé pour la hauteur, horizontal pour le calme. Un pixel plus haut ou
+   * plus bas que son voisin, et le visage change d'humeur.
+   */
+  if (traits.brow && traits.brow !== 'neutral') {
+    const ligne = yeux - 2;
+    const interne = half - 1 - (joue - 2);
+    const externe = half - 1 - (joue - 1);
+    if (traits.brow === 'fierce') {
+      // L'extrémité intérieure descend : c'est le froncement.
+      poser(externe, ligne, traits.hair);
+      poser(interne, ligne + 1, traits.hair);
+    } else if (traits.brow === 'arched') {
+      poser(externe, ligne + 1, traits.hair);
+      poser(interne, ligne, traits.hair);
+    } else {
+      poser(externe, ligne, traits.hair);
+      poser(interne, ligne, traits.hair);
+    }
+  }
+
   // --- La marque du visage -------------------------------------------------
   if (traits.mark === 'glasses' || traits.mark === 'shades' || traits.mark === 'blind') {
     const teinte = traits.mark === 'glasses' ? '#33333d' : traits.mark === 'blind' ? '#e6e0d2' : '#15151c';
