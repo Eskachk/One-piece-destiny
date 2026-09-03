@@ -1,0 +1,1038 @@
+{
+ "absalom": {
+  "nom_doc": "Absalom",
+  "desc": "Très grand homme à la carrure extrêmement massive, avec des épaules très larges et un torse épais. Son visage est particulièrement bestial : museau et bouche inspirés d’un lion, mâchoire volumineuse et dents visibles. Sa peau est claire. Il possède une épaisse crinière de cheveux blancs, longs, hérissés et très désordonnés, qui encadre toute sa tête. Ses sourcils sont épais et son regard est agressif. Son corps comporte de nombreuses zones couturées à la suite des modifications chirurgicales de Hogback. Il porte généralement un long manteau sombre, un pantalon et des chaussures lourdes. Silhouette globale : énorme, animale et très imposante.",
+  "id": "absalom",
+  "nom": "Absalom",
+  "rarete": "EPIC"
+ },
+ "aladdin": {
+  "nom_doc": "Aladdin",
+  "desc": "Homme-poisson à l’apparence de raie manta. Corps humain puissant mais allongé, avec une peau claire et des caractéristiques aquatiques très visibles. Son visage est large, son nez et ses traits sont plats, et il possède une très grande barbe noire qui descend sous le menton. Ses cheveux sont noirs et relativement courts. Ses yeux sont étroits. Ses bras sont musclés, avec des caractéristiques de nageoires près des membres. Il porte une tenue de médecin de bord, avec un style pratique et relativement ample.",
+  "id": "aladdin",
+  "nom": "Aladdin",
+  "rarete": "EPIC"
+ },
+ "alvida": {
+  "nom_doc": "Alvida",
+  "desc": "Dans sa première apparition, elle est très corpulente, avec un visage rond, des joues épaisses et une imposante masse corporelle. Peau très claire. Ses cheveux noirs sont très longs et abondants, descendant loin dans le dos. Ses yeux sont petits et son sourire dévoile une large bouche. Elle porte un énorme manteau de capitaine et des vêtements de pirate voyants. Sa massue métallique à pointes est l’un de ses principaux éléments visuels. Après avoir mangé le Sube Sube no Mi, elle devient extrêmement mince : visage affiné, taille fine, jambes longues et silhouette beaucoup plus élancée.",
+  "id": "alvida",
+  "nom": "Alvida",
+  "rarete": "EPIC"
+ },
+ "atmos": {
+  "nom_doc": "Atmos",
+  "desc": "Homme extrêmement massif, large au niveau du torse et des bras. Son visage évoque celui d’un bovin : nez large, traits épais, mâchoire puissante et petites cornes sur la tête. Peau sombre. Son torse est entièrement découvert, montrant une musculature très développée. Il porte peu de vêtements, principalement des éléments destinés au combat. Son arme est une grande hache. Impression générale : brute géante extrêmement robuste.",
+  "id": "atmos",
+  "nom": "Atmos",
+  "rarete": "EPIC"
+ },
+ "avalo-pizarro": {
+  "nom_doc": "Avalo Pizarro",
+  "desc": "Homme immense et très large, avec une musculature importante et une silhouette lourde. Son visage est extrêmement large, presque carré, avec des joues épaisses et un grand sourire permanent et narquois. Cheveux foncés, longs et volumineux, descendant sur les côtés du visage. Son nez et ses lèvres sont larges. Il porte une tenue rappelant les prisonniers d’Impel Down : vêtements rayés ou très simples, avec une apparence négligée. Son apparence générale est celle d’un criminel massif et arrogant.",
+  "id": "avalo-pizarro",
+  "nom": "Avalo Pizarro",
+  "rarete": "EPIC"
+ },
+ "baby-5": {
+  "nom_doc": "Baby 5",
+  "desc": "Femme jeune et mince, avec une silhouette féminine fine mais bien proportionnée. Peau claire. Ses cheveux noirs sont relativement longs, lisses et tombent autour de son visage et sur ses épaules. Grands yeux et traits fins. Elle porte généralement une robe noire ou très sombre, moulante au niveau du buste, avec des bottes et des accessoires de servante/combat. Son corps peut se transformer en armes : bras transformés en canons ou lames, jambes en armes, etc., ce qui modifie radicalement sa silhouette lorsqu’elle utilise son fruit.",
+  "id": "baby-5",
+  "nom": "Baby 5",
+  "rarete": "EPIC"
+ },
+ "bastille": {
+  "nom_doc": "Bastille",
+  "desc": "Très grand officier de la Marine, extrêmement massif. Épaules énormes, bras épais et jambes puissantes. Son visage est carré et sa mâchoire particulièrement imposante. Son casque possède des cornes, donnant à son apparence un aspect démoniaque. Peau mate. Il porte le manteau blanc de la Marine sur une tenue militaire sombre. Son arme est un très grand sabre. Son physique évoque un soldat blindé très lourd.",
+  "id": "bastille",
+  "nom": "Bastille",
+  "rarete": "EPIC"
+ },
+ "ben-beckmann": {
+  "nom_doc": "Benn Beckman",
+  "desc": "Homme grand et robuste sans être excessivement musclé. Visage long et relativement anguleux, avec une mâchoire forte et une barbe courte. Ses cheveux sont gris, épais et tirés vers l’arrière. Ses yeux sont étroits, souvent plissés. Il présente des rides et lignes de fatigue autour des yeux. Il porte généralement un gilet sans manches, laissant apparaître une partie de ses bras et de son torse, avec un long manteau sombre. Il fume régulièrement une cigarette et porte un fusil massif. Son apparence générale est celle d’un homme mûr, calme et très robuste.",
+  "id": "ben-beckmann",
+  "nom": "Benn Beckman",
+  "rarete": "EPIC"
+ },
+ "bepo": {
+  "nom_doc": "Bepo",
+  "desc": "Ours polaire anthropomorphe. Corps entièrement recouvert d’une fourrure blanche extrêmement épaisse. Grande tête d’ours avec museau allongé, oreilles rondes, nez noir et grands yeux. Malgré son apparence animale, il possède des bras et jambes humanoïdes. Corps robuste, avec ventre arrondi et pattes épaisses. Il porte généralement une combinaison orange caractéristique des Heart Pirates. Son apparence est nettement plus douce et ronde que celle des autres combattants.",
+  "id": "bepo",
+  "nom": "Bepo",
+  "rarete": "EPIC"
+ },
+ "black-maria": {
+  "nom_doc": "Black Maria",
+  "desc": "Femme gigantesque, extrêmement grande et très élancée malgré des formes très développées. Très longs cheveux noirs, épais et ondulés, tombant très bas dans le dos. Visage féminin allongé, yeux étirés, lèvres marquées. Peau claire. Elle possède une silhouette avec une poitrine et des hanches extrêmement développées. Elle porte un kimono très ouvert, laissant largement apparaître le buste et les jambes, avec de nombreux ornements. Elle est souvent accompagnée d’une ombrelle. En forme de Zoan, son bas du corps devient celui d’une araignée géante, donnant une apparence extrêmement massive.",
+  "id": "black-maria",
+  "nom": "Black Maria",
+  "rarete": "EPIC"
+ },
+ "blue-gilly": {
+  "nom_doc": "Blue Gilly",
+  "desc": "Homme très grand et extrêmement longiligne. Ses jambes sont anormalement longues en raison de son style de combattant et de sa physiologie particulière. Peau bleuâtre. Visage étroit avec menton pointu. Cheveux noirs tirés vers l’arrière. Corps musclé mais très sec, avec peu de masse grasse. Il porte une tenue de combat légère couvrant assez peu le corps. Son principal élément visuel est le rapport jambes/torse extrêmement disproportionné.",
+  "id": "blue-gilly",
+  "nom": "Blue Gilly",
+  "rarete": "EPIC"
+ },
+ "bluejam": {
+  "nom_doc": "Bluejam",
+  "desc": "Pirate grand et robuste, au visage large et marqué. Cheveux bleus très courts et hérissés. Nombreuses cicatrices sur le visage. Regard dur et sourcils épais. Barbe ou duvet facial irrégulier. Porte une longue veste sombre, généralement ouverte sur une tenue de pirate. Deux pistolets complètent sa silhouette. Il a l’apparence d’un pirate brutal et vieillissant.",
+  "id": "bluejam",
+  "nom": "Bluejam",
+  "rarete": "EPIC"
+ },
+ "boa-marigold": {
+  "nom_doc": "Boa Marigold",
+  "desc": "Très grande femme, mais extrêmement corpulente. Bras et jambes épais, hanches larges, ventre développé. Cheveux orange/roux, attachés en hauteur. Visage rond et joues pleines. Ses yeux sont grands. Elle porte une grande robe traditionnelle ample, avec des éléments rappelant le style de Kuja. Son physique est beaucoup plus massif que celui de sa sœur Boa Hancock.",
+  "id": "boa-marigold",
+  "nom": "Boa Marigold",
+  "rarete": "EPIC"
+ },
+ "boa-sandersonia": {
+  "nom_doc": "Boa Sandersonia",
+  "desc": "Femme extrêmement grande et imposante, au physique athlétique et musclé. Très longs cheveux verts, épais, descendant dans le dos. Visage allongé, yeux étroits. Peau claire. Bras et jambes longs et puissants. Elle porte une tenue Kuja légère, avec une robe ou un haut très ouvert et des ornements de serpent. Son corps est plus robuste que celui de Hancock mais beaucoup plus élancé que celui de Marigold.",
+  "id": "boa-sandersonia",
+  "nom": "Boa Sandersonia",
+  "rarete": "EPIC"
+ },
+ "boo": {
+  "nom_doc": "Boo",
+  "desc": "Homme extrêmement corpulent et très large. Ventre volumineux, épaules larges et visage rond. Nez large et joues épaisses. Peau mate. Cheveux courts et relativement sombres. Il porte des vêtements traditionnels amples, donnant encore plus de volume à sa silhouette. Apparence générale : homme très lourd et placide.",
+  "id": "boo",
+  "nom": "Boo",
+  "rarete": "EPIC"
+ },
+ "brandnew": {
+  "nom_doc": "Brandnew",
+  "desc": "Homme adulte assez mince. Visage allongé, nez fin, menton étroit. Porte de petites lunettes rondes. Cheveux clairs coiffés soigneusement vers l’arrière. Peau claire. Uniforme classique d’officier de Marine et manteau blanc. Sa silhouette est beaucoup plus sèche et élégante que celle des soldats de première ligne.",
+  "id": "brandnew",
+  "nom": "Brandnew",
+  "rarete": "EPIC"
+ },
+ "buffallo": {
+  "nom_doc": "Buffalo",
+  "desc": "Homme très rond et trapu, avec un visage large et un menton extrêmement proéminent. Cheveux noirs dressés en pointes. Gros nez, petites lèvres et yeux assez rapprochés. Son corps est particulièrement compact. Porte des vêtements sombres et amples, avec des éléments métalliques de son équipement. Sa tête et son menton donnent à sa silhouette un aspect presque caricatural.",
+  "id": "buffallo",
+  "nom": "Buffalo",
+  "rarete": "EPIC"
+ },
+ "cabaji": {
+  "nom_doc": "Cabaji",
+  "desc": "Homme mince et athlétique. Cheveux bleus, longs sur les côtés et généralement coiffés vers l’arrière. Le bas de son visage peut être couvert par une écharpe ou un tissu. Visage plutôt fin, yeux étroits. Corps souple plutôt que massif, adapté à ses mouvements acrobatiques. Il porte une tenue rappelant celle d’un acrobate ou d’un artiste de cirque, avec un sabre. Silhouette très légère.",
+  "id": "cabaji",
+  "nom": "Cabaji",
+  "rarete": "EPIC"
+ },
+ "caribou": {
+  "nom_doc": "Caribou",
+  "desc": "Homme grand mais assez mince, avec une silhouette irrégulière et un peu voûtée. Cheveux noirs en longues dreadlocks, très abondants. Visage pâle, long et déformé par un sourire permanent. Yeux rapprochés et expression inquiétante. Il porte des vêtements sombres, généralement relativement lourds. Ses deux pistolets sont très visibles à la ceinture. Physique moins impressionnant par la musculature que par son apparence étrange.",
+  "id": "caribou",
+  "nom": "Caribou",
+  "rarete": "EPIC"
+ },
+ "catarina-devon": {
+  "nom_doc": "Catarina Devon",
+  "desc": "Femme grande, mince et très inquiétante. Très longs cheveux blonds, généralement laissés tomber dans le dos. Visage allongé, nez long, sourire carnassier et dents visibles. Yeux fins et regard agressif. Sa tenue sombre accentue son apparence de criminelle. Elle possède une silhouette féminine mais assez anguleuse. Sous forme de Zoan mythique, elle peut prendre l’apparence d’un renard à neuf queues.",
+  "id": "catarina-devon",
+  "nom": "Catarina Devon",
+  "rarete": "EPIC"
+ },
+ "charloss": {
+  "nom_doc": "Charloss",
+  "desc": "Homme très corpulent, mou et peu athlétique. Visage rond et bouffi, joues lourdes, petit menton. Cheveux blonds très volumineux, bouclés et gonflés autour de la tête. Petits yeux. Peau très claire. Il porte des vêtements immaculés extrêmement luxueux, souvent blancs, et surtout une bulle transparente autour de la tête. Silhouette globale : aristocrate obèse et fragile.",
+  "id": "charloss",
+  "nom": "Charloss",
+  "rarete": "EPIC"
+ },
+ "charlotte-brulee": {
+  "nom_doc": "Charlotte Brûlée",
+  "desc": "Femme assez grande et mince, mais son visage est déformé par une longue cicatrice qui traverse une grande partie du visage. Cheveux violets très épais. Nez et menton relativement longs. Sourcils fins. Elle porte des vêtements sombres, souvent amples. Ses traits sont volontairement très irréguliers et donnent une apparence de sorcière âgée.",
+  "id": "charlotte-brulee",
+  "nom": "Charlotte Brûlée",
+  "rarete": "EPIC"
+ },
+ "charlotte-chiffon": {
+  "nom_doc": "Charlotte Chiffon",
+  "desc": "Jeune femme grande et assez ronde, visage doux et arrondi. Peau claire. Cheveux blond très pâle, longs et volumineux. Grands yeux et lèvres bien dessinées. Elle porte une robe sombre avec un col haut et des vêtements élégants. Sa silhouette reste féminine et relativement douce, sans musculature apparente.",
+  "id": "charlotte-chiffon",
+  "nom": "Charlotte Chiffon",
+  "rarete": "EPIC"
+ },
+ "charlotte-cracker": {
+  "nom_doc": "Charlotte Cracker",
+  "desc": "Homme grand et très athlétique. Cheveux roses, dressés en nombreuses pointes. Visage fin, mâchoire étroite et grand sourire. Peau claire. Bras et épaules musclés. Il porte une armure très claire, presque blanche, très structurée, ainsi qu’un énorme bouclier. Son apparence réelle sans l’armure est nettement plus mince que l’image gigantesque donnée par son équipement.",
+  "id": "charlotte-cracker",
+  "nom": "Charlotte Cracker",
+  "rarete": "EPIC"
+ },
+ "charlotte-daifuku": {
+  "nom_doc": "Charlotte Daifuku",
+  "desc": "Homme extrêmement grand et musclé. Épaules très larges, torse massif et bras puissants. Crâne presque entièrement rasé. Très grosse moustache noire, accompagnée d’une barbiche. Visage large et dur. Il porte une veste ouverte laissant le torse nu. Sabre à la ceinture. Physique de lutteur ou culturiste lourd.",
+  "id": "charlotte-daifuku",
+  "nom": "Charlotte Daifuku",
+  "rarete": "EPIC"
+ },
+ "charlotte-dent-de-chien": {
+  "nom_doc": "Charlotte Katakuri",
+  "desc": "Très grand homme, extrêmement athlétique et musclé. Silhouette en V : épaules extrêmement larges, taille relativement étroite, bras massifs. Cheveux rouge sombre, courts et dressés en pointes. Visage anguleux, yeux étroits. Il possède une mâchoire et une bouche très grandes, avec des dents extrêmement pointues, habituellement cachées par un large col de fourrure. Il porte un pantalon sombre, des bottes épaisses et un gilet laissant largement apparaître son torse. Silhouette générale : combattant très grand, sec et extrêmement musclé.",
+  "id": "charlotte-dent-de-chien",
+  "nom": "Charlotte Katakuri",
+  "rarete": "EPIC"
+ },
+ "charlotte-mont-d-or": {
+  "nom_doc": "Charlotte Mont-d’Or",
+  "desc": "Homme de taille moyenne à grande, assez mince. Visage étroit, petit nez et lunettes rondes. Cheveux clairs plaqués vers l’arrière. Cou fin et épaules modestes. Porte une longue tenue claire rappelant énormément celle d’un bibliothécaire ou archiviste. Son apparence est élégante et intellectuelle plutôt que physique.",
+  "id": "charlotte-mont-d-or",
+  "nom": "Charlotte Mont d’Or",
+  "rarete": "EPIC"
+ },
+ "charlotte-oven": {
+  "nom_doc": "Charlotte Oven",
+  "desc": "Homme colossal et extrêmement musclé. Visage large et carré, avec des pommettes massives et une mâchoire puissante. Cheveux noirs courts. Peau mate. Cou épais et épaules énormes. Il porte une tenue rouge foncé ouverte sur les bras, avec un pantalon et des bottes. Ses bras sont particulièrement volumineux. Physiquement, c’est l’un des hommes les plus massifs de la famille Charlotte.",
+  "id": "charlotte-oven",
+  "nom": "Charlotte Oven",
+  "rarete": "EPIC"
+ },
+ "charlotte-praline": {
+  "nom_doc": "Charlotte Praliné",
+  "desc": "Femme-poisson de type requin. Corps féminin assez grand et voluptueux. Peau claire. Cheveux bruns très longs et ondulés. Visage humain, mais avec des caractéristiques de poisson, notamment la structure autour de la bouche et les nageoires. Ses avant-bras présentent des éléments rappelant des nageoires. Porte une robe claire et élégante.",
+  "id": "charlotte-praline",
+  "nom": "Charlotte Praliné",
+  "rarete": "EPIC"
+ },
+ "charlotte-pudding": {
+  "nom_doc": "Charlotte Pudding",
+  "desc": "Jeune femme assez petite et mince. Visage très fin et peau très claire. Longs cheveux châtains, lisses, tombant de chaque côté du visage et souvent sur un œil. Grands yeux. Elle possède un troisième œil au milieu du front, habituellement caché par ses cheveux. Silhouette mince et féminine. Elle porte des robes élégantes aux tons clairs.",
+  "id": "charlotte-pudding",
+  "nom": "Charlotte Pudding",
+  "rarete": "EPIC"
+ },
+ "charlotte-smoothie": {
+  "nom_doc": "Charlotte Smoothie",
+  "desc": "Femme gigantesque et extrêmement élancée. Très longues jambes, taille fine et poitrine importante. Cheveux clairs, longs et lisses. Visage très fin. Peau claire. Elle porte généralement une tenue sombre très élégante, avec des bottes et une grande cape ou robe. Son immense sabre accentue encore sa taille. Apparence générale : géante élégante et athlétique.",
+  "id": "charlotte-smoothie",
+  "nom": "Charlotte Smoothie",
+  "rarete": "EPIC"
+ },
+ "coribou": {
+  "nom_doc": "Coribou",
+  "desc": "Plus petit mais très corpulent que son frère Caribou. Barbe sombre et épaisse. Porte un bonnet et des vêtements évoquant un marin ou un pirate. Visage rond, nez volumineux, dents visibles lors de son sourire. Corps très large et ventre développé. Apparence plus compacte que celle de Caribou.",
+  "id": "coribou",
+  "nom": "Coribou",
+  "rarete": "EPIC"
+ },
+ "curly-dadan": {
+  "nom_doc": "Curly Dadan",
+  "desc": "Femme âgée de forte corpulence, avec de larges épaules et un corps volumineux. Cheveux orange très abondants et fortement bouclés, formant presque une masse autour de sa tête. Visage large et ridé, gros nez. Cigarette souvent à la bouche. Elle porte des vêtements simples et robustes. Malgré son âge, ses bras et épaules restent imposants.",
+  "id": "curly-dadan",
+  "nom": "Curly Dadan",
+  "rarete": "EPIC"
+ },
+ "dellinger": {
+  "nom_doc": "Dellinger",
+  "desc": "Jeune homme très mince et relativement petit. Apparence androgyne. Cheveux blonds mi-longs. Peau claire. Visage fin avec des dents extrêmement pointues et un sourire inquiétant. Corps souple, jambes relativement longues. Ses particularités de poisson-combattant lui donnent des oreilles et éléments aquatiques caractéristiques. Porte une tenue claire et élégante.",
+  "id": "dellinger",
+  "nom": "Dellinger",
+  "rarete": "EPIC"
+ },
+ "demaro-black": {
+  "nom_doc": "Demaro Black",
+  "desc": "Homme de taille moyenne, mince et légèrement voûté. Visage maigre, joues creuses et mâchoire asymétrique. Cheveux sombres. Porte un chapeau de paille similaire à celui de Luffy, mais avec une apparence grossièrement imitée. Cardigan rouge et vêtements de pirate ordinaires. Sa silhouette est nettement moins athlétique que celle de Luffy.",
+  "id": "demaro-black",
+  "nom": "Demaro Black",
+  "rarete": "EPIC"
+ },
+ "diamante": {
+  "nom_doc": "Diamante",
+  "desc": "Homme grand, mince et très élancé. Longs cheveux blonds, légèrement ondulés. Visage fin et nez relativement long. Porte un grand tricorne à plume, une cape rouge et une tenue très colorée. Jambes longues et silhouette d’escrimeur. Son physique est davantage élégant et théâtral que massif.",
+  "id": "diamante",
+  "nom": "Diamante",
+  "rarete": "EPIC"
+ },
+ "diamond-joz": {
+  "nom_doc": "Diamond Jozu",
+  "desc": "Colosse extrêmement massif. Torse énorme, épaules gigantesques et bras très épais. Crâne rasé. Peau mate. Visage large et mâchoire puissante. Souvent torse nu, révélant une musculature énorme. Lors de sa transformation, une grande partie de son corps devient entièrement constituée de diamant, ce qui le rend extrêmement volumineux et brillant.",
+  "id": "diamond-joz",
+  "nom": "Diamond Jozu",
+  "rarete": "EPIC"
+ },
+ "doberman": {
+  "nom_doc": "Doberman",
+  "desc": "Homme grand et relativement mince. Visage très émacié, joues creusées et mâchoire longue. Cheveux noirs coiffés en arrière. Sourcils épais. Il porte l’uniforme d’officier de la Marine et le manteau blanc sur les épaules. Corps athlétique mais sec, sans volume musculaire excessif.",
+  "id": "doberman",
+  "nom": "Doberman",
+  "rarete": "EPIC"
+ },
+ "doc-q": {
+  "nom_doc": "Doc Q",
+  "desc": "Homme extrêmement maigre. Corps presque squelettique, épaules étroites et membres très fins. Visage pâle, creusé et malade. Très longs cheveux noirs, tombant autour du visage. Cernes très marquées sous les yeux. Porte des vêtements de médecin et une longue blouse. Se déplace avec une grande faux. Son apparence rappelle délibérément celle d’un malade chronique.",
+  "id": "doc-q",
+  "nom": "Doc Q",
+  "rarete": "EPIC"
+ },
+ "dogra": {
+  "nom_doc": "Dogra",
+  "desc": "Petit homme trapu et robuste. Visage rond, front large, nez épais. Cheveux sombres courts et désordonnés. Bras courts mais relativement musclés. Vêtements pauvres et rapiécés. Son corps est compact plutôt qu’élancé.",
+  "id": "dogra",
+  "nom": "Dogra",
+  "rarete": "EPIC"
+ },
+ "domino": {
+  "nom_doc": "Domino",
+  "desc": "Femme grande et très mince. Cheveux blonds, longs et lisses. Visage fin, lèvres marquées. Porte un petit masque noir autour des yeux. Uniforme très ajusté de gardienne d’Impel Down, généralement sombre. Jambes longues, posture droite. Fouet comme arme.",
+  "id": "domino",
+  "nom": "Domino",
+  "rarete": "EPIC"
+ },
+ "don-quijote-rosinante": {
+  "nom_doc": "Donquixote Rosinante",
+  "desc": "Très grand homme, extrêmement longiligne. Jambes et bras longs, épaules relativement étroites. Visage allongé couvert de maquillage blanc et rouge de clown. Longs cheveux clairs. Il porte un gigantesque manteau noir couvert de plumes. Son torse comporte un motif de cœur rouge. Fume souvent plusieurs cigarettes en même temps. Son apparence est volontairement extravagante.",
+  "id": "don-quijote-rosinante",
+  "nom": "Donquixote Rosinante",
+  "rarete": "EPIC"
+ },
+ "edward-weeble": {
+  "nom_doc": "Edward Weevil",
+  "desc": "Homme extrêmement grand et massivement construit. Corps énorme, bras épais, ventre développé et jambes relativement courtes. Visage étonnamment jeune et enfantin par rapport à son corps. Cheveux blonds rares et irréguliers avec une zone dégarnie sur le haut du crâne. Peau claire. Porte des vêtements de pirate simples et un immense bisento. Silhouette de colosse disproportionné.",
+  "id": "edward-weeble",
+  "nom": "Edward Weevil",
+  "rarete": "EPIC"
+ },
+ "ficher-tiger": {
+  "nom_doc": "Fisher Tiger",
+  "desc": "Homme-poisson de type tigre. Corps extrêmement musclé et puissant. Peau rouge-orangée avec des rayures sombres typiques du tigre. Visage très large, mâchoire forte, dents acérées. Torse nu, muscles pectoraux et abdominaux très développés. Longues oreilles et caractéristiques faciales félines. Nombreux tatouages sur les bras. Très grande silhouette.",
+  "id": "ficher-tiger",
+  "nom": "Fisher Tiger",
+  "rarete": "EPIC"
+ },
+ "fossa": {
+  "nom_doc": "Fossa",
+  "desc": "Homme adulte grand et robuste. Visage anguleux, nez prononcé, yeux étroits. Une grande cicatrice traverse son visage. Porte un cigare. Cheveux et barbe foncés. Torse assez large. Veste sombre et pantalon robuste. Son sabre est généralement visible. Physique de combattant expérimenté plutôt que de colosse.",
+  "id": "fossa",
+  "nom": "Fossa",
+  "rarete": "EPIC"
+ },
+ "foxy": {
+  "nom_doc": "Foxy",
+  "desc": "Homme relativement grand mais avec une silhouette peu athlétique. Visage particulièrement caricatural, surtout à cause de son énorme nez rouge très long et pointu. Cheveux violets, dressés en pointes. Grands sourcils et grands yeux. Porte une longue cape et des vêtements voyants. Corps plutôt mou que musclé.",
+  "id": "foxy",
+  "nom": "Foxy",
+  "rarete": "EPIC"
+ },
+ "fukurokuju": {
+  "nom_doc": "Fukurokuju",
+  "desc": "Homme adulte assez grand et extrêmement mince. Son trait principal est son front gigantesquement allongé, qui donne au crâne une forme très inhabituelle. Cheveux noirs très longs, tombant dans le dos. Visage étroit. Il porte le costume traditionnel des ninjas d’Oniwabanshu, avec un grand kimono. Bras et jambes fins.",
+  "id": "fukurokuju",
+  "nom": "Fukurokuju",
+  "rarete": "EPIC"
+ },
+ "fullbody": {
+  "nom_doc": "Fullbody",
+  "desc": "Homme grand, athlétique mais peu massif. Cheveux bleus, coiffés en arrière. Visage carré et sourcils épais. Porte l’uniforme de Marine. Ses poings sont protégés par de gros accessoires métalliques. Corps relativement bien entretenu, mais moins imposant que celui des vice-amiraux.",
+  "id": "fullbody",
+  "nom": "Fullbody",
+  "rarete": "EPIC"
+ },
+ "galdino": {
+  "nom_doc": "Galdino",
+  "desc": "Homme mince de taille moyenne. Visage long et nez pointu. Cheveux blonds coiffés en trois grandes pointes caractéristiques. Porte souvent une structure de cire autour du visage. Costume clair très propre. Bras et jambes assez fins. Apparence de gentleman bizarre et très théâtral.",
+  "id": "galdino",
+  "nom": "Galdino",
+  "rarete": "EPIC"
+ },
+ "gambia": {
+  "nom_doc": "Gambia",
+  "desc": "Jeune homme mince et assez petit. Cheveux clairs dressés et bandeau sur le front. Visage fin. Corps léger et athlétique. Porte une tenue de combat courte et légère. Utilise un bâton. Silhouette de jeune combattant agile.",
+  "id": "gambia",
+  "nom": "Gambia",
+  "rarete": "EPIC"
+ },
+ "gladius": {
+  "nom_doc": "Gladius",
+  "desc": "Homme adulte plutôt grand et mince. Cheveux sombres courts ou mi-longs. Visage anguleux, souvent partiellement couvert par un masque ou des protections de cuir. Longue veste sombre et gants. Bras et jambes relativement fins. Apparence sophistiquée et inquiétante.",
+  "id": "gladius",
+  "nom": "Gladius",
+  "rarete": "EPIC"
+ },
+ "gotti": {
+  "nom_doc": "Gotti",
+  "desc": "Homme trapu et très large. Visage énorme, mâchoire carrée et joues épaisses. Cou très épais. Cheveux sombres. Corps lourd et musclé, surtout au niveau des bras. Porte un costume sombre typique d’un gangster. Ressemble davantage à un garde du corps massif qu’à un combattant agile.",
+  "id": "gotti",
+  "nom": "Gotti",
+  "rarete": "EPIC"
+ },
+ "guernica": {
+  "nom_doc": "Guernica",
+  "desc": "Homme grand et robuste, mais sans musculature extravagante. Crâne entièrement ou presque rasé. Visage très large et anguleux. Yeux sévères. Vêtements noirs caractéristiques du Cipher Pol, avec gants et chaussures sombres. Cou épais et épaules relativement larges. Apparence froide et professionnelle.",
+  "id": "guernica",
+  "nom": "Guernica",
+  "rarete": "EPIC"
+ },
+ "hajrudin": {
+  "nom_doc": "Hajrudin",
+  "desc": "Géant d’Elbaf de taille gigantesque comparé aux humains normaux. Corps extrêmement massif et athlétique, avec des bras et jambes énormes. Cheveux blonds longs. Barbe blonde souvent tressée. Visage très large avec grosses dents et traits typiquement nordiques. Porte une armure métallique, un casque et de grandes protections. Physiquement, il domine complètement un humain normal.",
+  "id": "hajrudin",
+  "nom": "Hajrudin",
+  "rarete": "EPIC"
+ },
+ "hamburg": {
+  "nom_doc": "Hamburg",
+  "desc": "Créature anthropomorphe ressemblant à un ours, mais avec une morphologie humanoïde. Très massif et large, avec une fourrure sombre. Museau court, petites oreilles et gros nez. Bras puissants et épaisses jambes. Porte très peu de vêtements, principalement une tenue légère de combat.",
+  "id": "hamburg",
+  "nom": "Hamburg",
+  "rarete": "EPIC"
+ },
+ "hannyabal": {
+  "nom_doc": "Hannyabal",
+  "desc": "Homme grand et mince, avec des proportions très théâtrales. Visage marqué par une apparence de masque Hannya, avec des traits démoniaques. Porte les vêtements rouges et noirs de l’administration d’Impel Down. Corps longiligne avec bras et jambes relativement longs.",
+  "id": "hannyabal",
+  "nom": "Hannyabal",
+  "rarete": "EPIC"
+ },
+ "haruta": {
+  "nom_doc": "Haruta",
+  "desc": "Jeune homme très fin et de petite stature comparé aux autres commandants. Visage juvénile. Cheveux bruns courts, tombant légèrement autour du visage. Corps mince mais souple. Porte une veste claire et une tenue de combat légère. Utilise une rapière. Apparence presque androgyne.",
+  "id": "haruta",
+  "nom": "Haruta",
+  "rarete": "EPIC"
+ },
+ "heat": {
+  "nom_doc": "Heat",
+  "desc": "Homme grand, mince et très élancé. Visage long, lèvres très épaisses et bien visibles. Cheveux roux soigneusement plaqués. Peau claire. Porte une veste sombre, souvent ouverte, et des vêtements de pirate relativement simples. Jambes longues et corps sec.",
+  "id": "heat",
+  "nom": "Heat",
+  "rarete": "EPIC"
+ },
+ "helmeppo": {
+  "nom_doc": "Helmeppo",
+  "desc": "Jeune homme relativement grand et mince. Cheveux blonds courts, coiffés proprement. Visage allongé et peau claire. Yeux souvent grands ou légèrement inquiets. Corps athlétique mais pas particulièrement musclé. Uniforme de Marine parfaitement ajusté. Sa silhouette devient progressivement plus sportive au fil de l’histoire.",
+  "id": "helmeppo",
+  "nom": "Helmeppo",
+  "rarete": "EPIC"
+ },
+ "hera": {
+  "nom_doc": "Hera",
+  "desc": "Être constitué d’un nuage d’orage vivant. Corps flottant sans structure humaine classique. Forme principalement nuageuse, de couleur gris-violet. Visage rond intégré dans le nuage, avec des joues visibles, deux yeux et une expression agressive. De petits éclairs apparaissent autour du corps. Texture générale : nuage épais et irrégulier.",
+  "id": "hera",
+  "nom": "Héra",
+  "rarete": "EPIC"
+ },
+ "higuma": {
+  "nom_doc": "Higuma",
+  "desc": "Homme adulte de corpulence moyenne à forte. Visage dur, nez épais, yeux étroits. Cheveux sombres assez courts. Barbe naissante. Vêtements de bandit simples, sales et robustes. Porte un sabre. Sa silhouette est celle d’un homme habitué à la violence mais pas d’un véritable colosse.",
+  "id": "higuma",
+  "nom": "Higuma",
+  "rarete": "EPIC"
+ },
+ "hina": {
+  "nom_doc": "Hina",
+  "desc": "Femme grande, mince et élégante. Très longs cheveux roses, lisses et volumineux. Visage fin, yeux étroits et lèvres marquées. Corps élancé avec longues jambes. Elle porte une tenue noire ajustée sous le manteau blanc de la Marine. Fume souvent une cigarette. Son apparence est particulièrement sophistiquée.",
+  "id": "hina",
+  "nom": "Hina",
+  "rarete": "EPIC"
+ },
+ "hody-jones": {
+  "nom_doc": "Hody Jones",
+  "desc": "Homme-poisson de type grand requin. Corps gigantesque, extrêmement musclé. Peau bleu-gris. Cheveux blancs dressés vers l’arrière. Visage de requin avec nez aplati, mâchoire extrêmement large et dents triangulaires en scie. Yeux agressifs. Bras et épaules gigantesques. Porte une tenue sombre sans manches, laissant apparaître son torse.",
+  "id": "hody-jones",
+  "nom": "Hody Jones",
+  "rarete": "EPIC"
+ },
+ "hogback": {
+  "nom_doc": "Hogback",
+  "desc": "Homme assez grand, légèrement voûté. Très grosse tête par rapport au corps. Cheveux noirs plaqués vers l’arrière. Visage très pâle avec menton extrêmement allongé, donnant un aspect presque cartoonesque. Petit corps comparativement mince. Porte une blouse blanche de chirurgien et souvent des gants. Apparence d’un scientifique maladif.",
+  "id": "hogback",
+  "nom": "Hogback",
+  "rarete": "EPIC"
+ },
+ "holdem": {
+  "nom_doc": "Holdem",
+  "desc": "Homme grand et robuste. Cheveux hérissés et visage humain relativement large. Son trait majeur est la tête de lion intégrée dans le ventre, avec bouche, yeux et crinière. Il porte un kimono très ouvert montrant une grande partie du torse et du ventre. Bras puissants. Apparence hybride homme/lion très particulière.",
+  "id": "holdem",
+  "nom": "Holdem",
+  "rarete": "EPIC"
+ },
+ "ideo": {
+  "nom_doc": "Ideo",
+  "desc": "Homme grand, musclé et athlétique. Crâne très allongé et étroit. Cheveux courts et sombres. Visage anguleux. Torse entièrement découvert, avec muscles pectoraux et abdominaux visibles. Bras puissants. Porte de gros gants de boxe. Jambes longues et fortes. Corps de boxeur pur.",
+  "id": "ideo",
+  "nom": "Ideo",
+  "rarete": "EPIC"
+ },
+ "izou": {
+  "nom_doc": "Izou",
+  "desc": "Homme à l’apparence extrêmement élégante et androgyne. Très longs cheveux noirs, souvent attachés ou relevés. Visage fin et peau claire. Porte un maquillage rappelant les acteurs de kabuki, notamment autour des yeux et des lèvres. Kimono traditionnel avec plusieurs couches et motifs. Deux pistolets. Corps mince et droit, peu massif.",
+  "id": "izou",
+  "nom": "Izou",
+  "rarete": "EPIC"
+ },
+ "jalmack": {
+  "nom_doc": "Jalmack",
+  "desc": "Homme noble corpulent mais pas gigantesque. Visage long, lèvres épaisses et nez prononcé. Cheveux blonds plaqués. Peau très claire. Porte des vêtements immaculés extrêmement luxueux. Bulle transparente autour de la tête. Silhouette légèrement bedonnante.",
+  "id": "jalmack",
+  "nom": "Jalmack",
+  "rarete": "EPIC"
+ },
+ "jango": {
+  "nom_doc": "Jango",
+  "desc": "Homme grand et mince. Très longs cheveux noirs, souvent regroupés sous un bonnet ou un chapeau. Visage fin. Porte de grandes lunettes rondes bleues. Menton étroit. Vêtements militaires puis uniformes de Marine. Son anneau hypnotique ajoute un élément circulaire très visible à sa silhouette.",
+  "id": "jango",
+  "nom": "Jango",
+  "rarete": "EPIC"
+ },
+ "jean-bart": {
+  "nom_doc": "Jean Bart",
+  "desc": "Colosse extrêmement massif. Crâne rasé, barbe noire ou brune très fournie. Visage extrêmement large et mâchoire massive. Nombreuses cicatrices. Torse nu ou très peu couvert, montrant un torse extrêmement développé. Bras énormes. Apparence de véritable montagne humaine.",
+  "id": "jean-bart",
+  "nom": "Jean Bart",
+  "rarete": "EPIC"
+ },
+ "jesus-burgess": {
+  "nom_doc": "Jesus Burgess",
+  "desc": "Très grand homme, extrêmement musclé et large d’épaules. Crâne partiellement dégarni. Petite moustache. Visage large avec nez proéminent. Porte le fameux masque de catcheur autour du visage et du cou. Torse presque toujours nu, révélant une musculature énorme. Bras et épaules surdéveloppés.",
+  "id": "jesus-burgess",
+  "nom": "Jesus Burgess",
+  "rarete": "EPIC"
+ },
+ "jora": {
+  "nom_doc": "Jora",
+  "desc": "Femme d’âge mûr, relativement grande et surtout très corpulente. Visage rond. Cheveux colorés, volumineux et coiffés très haut. Porte des vêtements extrêmement voyants et fantaisistes. Bras et jambes épais. Forte poitrine et hanches larges. Apparence volontairement extravagante.",
+  "id": "jora",
+  "nom": "Jora",
+  "rarete": "EPIC"
+ },
+ "kaku": {
+  "nom_doc": "Kaku",
+  "desc": "Homme grand et mince, mais athlétique. Visage très long avec nez carré anormalement grand. Cheveux clairs courts. Porte souvent une casquette. Yeux fins. Corps élancé, jambes longues. Utilise deux sabres. Son fruit du démon lui donne un long cou de girafe et des membres très allongés lorsqu’il se transforme.",
+  "id": "kaku",
+  "nom": "Kaku",
+  "rarete": "EPIC"
+ },
+ "kaya": {
+  "nom_doc": "Kaya",
+  "desc": "Jeune femme très mince et délicate. Longs cheveux blonds, lisses, tombant largement dans le dos. Visage très fin et pâle. Grands yeux. Épaules étroites, bras fins et jambes longues. Porte des robes claires et élégantes, souvent blanches ou pastel. Impression générale : jeune aristocrate fragile.",
+  "id": "kaya",
+  "nom": "Kaya",
+  "rarete": "EPIC"
+ },
+ "koshiro": {
+  "nom_doc": "Koshiro",
+  "desc": "Homme adulte grand et mince, mais encore très droit et athlétique. Longs cheveux noirs, coiffés vers l’arrière ou attachés. Porte des lunettes. Visage fin et sérieux. Kimono blanc traditionnel. Porte un katana de maître. Ses bras ne sont pas volumineux, mais son corps est sec et entraîné.",
+  "id": "koshiro",
+  "nom": "Koshiro",
+  "rarete": "EPIC"
+ },
+ "kozaburo-shimotsuki": {
+  "nom_doc": "Kozaburo Shimotsuki",
+  "desc": "Vieil homme relativement grand. Crâne fortement dégarni. Très longue barbe blanche, volumineuse, descendant sur la poitrine. Visage ridé, joues creuses et nez important. Porte un tablier de forgeron et des vêtements de travail. Bras et mains épaissis par des décennies de forge. Porte ou travaille régulièrement avec un katana.",
+  "id": "kozaburo-shimotsuki",
+  "nom": "Kozaburo Shimotsuki",
+  "rarete": "EPIC"
+ },
+ "krieg-don-krieg": {
+  "nom_doc": "Don Krieg",
+  "desc": "Homme extrêmement grand et très massif. Cheveux noirs courts et hérissés. Visage large et mâchoire puissante. Porte une gigantesque armure dorée, couvrant presque entièrement le corps, avec épaulières, protections métalliques et nombreuses armes. Cape sombre dans certaines apparitions. Sans son armure, son corps reste déjà très robuste. C’est l’archétype du chef de guerre lourdement blindé.",
+  "id": "krieg-don-krieg",
+  "nom": "Don Krieg",
+  "rarete": "EPIC"
+ },
+ "kuina": {
+  "nom_doc": "Kuina",
+  "desc": "Jeune fille mince mais athlétique. Cheveux bleu-noir, relativement courts et souvent attachés en arrière. Visage fin et juvénile. Peau claire. Corps svelte avec bras et jambes fins mais entraînés. Porte un kimono ou une tenue d’entraînement simple. Katana attaché à la ceinture.",
+  "id": "kuina",
+  "nom": "Kuina",
+  "rarete": "EPIC"
+ },
+ "kuro": {
+  "nom_doc": "Kuro",
+  "desc": "Homme grand, extrêmement mince et élégant. Cheveux noirs lisses, plaqués en arrière. Visage anguleux, nez étroit. Porte de petites lunettes rondes qu’il remet avec le dos de sa main. Costume de majordome impeccable : veste, chemise, pantalon et chaussures bien entretenues. Ses griffes donnent une apparence extrêmement fine et inquiétante aux mains.",
+  "id": "kuro",
+  "nom": "Kuro",
+  "rarete": "EPIC"
+ },
+ "kuroobi": {
+  "nom_doc": "Kuroobi",
+  "desc": "Homme-poisson de type raie. Corps très musclé et compact. Peau claire. Visage large, nez aplati et caractéristiques de raie. Cheveux noirs tirés vers l’arrière. Torse très large. Porte un pantalon et une tenue de karatéka, laissant le torse largement exposé. Bras et épaules particulièrement développés.",
+  "id": "kuroobi",
+  "nom": "Kuroobi",
+  "rarete": "EPIC"
+ },
+ "lafitte": {
+  "nom_doc": "Lafitte",
+  "desc": "Homme grand et extrêmement mince. Teint anormalement pâle. Cheveux blancs assez longs et lisses. Visage très étroit. Yeux petits et lèvres fines. Porte un haut-de-forme blanc, une canne et des vêtements élégants rappelant ceux d’un gentleman du XIXe siècle. Lorsqu’il révèle ses capacités de fruit du démon, de grandes ailes blanches apparaissent dans son dos. Cela transforme sa silhouette en celle d’un oiseau humanoïde.",
+  "id": "lafitte",
+  "nom": "Lafitte",
+  "rarete": "EPIC"
+ },
+ "lao-g": {
+  "nom_doc": "Lao G",
+  "desc": "Vieillard extrêmement sec et voûté. Corps maigre avec muscles très peu volumineux. Très longue barbe blanche. Lunettes rondes. Visage ridé et profondément marqué par l’âge. Porte des vêtements traditionnels d’arts martiaux. Bras et jambes très fins, mais extrêmement nerveux.",
+  "id": "lao-g",
+  "nom": "Lao G",
+  "rarete": "EPIC"
+ },
+ "laura": {
+  "nom_doc": "Laura",
+  "desc": "Jeune femme assez grande et mince. Cheveux sombres et longs, visage fin. Porte souvent un grand chapeau à large bord. Traits assez doux. Corps féminin et élancé. Vêtements simples de voyage ou de pirate, laissant les bras et jambes relativement libres.",
+  "id": "laura",
+  "nom": "Laura",
+  "rarete": "EPIC"
+ },
+ "leo": {
+  "nom_doc": "Léo",
+  "desc": "Très petit nain Tontatta. Corps extrêmement minuscule comparé à un humain normal. Tête disproportionnellement grande, oreilles longues, nez pointu. Cheveux clairs. Porte un casque avec de grandes oreilles ressemblant à celles d’un lapin. Corps mince et agile. Transporte une gigantesque aiguille et du fil pour sa taille.",
+  "id": "leo",
+  "nom": "Léo",
+  "rarete": "EPIC"
+ },
+ "little-oz-junior": {
+  "nom_doc": "Little Oars Jr.",
+  "desc": "Géant colossal, encore bien plus massif qu’un humain gigantesque standard. Corps incroyablement épais, avec épaules, bras et jambes gigantesques. Visage carré, grosses dents et petites cornes sur la tête. Porte très peu de vêtements. Torse et bras couverts de muscles épais. Sa taille donne l’impression d’un véritable monstre humanoïde.",
+  "id": "little-oz-junior",
+  "nom": "Little Oars Jr.",
+  "rarete": "EPIC"
+ },
+ "lucky-roo": {
+  "nom_doc": "Lucky Roux",
+  "desc": "Homme extrêmement rond et corpulent. Gros ventre, joues épaisses et visage large. Cheveux généralement dissimulés sous un large chapeau. Il porte des vêtements verts et amples. Bras relativement épais, jambes plus courtes visuellement à cause de son ventre. Souvent vu en train de manger, ce qui accentue encore sa silhouette ronde.",
+  "id": "lucky-roo",
+  "nom": "Lucky Roux",
+  "rarete": "EPIC"
+ },
+ "machvise": {
+  "nom_doc": "Machvise",
+  "desc": "Homme gigantesque, très lourd et extraordinairement rond. Crâne dégarni, petite paire de lunettes. Visage large et ventre énorme. Bras et jambes épais. Porte une tenue rappelant celle d’un lutteur ou d’un catcheur. Son corps combine masse graisseuse et puissance physique.",
+  "id": "machvise",
+  "nom": "Machvise",
+  "rarete": "EPIC"
+ },
+ "magra": {
+  "nom_doc": "Magra",
+  "desc": "Homme mince et assez petit. Visage allongé, cheveux sombres et corps peu musclé. Vêtements très simples et rapiécés. Silhouette de bandit pauvre plutôt que de combattant puissant. Mains et jambes fines.",
+  "id": "magra",
+  "nom": "Magra",
+  "rarete": "EPIC"
+ },
+ "makino": {
+  "nom_doc": "Makino",
+  "desc": "Jeune femme adulte de taille moyenne et de morphologie mince. Cheveux verts, longs et lisses, généralement attachés ou tombant sur les épaules. Visage doux, grands yeux et sourire calme. Porte un tablier de tavernière au-dessus d’une robe simple. Peau claire. Apparence très naturelle et élégante.",
+  "id": "makino",
+  "nom": "Makino",
+  "rarete": "EPIC"
+ },
+ "margaret": {
+  "nom_doc": "Margaret",
+  "desc": "Jeune femme grande et athlétique. Cheveux blonds mi-longs, visage fin et peau claire. Bras et jambes bien dessinés mais pas fortement musclés. Porte la tenue légère traditionnelle des Kuja, souvent accompagnée d’un arc et de flèches. Silhouette de combattante agile.",
+  "id": "margaret",
+  "nom": "Margaret",
+  "rarete": "EPIC"
+ },
+ "masira": {
+  "nom_doc": "Masira",
+  "desc": "Homme-singe, ou humanoïde très simiesque. Corps massif recouvert d’un épais pelage brun. Museau clair, nez large et bouche de singe. Bras particulièrement longs et forts. Porte une casquette et une salopette. Ventre relativement volumineux. Apparence globale : gros primate humanoïde.",
+  "id": "masira",
+  "nom": "Masira",
+  "rarete": "EPIC"
+ },
+ "maynard": {
+  "nom_doc": "Maynard",
+  "desc": "Homme adulte assez grand, robuste et athlétique. Crâne rasé, moustache fine. Visage large mais relativement sérieux. Porte une tenue sombre d’instructeur de la Marine et un sabre. Épaules assez larges, bras musclés sans exagération.",
+  "id": "maynard",
+  "nom": "Maynard",
+  "rarete": "EPIC"
+ },
+ "merry": {
+  "nom_doc": "Merry",
+  "desc": "Homme maigre et assez grand. Visage étroit, nez long et cheveux sombres plaqués. Porte un monocle. Uniforme de majordome très soigné, avec veste, pantalon, chaussures et gants. Corps longiligne et gestes élégants. Apparence d’un serviteur aristocratique.",
+  "id": "merry",
+  "nom": "Merry",
+  "rarete": "EPIC"
+ },
+ "momonga": {
+  "nom_doc": "Momonga",
+  "desc": "Homme grand et athlétique. Cheveux noirs, relativement longs mais bien entretenus. Barbe soigneusement taillée. Visage anguleux avec nez fort. Porte le manteau de vice-amiral sur les épaules et un sabre. Jambes et bras proportionnés, musculature visible mais pas gigantesque.",
+  "id": "momonga",
+  "nom": "Momonga",
+  "rarete": "EPIC"
+ },
+ "monet": {
+  "nom_doc": "Monet",
+  "desc": "Femme grande et mince. Très longs cheveux verts, lisses. Visage fin et regard généralement doux ou froid. Haut du corps humain avec silhouette féminine fine. Après sa transformation, le bas du corps peut devenir celui d’un grand oiseau, avec ailes couvertes de plumes et serres puissantes. Elle porte généralement des vêtements noirs ou sombres.",
+  "id": "monet",
+  "nom": "Monet",
+  "rarete": "EPIC"
+ },
+ "montblanc-cricket": {
+  "nom_doc": "Montblanc Cricket",
+  "desc": "Homme robuste et assez grand. Torse nu, avec une musculature importante, surtout au niveau des bras et des épaules. Cheveux sombres hérissés. Porte un bandeau autour de la tête. Visage marqué, barbe légère et plusieurs traces de vie en mer. Pantalon et équipement de plongée. Apparence de vieux aventurier très physique.",
+  "id": "montblanc-cricket",
+  "nom": "Montblanc Cricket",
+  "rarete": "EPIC"
+ },
+ "napoleon": {
+  "nom_doc": "Napoléon",
+  "desc": "Objet animé : bicorne bleu nuit prenant la forme d’un visage humain. Deux yeux, grand nez et moustache intégrés à la surface du chapeau. Une lame est fixée sur le sommet. La forme du corps dépend du chapeau lui-même. Il possède une expression faciale très mobile.",
+  "id": "napoleon",
+  "nom": "Napoléon",
+  "rarete": "EPIC"
+ },
+ "nezumi": {
+  "nom_doc": "Nezumi",
+  "desc": "Officier de Marine ayant une tête inspirée d’un rat. Visage allongé, nez pointu, oreilles rondes et grandes moustaches fines. Cheveux gris plaqués. Corps humain relativement mince. Uniforme de Marine très propre. Ses mains et jambes restent humaines malgré le visage animal.",
+  "id": "nezumi",
+  "nom": "Nezumi",
+  "rarete": "EPIC"
+ },
+ "onigumo": {
+  "nom_doc": "Onigumo",
+  "desc": "Homme grand, mince mais athlétique. Visage anguleux, nez prononcé. Cheveux noirs mi-longs. Porte le manteau de Marine sur les épaules. Sa tenue est celle d’un vice-amiral. Lorsqu’il utilise son pouvoir, plusieurs pattes d’araignée apparaissent derrière son corps, transformant fortement sa silhouette.",
+  "id": "onigumo",
+  "nom": "Onigumo",
+  "rarete": "EPIC"
+ },
+ "orlumbus": {
+  "nom_doc": "Orlumbus",
+  "desc": "Homme massif et très grand. Corps extrêmement large et lourd, avec énorme torse et bras épais. Grande barbe sombre ou brun foncé. Porte un bicorne d’amiral, une longue veste et plusieurs accessoires de commandement. Son ventre est relativement développé. Porte une énorme ancre ou une arme de grande taille.",
+  "id": "orlumbus",
+  "nom": "Orlumbus",
+  "rarete": "EPIC"
+ },
+ "outlook-iii": {
+  "nom_doc": "Outlook III",
+  "desc": "Homme noble d’âge mûr. Visage long et sévère. Cheveux blonds très soigneusement plaqués vers l’arrière. Peau claire. Nez long. Corps plutôt mince mais légèrement corpulent au niveau du ventre. Porte un costume immaculé extrêmement luxueux, avec chaussures élégantes et accessoires aristocratiques.",
+  "id": "outlook-iii",
+  "nom": "Outlook III",
+  "rarete": "EPIC"
+ },
+ "page-one": {
+  "nom_doc": "Page One",
+  "desc": "Jeune homme grand et athlétique. Cheveux noirs courts. Visage anguleux, yeux étroits et expression presque constamment fermée. Cou puissant, épaules larges et bras développés. Porte une veste sombre et un pantalon. Sous forme de Zoan antique, il devient un Spinosaurus, avec une énorme mâchoire, une queue, des griffes et une grande voile dorsale.",
+  "id": "page-one",
+  "nom": "Page One",
+  "rarete": "EPIC"
+ },
+ "pekoms": {
+  "nom_doc": "Pekoms",
+  "desc": "Lion anthropomorphe. Tête entièrement féline avec crinière épaisse, museau large, nez noir et grandes dents. Fourrure brun clair/orangée. Corps humain extrêmement musclé. Son trait le plus particulier est une carapace de tortue portée sur le dos. Bras et jambes humanoïdes, mais recouverts de fourrure.",
+  "id": "pekoms",
+  "nom": "Pekoms",
+  "rarete": "EPIC"
+ },
+ "pica": {
+  "nom_doc": "Pica",
+  "desc": "Homme gigantesque dans sa forme normale et encore plus énorme lorsqu’il fusionne avec la pierre. Visage assez fin malgré son corps immense. Cheveux noirs courts. Son principal trait corporel est son volume démesuré lorsqu’il forme un colosse de roche. Lorsqu’il fusionne avec la pierre, il peut prendre la forme d’un véritable géant minéral avec une tête humaine géante.",
+  "id": "pica",
+  "nom": "Pica",
+  "rarete": "EPIC"
+ },
+ "pingouin": {
+  "nom_doc": "Penguin",
+  "desc": "Homme de petite à moyenne taille. Visage assez mince. Porte un bonnet blanc à visière, cachant une partie de ses cheveux. Combinaison claire caractéristique des Heart Pirates. Yeux et bouche assez simples. Corps mince et agile. Son apparence est coordonnée avec celle de Shachi.",
+  "id": "pingouin",
+  "nom": "Penguin",
+  "rarete": "EPIC"
+ },
+ "porche": {
+  "nom_doc": "Porché",
+  "desc": "Jeune femme relativement mince. Cheveux roses très longs, généralement attachés ou relevés. Visage fin et sourire fixe. Porte des vêtements très voyants rappelant un artiste ou une idole de spectacle. Corps féminin assez élancé. Beaucoup d’ornements dans sa tenue.",
+  "id": "porche",
+  "nom": "Porché",
+  "rarete": "EPIC"
+ },
+ "porchemy": {
+  "nom_doc": "Porchemy",
+  "desc": "Homme pirate assez massif. Visage très large et cheveux sombres. Front large, nez imposant et mâchoire puissante. Corps robuste. Porte des gants avec éléments métalliques ou pointes et des vêtements de pirate relativement simples. Bras épais. Apparence de brute de combat.",
+  "id": "porchemy",
+  "nom": "Porchemy",
+  "rarete": "EPIC"
+ },
+ "promethee": {
+  "nom_doc": "Prométhée",
+  "desc": "Petite entité solaire. Forme de boule de feu jaune/orange avec un visage humain souriant intégré. Corps constitué principalement de flammes. Pas de jambes ni d’anatomie humaine classique. Flammes irrégulières formant une sorte de chevelure autour du visage. Taille généralement compacte, mais pouvant augmenter.",
+  "id": "promethee",
+  "nom": "Prométhée",
+  "rarete": "EPIC"
+ },
+ "rockstar": {
+  "nom_doc": "Rockstar",
+  "desc": "Jeune homme grand, assez mince et athlétique. Cheveux noirs plaqués vers l’arrière. Porte des lunettes teintées. Visage fin. Veste sombre et vêtements de pirate relativement élégants. Sabre à la ceinture. Corps sec et droit.",
+  "id": "rockstar",
+  "nom": "Rockstar",
+  "rarete": "EPIC"
+ },
+ "roswald": {
+  "nom_doc": "Roswald",
+  "desc": "Homme noble massif et corpulent. Visage rond, joues épaisses et menton peu prononcé. Cheveux blonds extrêmement volumineux et bouffants. Petits yeux. Peau très claire. Vêtements entièrement blancs et luxueux. Bulle transparente autour de la tête. Beaucoup plus rond que Jalmack.",
+  "id": "roswald",
+  "nom": "Roswald",
+  "rarete": "EPIC"
+ },
+ "sadi": {
+  "nom_doc": "Sadi",
+  "desc": "Femme grande et très mince. Longs cheveux roses, lisses. Visage fin, yeux étroits. Deux petites cornes sur la tête. Porte une tenue noire extrêmement ajustée, souvent très ouverte au niveau des jambes et du buste. Bottes hautes et fouet. Silhouette longue, féminine et très élancée.",
+  "id": "sadi",
+  "nom": "Sadi",
+  "rarete": "EPIC"
+ },
+ "sai": {
+  "nom_doc": "Sai",
+  "desc": "Jeune homme grand et athlétique. Cheveux noirs mi-longs et bandeau. Visage fin, nez droit. Bras musclés et épaules assez larges. Porte une tenue traditionnelle claire, avec pantalon ample et haut adapté aux arts martiaux. Utilise deux longues lances dans certaines configurations.",
+  "id": "sai",
+  "nom": "Sai",
+  "rarete": "EPIC"
+ },
+ "saldeath": {
+  "nom_doc": "Saldeath",
+  "desc": "Personnage extrêmement petit. Silhouette étroite et presque frêle. Porte un masque en forme de crâne, qui dissimule une grande partie du visage. Cape sombre. Bras et jambes fins. Trident plus grand que son propre corps ou presque. Son allure contraste fortement avec son équipement.",
+  "id": "saldeath",
+  "nom": "Saldeath",
+  "rarete": "EPIC"
+ },
+ "sanjuan-wolf": {
+  "nom_doc": "Sanjuan Wolf",
+  "desc": "Géant colossal, encore plus grand que beaucoup d’autres géants. Son corps est très long et extrêmement massif. Cheveux sombres, visage large et légèrement allongé. Silhouette souvent voûtée, comme s’il ne pouvait pas se tenir complètement droit. Bras et jambes gigantesques. Vêtements très simples.",
+  "id": "sanjuan-wolf",
+  "nom": "Sanjuan Wolf",
+  "rarete": "EPIC"
+ },
+ "sasaki": {
+  "nom_doc": "Sasaki",
+  "desc": "Homme grand et très massif. Crâne rasé, barbe noire et très fournie. Visage large. Cou et épaules puissants. Porte une longue veste sombre et un grand sabre. Corps athlétique mais surtout épais et lourd. En forme Zoan antique, il devient un Triceratops, avec large crâne, cornes et immense collerette.",
+  "id": "sasaki",
+  "nom": "Sasaki",
+  "rarete": "EPIC"
+ },
+ "senor-pink": {
+  "nom_doc": "Señor Pink",
+  "desc": "Homme très robuste, avec une carrure de travailleur manuel ou de docker. Visage large, nez volumineux, petite barbe. Porte un costume de bébé, avec bonnet, tétine et vêtements enfantins, malgré son corps d’adulte massif. Une cigarette est souvent présente à ses lèvres. Contraste visuel très marqué entre son physique adulte et ses vêtements de nourrisson.",
+  "id": "senor-pink",
+  "nom": "Señor Pink",
+  "rarete": "EPIC"
+ },
+ "sentomaru": {
+  "nom_doc": "Sentomaru",
+  "desc": "Homme extrêmement massif et large. Gros ventre, épaules énormes et bras très épais. Barbe formant un collier autour du menton et de la mâchoire. Porte un casque et des vêtements de garde militaire. Son énorme hache accentue la largeur de sa silhouette. Corps particulièrement lourd.",
+  "id": "sentomaru",
+  "nom": "Sentomaru",
+  "rarete": "EPIC"
+ },
+ "shachi": {
+  "nom_doc": "Shachi",
+  "desc": "Homme relativement petit et mince. Porte une casquette, des lunettes teintées et une combinaison claire des Heart Pirates. Visage souriant et assez rond. Corps mince, bras peu volumineux. Son apparence est volontairement similaire à celle de Penguin.",
+  "id": "shachi",
+  "nom": "Shachi",
+  "rarete": "EPIC"
+ },
+ "sharlia": {
+  "nom_doc": "Sharlia",
+  "desc": "Jeune femme de la noblesse mondiale. Cheveux blonds volumineux, généralement attachés ou coiffés vers le haut. Visage fin et hautain. Peau très claire. Porte une robe immaculée extrêmement luxueuse. Bulle transparente autour de la tête. Silhouette mince et élégante.",
+  "id": "sharlia",
+  "nom": "Sharlia",
+  "rarete": "EPIC"
+ },
+ "shiki": {
+  "nom_doc": "Shiki",
+  "desc": "Homme grand et très robuste, d’âge mûr. Cheveux très abondants et dressés vers le haut. Un gouvernail est littéralement planté dans son crâne. Visage large, moustache et traits sévères. Ses jambes ont été remplacées par deux sabres, ce qui donne une silhouette extrêmement particulière : corps humain avec deux longues lames à la place des jambes.",
+  "id": "shiki",
+  "nom": "Shiki",
+  "rarete": "EPIC"
+ },
+ "shiliew": {
+  "nom_doc": "Shiliew",
+  "desc": "Homme grand, mince mais musclé. Cheveux noirs, barbe noire et visage anguleux. Plusieurs cicatrices. Regard très calme. Porte le manteau et les vêtements de geôlier d’Impel Down, généralement sombres. Son sabre imposant est porté à la taille. Silhouette de combattant très sec.",
+  "id": "shiliew",
+  "nom": "Shiliew",
+  "rarete": "EPIC"
+ },
+ "spandam": {
+  "nom_doc": "Spandam",
+  "desc": "Homme mince et assez grand. Cheveux bruns relativement longs. Visage partiellement dissimulé par un masque métallique, surtout autour du nez et de la bouche. Épaules relativement étroites. Porte la tenue et la cape caractéristiques du CP9. Bras fins, jambes longues. Physique peu imposant.",
+  "id": "spandam",
+  "nom": "Spandam",
+  "rarete": "EPIC"
+ },
+ "speed": {
+  "nom_doc": "Speed",
+  "desc": "Femme-centaure de type cheval. Partie supérieure : corps féminin mince, visage fin, longs cheveux blonds et généralement un chapeau. Partie inférieure : grand corps de cheval, musclé au niveau des jambes et du bassin, avec quatre sabots. Cette combinaison donne une silhouette très haute et très longue.",
+  "id": "speed",
+  "nom": "Speed",
+  "rarete": "EPIC"
+ },
+ "squardo": {
+  "nom_doc": "Squardo",
+  "desc": "Homme adulte plutôt mince mais de taille importante. Cheveux sombres assez longs. Bandana sur la tête. Visage étroit et marqué. Porte une veste ouverte laissant apparaître une partie du torse. Bras relativement musclés mais corps sec. Sabre long porté au côté.",
+  "id": "squardo",
+  "nom": "Squardo",
+  "rarete": "EPIC"
+ },
+ "stelly": {
+  "nom_doc": "Stelly",
+  "desc": "Jeune homme adulte de la noblesse. Cheveux clairs très bouffants. Visage relativement rond mais expression arrogante. Sourcils fins. Porte un costume parfaitement ajusté et très luxueux. Corps mince avec ventre légèrement arrondi.",
+  "id": "stelly",
+  "nom": "Stelly",
+  "rarete": "EPIC"
+ },
+ "strawberry": {
+  "nom_doc": "Strawberry",
+  "desc": "Homme très grand et très mince. Le crâne est anormalement haut et allongé, avec un visage extrêmement étroit. Longue moustache tombante de chaque côté de la bouche. Cheveux sombres. Manteau de Marine et tenue d’officier. Ses proportions sont particulièrement inhabituelles à cause de la forme du crâne.",
+  "id": "strawberry",
+  "nom": "Strawberry",
+  "rarete": "EPIC"
+ },
+ "streusen": {
+  "nom_doc": "Streusen",
+  "desc": "Vieil homme petit à moyen et plutôt mince. Très longue barbe blanche pointue, cheveux blancs ou gris. Visage ridé et yeux petits. Porte la toque de chef et un grand tablier de cuisinier. Corps sec avec bras fins. Grand couteau souvent visible.",
+  "id": "streusen",
+  "nom": "Streusen",
+  "rarete": "EPIC"
+ },
+ "stussy": {
+  "nom_doc": "Stussy",
+  "desc": "Femme adulte grande, mince et très élégante. Longs cheveux clairs/blonds, légèrement ondulés. Visage fin, mâchoire petite et grands yeux. Robe sombre très élégante, souvent décolletée. Porte des gants et accessoires raffinés, parfois un verre. Silhouette élancée, longue et sophistiquée.",
+  "id": "stussy",
+  "nom": "Stussy",
+  "rarete": "EPIC"
+ },
+ "sugar": {
+  "nom_doc": "Sugar",
+  "desc": "Physiquement, elle ressemble à une petite fille très jeune. Petite taille, corps extrêmement mince et peau très pâle. Très longs cheveux noirs. Grands yeux. Visage enfantin. Porte une robe sombre assez simple. Son fruit du démon stoppe son vieillissement, ce qui explique son apparence enfantine malgré son âge réel.",
+  "id": "sugar",
+  "nom": "Sugar",
+  "rarete": "EPIC"
+ },
+ "suleiman": {
+  "nom_doc": "Suleiman",
+  "desc": "Homme grand et très mince. Cheveux longs et sombres. Visage dur, peau plutôt mate. Plusieurs cicatrices sur le visage. Nez droit, yeux étroits. Porte des vêtements de gladiateur/combat et un sabre. Corps sec, surtout adapté au maniement de l’épée.",
+  "id": "suleiman",
+  "nom": "Suleiman",
+  "rarete": "EPIC"
+ },
+ "t-bone": {
+  "nom_doc": "T-Bone",
+  "desc": "Homme extraordinairement maigre, presque squelettique. Bras et jambes très longs et très fins. Visage extrêmement émacié, joues creuses. Porte une armure et un casque avec plumet. Sabre très imposant par rapport à son corps. Son physique donne l’impression d’un squelette humain vivant.",
+  "id": "t-bone",
+  "nom": "T. Bone",
+  "rarete": "EPIC"
+ },
+ "thatch": {
+  "nom_doc": "Thatch",
+  "desc": "Homme grand, mince mais athlétique. Visage souriant, mâchoire moyenne. Cheveux bruns très volumineux, dressés en arrière en une grande banane. Porte une tenue claire de cuisinier avec tablier. Corps assez sec. Sabre à la ceinture. Son apparence combine celle d’un cuisinier et d’un épéiste.",
+  "id": "thatch",
+  "nom": "Thatch",
+  "rarete": "EPIC"
+ },
+ "trebol": {
+  "nom_doc": "Trébol",
+  "desc": "Homme très étrange dont le corps semble informe et extrêmement volumineux. Cheveux courts ou peu visibles sous ses accessoires. Porte de grosses lunettes noires. Visage long et nez particulièrement volumineux. Son vêtement vert est extrêmement large et recouvre une grande partie de son corps. Une quantité importante de mucus est continuellement visible autour de son nez et de sa bouche. Sa silhouette réelle est volontairement difficile à distinguer.",
+  "id": "trebol",
+  "nom": "Trébol",
+  "rarete": "EPIC"
+ },
+ "tsuru": {
+  "nom_doc": "Tsuru",
+  "desc": "Vieille femme de la Marine, grande et relativement mince. Cheveux blancs, coiffés en hauteur et parfois attachés. Visage fin et très ridé. Porte le manteau de Marine. Corps plutôt sec, posture droite malgré l’âge. Utilise une pipe. Son apparence est celle d’une vieille femme élégante et autoritaire plutôt que d’une combattante massive.",
+  "id": "tsuru",
+  "nom": "Tsuru",
+  "rarete": "EPIC"
+ },
+ "ulti": {
+  "nom_doc": "Ulti",
+  "desc": "Jeune femme grande et athlétique. Longs cheveux roses et bleus, souvent volumineux. Deux cornes sur la tête. Visage fin mais expression énergique. Corps très bien proportionné, jambes longues et taille relativement fine. Porte une tenue courte laissant apparaître les jambes et une partie du ventre. Forme Zoan antique : tête et corps transformés en Pachycéphalosaure, avec crâne extrêmement puissant.",
+  "id": "ulti",
+  "nom": "Ulti",
+  "rarete": "EPIC"
+ },
+ "van-auger": {
+  "nom_doc": "Van Augur",
+  "desc": "Homme grand et mince. Très longs cheveux noirs, généralement lisses. Visage étroit. Porte de petites lunettes rondes. Corps extrêmement sec avec longs bras et longues jambes. Vêtements sombres et longs manteaux. Porte un très long fusil de précision. Silhouette de tireur extrêmement élancé.",
+  "id": "van-auger",
+  "nom": "Van Augur",
+  "rarete": "EPIC"
+ },
+ "vander-decken-ix": {
+  "nom_doc": "Vander Decken IX",
+  "desc": "Homme-poisson très âgé à l’apparence grotesque. Corps voûté et assez mince. Peau verdâtre. Porte un heaume/casque et une cape sombre. Visage allongé avec caractéristiques de poisson, nez et bouche prononcés. Bras et jambes longs. Apparence de pirate sous-marin vieillissant.",
+  "id": "vander-decken-ix",
+  "nom": "Vander Decken IX",
+  "rarete": "EPIC"
+ },
+ "vasco-shot": {
+  "nom_doc": "Vasco Shot",
+  "desc": "Homme énorme et très corpulent. Crâne rasé. Visage large et fortement rougi, nez volumineux, joues épaisses. Cou massif. Ventre gigantesque. Porte des vêtements très simples et une énorme gourde. Physique lourd et extrêmement massif.",
+  "id": "vasco-shot",
+  "nom": "Vasco Shot",
+  "rarete": "EPIC"
+ },
+ "vergo": {
+  "nom_doc": "Vergo",
+  "desc": "Homme grand, large d’épaules et très musclé. Cheveux noirs courts. Lunettes de soleil. Visage assez carré. Porte une veste sombre et des vêtements bien ajustés. Son signe le plus absurde est le morceau de nourriture collé sur son visage à certaines occasions. Utilise un long bambou comme arme. Corps athlétique et puissant.",
+  "id": "vergo",
+  "nom": "Vergo",
+  "rarete": "EPIC"
+ },
+ "vista": {
+  "nom_doc": "Vista",
+  "desc": "Homme adulte grand et élégant. Porte un chapeau à large bord. Cheveux sombres. Grande moustache en forme de guidon. Visage fin mais mâchoire solide. Corps athlétique. Vêtements de pirate très élégants, souvent avec une longue veste. Deux sabres. Des motifs floraux, notamment des roses, apparaissent sur sa tenue.",
+  "id": "vista",
+  "nom": "Vista",
+  "rarete": "EPIC"
+ },
+ "vito": {
+  "nom_doc": "Vito",
+  "desc": "Homme grand et mince. Cheveux clairs plaqués en arrière. Porte de petites lunettes rondes. Visage étroit. Costume à rayures de gangster, souvent avec veste et cravate. Bras fins mais relativement longs. Silhouette d’un mafieux élégant.",
+  "id": "vito",
+  "nom": "Vito",
+  "rarete": "EPIC"
+ },
+ "whitey-bay": {
+  "nom_doc": "Whitey Bay",
+  "desc": "Femme adulte grande et assez mince. Cheveux blancs courts, coupés autour de la tête. Visage fin avec traits froids. Peau claire. Porte un épais manteau de fourrure clair, donnant beaucoup de volume autour des épaules et du cou. Silhouette féminine mais robuste.",
+  "id": "whitey-bay",
+  "nom": "Whitey Bay",
+  "rarete": "EPIC"
+ },
+ "who-s-who": {
+  "nom_doc": "Who’s-Who",
+  "desc": "Homme grand et athlétique, à l’apparence très féline. Cheveux clairs mi-longs. Visage allongé et mâchoire marquée. Porte un masque de félin couvrant la partie supérieure du visage dans certaines scènes. Longue veste claire et pantalon assorti. Deux sabres. En forme Zoan, il devient un sabre à dents humanoïde, avec museau félin, oreilles, fourrure et énorme mâchoire.",
+  "id": "who-s-who",
+  "nom": "Who’s Who",
+  "rarete": "EPIC"
+ },
+ "wire": {
+  "nom_doc": "Wire",
+  "desc": "Homme extrêmement grand et très décharné. Crâne rasé. Visage pâle, étroit et émacié. Bras et jambes très longs. Corps maigre mais légèrement musclé. Porte des vêtements de pirate simples. Utilise une très longue lance, qui accentue encore sa silhouette verticale.",
+  "id": "wire",
+  "nom": "Wire",
+  "rarete": "EPIC"
+ },
+ "woop-slap": {
+  "nom_doc": "Woop Slap",
+  "desc": "Vieil homme de petite à moyenne taille. Crâne fortement dégarni. Barbe blanche assez volumineuse. Lunettes. Visage rond et ridé. Porte des vêtements simples de maire/villageois. Corps plutôt petit et trapu. Apparence globale de vieux notable de village.",
+  "id": "woop-slap",
+  "nom": "Woop Slap",
+  "rarete": "EPIC"
+ },
+ "yamakaji": {
+  "nom_doc": "Yamakaji",
+  "desc": "Homme grand et plutôt corpulent. Visage assez large. Porte des lunettes teintées. Chemise à motifs sous le manteau de Marine. Cigare souvent présent à la bouche. Cheveux sombres et courts. Corps robuste avec ventre légèrement développé. Silhouette de haut gradé confortable mais toujours solide.",
+  "id": "yamakaji",
+  "nom": "Yamakaji",
+  "rarete": "EPIC"
+ },
+ "yassop": {
+  "nom_doc": "Yasopp",
+  "desc": "Homme grand et mince mais athlétique. Peau mate. Très longs cheveux blonds en dreadlocks, descendant largement dans le dos. Visage allongé, nez assez long et barbe légère. Corps sec avec épaules relativement larges. Porte des vêtements de tireur et un immense fusil. Ses bras sont bien développés mais sa silhouette reste celle d’un homme très élancé.",
+  "id": "yassop",
+  "nom": "Yasopp",
+  "rarete": "EPIC"
+ },
+ "zeus": {
+  "nom_doc": "Zeus",
+  "desc": "Nuage vivant principalement gris-bleu, plus compact et plus rond que Prométhée. Visage humain extrêmement simple, avec grands yeux et expression naïve. Corps duveteux avec petites pointes de nuage. De petits éclairs jaunes apparaissent autour de lui. Pas de membres humains classiques. Il peut s’étendre et grossir considérablement.",
+  "id": "zeus",
+  "nom": "Zeus",
+  "rarete": "EPIC"
+ }
+}

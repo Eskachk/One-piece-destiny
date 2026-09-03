@@ -881,7 +881,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'majordome impeccable : veste, chemise, pantalon et chaussures bien ' +
       'entretenues. Ses griffes donnent une apparence extrêmement fine et ' +
       'inquiétante aux mains.',
-    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#39504a',
     extras: ['boots'],
     face: 'sharp',
     height: 'tall',
@@ -909,7 +909,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'Corps souple plutôt que massif, adapté à ses mouvements acrobatiques. ' +
       'Il porte une tenue rappelant celle d’un acrobate ou d’un artiste de ' +
       'cirque, avec un sabre. Silhouette très légère.',
-    hair: '#3f6bb5', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#3f6bb5', cut: 'long', skin: CLAIR, outfit: '#54473a',
     eyes: 'narrow',
     head: 'none', mark: 'none', prop: 'sword', build: 'slim',
   },
@@ -989,7 +989,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'cicatrices. Torse nu ou très peu couvert, montrant un torse ' +
       'extrêmement développé. Bras énormes. Apparence de véritable montagne ' +
       'humaine.',
-    hair: '#6a4326', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    hair: '#6a4326', cut: 'bald', skin: CLAIR, outfit: '#5a4048',
     extras: ['bare-chest'],
     head: 'none', mark: 'beard', prop: 'none', build: 'giant',
   },
@@ -1001,7 +1001,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'remplacées par deux sabres, ce qui donne une silhouette extrêmement ' +
       'particulière : corps humain avec deux longues lames à la place des ' +
       'jambes.',
-    hair: '#2a2a33', cut: 'spiky', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'spiky', skin: CLAIR, outfit: '#37464f',
     face: 'square',
     height: 'tall',
     head: 'none', mark: 'moustache', prop: 'sword', build: 'broad',
@@ -1029,7 +1029,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'et abdominaux très développés. Longues oreilles et caractéristiques ' +
       'faciales félines. Nombreux tatouages sur les bras. Très grande ' +
       'silhouette.',
-    hair: '#2a2a33', cut: 'short', skin: '#c4664a', outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: '#c4664a', outfit: '#3d5548',
     extras: ['bare-chest', 'striped-suit', 'sharp-teeth', 'arm-tattoo'],
     frame: 'fishman',
     face: 'square',
@@ -1045,7 +1045,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'bras sont musclés, avec des caractéristiques de nageoires près des ' +
       'membres. Il porte une tenue de médecin de bord, avec un style pratique ' +
       'et relativement ample.',
-    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#39504a',
     extras: ['fins'],
     frame: 'fishman',
     head: 'none', mark: 'beard', prop: 'none', build: 'slim',
@@ -1075,7 +1075,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'relativement larges. Porte des vêtements de tireur et un immense ' +
       'fusil. Ses bras sont bien développés mais sa silhouette reste celle ' +
       'd’un homme très élancé.',
-    hair: '#e6cf7e', cut: 'long', skin: HALE, outfit: '#3a4250',
+    hair: '#e6cf7e', cut: 'long', skin: HALE, outfit: '#39504a',
     face: 'long',
     height: 'tall',
     head: 'none', mark: 'goatee', prop: 'gun', build: 'slim',
@@ -1130,7 +1130,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'col de fourrure. Il porte un pantalon sombre, des bottes épaisses et ' +
       'un gilet laissant largement apparaître son torse. Silhouette générale ' +
       ': combattant très grand, sec et extrêmement musclé.',
-    hair: '#8f2f2a', cut: 'spiky', skin: CLAIR, outfit: '#3a4250',
+    hair: '#8f2f2a', cut: 'spiky', skin: CLAIR, outfit: '#37464f',
     extras: ['fur-collar', 'boots'],
     face: 'sharp',
     eyes: 'narrow',
@@ -1171,7 +1171,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'Corps humain extrêmement musclé. Son trait le plus particulier est une ' +
       'carapace de tortue portée sur le dos. Bras et jambes humanoïdes, mais ' +
       'recouverts de fourrure.',
-    hair: '#e08a3c', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e08a3c', cut: 'short', skin: CLAIR, outfit: '#39504a',
     extras: ['mane'],
     frame: 'bear',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
@@ -1198,7 +1198,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'taille relativement fine. Porte une tenue courte laissant apparaître ' +
       'les jambes et une partie du ventre. Forme Zoan antique : tête et corps ' +
       'transformés en Pachycéphalosaure, avec crâne extrêmement puissant.',
-    hair: '#e88ab0', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e88ab0', cut: 'long', skin: CLAIR, outfit: '#5a4048',
     extras: ['bare-midriff', 'belt', 'tusks'],
     face: 'sharp',
     height: 'tall',
@@ -1215,7 +1215,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'avec de nombreux ornements. Elle est souvent accompagnée d’une ' +
       'ombrelle. En forme de Zoan, son bas du corps devient celui d’une ' +
       'araignée géante, donnant une apparence extrêmement massive.',
-    hair: '#1c1c22', cut: 'wavy', skin: CLAIR, outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'wavy', skin: CLAIR, outfit: '#54473a',
     extras: ['beads', 'open-vest'],
     eyes: 'sharp',
     height: 'towering',
@@ -1240,7 +1240,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'proéminent. Porte le fameux masque de catcheur autour du visage et du ' +
       'cou. Torse presque toujours nu, révélant une musculature énorme. Bras ' +
       'et épaules surdéveloppés.',
-    hair: '#2a2a33', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'bald', skin: CLAIR, outfit: '#4a3f52',
     extras: ['bare-chest'],
     face: 'square',
     height: 'tall',
@@ -1252,7 +1252,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'anguleux. Plusieurs cicatrices. Regard très calme. Porte le manteau et ' +
       'les vêtements de geôlier d’Impel Down, généralement sombres. Son sabre ' +
       'imposant est porté à la taille. Silhouette de combattant très sec.',
-    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#39504a',
     face: 'sharp',
     brow: 'calm',
     height: 'tall',
@@ -1279,7 +1279,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'révèle ses capacités de fruit du démon, de grandes ailes blanches ' +
       'apparaissent dans son dos. Cela transforme sa silhouette en celle d’un ' +
       'oiseau humanoïde.',
-    hair: '#e9e5da', cut: 'long', skin: PALE, outfit: '#3a4250',
+    hair: '#e9e5da', cut: 'long', skin: PALE, outfit: '#3d5548',
     extras: ['wings'],
     eyes: 'narrow',
     height: 'tall',
@@ -1308,7 +1308,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'large et légèrement allongé. Silhouette souvent voûtée, comme s’il ne ' +
       'pouvait pas se tenir complètement droit. Bras et jambes gigantesques. ' +
       'Vêtements très simples.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#39504a',
     face: 'square',
     height: 'towering',
     head: 'none', mark: 'none', prop: 'none', build: 'giant',
@@ -1321,7 +1321,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'yeux. Porte des vêtements de médecin et une longue blouse. Se déplace ' +
       'avec une grande faux. Son apparence rappelle délibérément celle d’un ' +
       'malade chronique.',
-    hair: '#1c1c22', cut: 'long', skin: PALE, outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'long', skin: PALE, outfit: '#4d4a38',
     extras: ['eye-bags'],
     head: 'none', mark: 'none', prop: 'staff', build: 'slim',
   },
@@ -1332,7 +1332,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'tirés vers l’arrière. Torse très large. Porte un pantalon et une tenue ' +
       'de karatéka, laissant le torse largement exposé. Bras et épaules ' +
       'particulièrement développés.',
-    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#3f4a63',
     frame: 'fishman',
     face: 'square',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
@@ -1345,7 +1345,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'transformation, une grande partie de son corps devient entièrement ' +
       'constituée de diamant, ce qui le rend extrêmement volumineux et ' +
       'brillant.',
-    hair: '#2a2a33', cut: 'bald', skin: HALE, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'bald', skin: HALE, outfit: '#4d4a38',
     extras: ['bare-chest'],
     face: 'square',
     head: 'none', mark: 'none', prop: 'none', build: 'giant',
@@ -1357,7 +1357,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'solide. Corps athlétique. Vêtements de pirate très élégants, souvent ' +
       'avec une longue veste. Deux sabres. Des motifs floraux, notamment des ' +
       'roses, apparaissent sur sa tenue.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#39504a',
     face: 'sharp',
     height: 'tall',
     head: 'brim', mark: 'moustache', prop: 'sword', build: 'slim',
@@ -1369,7 +1369,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'Porte un maquillage rappelant les acteurs de kabuki, notamment autour ' +
       'des yeux et des lèvres. Kimono traditionnel avec plusieurs couches et ' +
       'motifs. Deux pistolets. Corps mince et droit, peu massif.',
-    hair: '#1c1c22', cut: 'topknot', skin: CLAIR, outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'topknot', skin: CLAIR, outfit: '#3f4a63',
     extras: ['face-tattoo'],
     face: 'sharp',
     head: 'none', mark: 'none', prop: 'gun', build: 'slim',
@@ -1396,7 +1396,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'grande partie de son corps. Une quantité importante de mucus est ' +
       'continuellement visible autour de son nez et de sa bouche. Sa ' +
       'silhouette réelle est volontairement difficile à distinguer.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#4d4a38',
     face: 'long',
     head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
   },
@@ -1421,7 +1421,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'volume démesuré lorsqu’il forme un colosse de roche. Lorsqu’il ' +
       'fusionne avec la pierre, il peut prendre la forme d’un véritable géant ' +
       'minéral avec une tête humaine géante.',
-    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#3d5548',
     height: 'towering',
     head: 'none', mark: 'none', prop: 'none', build: 'giant',
   },
@@ -1457,7 +1457,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'd’adulte massif. Une cigarette est souvent présente à ses lèvres. ' +
       'Contraste visuel très marqué entre son physique adulte et ses ' +
       'vêtements de nourrisson.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#37464f',
     face: 'square',
     head: 'cap', mark: 'cigarette', prop: 'none', build: 'broad',
   },
@@ -1483,7 +1483,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'casquette. Yeux fins. Corps élancé, jambes longues. Utilise deux ' +
       'sabres. Son fruit du démon lui donne un long cou de girafe et des ' +
       'membres très allongés lorsqu’il se transforme.',
-    hair: '#d8cbb0', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#d8cbb0', cut: 'short', skin: CLAIR, outfit: '#5a4048',
     eyes: 'sharp',
     height: 'tall',
     head: 'cap', mark: 'none', prop: 'sword', build: 'slim',
@@ -1495,7 +1495,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'nez et de la bouche. Épaules relativement étroites. Porte la tenue et ' +
       'la cape caractéristiques du CP9. Bras fins, jambes longues. Physique ' +
       'peu imposant.',
-    hair: '#6a4326', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#6a4326', cut: 'long', skin: CLAIR, outfit: '#4a3f52',
     extras: ['cape'],
     height: 'tall',
     head: 'mask', mark: 'none', prop: 'none', build: 'slim',
@@ -1516,7 +1516,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'fin, lèvres marquées. Porte un petit masque noir autour des yeux. ' +
       'Uniforme très ajusté de gardienne d’Impel Down, généralement sombre. ' +
       'Jambes longues, posture droite. Fouet comme arme.',
-    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#5a4048',
     face: 'sharp',
     height: 'tall',
     head: 'mask', mark: 'none', prop: 'knives', build: 'slim',
@@ -1542,7 +1542,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'ridé. Porte le manteau de Marine. Corps plutôt sec, posture droite ' +
       'malgré l’âge. Utilise une pipe. Son apparence est celle d’une vieille ' +
       'femme élégante et autoritaire plutôt que d’une combattante massive.',
-    hair: '#e9e5da', cut: 'ponytail', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e9e5da', cut: 'ponytail', skin: CLAIR, outfit: '#3f4a63',
     extras: ['face-lines'],
     face: 'sharp',
     height: 'tall',
@@ -1555,7 +1555,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'fort. Porte le manteau de vice-amiral sur les épaules et un sabre. ' +
       'Jambes et bras proportionnés, musculature visible mais pas ' +
       'gigantesque.',
-    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#54473a',
     extras: ['coat-shoulders'],
     face: 'sharp',
     height: 'tall',
@@ -1581,7 +1581,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'Porte une armure et un casque avec plumet. Sabre très imposant par ' +
       'rapport à son corps. Son physique donne l’impression d’un squelette ' +
       'humain vivant.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3f4a63',
     extras: ['feather', 'pauldrons', 'face-lines'],
     head: 'horns', mark: 'none', prop: 'greatsword', build: 'slim',
   },
@@ -1606,7 +1606,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'bleues. Menton étroit. Vêtements militaires puis uniformes de Marine. ' +
       'Son anneau hypnotique ajoute un élément circulaire très visible à sa ' +
       'silhouette.',
-    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#3f4a63',
     face: 'sharp',
     height: 'tall',
     head: 'brim', mark: 'glasses', prop: 'none', build: 'slim',
@@ -1618,7 +1618,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'mâchoire. Porte un casque et des vêtements de garde militaire. Son ' +
       'énorme hache accentue la largeur de sa silhouette. Corps ' +
       'particulièrement lourd.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#37464f',
     extras: ['pendant', 'belt'],
     head: 'horns', mark: 'beard', prop: 'axe', build: 'broad',
   },
@@ -1644,7 +1644,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'gros nez. Cigarette souvent à la bouche. Elle porte des vêtements ' +
       'simples et robustes. Malgré son âge, ses bras et épaules restent ' +
       'imposants.',
-    hair: '#e08a3c', cut: 'wavy', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e08a3c', cut: 'wavy', skin: CLAIR, outfit: '#4d4a38',
     extras: ['face-lines'],
     face: 'square',
     head: 'none', mark: 'cigarette', prop: 'none', build: 'slim',
@@ -1669,7 +1669,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'claire. Corps svelte avec bras et jambes fins mais entraînés. Porte un ' +
       'kimono ou une tenue d’entraînement simple. Katana attaché à la ' +
       'ceinture.',
-    hair: '#2a2f42', cut: 'ponytail', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2f42', cut: 'ponytail', skin: CLAIR, outfit: '#54473a',
     extras: ['belt'],
     face: 'sharp',
     head: 'none', mark: 'none', prop: 'sword', build: 'slim',
@@ -1693,7 +1693,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'ou légèrement inquiets. Corps athlétique mais pas particulièrement ' +
       'musclé. Uniforme de Marine parfaitement ajusté. Sa silhouette devient ' +
       'progressivement plus sportive au fil de l’histoire.',
-    hair: '#e6cf7e', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e6cf7e', cut: 'short', skin: CLAIR, outfit: '#37464f',
     face: 'long',
     height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
@@ -1706,7 +1706,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'puissants. Elle porte une tenue Kuja légère, avec une robe ou un haut ' +
       'très ouvert et des ornements de serpent. Son corps est plus robuste ' +
       'que celui de Hancock mais beaucoup plus élancé que celui de Marigold.',
-    hair: '#5a9a55', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#5a9a55', cut: 'long', skin: CLAIR, outfit: '#54473a',
     extras: ['beads', 'open-vest'],
     face: 'long',
     eyes: 'narrow',
@@ -1721,7 +1721,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'porte une grande robe traditionnelle ample, avec des éléments ' +
       'rappelant le style de Kuja. Son physique est beaucoup plus massif que ' +
       'celui de sa sœur Boa Hancock.',
-    hair: '#c4562a', cut: 'topknot', skin: CLAIR, outfit: '#3a4250',
+    hair: '#c4562a', cut: 'topknot', skin: CLAIR, outfit: '#4d4a38',
     extras: ['belt'],
     face: 'round',
     height: 'tall',
@@ -1735,7 +1735,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'avec grosses dents et traits typiquement nordiques. Porte une armure ' +
       'métallique, un casque et de grandes protections. Physiquement, il ' +
       'domine complètement un humain normal.',
-    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#3f4a63',
     extras: ['pauldrons', 'sharp-teeth'],
     face: 'square',
     height: 'towering',
@@ -1748,7 +1748,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'nez pointu. Cheveux clairs. Porte un casque avec de grandes oreilles ' +
       'ressemblant à celles d’un lapin. Corps mince et agile. Transporte une ' +
       'gigantesque aiguille et du fil pour sa taille.',
-    hair: '#d8cbb0', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#d8cbb0', cut: 'short', skin: CLAIR, outfit: '#5a4048',
     height: 'short',
     head: 'horns', mark: 'none', prop: 'staff', build: 'slim',
   },
@@ -1802,7 +1802,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'moustache noire, accompagnée d’une barbiche. Visage large et dur. Il ' +
       'porte une veste ouverte laissant le torse nu. Sabre à la ceinture. ' +
       'Physique de lutteur ou culturiste lourd.',
-    hair: '#1c1c22', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'bald', skin: CLAIR, outfit: '#54473a',
     extras: ['bare-chest', 'open-vest', 'belt'],
     face: 'square',
     height: 'towering',
@@ -1839,7 +1839,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'pointue, cheveux blancs ou gris. Visage ridé et yeux petits. Porte la ' +
       'toque de chef et un grand tablier de cuisinier. Corps sec avec bras ' +
       'fins. Grand couteau souvent visible.',
-    hair: '#e9e5da', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e9e5da', cut: 'long', skin: CLAIR, outfit: '#39504a',
     extras: ['necktie', 'face-lines'],
     eyes: 'narrow',
     height: 'short',
@@ -1852,7 +1852,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'flammes. Pas de jambes ni d’anatomie humaine classique. Flammes ' +
       'irrégulières formant une sorte de chevelure autour du visage. Taille ' +
       'généralement compacte, mais pouvant augmenter.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#463a52',
     height: 'short',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
@@ -1862,7 +1862,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'Deux yeux, grand nez et moustache intégrés à la surface du chapeau. ' +
       'Une lame est fixée sur le sommet. La forme du corps dépend du chapeau ' +
       'lui-même. Il possède une expression faciale très mobile.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#4d4a38',
     head: 'tricorne', mark: 'moustache', prop: 'none', build: 'slim',
   },
   hera: {
@@ -1873,7 +1873,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'visibles, deux yeux et une expression agressive. De petits éclairs ' +
       'apparaissent autour du corps. Texture générale : nuage épais et ' +
       'irrégulier.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#4d4a38',
     face: 'round',
     brow: 'fierce',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
@@ -1937,7 +1937,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'Partie inférieure : grand corps de cheval, musclé au niveau des jambes ' +
       'et du bassin, avec quatre sabots. Cette combinaison donne une ' +
       'silhouette très haute et très longue.',
-    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#463a52',
     extras: ['boots'],
     face: 'sharp',
     head: 'brim', mark: 'none', prop: 'none', build: 'slim',
@@ -1978,7 +1978,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'porte peu de vêtements, principalement des éléments destinés au ' +
       'combat. Son arme est une grande hache. Impression générale : brute ' +
       'géante extrêmement robuste.',
-    hair: '#2a2a33', cut: 'short', skin: MAT, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: MAT, outfit: '#5a4048',
     extras: ['tusks'],
     head: 'horns', mark: 'none', prop: 'axe', build: 'broad',
   },
@@ -2001,7 +2001,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'assez longs. Bandana sur la tête. Visage étroit et marqué. Porte une ' +
       'veste ouverte laissant apparaître une partie du torse. Bras ' +
       'relativement musclés mais corps sec. Sabre long porté au côté.',
-    hair: '#2a2a33', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'long', skin: CLAIR, outfit: '#463a52',
     extras: ['open-vest'],
     face: 'long',
     head: 'bandana', mark: 'none', prop: 'sword', build: 'slim',
@@ -2025,7 +2025,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'gigantesques. Visage carré, grosses dents et petites cornes sur la ' +
       'tête. Porte très peu de vêtements. Torse et bras couverts de muscles ' +
       'épais. Sa taille donne l’impression d’un véritable monstre humanoïde.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#54473a',
     extras: ['sharp-teeth', 'tusks'],
     face: 'square',
     height: 'towering',
@@ -2052,7 +2052,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'volumineux. Très longue barbe blanche. Lunettes rondes. Visage ridé et ' +
       'profondément marqué par l’âge. Porte des vêtements traditionnels ' +
       'd’arts martiaux. Bras et jambes très fins, mais extrêmement nerveux.',
-    hair: '#e9e5da', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e9e5da', cut: 'long', skin: CLAIR, outfit: '#37464f',
     extras: ['face-lines'],
     head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
   },
@@ -2062,7 +2062,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'dégarni, petite paire de lunettes. Visage large et ventre énorme. Bras ' +
       'et jambes épais. Porte une tenue rappelant celle d’un lutteur ou d’un ' +
       'catcheur. Son corps combine masse graisseuse et puissance physique.',
-    hair: '#2a2a33', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'bald', skin: CLAIR, outfit: '#37464f',
     extras: ['belt'],
     face: 'square',
     height: 'towering',
@@ -2145,7 +2145,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'étroit et émacié. Bras et jambes très longs. Corps maigre mais ' +
       'légèrement musclé. Porte des vêtements de pirate simples. Utilise une ' +
       'très longue lance, qui accentue encore sa silhouette verticale.',
-    hair: '#2a2a33', cut: 'bald', skin: PALE, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'bald', skin: PALE, outfit: '#3f4a63',
     height: 'towering',
     head: 'none', mark: 'none', prop: 'staff', build: 'slim',
   },
@@ -2158,7 +2158,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'petites lunettes rondes. Visage étroit. Costume à rayures de gangster, ' +
       'souvent avec veste et cravate. Bras fins mais relativement longs. ' +
       'Silhouette d’un mafieux élégant.',
-    hair: '#d8cbb0', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#d8cbb0', cut: 'short', skin: CLAIR, outfit: '#54473a',
     extras: ['necktie', 'striped-suit'],
     face: 'long',
     height: 'tall',
@@ -2181,7 +2181,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'plutôt mate. Plusieurs cicatrices sur le visage. Nez droit, yeux ' +
       'étroits. Porte des vêtements de gladiateur/combat et un sabre. Corps ' +
       'sec, surtout adapté au maniement de l’épée.',
-    hair: '#2a2a33', cut: 'long', skin: HALE, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'long', skin: HALE, outfit: '#4a3f52',
     eyes: 'narrow',
     height: 'tall',
     head: 'none', mark: 'scar-face', prop: 'sword', build: 'slim',
@@ -2192,7 +2192,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'sur le front. Visage fin. Corps léger et athlétique. Porte une tenue ' +
       'de combat courte et légère. Utilise un bâton. Silhouette de jeune ' +
       'combattant agile.',
-    hair: '#d8cbb0', cut: 'spiky', skin: CLAIR, outfit: '#3a4250',
+    hair: '#d8cbb0', cut: 'spiky', skin: CLAIR, outfit: '#463a52',
     face: 'sharp',
     height: 'short',
     head: 'bandana', mark: 'none', prop: 'staff', build: 'slim',
@@ -2216,7 +2216,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'courts et relativement sombres. Il porte des vêtements traditionnels ' +
       'amples, donnant encore plus de volume à sa silhouette. Apparence ' +
       'générale : homme très lourd et placide.',
-    hair: '#2a2a33', cut: 'short', skin: HALE, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: HALE, outfit: '#5a4048',
     extras: ['belt'],
     face: 'round',
     brow: 'calm',
@@ -2244,7 +2244,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'sec, avec peu de masse grasse. Il porte une tenue de combat légère ' +
       'couvrant assez peu le corps. Son principal élément visuel est le ' +
       'rapport jambes/torse extrêmement disproportionné.',
-    hair: '#1c1c22', cut: 'short', skin: '#8fb4c4', outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'short', skin: '#8fb4c4', outfit: '#54473a',
     face: 'long',
     height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
@@ -2256,7 +2256,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'un bicorne d’amiral, une longue veste et plusieurs accessoires de ' +
       'commandement. Son ventre est relativement développé. Porte une énorme ' +
       'ancre ou une arme de grande taille.',
-    hair: '#6a4326', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#6a4326', cut: 'short', skin: CLAIR, outfit: '#3d5548',
     extras: ['belt'],
     height: 'tall',
     head: 'tricorne', mark: 'beard', prop: 'club', build: 'broad',
@@ -2271,7 +2271,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'tenue est celle d’un vice-amiral. Lorsqu’il utilise son pouvoir, ' +
       'plusieurs pattes d’araignée apparaissent derrière son corps, ' +
       'transformant fortement sa silhouette.',
-    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#4d4a38',
     extras: ['coat-shoulders'],
     face: 'sharp',
     height: 'tall',
@@ -2298,7 +2298,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'de chaque côté de la bouche. Cheveux sombres. Manteau de Marine et ' +
       'tenue d’officier. Ses proportions sont particulièrement inhabituelles ' +
       'à cause de la forme du crâne.',
-    hair: '#2a2a33', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'long', skin: CLAIR, outfit: '#463a52',
     height: 'tall',
     head: 'none', mark: 'moustache', prop: 'none', build: 'slim',
   },
@@ -2309,7 +2309,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'souvent présent à la bouche. Cheveux sombres et courts. Corps robuste ' +
       'avec ventre légèrement développé. Silhouette de haut gradé confortable ' +
       'mais toujours solide.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#39504a',
     extras: ['belt'],
     face: 'square',
     height: 'tall',
@@ -2357,7 +2357,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'nez pointu, oreilles rondes et grandes moustaches fines. Cheveux gris ' +
       'plaqués. Corps humain relativement mince. Uniforme de Marine très ' +
       'propre. Ses mains et jambes restent humaines malgré le visage animal.',
-    hair: '#a8a89e', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#a8a89e', cut: 'short', skin: CLAIR, outfit: '#54473a',
     face: 'long',
     head: 'none', mark: 'moustache', prop: 'none', build: 'slim',
   },
@@ -2482,7 +2482,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'rappelant les prisonniers d’Impel Down : vêtements rayés ou très ' +
       'simples, avec une apparence négligée. Son apparence générale est celle ' +
       'd’un criminel massif et arrogant.',
-    hair: '#33291f', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#33291f', cut: 'long', skin: CLAIR, outfit: '#39504a',
     extras: ['striped-suit'],
     face: 'square',
     brow: 'arched',
@@ -2495,7 +2495,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'rougi, nez volumineux, joues épaisses. Cou massif. Ventre gigantesque. ' +
       'Porte des vêtements très simples et une énorme gourde. Physique lourd ' +
       'et extrêmement massif.',
-    hair: '#2a2a33', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'bald', skin: CLAIR, outfit: '#3f4a63',
     extras: ['belt'],
     face: 'square',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
@@ -2533,7 +2533,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'Museau court, petites oreilles et gros nez. Bras puissants et épaisses ' +
       'jambes. Porte très peu de vêtements, principalement une tenue légère ' +
       'de combat.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#37464f',
     frame: 'bear',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
@@ -2544,7 +2544,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'hérissés. Porte un bandeau autour de la tête. Visage marqué, barbe ' +
       'légère et plusieurs traces de vie en mer. Pantalon et équipement de ' +
       'plongée. Apparence de vieux aventurier très physique.',
-    hair: '#2a2a33', cut: 'spiky', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'spiky', skin: CLAIR, outfit: '#4a3f52',
     extras: ['bare-chest'],
     height: 'tall',
     head: 'bandana', mark: 'goatee', prop: 'none', build: 'broad',
@@ -2556,7 +2556,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'particulièrement longs et forts. Porte une casquette et une salopette. ' +
       'Ventre relativement volumineux. Apparence globale : gros primate ' +
       'humanoïde.',
-    hair: '#6a4326', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#6a4326', cut: 'short', skin: CLAIR, outfit: '#3d5548',
     extras: ['belt'],
     head: 'cap', mark: 'none', prop: 'none', build: 'broad',
   },
@@ -2581,7 +2581,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'rares et irréguliers avec une zone dégarnie sur le haut du crâne. Peau ' +
       'claire. Porte des vêtements de pirate simples et un immense bisento. ' +
       'Silhouette de colosse disproportionné.',
-    hair: '#e6cf7e', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e6cf7e', cut: 'bald', skin: CLAIR, outfit: '#54473a',
     extras: ['belt'],
     height: 'towering',
     head: 'none', mark: 'none', prop: 'staff', build: 'giant',
@@ -2592,7 +2592,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'fin. Porte souvent un grand chapeau à large bord. Traits assez doux. ' +
       'Corps féminin et élancé. Vêtements simples de voyage ou de pirate, ' +
       'laissant les bras et jambes relativement libres.',
-    hair: '#2a2a33', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'long', skin: CLAIR, outfit: '#3f4a63',
     face: 'sharp',
     brow: 'calm',
     height: 'tall',
@@ -2604,7 +2604,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'et peau claire. Bras et jambes bien dessinés mais pas fortement ' +
       'musclés. Porte la tenue légère traditionnelle des Kuja, souvent ' +
       'accompagnée d’un arc et de flèches. Silhouette de combattante agile.',
-    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#39504a',
     face: 'sharp',
     height: 'tall',
     head: 'none', mark: 'none', prop: 'gun', build: 'slim',
@@ -2616,7 +2616,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'pirate. Visage rond, nez volumineux, dents visibles lors de son ' +
       'sourire. Corps très large et ventre développé. Apparence plus compacte ' +
       'que celle de Caribou.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#39504a',
     extras: ['belt', 'sharp-teeth'],
     face: 'round',
     height: 'short',
@@ -2630,7 +2630,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'grossièrement imitée. Cardigan rouge et vêtements de pirate ' +
       'ordinaires. Sa silhouette est nettement moins athlétique que celle de ' +
       'Luffy.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#37464f',
     extras: ['face-lines'],
     face: 'long',
     head: 'strawhat', mark: 'none', prop: 'none', build: 'slim',
@@ -2659,7 +2659,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'large, nez imposant et mâchoire puissante. Corps robuste. Porte des ' +
       'gants avec éléments métalliques ou pointes et des vêtements de pirate ' +
       'relativement simples. Bras épais. Apparence de brute de combat.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3d5548',
     extras: ['gloves'],
     face: 'square',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
@@ -2671,7 +2671,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'de bandit simples, sales et robustes. Porte un sabre. Sa silhouette ' +
       'est celle d’un homme habitué à la violence mais pas d’un véritable ' +
       'colosse.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#39504a',
     eyes: 'narrow',
     head: 'none', mark: 'goatee', prop: 'sword', build: 'giant',
   },
@@ -2681,7 +2681,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'blanche assez volumineuse. Lunettes. Visage rond et ridé. Porte des ' +
       'vêtements simples de maire/villageois. Corps plutôt petit et trapu. ' +
       'Apparence globale de vieux notable de village.',
-    hair: '#e9e5da', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e9e5da', cut: 'bald', skin: CLAIR, outfit: '#54473a',
     extras: ['face-lines'],
     face: 'round',
     height: 'short',
@@ -2703,7 +2703,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'Homme mince et assez petit. Visage allongé, cheveux sombres et corps ' +
       'peu musclé. Vêtements très simples et rapiécés. Silhouette de bandit ' +
       'pauvre plutôt que de combattant puissant. Mains et jambes fines.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#4d4a38',
     face: 'long',
     height: 'short',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
@@ -2714,7 +2714,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'Visage relativement rond mais expression arrogante. Sourcils fins. ' +
       'Porte un costume parfaitement ajusté et très luxueux. Corps mince avec ' +
       'ventre légèrement arrondi.',
-    hair: '#d8cbb0', cut: 'wavy', skin: CLAIR, outfit: '#3a4250',
+    hair: '#d8cbb0', cut: 'wavy', skin: CLAIR, outfit: '#3d5548',
     extras: ['belt'],
     brow: 'arched',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
@@ -2738,7 +2738,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'joues creuses et nez important. Porte un tablier de forgeron et des ' +
       'vêtements de travail. Bras et mains épaissis par des décennies de ' +
       'forge. Porte ou travaille régulièrement avec un katana.',
-    hair: '#e9e5da', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e9e5da', cut: 'bald', skin: CLAIR, outfit: '#54473a',
     extras: ['face-lines', 'necktie'],
     height: 'tall',
     head: 'none', mark: 'beard', prop: 'sword', build: 'slim',
