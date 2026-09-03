@@ -102,6 +102,35 @@ Puis vérifier :
 - **Settings → Cron Jobs** liste les deux tâches ;
 - le journal de démarrage affiche `[env] configuration verifiee — 0 remarque(s).`
 
+## La région des fonctions
+
+`vercel.json` déclare `"regions": ["fra1"]` — Francfort. Ce n'est pas un
+détail de confort.
+
+Les fonctions tournaient par défaut dans `iad1`, en Virginie, pendant que la
+base Supabase du projet est en `eu-central-1`, à Francfort. Chaque requête
+vers la base traversait donc l'Atlantique dans les deux sens : environ 90 ms
+de latence réseau pure par aller-retour, avant même que Postgres ne commence à
+travailler. Une page qui enchaîne trois lectures payait un quart de seconde en
+pur transport, et aucune optimisation de code n'y pouvait quoi que ce soit. Les
+joueurs étant en France, le trajet navigateur → fonction franchissait lui aussi
+l'Atlantique.
+
+Une seule région est déclarée. En ajouter d'autres demanderait une base
+répliquée, sans quoi on ne ferait que déplacer le problème d'un continent à
+l'autre.
+
+**Si la base déménage, cette ligne déménage avec elle.** Les deux doivent
+rester dans la même région ; c'est la seule règle à retenir ici.
+
+### Pourquoi cette explication est ici et pas dans le fichier
+
+`vercel.json` est du JSON **strict**, validé contre un schéma fermé : il
+n'admet ni commentaires, ni clés inconnues. Une clé `"//regions"` contenant
+cette note a fait échouer le déploiement avec *« should NOT have additional
+property `//regions` »* — le build s'arrête avant de commencer, sans journal,
+et seule une tentative de redéploiement en ligne de commande donne le message.
+
 ## Avant d'ouvrir au public
 
 - [ ] **Faire tourner la clé `service_role`** — elle a circulé pendant le

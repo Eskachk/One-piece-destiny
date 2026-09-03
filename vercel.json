@@ -1,24 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-
-  "//regions": [
-    "Francfort, et pas la Virginie.",
-    "",
-    "Les fonctions tournaient dans `iad1` — Washington — pendant que la base",
-    "Supabase est en `eu-central-1`, Francfort. Chaque requête vers la base",
-    "traversait donc l'Atlantique dans les deux sens : environ 90 ms de",
-    "latence réseau pure par aller-retour, avant même que Postgres ne",
-    "commence à travailler. Une page qui enchaîne trois lectures payait un",
-    "quart de seconde en pur transport.",
-    "",
-    "Et les joueurs sont en France : le trajet navigateur → fonction passait",
-    "lui aussi par l'Atlantique.",
-    "",
-    "Une seule région est déclarée : au-delà, il faudrait une base répliquée,",
-    "sans quoi on ne fait que déplacer le problème d'un continent à l'autre."
-  ],
   "regions": ["fra1"],
-
   "crons": [
     {
       "path": "/api/jobs/weekly",
