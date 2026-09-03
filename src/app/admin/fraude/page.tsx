@@ -58,6 +58,9 @@ export default async function FraudPage() {
         <Link href="/admin/stats" className="text-turquoise underline">
           Statistiques
         </Link>
+        <Link href="/admin/journal" className="text-turquoise underline">
+          Journal
+        </Link>
       </nav>
 
       <section className="mt-6 rounded-xl border border-turquoise/20 bg-navy/40 p-4">

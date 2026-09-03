@@ -86,6 +86,9 @@ export default async function AdminStatsPage() {
         <Link href="/admin/fraude" className="text-turquoise underline">
           Fraude
         </Link>
+        <Link href="/admin/journal" className="text-turquoise underline">
+          Journal
+        </Link>
       </nav>
 
       <section className="mt-8">

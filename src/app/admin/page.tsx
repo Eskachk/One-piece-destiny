@@ -85,11 +85,13 @@ export default async function AdminPage() {
       <nav className="mt-4 flex gap-3 text-sm">
         <Link href="/admin/stats" className="text-turquoise underline">Statistiques</Link>
         <Link href="/admin/fraude" className="text-turquoise underline">Fraude</Link>
+          <Link href="/admin/journal" className="text-turquoise underline">Journal</Link>
       </nav>
 
         <nav className="mt-4 flex gap-3 text-sm">
           <Link href="/admin/stats" className="text-turquoise underline">Statistiques</Link>
           <Link href="/admin/fraude" className="text-turquoise underline">Fraude</Link>
+          <Link href="/admin/journal" className="text-turquoise underline">Journal</Link>
         </nav>
 
         <p className="mt-4 rounded-lg border border-turquoise/25 bg-navy/50 p-3 text-sm text-parchment/70">
