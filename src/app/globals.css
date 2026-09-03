@@ -3650,37 +3650,59 @@ button[aria-busy='true']:not(.hb-btn)::before {
 /* ===========================================================================
    Les jeux de lumière.
    ---------------------------------------------------------------------------
-   Le grief tenait en une phrase : « il n'y a rien qui bouge ». Les ambiances
-   (`.isl-fx`) et les ciels (`IslandSky`) avaient déjà répondu pour ce qui
-   traverse le cadre — la pluie, les poissons, les feuilles. Restait le fond
-   lui-même, un dégradé rigoureusement immobile derrière tout le reste.
+   Ce qui rend un extérieur vivant, avant même ce qui s'y déplace, c'est que la
+   lumière y change. Un nuage passe et la lande s'assombrit ; le soleil bouge
+   et l'ombre tourne. C'est lent, on ne le regarde jamais directement, et son
+   absence se remarque immédiatement.
 
-   Or ce qui fait qu'un extérieur est vivant, avant même ce qui s'y déplace,
-   c'est que **la lumière y change**. Un nuage passe et la lande s'assombrit ;
-   le soleil bouge et l'ombre du grand arbre tourne. C'est lent, on ne le
-   regarde jamais directement, et son absence se remarque immédiatement.
+   ## Les deux fautes de la première version, et ce qui les remplace
 
-   ## Deux couches, deux natures
+   Elle a été jugée « coupée », et le mot était juste aux deux endroits.
 
-   - **Les nappes** (l'élément) : de larges taches de couleur qui dérivent et
-     respirent. Elles portent la teinte de l'île.
-   - **Les rais** (`::after`) : un peigne de bandes claires qui bascule
-     lentement. C'est ce qui donne la direction de la lumière.
+   **Les rais étaient des bandes à bords francs.** Un `repeating-linear-gradient`
+   dont les arrêts passent de `transparent` à la couleur *à la même position*
+   produit une arête au pixel près. On obtenait des barres droites en travers
+   du ciel — un store vénitien, pas de la lumière.
 
-   ## Pourquoi une couche séparée de `.isl-fx`
+     Deux choses les remplacent. D'abord des arrêts progressifs : chaque rai
+     monte et redescend au lieu de commencer net. Ensuite un **éventail
+     conique** au lieu d'un peigne parallèle : de vrais rais divergent depuis
+     une source, ils ne sont pas parallèles entre eux. `repeating-conic-gradient`
+     donne exactement cela, avec l'apex posé au-dessus du cadre. Un masque les
+     éteint avant le bas de l'écran, là où la lumière du ciel n'a plus de
+     raison d'être.
 
-   Le mode de fusion. La lumière se compose en `screen` — elle *ajoute* de la
-   clarté à ce qu'il y a dessous, sans jamais l'assombrir, ce qui est
-   exactement le comportement d'une lueur. La pluie et les pétales, eux, sont
-   des objets opaques posés par-dessus. Un seul élément n'a qu'un seul
-   `mix-blend-mode` : les réunir reviendrait à renoncer à l'un des deux effets.
+   **Les nappes se lisaient comme des disques.** Deux causes cumulées. Leurs
+   tuiles étaient plus petites que le cadre, donc le bord du dégradé tombait
+   *dans* l'écran et se voyait. Et le mot-clé `transparent` vaut
+   `rgba(0, 0, 0, 0)` : un dégradé qui va d'un jaune chaud à `transparent`
+   traverse le gris en chemin et se cerne d'un halo terne.
+
+     Les tuiles sont maintenant plus grandes que le cadre — le bord n'y entre
+     jamais — et les teintes sont déclarées en triplets RVB, ce qui permet
+     d'écrire la même couleur à opacité nulle. La faute du halo gris devient
+     alors impossible à commettre.
+
+   ## Quatre couches
+
+     nappe chaude   `.isl-lux__nappes`      la masse de lumière colorée
+     nappe froide   `.isl-lux__nappes::after`  le contre-jour, à contretemps
+     balayage       `.isl-lux::before`      une traînée qui traverse
+     rais           `.isl-lux::after`       l'éventail, qui bascule
+
+   Chacune est animée **en `transform` seulement**. La première version animait
+   `background-position`, ce qui repeint un dégradé plein écran à chaque image,
+   sur toutes les pages et sur des téléphones. Une translation se règle sur le
+   compositeur et ne repeint rien. C'est la raison d'être du div intérieur :
+   sans lui il n'y a que trois couches disponibles, et transformer `.isl-lux`
+   lui-même emporterait ses deux pseudo-éléments avec.
 
    ## Ce que cela ne doit jamais faire
 
    Gêner la lecture (§51). La couche est **sous** le voile de contenu, et le
-   `screen` sur un fond déjà clair sature très vite : les opacités sont donc
-   basses et les nappes très étalées. Aucun bord franc, jamais, sinon on
-   fabrique une forme là où on voulait une atmosphère.
+   `screen` sur un fond déjà clair sature vite : les opacités restent basses.
+   Aucun bord franc, jamais — sinon on fabrique une forme là où on voulait une
+   atmosphère.
 
    `will-change` est absent, pour la raison qui vaut déjà pour `.isl-fx` :
    c'est un fond, présent sur toutes les pages, y compris sur les téléphones
@@ -3689,45 +3711,148 @@ button[aria-busy='true']:not(.hb-btn)::before {
 
 .isl-lux {
   position: absolute;
-  /* Débordement volontaire : les nappes dérivent, et un bord de nappe qui
-     rentre dans le cadre se verrait comme un objet. */
-  inset: -18%;
+  inset: 0;
   pointer-events: none;
+  overflow: hidden;
+  /* La lumière *ajoute* de la clarté et n'assombrit jamais : c'est le
+     comportement d'une lueur, et c'est ce que fait `screen`. */
   mix-blend-mode: screen;
-  opacity: 0.55;
 
-  /* Repli, si une île venait à n'avoir aucune teinte déclarée. Ce n'est pas
-     la teinte du port : celui-ci a la sienne, écrite plus bas comme les
-     autres. Un défaut qui sert aussi de valeur à une île réelle est un piège —
-     on le retouche pour cette île, et huit autres pages changent avec. */
-  --lux-a: rgba(255, 226, 168, 0.85);
-  --lux-b: rgba(168, 226, 255, 0.7);
-  --lux-rais: rgba(255, 246, 220, 0.16);
-  --lux-angle: 100deg;
+  /* --- Le dosage ---------------------------------------------------------
+     Les opacités sont **basses**, et c'est un réglage, pas une timidité. En
+     `screen`, sur un ciel déjà clair, une nappe à 0,5 ne module plus rien :
+     elle blanchit. Le sable d'Alabasta y perdait toute sa couleur et la page
+     virait au lavis crème. Autour de 0,25 la lumière se voit passer sans
+     effacer ce sur quoi elle passe — c'est-à-dire qu'elle fait son métier.
 
-  background-image:
-    radial-gradient(closest-side circle at 50% 50%, var(--lux-a), transparent),
-    radial-gradient(closest-side circle at 50% 50%, var(--lux-b), transparent),
-    radial-gradient(closest-side circle at 50% 50%, var(--lux-a), transparent);
-  background-size: 78% 78%, 62% 62%, 96% 66%;
-  background-repeat: no-repeat;
-  background-position: 8% 4%, 82% 26%, 44% 88%;
+     Les rais, eux, ont été **remontés** : ce sont eux qu'on regarde, et le
+     masque les éteignait dès leur départ au lieu de les éteindre en bas de
+     cadre. */
+
+  /* --- Teintes, en triplets RVB -----------------------------------------
+     Séparer la couleur de son opacité est ce qui permet d'écrire
+     `rgb(var(--lux-a) / 0)` : la même teinte, invisible. Un dégradé qui s'y
+     éteint ne passe par aucune autre couleur. */
+  --lux-a: 255 226 168; /* nappe chaude */
+  --lux-b: 168 226 255; /* nappe froide, le contre-jour */
+  --lux-r: 255 246 220; /* rais et balayage */
+
+  /* Intensité des rais, et largeur angulaire d'un rai. Un ciel poussiéreux
+     porte des faisceaux nets et larges ; un ciel couvert, presque rien. */
+  --lux-i: 0.16;
+  --lux-arc: 4.5deg;
+  /* Abscisse de la source. Elle n'a pas à coïncider avec un soleil dessiné :
+     c'est la direction générale de la lumière, pas son astre. */
+  --lux-apex: 62%;
+  --lux-force: 1;
 }
+
+/* --- Les nappes ---------------------------------------------------------- */
+
+.isl-lux__nappes,
+.isl-lux__nappes::after {
+  position: absolute;
+  /* Débordement franc : la tuile du dégradé doit rester plus grande que le
+     cadre à tout instant de la translation, sinon son bord entre dans l'écran
+     et la nappe redevient un disque. */
+  inset: -45%;
+  content: '';
+  background-repeat: no-repeat;
+}
+
+.isl-lux__nappes {
+  background-image:
+    radial-gradient(
+      ellipse farthest-side at 50% 50%,
+      rgb(var(--lux-a) / calc(0.26 * var(--lux-force))) 0%,
+      rgb(var(--lux-a) / calc(0.15 * var(--lux-force))) 30%,
+      rgb(var(--lux-a) / calc(0.05 * var(--lux-force))) 62%,
+      rgb(var(--lux-a) / 0) 100%
+    ),
+    radial-gradient(
+      ellipse farthest-side at 50% 50%,
+      rgb(var(--lux-a) / calc(0.18 * var(--lux-force))) 0%,
+      rgb(var(--lux-a) / calc(0.08 * var(--lux-force))) 42%,
+      rgb(var(--lux-a) / 0) 100%
+    );
+  /* Deux masses de tailles très différentes : une lumière naturelle n'est
+     jamais faite de taches calibrées. */
+  background-size: 130% 120%, 78% 92%;
+  background-position: -14% -18%, 74% 68%;
+}
+
+.isl-lux__nappes::after {
+  background-image: radial-gradient(
+    ellipse farthest-side at 50% 50%,
+    rgb(var(--lux-b) / calc(0.22 * var(--lux-force))) 0%,
+    rgb(var(--lux-b) / calc(0.11 * var(--lux-force))) 38%,
+    rgb(var(--lux-b) / 0) 100%
+  );
+  background-size: 112% 104%;
+  background-position: 88% 4%;
+}
+
+/* --- Le balayage ---------------------------------------------------------
+   Une traînée large et molle qui traverse le cadre en biais, s'allume au
+   milieu et s'éteint aux deux bouts. C'est la couche qu'on remarque
+   consciemment : les nappes travaillent en dessous du seuil d'attention, le
+   balayage est ce qui fait dire « ça bouge ». */
+
+.isl-lux::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    76deg,
+    rgb(var(--lux-r) / 0) 30%,
+    rgb(var(--lux-r) / calc(0.09 * var(--lux-force))) 40%,
+    rgb(var(--lux-r) / calc(0.18 * var(--lux-force))) 46%,
+    rgb(var(--lux-r) / calc(0.3 * var(--lux-force))) 50%,
+    rgb(var(--lux-r) / calc(0.18 * var(--lux-force))) 54%,
+    rgb(var(--lux-r) / calc(0.09 * var(--lux-force))) 60%,
+    rgb(var(--lux-r) / 0) 70%
+  );
+  opacity: 0;
+}
+
+/* --- Les rais -------------------------------------------------------------
+   Un éventail, pas un peigne. L'apex est posé au-dessus du cadre : les rais
+   divergent en descendant, comme la lumière qui perce une couverture nuageuse.
+
+   Le masque est indispensable. Sans lui, l'éventail conique se referme sous
+   l'apex et dessine une seconde étoile en bas de page. */
 
 .isl-lux::after {
   content: '';
   position: absolute;
-  /* Plus large que son parent : la couche pivote, et un peigne de la taille du
-     cadre découvrirait ses coins en tournant. */
-  inset: -30%;
-  background-image: repeating-linear-gradient(
-    var(--lux-angle),
-    transparent 0 64px,
-    var(--lux-rais) 64px 104px,
-    transparent 104px 168px
+  inset: -40%;
+  background: repeating-conic-gradient(
+    from -14deg at var(--lux-apex) -8%,
+    rgb(var(--lux-r) / 0) 0deg,
+    rgb(var(--lux-r) / calc(var(--lux-i) * 0.45 * var(--lux-force)))
+      calc(var(--lux-arc) * 0.45),
+    rgb(var(--lux-r) / calc(var(--lux-i) * var(--lux-force))) var(--lux-arc),
+    rgb(var(--lux-r) / calc(var(--lux-i) * 0.45 * var(--lux-force)))
+      calc(var(--lux-arc) * 1.55),
+    rgb(var(--lux-r) / 0) calc(var(--lux-arc) * 2.6)
   );
-  transform-origin: 50% 0%;
-  opacity: 0.5;
+  -webkit-mask-image: radial-gradient(
+    ellipse 78% 66% at var(--lux-apex) 6%,
+    #000 0%,
+    #000 34%,
+    rgba(0, 0, 0, 0.55) 62%,
+    transparent 92%
+  );
+  mask-image: radial-gradient(
+    ellipse 78% 66% at var(--lux-apex) 6%,
+    #000 0%,
+    #000 34%,
+    rgba(0, 0, 0, 0.55) 62%,
+    transparent 92%
+  );
+  /* L'éventail bascule autour de sa source, jamais autour du centre de
+     l'écran : une lumière ne pivote pas sur le milieu de la page. */
+  transform-origin: var(--lux-apex) -8%;
 }
 
 /* --- Une lumière par île --------------------------------------------------
@@ -3737,152 +3862,204 @@ button[aria-busy='true']:not(.hb-btn)::before {
    long sur le lieu que la silhouette posée en bas de page. */
 
 /* Le port — l'aube. Chaude et rasante, avec le contre-jour froid de la mer.
-   Déclarée explicitement bien qu'identique au repli ci-dessus : c'est une île
-   comme les autres, et la ranger dans le défaut la rendrait invisible à
-   quiconque relit cette liste — c'est exactement ainsi que Dressrosa est
-   restée sans ambiance pendant des semaines. */
+   Déclarée explicitement bien qu'elle serve aussi de valeur par défaut : une
+   île rangée dans le défaut est invisible à qui relit cette liste, et c'est
+   exactement ainsi que Dressrosa est restée sans ambiance pendant des
+   semaines. */
 [data-island='harbor'] .isl-lux {
-  --lux-a: rgba(255, 226, 168, 0.85);
-  --lux-b: rgba(168, 226, 255, 0.7);
-  --lux-rais: rgba(255, 246, 220, 0.16);
-  --lux-angle: 100deg;
-  opacity: 0.55;
+  --lux-a: 255 226 168;
+  --lux-b: 168 226 255;
+  --lux-r: 255 246 220;
+  --lux-i: 0.17;
+  --lux-arc: 5deg;
+  --lux-apex: 78%;
 }
 
-/* Elbaf — le grand nord. Lumière basse, froide, presque sans rais : sous un
-   ciel couvert, il n'y a pas de faisceau, seulement une clarté diffuse. */
+/* Elbaf — le grand nord après l'averse. Froide, diffuse, presque sans rais :
+   sous un ciel couvert il n'y a pas de faisceau, seulement une clarté. */
 [data-island='elbaf'] .isl-lux {
-  --lux-a: rgba(226, 245, 226, 0.7);
-  --lux-b: rgba(180, 214, 240, 0.62);
-  --lux-rais: rgba(240, 250, 240, 0.09);
-  --lux-angle: 96deg;
-  opacity: 0.45;
+  --lux-a: 232 248 230;
+  --lux-b: 176 212 240;
+  --lux-r: 240 250 244;
+  --lux-i: 0.09;
+  --lux-arc: 7deg;
+  --lux-apex: 40%;
+  --lux-force: 0.85;
 }
 
-/* Alabasta — le soleil de plomb. Chaud, dur, presque blanc, et des rais très
-   marqués : dans un désert, l'air est chargé de poussière et le faisceau se
-   voit. */
+/* Alabasta — le soleil de plomb. L'air du désert est chargé de poussière : le
+   faisceau s'y voit, et c'est la seule île où les rais sont le sujet. */
 [data-island='alabasta'] .isl-lux {
-  --lux-a: rgba(255, 224, 150, 0.95);
-  --lux-b: rgba(255, 186, 120, 0.7);
-  --lux-rais: rgba(255, 240, 200, 0.22);
-  --lux-angle: 104deg;
-  opacity: 0.62;
+  --lux-a: 255 222 148;
+  --lux-b: 255 190 128;
+  --lux-r: 255 242 208;
+  --lux-i: 0.24;
+  --lux-arc: 5.5deg;
+  --lux-apex: 70%;
+  --lux-force: 1.15;
 }
 
-/* Île des hommes-poissons — la lumière traverse dix mille mètres d'eau. Les
-   rais sont presque verticaux et bien plus serrés : c'est la caustique, la
-   figure que dessine la surface au fond de l'eau. */
+/* Île des hommes-poissons — dix mille mètres d'eau au-dessus de la tête. Les
+   rais sont serrés et presque droits : c'est la caustique, la figure que
+   dessine la surface au fond de l'eau, et elle vient de très haut. */
 [data-island='fishman'] .isl-lux {
-  --lux-a: rgba(150, 240, 255, 0.75);
-  --lux-b: rgba(120, 190, 255, 0.6);
-  --lux-rais: rgba(210, 250, 255, 0.17);
-  --lux-angle: 84deg;
-  opacity: 0.58;
+  --lux-a: 150 240 255;
+  --lux-b: 120 186 255;
+  --lux-r: 214 250 255;
+  --lux-i: 0.2;
+  --lux-arc: 2.2deg;
+  --lux-apex: 52%;
+  --lux-force: 1.1;
 }
 
-[data-island='fishman'] .isl-lux::after {
-  background-image: repeating-linear-gradient(
-    var(--lux-angle),
-    transparent 0 34px,
-    var(--lux-rais) 34px 56px,
-    transparent 56px 96px
-  );
-}
-
-/* Wano — la laque et les cerisiers. Or et rose, lumière de fin d'après-midi. */
+/* Wano — laque et cerisiers, fin d'après-midi. */
 [data-island='wano'] .isl-lux {
-  --lux-a: rgba(255, 214, 226, 0.8);
-  --lux-b: rgba(255, 224, 168, 0.72);
-  --lux-rais: rgba(255, 236, 226, 0.13);
-  --lux-angle: 108deg;
-  opacity: 0.5;
+  --lux-a: 255 212 224;
+  --lux-b: 255 226 172;
+  --lux-r: 255 238 228;
+  --lux-i: 0.13;
+  --lux-arc: 6deg;
+  --lux-apex: 34%;
 }
 
-/* Logue Town — l'orage. Argent froid, et des rais à peine visibles : sous une
-   averse, la lumière ne vient de nulle part en particulier. L'éclair, lui, est
-   déjà porté par `.isl-fx::after` — deux sources de flash se contrarieraient. */
+/* Logue Town — l'orage. Argent froid, rais quasi nuls : sous une averse la
+   lumière ne vient de nulle part en particulier. L'éclair est déjà porté par
+   `.isl-fx::after` — deux sources de flash se contrarieraient. */
 [data-island='logue'] .isl-lux {
-  --lux-a: rgba(214, 230, 250, 0.6);
-  --lux-b: rgba(180, 196, 220, 0.55);
-  --lux-rais: rgba(230, 240, 255, 0.07);
-  --lux-angle: 112deg;
-  opacity: 0.38;
+  --lux-a: 214 230 250;
+  --lux-b: 176 194 220;
+  --lux-r: 232 242 255;
+  --lux-i: 0.06;
+  --lux-arc: 9deg;
+  --lux-apex: 46%;
+  --lux-force: 0.7;
 }
 
-/* Sabaody — les bulles et la mangrove. Violine et nacre. */
+/* Sabaody — mangrove et bulles. Violine et nacre, lumière filtrée par les
+   feuilles : beaucoup de rais fins plutôt que quelques larges. */
 [data-island='sabaody'] .isl-lux {
-  --lux-a: rgba(226, 196, 255, 0.8);
-  --lux-b: rgba(168, 236, 255, 0.65);
-  --lux-rais: rgba(244, 230, 255, 0.14);
-  --lux-angle: 92deg;
-  opacity: 0.52;
+  --lux-a: 226 194 255;
+  --lux-b: 166 236 255;
+  --lux-r: 246 232 255;
+  --lux-i: 0.15;
+  --lux-arc: 3deg;
+  --lux-apex: 58%;
 }
 
-/* Dressrosa — la fête. Or et rouge, la lumière la plus chaude du site. */
+/* Dressrosa — la fête. La lumière la plus chaude du site. */
 [data-island='dressrosa'] .isl-lux {
-  --lux-a: rgba(255, 206, 150, 0.9);
-  --lux-b: rgba(255, 168, 178, 0.7);
-  --lux-rais: rgba(255, 232, 196, 0.18);
-  --lux-angle: 100deg;
-  opacity: 0.56;
+  --lux-a: 255 202 146;
+  --lux-b: 255 164 176;
+  --lux-r: 255 234 200;
+  --lux-i: 0.18;
+  --lux-arc: 4deg;
+  --lux-apex: 66%;
+  --lux-force: 1.05;
 }
 
-/* Drum — la neige. Bleu très pâle, rais nuls : un ciel de neige est une boîte
-   à lumière, il n'a pas de direction. */
+/* Drum — la neige. Un ciel de neige est une boîte à lumière : pas de
+   direction, donc pas de rais du tout. */
 [data-island='drum'] .isl-lux {
-  --lux-a: rgba(238, 248, 255, 0.75);
-  --lux-b: rgba(198, 224, 246, 0.6);
-  --lux-rais: rgba(255, 255, 255, 0.06);
-  opacity: 0.42;
+  --lux-a: 240 249 255;
+  --lux-b: 198 224 246;
+  --lux-r: 255 255 255;
+  --lux-i: 0.04;
+  --lux-arc: 10deg;
+  --lux-apex: 50%;
+  --lux-force: 0.8;
 }
 
 /* Le QG. Il n'a **pas** de décor, et c'est délibéré : on doit voir qu'on a
    quitté le jeu. Mais « pas de décor » ne veut pas dire une page morte — une
-   seule nappe froide, très basse, qui respire. C'est le néon d'une salle de
-   commandement, pas une île. */
+   nappe froide très basse, qui respire, et aucun rai. C'est le néon d'une
+   salle de commandement, pas une île. */
 [data-island='hq'] .isl-lux {
-  --lux-a: rgba(120, 200, 236, 0.5);
-  --lux-b: rgba(96, 150, 210, 0.4);
-  --lux-rais: rgba(180, 226, 250, 0.05);
-  --lux-angle: 90deg;
-  opacity: 0.3;
+  --lux-a: 118 198 236;
+  --lux-b: 92 148 210;
+  --lux-r: 180 226 250;
+  --lux-i: 0;
+  --lux-apex: 50%;
+  --lux-force: 0.55;
 }
 
+/* --- Le mouvement ---------------------------------------------------------
+
+   Quatre durées sans diviseur commun — 47, 37, 29 et 23 secondes. Des durées
+   proportionnelles retomberaient en phase à intervalle régulier, et l'œil
+   apprend très vite un cycle qui se répète à l'identique. Ici la combinaison
+   des quatre ne se reproduit pas avant plusieurs heures. */
+
 @media (prefers-reduced-motion: no-preference) {
-  .isl-lux {
-    /* Très lent, et de durées premières entre elles avec les rais : les deux
-       couches ne doivent jamais retomber en phase, sinon la boucle se voit. */
-    animation: fx-lux-nappes 41s ease-in-out infinite alternate;
+  .isl-lux__nappes {
+    animation: fx-lux-derive 47s ease-in-out infinite alternate;
+  }
+
+  /* Le contre-jour part dans l'autre sens : deux nappes qui glissent du même
+     côté se lisent comme un fond qui défile. */
+  .isl-lux__nappes::after {
+    animation: fx-lux-contre 37s ease-in-out infinite alternate;
   }
 
   .isl-lux::after {
-    animation: fx-lux-rais 29s ease-in-out infinite alternate;
+    animation: fx-lux-eventail 29s ease-in-out infinite alternate;
+  }
+
+  .isl-lux::before {
+    animation: fx-lux-balayage 23s ease-in-out infinite;
   }
 }
 
-/* Les nappes dérivent **et** changent d'intensité. La dérive seule donne un
-   décor qui glisse ; c'est la variation d'intensité qui donne le nuage qui
-   passe. */
-@keyframes fx-lux-nappes {
+@keyframes fx-lux-derive {
   from {
-    background-position: 8% 4%, 82% 26%, 44% 88%;
-    opacity: 0.4;
+    transform: translate3d(-4%, -2%, 0) scale(1);
   }
   to {
-    background-position: 26% 14%, 62% 8%, 24% 74%;
-    opacity: 0.72;
+    transform: translate3d(5%, 3%, 0) scale(1.1);
   }
 }
 
-@keyframes fx-lux-rais {
+@keyframes fx-lux-contre {
   from {
-    transform: rotate(-3.5deg) translate3d(-3%, 0, 0);
-    opacity: 0.28;
+    transform: translate3d(4%, 2%, 0) scale(1.08);
   }
   to {
-    transform: rotate(3.5deg) translate3d(3%, 0, 0);
-    opacity: 0.72;
+    transform: translate3d(-5%, -1%, 0) scale(1);
+  }
+}
+
+/* L'éventail bascule de six degrés en tout. Davantage et l'on voit la lumière
+   tourner, ce qui n'arrive pas dans la nature à l'échelle d'une minute. */
+@keyframes fx-lux-eventail {
+  from {
+    transform: rotate(-3deg);
+    opacity: 0.55;
+  }
+  to {
+    transform: rotate(3deg);
+    opacity: 1;
+  }
+}
+
+/* Opacité nulle aux deux bouts : la traînée naît et meurt hors du regard, donc
+   le retour au point de départ ne se voit pas. */
+@keyframes fx-lux-balayage {
+  0%,
+  100% {
+    transform: translate3d(-55%, 0, 0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.7;
+  }
+  55% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0.5;
+  }
+  99% {
+    transform: translate3d(55%, 0, 0);
+    opacity: 0;
   }
 }
 

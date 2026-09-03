@@ -322,7 +322,13 @@ export function HarborScene({
             ou les pétales se posent dessus en opaque. Les mêler sur un seul
             élément imposerait un seul mode de fusion, donc de renoncer à l'un
             des deux. Voir `.isl-lux` dans `globals.css`. */}
-        <div className="isl-lux" aria-hidden="true" />
+        <div className="isl-lux" aria-hidden="true">
+          {/* Les nappes ont besoin d’un élément à elles : `.isl-lux` porte
+              déjà ses deux pseudo-éléments, et le transformer les
+              emporterait avec lui. Quatre couches, quatre translations
+              indépendantes, aucun repaint. */}
+          <div className="isl-lux__nappes" />
+        </div>
 
         {/* Ambiance : ce qui tombe, monte ou dérive. C'est cette couche qui
             occupe la hauteur de l'écran — le décor, lui, est posé en bas. Tout

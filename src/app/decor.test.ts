@@ -94,10 +94,68 @@ describe('atmosphère des îles', () => {
       }
     }
 
-    // Les jeux de lumière sont animés par une règle unique, qui vaut pour
+    // Les jeux de lumière sont animés par des règles uniques, qui valent pour
     // toutes les îles : ce sont les teintes qui varient, pas le mouvement.
-    expect(CSS).toContain('animation: fx-lux-nappes');
-    expect(CSS).toContain('animation: fx-lux-rais');
+    for (const couche of [
+      'fx-lux-derive',
+      'fx-lux-contre',
+      'fx-lux-eventail',
+      'fx-lux-balayage',
+    ]) {
+      expect(CSS, `couche « ${couche} » jamais animée`).toContain(
+        `animation: ${couche}`,
+      );
+    }
+  });
+
+  it('aucun bord franc dans les jeux de lumière', () => {
+    // La faute que ce test empêche de revenir, et qui a valu au décor d'être
+    // jugé « coupé » : dans un dégradé, deux arrêts à la même position
+    // produisent une arête au pixel près. Sur un ciel, cela ne se lit pas comme
+    // de la lumière mais comme un store vénitien.
+    //
+    // On isole le bloc des jeux de lumière et on y cherche le motif
+    // « … Npx, couleur Npx » — la signature d'un arrêt franc.
+    const bloc = CSS.slice(
+      CSS.indexOf('.isl-lux {'),
+      CSS.indexOf('--- Deux ambiances qui manquaient'),
+    );
+
+    const francs = bloc.match(
+      /\b(\d+(?:\.\d+)?)(px|deg)\s*,\s*[^,;]+?\s\1\2\b/g,
+    );
+    expect(francs, `arrêts francs : ${francs?.join(' | ')}`).toBeNull();
+  });
+
+  it('les dégradés de lumière s’éteignent dans leur propre teinte', () => {
+    // `transparent` vaut `rgba(0, 0, 0, 0)`. Un dégradé qui va d'un jaune chaud
+    // à `transparent` traverse donc le gris, et la nappe se cerne d'un halo
+    // terne — c'est l'autre moitié de ce qui se voyait comme un disque.
+    //
+    // Les teintes sont déclarées en triplets RVB pour que la même couleur
+    // puisse s'écrire à opacité nulle. Le masque, lui, a le droit d'utiliser
+    // `transparent` : il ne peint pas, il découpe.
+    const bloc = CSS.slice(
+      CSS.indexOf('.isl-lux {'),
+      CSS.indexOf('--- Une lumière par île'),
+    );
+
+    // On découpe en **déclarations**, pas en lignes : un dégradé de masque
+    // tient sur six lignes, et seule la première porte le mot `mask`. Un
+    // examen ligne à ligne accusait donc le masque d'être un dégradé peint.
+    const declarations = bloc
+      .replace(/\/\*[\s\S]*?\*\//g, '') // les commentaires parlent de la faute
+      .split(';');
+
+    for (const declaration of declarations) {
+      if (!declaration.includes('transparent')) continue;
+      expect(
+        declaration.includes('mask'),
+        `« transparent » dans un dégradé peint : ${declaration
+          .trim()
+          .replace(/\s+/g, ' ')}`,
+      ).toBe(true);
+    }
   });
 
   it('le mouvement reste conditionné à « animations réduites » (§60)', () => {
@@ -110,7 +168,7 @@ describe('atmosphère des îles', () => {
       /@media \(prefers-reduced-motion: no-preference\) \{[\s\S]*?\n\}/g,
     );
     expect(bloc).not.toBeNull();
-    expect(bloc!.some((b) => b.includes('fx-lux-nappes'))).toBe(true);
+    expect(bloc!.some((b) => b.includes('fx-lux-derive'))).toBe(true);
     expect(bloc!.some((b) => b.includes('pavillon-onde'))).toBe(true);
   });
 });

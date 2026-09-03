@@ -144,6 +144,8 @@ export default function PreviewChestPage() {
             'wano',
             'logue',
             'sabaody',
+            'harbor',
+            'hq',
           ] as IslandId[]).map(
           (id) => (
             <li key={id}>
@@ -159,8 +161,14 @@ export default function PreviewChestPage() {
                       sur une vraie page. */}
                   <IslandSky island={id} />
                   <IslandDecor island={id} />
-                  {/* L'ambiance fait partie de l'île autant que sa silhouette :
-                      l'aperçu serait trompeur sans elle. */}
+                  {/* Les jeux de lumière, puis l'ambiance — dans l'ordre exact
+                      de la page réelle. L'aperçu ne sert à rien s'il ne montre
+                      pas ce que le joueur voit : il a manqué les deux
+                      ambiances absentes (Dressrosa, le port) précisément parce
+                      qu'il ne les rendait pas. */}
+                  <div className="isl-lux">
+                    <div className="isl-lux__nappes" />
+                  </div>
                   <div className="isl-fx" />
                   <span className="isl-name">{ISLANDS[id].name}</span>
                 </div>
