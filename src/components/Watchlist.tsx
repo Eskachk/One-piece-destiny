@@ -85,6 +85,7 @@ export function Watchlist({ watched }: { watched: WatchedCharacter[] }) {
             <button
               type="button"
               disabled={pending}
+              aria-busy={pending}
               onClick={() => unwatch(entry.characterId)}
               className="underline disabled:opacity-40"
             >
@@ -138,6 +139,7 @@ export function WatchToggle({
     <button
       type="button"
       disabled={pending}
+      aria-busy={pending}
       aria-pressed={voulu}
       aria-label={
         voulu ? 'Retirer de la liste de surveillance' : 'Ajouter à la liste de surveillance'
@@ -221,6 +223,7 @@ function AlertThreshold({
           inputMode="numeric"
           value={value}
           disabled={pending}
+          aria-busy={pending}
           onChange={(event) => setValue(event.target.value)}
           placeholder="—"
           className="w-24 rounded-md border hb-border hb-input px-2 py-1 text-right font-mono text-xs hb-ink"
@@ -229,6 +232,7 @@ function AlertThreshold({
           type="button"
           onClick={save}
           disabled={pending || value.trim() === String(saved ?? '')}
+          aria-busy={pending}
           className="text-[11px] hb-accent underline disabled:opacity-30"
         >
           Enregistrer

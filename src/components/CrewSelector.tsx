@@ -196,6 +196,7 @@ export function CrewSelector({
             type="button"
             onClick={submit}
             disabled={!complete || pending}
+            aria-busy={pending}
             className="hb-btn mt-4"
           >
             {pending ? 'Enregistrement…' : 'Enregistrer mon équipage'}

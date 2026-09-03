@@ -173,6 +173,7 @@ export function ChestPanel({
             type="button"
             onClick={() => run(openStarterChestAction)}
             disabled={pending}
+            aria-busy={pending}
             className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50"
           >
             {pending ? 'Ouverture…' : 'Ouvrir le coffre'}
@@ -183,6 +184,7 @@ export function ChestPanel({
               type="button"
               onClick={() => run(() => openOwnedChestAction('WEEKLY'))}
               disabled={pending || (!unlimited && unopenedChests === 0)}
+              aria-busy={pending}
               className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
             >
               {pending ? 'Un instant…' : 'Ouvrir un coffre'}
@@ -196,6 +198,7 @@ export function ChestPanel({
                 type="button"
                 onClick={() => run(() => openOwnedChestAction('ROYAL'))}
                 disabled={pending}
+                aria-busy={pending}
                 className="hb-royal-btn transition-quick w-full rounded-xl px-4 py-3 font-semibold disabled:opacity-50"
               >
                 Ouvrir un coffre royal ({royalChests})
@@ -206,6 +209,7 @@ export function ChestPanel({
               type="button"
               onClick={buy}
               disabled={pending || berries < CHEST_PRICE_BERRIES}
+              aria-busy={pending}
               className="transition-quick w-full rounded-xl border hb-border px-4 py-2 text-sm hb-accent disabled:opacity-40"
             >
               Acheter un coffre — {CHEST_PRICE_BERRIES} 🪙

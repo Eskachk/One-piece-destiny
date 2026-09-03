@@ -107,6 +107,7 @@ export function ChapterCorrection({ chapterNumber }: { chapterNumber: number }) 
         <button
           type="button"
           disabled={pending || reason.trim().length < 10 || !appearances.trim()}
+          aria-busy={pending}
           onClick={submit}
           className="transition-quick flex-1 rounded-lg bg-orange px-3 py-2 text-sm font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
         >

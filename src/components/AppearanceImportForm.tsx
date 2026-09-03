@@ -103,6 +103,7 @@ export function AppearanceImportForm({
           type="button"
           onClick={suggest}
           disabled={pending}
+          aria-busy={pending}
           className="mt-1 text-xs hb-accent underline disabled:opacity-40"
         >
           Proposer une liste d'après l'historique
@@ -178,6 +179,7 @@ export function AppearanceImportForm({
         <button
           type="button"
           disabled={pending || preview.appearances.length === 0}
+          aria-busy={pending}
           onClick={() => run(() => validateAppearances(raw))}
           className="transition-quick rounded-lg border hb-border px-4 py-2 text-sm hb-accent disabled:opacity-40"
         >
@@ -187,6 +189,7 @@ export function AppearanceImportForm({
         <button
           type="button"
           disabled={pending || !teamsLocked || alreadyPublished}
+          aria-busy={pending}
           onClick={() => run(publishResults)}
           className="transition-quick rounded-lg hb-goldfill px-4 py-2 text-sm font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
           title={

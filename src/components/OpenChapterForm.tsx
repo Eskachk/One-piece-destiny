@@ -59,6 +59,7 @@ export function OpenChapterForm({ proposed }: { proposed: number }) {
         type="button"
         onClick={submit}
         disabled={pending || !value}
+        aria-busy={pending}
         className="transition-quick mt-3 w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50"
       >
         {pending ? 'Ouverture…' : 'Ouvrir le chapitre'}

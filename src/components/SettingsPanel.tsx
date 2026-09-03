@@ -148,6 +148,7 @@ export function SettingsPanel({
               key={locale}
               type="button"
               disabled={pending}
+              aria-busy={pending}
               aria-pressed={display.locale === locale}
               onClick={() => save({ ...display, locale })}
               className={`hb-pick${display.locale === locale ? ' hb-pick--on' : ''}`}
@@ -187,6 +188,7 @@ export function SettingsPanel({
         <button
           type="button"
           disabled={pending || draftHandle === handle || Boolean(handleError)}
+          aria-busy={pending}
           onClick={renameMe}
           className="hb-btn--ghost mt-2 w-full rounded-lg px-3 py-2 disabled:opacity-40"
         >
@@ -205,6 +207,7 @@ export function SettingsPanel({
             hint={t('settings.motionHint')}
             checked={display.reducedMotion}
             disabled={pending}
+            aria-busy={pending}
             onChange={(reducedMotion) => save({ ...display, reducedMotion })}
           />
           <Toggle
@@ -213,6 +216,7 @@ export function SettingsPanel({
             hint={t('settings.spoilerHint')}
             checked={display.spoilerShield}
             disabled={pending}
+            aria-busy={pending}
             onChange={(spoilerShield) => save({ ...display, spoilerShield })}
           />
         </div>

@@ -61,6 +61,7 @@ export function NotificationPreferences({ initial }: { initial: Preferences }) {
               type="checkbox"
               checked={preferences[row.key]}
               disabled={pending}
+              aria-busy={pending}
               onChange={() => toggle(row.key)}
               className="mt-1 h-5 w-5 shrink-0 accent-[#f5c542]"
             />

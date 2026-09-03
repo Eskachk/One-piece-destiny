@@ -219,7 +219,12 @@ export function AuthForm({
         </p>
       )}
 
-      <button type="submit" disabled={pending} className="harbor__submit">
+      <button
+        type="submit"
+        disabled={pending}
+        aria-busy={pending}
+        className="harbor__submit"
+      >
         <AnchorIcon />
         {pending
           ? 'Un instant…'

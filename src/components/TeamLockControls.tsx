@@ -114,6 +114,7 @@ export function TeamLockControls({
       <button
         type="button"
         disabled={pending || dejaBonne}
+        aria-busy={pending}
         onClick={() => lancer(nextSunday)}
         className="transition-quick mt-4 w-full rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-abyss disabled:opacity-40"
       >
@@ -128,6 +129,7 @@ export function TeamLockControls({
       <button
         type="button"
         disabled={pending || locked}
+        aria-busy={pending}
         onClick={() => lancer(new Date().toISOString())}
         className="transition-quick mt-2 w-full rounded-lg border border-orange/50 px-3 py-2 text-sm text-orange disabled:opacity-40"
       >
@@ -156,6 +158,7 @@ export function TeamLockControls({
         <button
           type="button"
           disabled={pending || !personnalise}
+          aria-busy={pending}
           onClick={() => {
             const d = new Date(personnalise);
             if (Number.isNaN(d.getTime())) {

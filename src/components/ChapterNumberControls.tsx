@@ -95,6 +95,7 @@ export function ChapterNumberControls({
           <button
             type="button"
             disabled={pending}
+            aria-busy={pending}
             onClick={() => lancer(() => renumberOpenChapter(calendarNumber))}
             className="transition-quick mt-2 w-full rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-abyss disabled:opacity-40"
           >
@@ -132,6 +133,7 @@ export function ChapterNumberControls({
             <button
               type="button"
               disabled={pending || !numero || Number(numero) === openChapterNumber}
+              aria-busy={pending}
               onClick={() => lancer(() => renumberOpenChapter(Number(numero)))}
               className="transition-quick mt-2 w-full rounded-lg border border-turquoise/40 px-3 py-2 text-sm text-turquoise disabled:opacity-40"
             >
@@ -198,6 +200,7 @@ export function ChapterNumberControls({
         <button
           type="button"
           disabled={pending || !ancreNumero || !ancreJour}
+          aria-busy={pending}
           onClick={() =>
             lancer(() => setChapterAnchorAction(Number(ancreNumero), ancreJour))
           }

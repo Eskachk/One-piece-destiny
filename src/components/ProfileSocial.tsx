@@ -35,6 +35,7 @@ export function NotificationCenter({
           <button
             type="button"
             disabled={pending}
+            aria-busy={pending}
             // `startTransition` sur une fonction **synchrone** rend la main
             // aussitôt : `pending` retombait avant que la requête ne parte, et
             // le `disabled` juste au-dessus ne protégeait rien. Marquer comme

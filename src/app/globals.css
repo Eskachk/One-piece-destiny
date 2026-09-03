@@ -719,6 +719,66 @@ body {
   box-shadow: 0 3px 0 rgba(150, 120, 40, 0.5);
 }
 
+/* ---------------------------------------------------------------------------
+   « En cours » n'est pas « interdit ».
+
+   Les deux états partageaient la même apparence : un bouton grisé à 55 %.
+   Or ils ne disent pas du tout la même chose. « Interdit » veut dire *tu ne
+   peux pas* — solde insuffisant, équipage incomplet — et l'on attend du joueur
+   qu'il fasse autre chose. « En cours » veut dire *attends*, et l'on attend
+   qu'il ne fasse rien.
+
+   Confondus, le joueur qui clique sur « Ouvrir le coffre » voit son bouton
+   pâlir sans autre signal et, à trois cents millisecondes de latence, conclut
+   que le clic n'est pas passé. Il reclique. C'est ce comportement qui a fait
+   apparaître les bugs de martèlement corrigés plus haut : l'interface les
+   provoquait.
+
+   `aria-busy` porte les deux moitiés de la réponse : il est annoncé par les
+   lecteurs d'écran, et il sert ici de sélecteur pour le rouet. Un attribut
+   `data-` maison aurait fait le second sans le premier.
+   --------------------------------------------------------------------------- */
+
+.hb-btn[aria-busy='true'],
+button[aria-busy='true'] {
+  /* L'opacité reste franche : le bouton travaille, il n'est pas hors service. */
+  opacity: 0.9;
+  cursor: progress;
+}
+
+/* Le rouet est posé **avant** le libellé et pousse le texte : superposé, il
+   masquerait un mot. La largeur du bouton ne bouge pas — `flex` absorbe. */
+.hb-btn[aria-busy='true']::before,
+button[aria-busy='true']:not(.hb-btn)::before {
+  content: '';
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-right: 0.5em;
+  vertical-align: -0.1em;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: hb-rouet 0.7s linear infinite;
+}
+
+@keyframes hb-rouet {
+  to {
+    rotate: 360deg;
+  }
+}
+
+/* Réglage « animations réduites » : le rouet ne tourne plus, mais le disque
+   reste — c'est lui qui distingue les deux états, pas son mouvement. */
+@media (prefers-reduced-motion: reduce) {
+  .hb-btn[aria-busy='true']::before,
+  button[aria-busy='true']:not(.hb-btn)::before {
+    animation: none;
+    border-top-color: currentColor;
+    opacity: 0.5;
+  }
+}
+
 .hb-btn:focus-visible {
   outline: 3px solid var(--color-ink);
   outline-offset: 3px;

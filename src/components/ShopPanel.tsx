@@ -228,6 +228,7 @@ export function ShopPanel({
                   <button
                     type="button"
                     disabled={pending || !enabled}
+                    aria-busy={pending}
                     onClick={() => buy(product.id)}
                     className="hb-btn mt-3 disabled:opacity-40"
                   >

@@ -46,6 +46,7 @@ export function ChapterSimulator() {
         type="button"
         onClick={run}
         disabled={pending}
+        aria-busy={pending}
         className="transition-quick rounded-lg border hb-border px-4 py-2 text-sm hb-accent disabled:opacity-40"
       >
         {pending ? 'Simulation…' : 'Simuler le chapitre'}

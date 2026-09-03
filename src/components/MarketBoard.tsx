@@ -126,6 +126,7 @@ export function MarketBoard({
                     <button
                       type="button"
                       disabled={pending}
+                      aria-busy={pending}
                       onClick={() => run(() => cancelListingAction(listing.id))}
                       className="transition-quick mt-3 w-full rounded-lg border border-danger/40 px-3 py-2 text-sm hb-ko disabled:opacity-40"
                     >
@@ -135,6 +136,7 @@ export function MarketBoard({
                     <button
                       type="button"
                       disabled={pending || tooPoor || listing.alreadyOwned}
+                      aria-busy={pending}
                       onClick={() => run(() => buyListingAction(listing.id))}
                       className="transition-quick mt-3 w-full rounded-lg hb-goldfill px-3 py-2 text-sm font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
                     >
@@ -197,6 +199,7 @@ export function MarketBoard({
               <button
                 type="button"
                 disabled={pending || !priceIsNumber}
+                aria-busy={pending}
                 onClick={() =>
                   run(() =>
                     createListingAction({

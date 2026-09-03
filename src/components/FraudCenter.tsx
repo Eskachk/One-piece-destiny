@@ -132,6 +132,7 @@ export function FraudCenter({ accounts }: { accounts: SuspiciousView[] }) {
                 disabled={
                   pending || (reasons[account.playerId] ?? '').trim().length < 3
                 }
+                aria-busy={pending}
                 onClick={() =>
                   run(() =>
                     restrictAccountAction({
@@ -152,6 +153,7 @@ export function FraudCenter({ accounts }: { accounts: SuspiciousView[] }) {
             <button
               type="button"
               disabled={pending}
+              aria-busy={pending}
               onClick={() => run(() => markFalsePositiveAction(account.playerId))}
               className="rounded-lg border border-turquoise/40 px-3 py-2 text-xs text-turquoise disabled:opacity-30"
             >
@@ -160,6 +162,7 @@ export function FraudCenter({ accounts }: { accounts: SuspiciousView[] }) {
             <button
               type="button"
               disabled={pending}
+              aria-busy={pending}
               onClick={() => run(() => reevaluateAction(account.playerId))}
               className="rounded-lg border border-parchment/25 px-3 py-2 text-xs text-parchment/70 disabled:opacity-30"
             >
@@ -169,6 +172,7 @@ export function FraudCenter({ accounts }: { accounts: SuspiciousView[] }) {
               <button
                 type="button"
                 disabled={pending}
+                aria-busy={pending}
                 onClick={() => run(() => liftRestrictionAction(account.playerId))}
                 className="rounded-lg border border-turquoise/40 px-3 py-2 text-xs text-turquoise disabled:opacity-30"
               >

@@ -61,6 +61,7 @@ export function AccountStatus({
             type="button"
             onClick={resend}
             disabled={pending}
+            aria-busy={pending}
             className="shrink-0 text-xs hb-accent underline disabled:opacity-40"
           >
             Renvoyer le lien
@@ -80,6 +81,7 @@ export function AccountStatus({
             type="date"
             value={date}
             disabled={pending || birthDate !== null}
+            aria-busy={pending}
             onChange={(event) => setDate(event.target.value)}
             className="rounded-md border hb-border hb-input px-2 py-1 font-mono text-xs hb-ink"
           />
@@ -87,6 +89,7 @@ export function AccountStatus({
             type="button"
             onClick={saveDate}
             disabled={pending || date === '' || birthDate !== null}
+            aria-busy={pending}
             className="text-xs hb-accent underline disabled:opacity-30"
           >
             Enregistrer
