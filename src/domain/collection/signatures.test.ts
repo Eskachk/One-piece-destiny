@@ -78,6 +78,22 @@ describe('signatures physiques', () => {
     expect(decrits.length / epiques.length).toBeGreaterThan(0.4);
   });
 
+  it('ne laisse aucune relation pendante', () => {
+    // Retirer un personnage — doublon ou hors manga — laisse derrière lui les
+    // liens que les autres pointaient vers lui. Ils ne faussent aucun score,
+    // puisqu'une synergie ne compte que si l'autre apparaît réellement, mais
+    // ils s'afficheraient sur une fiche en promettant un bonus impossible.
+    //
+    // `CHARACTERS` élague ces liens à l'export. Ce test vérifie que l'élagage
+    // fonctionne, parce qu'il est facile de retirer un personnage en oubliant
+    // qu'il en existe un.
+    const connus = new Set(CHARACTERS.map((c) => c.id));
+    const pendantes = CHARACTERS.flatMap((c) =>
+      c.relations.filter((r) => !connus.has(r.to)).map((r) => `${c.id} → ${r.to}`),
+    );
+    expect(pendantes).toEqual([]);
+  });
+
   it('marque les héros comme nommés, jamais comme repli', () => {
     for (const c of HEROS) {
       const t = spriteTraits({ id: c.id, rarity: c.rarity, attributes: [] });

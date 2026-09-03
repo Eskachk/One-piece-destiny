@@ -118,7 +118,37 @@ export const NON_CANON_IDS: ReadonlySet<string> = new Set([
   'apis',
 ]);
 
-/** Un personnage vient-il du manga ? */
+/**
+ * Doublons : deux fiches pour un seul personnage.
+ *
+ * L'API mélange les nominations françaises et anglaises sans les rapprocher.
+ * Le même personnage entre donc deux fois dans le référentiel, sous deux
+ * identifiants, avec deux fiches, deux illustrations et deux exemplaires à
+ * collectionner — ce qui fausse d'un coup le tirage, la collection et le
+ * Marché : la « paire » n'en est pas une, et deux cartes du même personnage
+ * peuvent tenir dans un équipage.
+ *
+ * On garde la **nomination française**, puisque le site est en français.
+ *
+ * Liste distincte de `NON_CANON_IDS`, et ce n'est pas de la coquetterie : les
+ * deux produisent le même effet mais pour des raisons opposées. Un personnage
+ * de film est écarté parce qu'il ne peut pas apparaître dans un chapitre ; un
+ * doublon est écarté bien qu'il le puisse — c'est son jumeau qui le
+ * représente. Les fondre en une seule liste rendrait la seconde raison
+ * invisible à la relecture.
+ */
+export const DUPLICATE_IDS: ReadonlySet<string> = new Set([
+  // Buggy (anglais) et Baggy / Le Clown (français) sont le même personnage.
+  'buggy',
+]);
+
+/**
+ * Le personnage est-il **jouable** ?
+ *
+ * Vrai s'il vient du manga et qu'il n'est pas le doublon d'un autre. Le nom de
+ * la fonction dit « canon » pour des raisons d'histoire ; ce qu'elle décide,
+ * c'est l'entrée dans le jeu.
+ */
 export function isCanon(id: string): boolean {
-  return !NON_CANON_IDS.has(id);
+  return !NON_CANON_IDS.has(id) && !DUPLICATE_IDS.has(id);
 }

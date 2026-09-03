@@ -394,6 +394,14 @@ export interface SpriteTraits {
   outfit: string;
   /** Manteau ouvert par-dessus la tenue, ou `null`. */
   coat: string | null;
+  /**
+   * Couleur du bas.
+   *
+   * Les jambes étaient peintes en `#2b2f38` pour tout le monde, en dur dans le
+   * dessin. Un short bleu clair, un pantalon violet ou un bas jaune et noir ne
+   * pouvaient donc pas exister — et c'est la moitié de la silhouette.
+   */
+  trousers: string;
   /** Couleur du couvre-chef. Jamais celle de la rareté — voir `signatures.ts`. */
   accessory: string;
   /**
@@ -440,6 +448,7 @@ export function spriteTraits(subject: PortraitSubject): SpriteTraits {
       skin: signature.skin,
       outfit: signature.outfit,
       coat: signature.coat ?? null,
+      trousers: signature.trousers ?? '#2b2f38',
       accessory: signature.accessory ?? signature.coat ?? signature.outfit,
       frame: signature.frame ?? 'human',
       extras: signature.extras ?? [],
@@ -514,6 +523,7 @@ export function spriteTraits(subject: PortraitSubject): SpriteTraits {
     skin: pick(SKIN, random()),
     outfit: pick(OUTFIT, random()),
     coat: null,
+    trousers: '#2b2f38',
     // L'accessoire doit trancher avec la tenue, sinon le chapeau disparaît sur
     // les épaules qui le portent : on le tire dans une gamme claire.
     accessory: pick(['#e8e2d4', '#d8b04a', '#2a2a33', '#8a94a4'], random()),

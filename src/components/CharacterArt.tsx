@@ -694,6 +694,41 @@ function ExtrasTete({ traits }: { traits: SpriteTraits }) {
           <path d="M25 12q3 4 2 9M28.5 10.5q2 5 1 10M22.8 15.5q2 3 1.6 6" />
         </g>
       )}
+      {/* Cernes permanentes : deux traits sous l'œil. Le personnage est décrit
+          comme ayant « des yeux fatigués et de légères cernes permanentes » ;
+          sans elles, son regard est celui de tout le monde. */}
+      {a.has('eye-bags') && (
+        <g stroke="#8a6a70" strokeWidth="0.9" strokeLinecap="round" opacity="0.7">
+          <path d="M27.2 22.2h3.2M33.6 22.2h3.2" />
+        </g>
+      )}
+      {/* Œil définitivement fermé : un trait horizontal **à la place** de
+          l'œil, pas par-dessus. La cicatrice verticale le traverse. */}
+      {a.has('closed-eye') && (
+        <>
+          <rect x="26.6" y="17" width="4.8" height="4.6" fill={traits.skin} />
+          <path d="M27 19.4h4" stroke="#3a2a2a" strokeWidth="1" strokeLinecap="round" />
+        </>
+      )}
+      {a.has('nose-ring') && (
+        <circle cx="32" cy="23.4" r="2" fill="none" stroke="#d8b04a" strokeWidth="1" />
+      )}
+      {/* Cicatrice en croix au-dessus de l'œil droit. */}
+      {a.has('cross-scar') && (
+        <g stroke="#8a3a30" strokeWidth="1" strokeLinecap="round">
+          <path d="M33.4 13.6 37 16.4M37 13.6 33.4 16.4" />
+        </g>
+      )}
+      {/* Touffe au menton, distincte d'une barbe : elle ne fait qu'un point. */}
+      {a.has('chin-tuft') && (
+        <path d="M30.8 26.4h2.4v3.2q-1.2 0.8-2.4 0Z" fill={traits.hair} />
+      )}
+      {/* Deux lignes tatouées descendant sous l'œil droit. */}
+      {a.has('face-lines') && (
+        <g stroke="#2a2a33" strokeWidth="0.9" strokeLinecap="round" opacity="0.8">
+          <path d="M34.6 21.6 36.4 26M37 21.2 38.4 25.4" />
+        </g>
+      )}
       {a.has('long-nose') && (
         <path d="M41 19q10 1.5 12 3-12 3.5-12 2Z" fill={traits.skin} stroke="#00000022" strokeWidth="0.6" />
       )}
@@ -980,9 +1015,10 @@ function SpriteFigure({ traits, accent }: { traits: SpriteTraits; accent: string
       <g transform={echelle === 1 ? undefined : `translate(32 70) scale(${echelle}) translate(-32 -70)`}>
         <ExtrasArriere traits={traits} />
 
-        {/* Jambes */}
-        <rect x={32 - torso / 2 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill="#2b2f38" />
-        <rect x={32 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill="#2b2f38" />
+        {/* Jambes. Elles étaient d'un gris unique, écrit en dur : tout le monde
+            portait le même pantalon, et c'est la moitié de la silhouette. */}
+        <rect x={32 - torso / 2 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill={traits.trousers} />
+        <rect x={32 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill={traits.trousers} />
 
         {/* Bottes : elles débordent la jambe des deux côtés, sinon on lit une
             chaussette. */}
@@ -1041,6 +1077,22 @@ function SpriteFigure({ traits, accent }: { traits: SpriteTraits; accent: string
         <Frange traits={traits} />
         <ExtrasTete traits={traits} />
         <Couvrechef traits={traits} accent={accent} />
+
+        {/* Ce qui décore le couvre-chef vient forcément **après** lui. */}
+        {traits.extras.includes('feather') && (
+          <path
+            d="M40 9q9-9 13-10-3 9-11 12Z"
+            fill={traits.head === 'brim' ? '#4a9ab0' : '#3a8ab0'}
+            opacity="0.9"
+          />
+        )}
+        {traits.extras.includes('striped-hat') && (
+          <g fill="#f0ece2">
+            <path d="M20 11.6h4l1 3.2h-5Z" />
+            <path d="M29 10.4h4l0.4 4.4h-4.4Z" />
+            <path d="M38 11.6h4l-1 3.2h-4Z" />
+          </g>
+        )}
         <Regard traits={traits} />
         <Marque traits={traits} />
         <ExtrasEpaule traits={traits} shoulders={shoulders} />

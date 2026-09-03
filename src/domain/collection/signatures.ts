@@ -198,7 +198,17 @@ export type Extra =
   | 'sash'
   | 'high-collar'
   | 'pauldrons'
-  | 'belt';
+  | 'belt'
+  // Quatrième série, tirée des descriptions fournies. Chacun de ces traits est
+  // cité comme « indispensable à la reconnaissance » du personnage concerné.
+  | 'eye-bags'
+  | 'closed-eye'
+  | 'nose-ring'
+  | 'cross-scar'
+  | 'chin-tuft'
+  | 'feather'
+  | 'striped-hat'
+  | 'face-lines';
 
 export interface Signature {
   /** Description physique en une phrase. Sert de source à tout le reste. */
@@ -209,6 +219,14 @@ export interface Signature {
   outfit: string;
   /** Manteau ouvert par-dessus la tenue. Absent, la figurine n'en porte pas. */
   coat?: string;
+  /**
+   * Couleur du bas.
+   *
+   * Les jambes étaient peintes en `#2b2f38` pour tout le monde, en dur dans le
+   * dessin. Un short bleu clair, un pantalon violet ou un bas à carreaux ne
+   * pouvaient donc pas exister — et c'est la moitié de la silhouette.
+   */
+  trousers?: string;
   /**
    * Couleur du couvre-chef et du bandeau.
    *
@@ -233,8 +251,12 @@ export interface Signature {
   /** Taille. Absente, la taille commune. */
   height?: Height;
   /**
-   * Détails ajoutés au patron. **Trois au maximum**, et jamais deux au même
-   * endroit : un sur la tête, un sur le torse, un sur un bras. Au-delà, la
+   * Détails ajoutés au patron. **Quatre au maximum**, et jamais deux au même
+   * endroit : un sur la tête, un sur le visage, un sur le torse, un sur un
+   * bras. Le plafond est passé de trois à quatre pour les personnages dont on
+   * a une description écrite : quand une source dit « plume au chapeau »,
+   * « anneau au nez » et « cernes permanentes », les écarter au nom d'une
+   * règle de comptage serait absurde. Au-delà de quatre, en revanche, la
    * vignette sature et l'on perd ce qu'on cherchait à gagner.
    */
   extras?: readonly Extra[];
@@ -252,29 +274,35 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   // --- Mythiques ------------------------------------------------------------
 
   luffy: {
-    note: 'Cheveux noirs en bataille, chapeau de paille à ruban rouge, gilet rouge ouvert sur le torse, cicatrice sous l’œil gauche.',
+    note:
+      'Corps mince et sec, visage rond et juvénile, grands yeux noirs. Cheveux noirs courts et hérissés. Cicatrice en X au centre de la poitrine. Chapeau de paille à large bord et ruban rouge, cardigan rouge ouvert, short bleu clair, large écharpe jaune à la taille.',
     hair: '#191919', cut: 'spiky', skin: HALE, outfit: '#d0342c',
     accessory: '#c0342c',
-    extras: ['open-vest', 'x-scar', 'sash'],
+    extras: ['open-vest', 'x-scar', 'sash', 'boots'],
     eyes: 'wide',
+    trousers: '#5a9ad8',
     head: 'strawhat', mark: 'scar-eye', prop: 'none', build: 'slim',
   },
   zoro: {
-    note: 'Cheveux verts courts, ceinture ventrale verte, trois sabres à la hanche, cicatrice verticale sur l’œil gauche.',
+    note:
+      'Grand et massif, musculature dense aux épaules et aux avant-bras, visage anguleux à la mâchoire ferme et aux sourcils épais. Cheveux verts courts et hérissés. Œil gauche définitivement fermé, barré d\'une longue cicatrice verticale. Haut ouvert, pantalon sombre, large ceinture, trois sabres à la hanche droite.',
     hair: '#4c8b45', cut: 'short', skin: HALE, outfit: '#1f4034', coat: '#12261f',
     accessory: '#17301f',
-    extras: ['haramaki', 'earrings', 'chest-scar'],
+    extras: ['haramaki', 'earrings', 'chest-scar', 'closed-eye'],
     face: 'sharp',
     eyes: 'sharp',
     brow: 'fierce',
+    trousers: '#1b1f26',
     head: 'bandana', mark: 'scar-eye', prop: 'katana3', build: 'broad',
   },
   nami: {
-    note: 'Longs cheveux orange, tenue bleue et blanche, bâton climatique en trois sections.',
-    hair: '#e8842c', cut: 'long', skin: CLAIR, outfit: '#2f6fb5',
-    extras: ['arm-tattoo', 'bare-midriff', 'boots'],
+    note:
+      'Élancée, silhouette en sablier, visage fin aux grands yeux bruns. Cheveux orange-cuivré longs et légèrement ondulés tombant dans le dos. Tatouage à l\'épaule gauche : une mandarine et un moulinet. Boucles d\'oreilles, Log Pose au poignet, haut court.',
+    hair: '#e8842c', cut: 'wavy', skin: CLAIR, outfit: '#2f6fb5',
+    extras: ['arm-tattoo', 'bare-midriff', 'boots', 'earrings'],
     accessory: '#e8842c',
     brow: 'arched',
+    trousers: '#2f6fb5',
     head: 'none', mark: 'none', prop: 'staff', build: 'slim',
   },
   usopp: {
@@ -286,11 +314,13 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     head: 'bandana', mark: 'none', prop: 'gun', build: 'slim',
   },
   sanji: {
-    note: 'Cheveux blonds couvrant l’œil droit, costume noir, cigarette au coin des lèvres, sourcil en spirale.',
+    note:
+      'Grand, mince et musclé, longues jambes, visage fin et allongé au menton marqué. Cheveux blond doré en mèches souples couvrant l\'œil droit. Les deux sourcils en spirale. Légère barbe autour de la bouche. Costume noir ajusté, chemise claire, cravate, chaussures noires.',
     hair: '#e0be5a', cut: 'short', skin: PALE, outfit: '#23232b', coat: '#15151a',
-    extras: ['curly-brow', 'necktie', 'boots'],
+    extras: ['curly-brow', 'necktie', 'boots', 'chin-tuft'],
     face: 'sharp',
     brow: 'arched',
+    trousers: '#1c1c22',
     head: 'none', mark: 'cigarette', prop: 'none', build: 'slim',
   },
   chopper: {
@@ -304,47 +334,57 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     head: 'cap', mark: 'none', prop: 'none', build: 'slim',
   },
   robin: {
-    note: 'Longs cheveux noirs, teint mat, manteau violet, lunettes relevées sur le front.',
+    note:
+      'Grande et très élancée, allure de mannequin, visage fin et mature aux yeux bleu-gris. Cheveux noirs longs et lisses, frange et mèches encadrant le visage. Style raffiné : manteau, pantalon ajusté, talons.',
     hair: '#141018', cut: 'long', skin: HALE, outfit: '#5a3a7a', coat: '#3d2455',
-    extras: ['crossed-arms', 'high-collar', 'boots'],
+    extras: ['crossed-arms', 'high-collar', 'boots', 'earrings'],
     brow: 'calm',
+    trousers: '#3d2455',
     head: 'none', mark: 'shades', prop: 'none', build: 'slim',
   },
   franky: {
-    note: 'Cheveux bleus en banane, chemise ouverte à fleurs, avant-bras métalliques surdimensionnés.',
+    note:
+      'Silhouette de cyborg culturiste : épaules extrêmement larges, avant-bras métalliques surdimensionnés, jambes puissantes. Mâchoire carrée, traits extravagants. Cheveux bleus en banane. Lunettes de soleil, chemise très ouverte, accessoires métalliques.',
     hair: '#25b7d3', cut: 'pompadour', skin: HALE, outfit: '#1a8fb0',
-    extras: ['metal-arms', 'open-vest', 'belt'],
+    extras: ['metal-arms', 'open-vest', 'belt', 'boots'],
     face: 'square',
     height: 'tall',
+    trousers: '#1a8fb0',
     head: 'none', mark: 'shades', prop: 'none', build: 'broad',
   },
   brook: {
-    note: 'Squelette en haut-de-forme, immense coiffure afro noire, redingote, canne-épée.',
+    note:
+      'Très grand squelette humanoïde d\'une maigreur extrême, membres filiformes. Crâne allongé, orbites entièrement noires, mâchoire osseuse. Immense coiffure afro noire — l\'élément le plus caractéristique. Costume de musicien : manteau sombre, chemise, cravate, haut-de-forme.',
     hair: '#171717', cut: 'afro', skin: OS, outfit: '#1d2a45', coat: '#101a2e',
     accessory: '#1b1620',
     frame: 'skeleton',
-    extras: ['ribs', 'necktie', 'gloves'],
+    extras: ['ribs', 'necktie', 'gloves', 'boots'],
     face: 'long',
     height: 'tall',
+    trousers: '#101a2e',
     head: 'tophat', mark: 'skull', prop: 'cane', build: 'slim',
   },
   jinbe: {
-    note: 'Homme-poisson corpulent, peau bleue, catogan noir, kimono ouvert sur le torse.',
+    note:
+      'Homme-poisson requin-baleine au torse énorme et aux épaules très larges, silhouette de lutteur. Peau bleu clair tirant vers le gris. Visage large, nez volumineux, sourcils jaunes très marqués, deux grands crocs inférieurs. Longue cicatrice en éclair de la tempe gauche à l\'œil. Cheveux noirs en chignon, petite touffe au menton. Nageoires, branchies, mains palmées.',
     hair: '#101010', cut: 'topknot', skin: '#5d8fb8', outfit: '#2b4f7a',
     frame: 'fishman',
-    extras: ['fins', 'sash', 'chest-scar'],
+    extras: ['fins', 'sash', 'chest-scar', 'chin-tuft'],
     brow: 'calm',
     height: 'tall',
+    trousers: '#1d3a5a',
     head: 'none', mark: 'none', prop: 'none', build: 'giant',
   },
 
   // --- Légendaires : Empereurs et sommets -----------------------------------
 
   shanks: {
-    note: 'Cheveux rouges mi-longs, cape noire sur chemise blanche, trois cicatrices parallèles sur l’œil gauche, bras gauche manquant.',
-    hair: '#b0342c', cut: 'short', skin: CLAIR, outfit: '#e8e2d4', coat: '#1b1b22',
-    extras: ['missing-arm', 'cape', 'sash'],
+    note:
+      'Grand et robuste, physique musclé mais naturel, peau légèrement bronzée. Visage anguleux à la mâchoire carrée, yeux étroits. Cheveux rouge vif légèrement ondulés tombant autour de la nuque. Trois longues cicatrices parallèles en diagonale sur l\'œil gauche. Bras gauche absent. Chemise claire, pantalon sombre, bottes, large cape noire à col rouge, ceinture.',
+    hair: '#b0342c', cut: 'wavy', skin: CLAIR, outfit: '#e8e2d4', coat: '#1b1b22',
+    extras: ['missing-arm', 'cape', 'sash', 'boots'],
     face: 'sharp',
+    trousers: '#1b1b22',
     head: 'none', mark: 'scar-triple', prop: 'sword', build: 'broad',
   },
   'gol-d-roger': {
@@ -410,24 +450,28 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     head: 'hood', mark: 'none', prop: 'none', build: 'slim',
   },
   dragon: {
-    note: 'Longs cheveux noirs, tatouage rouge sur la moitié gauche du visage, cape à capuche verte.',
+    note:
+      'Grand et robuste, mâchoire marquée. Longs cheveux noirs épais et sauvages tombant bien au-delà des épaules. Regard profond, yeux étroits et ombragés, barbe de trois jours. Gigantesque tatouage rouge sombre en losanges imbriqués couvrant le côté gauche du visage. Longue cape vert foncé très ample sur des vêtements sombres.',
     hair: '#151515', cut: 'long', skin: CLAIR, outfit: '#2f5a3a', coat: '#1f3d28',
-    extras: ['face-tattoo', 'cape', 'high-collar'],
+    extras: ['face-tattoo', 'cape', 'high-collar', 'chin-tuft'],
     brow: 'calm',
+    trousers: '#1f3d28',
     head: 'none', mark: 'scar-face', prop: 'none', build: 'broad',
   },
 
   // --- Légendaires : Marine et gouvernement ---------------------------------
 
   akainu: {
-    note: 'Cheveux noirs courts, mâchoire carrée, manteau blanc de la Marine sur costume sombre, cigare.',
-    hair: '#171717', cut: 'short', skin: HALE, outfit: '#2a2a30', coat: '#f0ede4',
+    note:
+      'Gigantesque et extrêmement musclé, épaules et cou massifs. Visage carré, sévère, mâchoire large. Cheveux noirs courts. Immense tatouage floral noir sur tout le côté gauche du corps. Costume rouge profond à double boutonnage, chemise rouge pâle ouverte au col, gants noirs, casquette blanche de la Marine.',
+    hair: '#171717', cut: 'short', skin: HALE, outfit: '#8a1f22', coat: '#f0ede4',
     accessory: '#f0ede4',
-    extras: ['coat-shoulders', 'necktie', 'gloves'],
+    extras: ['coat-shoulders', 'gloves', 'boots', 'necktie'],
     face: 'square',
     eyes: 'sharp',
     brow: 'fierce',
     height: 'tall',
+    trousers: '#6a1a1c',
     head: 'cap', mark: 'cigar', prop: 'none', build: 'broad',
   },
   'borsalino-kizaru': {
@@ -456,12 +500,14 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     head: 'none', mark: 'blind', prop: 'cane', build: 'broad',
   },
   garp: {
-    note: 'Cheveux blancs courts, cicatrice sous l’œil gauche, manteau de la Marine, carrure massive.',
+    note:
+      'Vieil homme très grand, torse massif, bras épais, cou puissant. Mâchoire large, traits profondément marqués. Cicatrice autour de l\'œil gauche. Cheveux blancs courts avec une petite pointe au sommet. Costume clair, chemise bleu foncé, cravate turquoise, grand manteau blanc posé sur les épaules.',
     hair: '#e2e0d6', cut: 'short', skin: HALE, outfit: '#2d3a4a', coat: '#f0ede4',
-    extras: ['coat-shoulders', 'belt', 'boots'],
+    extras: ['coat-shoulders', 'belt', 'boots', 'necktie'],
     face: 'square',
     brow: 'fierce',
     height: 'tall',
+    trousers: '#2d3a4a',
     head: 'none', mark: 'scar-eye', prop: 'none', build: 'giant',
   },
   sengoku: {
@@ -493,11 +539,13 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     head: 'none', mark: 'glasses', prop: 'sword', build: 'slim',
   },
   koby: {
-    note: 'Cheveux roses courts, lunettes rondes, uniforme de la Marine.',
+    note:
+      'Silhouette athlétique, épaules élargies par l\'entraînement, visage doux resté juvénile. Cheveux rose pâle, plus longs et désordonnés. Cicatrice en croix au-dessus de l\'œil droit. Uniforme des Marines, longue veste blanche, foulard, bandana au front, lunettes posées sur le front.',
     hair: '#e88fa8', cut: 'short', skin: PALE, outfit: '#e8e2d4',
-    extras: ['epaulettes', 'necktie', 'gloves'],
+    extras: ['epaulettes', 'necktie', 'boots', 'cross-scar'],
     accessory: '#2d3a4a',
     eyes: 'wide',
+    trousers: '#2d3a4a',
     head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
   },
   'rob-lucci': {
@@ -521,27 +569,31 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     head: 'horns', mark: 'beard', prop: 'none', build: 'giant',
   },
   kuma: {
-    note: 'Colosse à la peau sombre, casquette à oreilles, lunettes teintées, bible et gants.',
+    note:
+      'Gigantesque, carrure monumentale, dépassant largement la taille humaine. Visage large et presque inexpressif, yeux blancs, menton très prononcé, apparence évoquant celle d\'un ours. Cheveux noirs et épais, immense manteau sombre, chapeau caractéristique.',
     hair: '#1a1a1a', cut: 'short', skin: '#5d3a2a', outfit: '#2a3a5a', coat: '#1c2740',
     accessory: '#22304e',
     frame: 'bear',
-    extras: ['gloves', 'high-collar', 'boots'],
+    extras: ['gloves', 'high-collar', 'boots', 'belt'],
     face: 'square',
     brow: 'calm',
     height: 'towering',
+    trousers: '#141c30',
     head: 'cap', mark: 'shades', prop: 'none', build: 'giant',
   },
 
   // --- Légendaires : Grands Corsaires et capitaines --------------------------
 
   mihawk: {
-    note: 'Cheveux noirs courts, yeux jaunes de rapace, chapeau à large bord et plume, immense lame noire.',
-    hair: '#161616', cut: 'short', skin: PALE, outfit: '#2a1f2e', coat: '#171020',
-    extras: ['cape', 'pendant', 'high-collar'],
+    note:
+      'Grand, mince et très élégant, musculature sèche. Visage long, fin et anguleux, moustache et barbe en pointes remontantes. Yeux jaunes à cercles concentriques, comme ceux d\'un faucon. Immense chapeau noir à larges bords orné d\'une plume. Manteau noir ouvert doublé de rouge, motifs rouges et dorés. Épée noire démesurée portée dans le dos.',
+    hair: '#161616', cut: 'short', skin: PALE, outfit: '#2a1f2e', coat: '#8a1a22',
+    extras: ['cape', 'pendant', 'high-collar', 'feather'],
     face: 'long',
     eyes: 'sharp',
     brow: 'calm',
     height: 'tall',
+    trousers: '#1a1420',
     head: 'brim', mark: 'goatee', prop: 'greatsword', build: 'slim',
   },
   crocodile: {
@@ -571,32 +623,26 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   'gecko-moria': {
-    note: 'Silhouette démesurée, cheveux noirs en cornes, teint blafard, sourire dentelé.',
-    hair: '#1a1a22', cut: 'spiky', skin: '#b9c4b0', outfit: '#3a2a4a', coat: '#241a30',
-    extras: ['sharp-teeth', 'stitches', 'high-collar'],
+    note:
+      'Monstrueusement grand, proportions grotesques : tête énorme, cou très long et épais, bas du corps plus massif que le torse. Deux petites cornes de chaque côté du front. Points de suture verticaux traversant le visage jusqu\'au cou. Oreilles et dents pointues. Peau bleu pâle. Cheveux très courts et hérissés, rouge sombre.',
+    hair: '#7a2030', cut: 'spiky', skin: '#a8c0c8', outfit: '#3a2a4a', coat: '#241a30',
+    extras: ['sharp-teeth', 'stitches', 'high-collar', 'boots'],
     face: 'long',
     eyes: 'sharp',
     height: 'towering',
+    trousers: '#241a30',
     head: 'horns', mark: 'none', prop: 'none', build: 'giant',
   },
-  buggy: {
-    note: 'Cheveux bleus, nez rouge et rond, maquillage de clown, bonnet à tête de mort, poignées de couteaux.',
-    hair: '#2f6fb5', cut: 'spiky', skin: PALE, outfit: '#e8842c', coat: '#c0243c',
-    accessory: '#e8e2d4',
-    extras: ['clown-nose', 'striped-suit', 'gloves'],
-    face: 'sharp',
-    eyes: 'wide',
-    brow: 'arched',
-    head: 'bandana', mark: 'none', prop: 'knives', build: 'slim',
-  },
   'baggy-le-clown': {
-    note: 'Voir `buggy` : cheveux bleus, nez rouge, bonnet à tête de mort, couteaux.',
+    note:
+      'Taille moyenne, silhouette mince, visage de clown. Peau claire, yeux gris-bleu, cheveux bleu vif longs et volumineux. Énorme nez rouge naturel, maquillage coloré autour des yeux, lèvres rouges. Immense tricorne rouge et blanc à rayures orné de boules dorées.',
     hair: '#2f6fb5', cut: 'spiky', skin: PALE, outfit: '#e8842c', coat: '#c0243c',
-    accessory: '#e8e2d4',
-    extras: ['clown-nose', 'striped-suit', 'gloves'],
+    accessory: '#c0243c',
+    extras: ['clown-nose', 'striped-hat', 'gloves', 'boots'],
     face: 'sharp',
     eyes: 'wide',
     brow: 'arched',
+    trousers: '#c8a02c',
     head: 'bandana', mark: 'none', prop: 'knives', build: 'slim',
   },
   'silvers-rayleigh': {
@@ -611,31 +657,37 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   // --- Légendaires : Onze Supernovas ----------------------------------------
 
   law: {
-    note: 'Bouc taillé, toque de fourrure blanche tachetée, mains tatouées, nodachi.',
+    note:
+      'Grand, mince et nerveux, teint hâlé. Visage fin, yeux gris-jaune fatigués et cernes permanentes. Cheveux noirs courts cachés sous un bonnet blanc à taches noires, petite barbiche. Bras et mains couverts de tatouages noirs.',
     hair: '#1a1a1a', cut: 'short', skin: HALE, outfit: '#2a4a5a', coat: '#f0ece2',
     accessory: '#f0ece2',
-    extras: ['spotted-hat', 'belt', 'boots'],
+    extras: ['spotted-hat', 'belt', 'boots', 'eye-bags'],
     face: 'sharp',
     eyes: 'sharp',
     brow: 'calm',
+    trousers: '#1f3644',
     head: 'cap', mark: 'goatee', prop: 'sword', build: 'slim',
   },
   'trafalgar-d-water-law': {
-    note: 'Voir `law` : bouc, toque de fourrure tachetée, mains tatouées, nodachi.',
+    note:
+      'Voir `law` : teint hâlé, yeux cernés, bonnet blanc à taches, barbiche, mains tatouées, nodachi.',
     hair: '#1a1a1a', cut: 'short', skin: HALE, outfit: '#2a4a5a', coat: '#f0ece2',
-    extras: ['spotted-hat', 'belt', 'boots'],
+    extras: ['spotted-hat', 'belt', 'boots', 'eye-bags'],
     face: 'sharp',
     eyes: 'sharp',
     brow: 'calm',
+    trousers: '#1f3644',
     head: 'cap', mark: 'goatee', prop: 'sword', build: 'slim',
   },
   kid: {
-    note: 'Cheveux rouges hérissés, teint très pâle, lunettes de soudeur sur le front, manteau à fourrure, bras gauche mécanique.',
+    note:
+      'Très grand et massif, épaules larges. Cheveux rouge vif extrêmement hérissés en forme de flammes. Visage anguleux et agressif, nez pointu, lèvres rouge sombre, yeux orange-rouge, aucun sourcil visible. Lunettes de protection jaunes relevées sur le front, cape de fourrure sombre, pantalon jaune et noir, bottes épaisses.',
     hair: '#c0342c', cut: 'spiky', skin: '#f6e2d2', outfit: '#3a2a3a', coat: '#5a3a4a',
-    extras: ['metal-arm', 'fur-collar', 'belt'],
+    extras: ['metal-arm', 'fur-collar', 'belt', 'boots'],
     face: 'sharp',
     eyes: 'sharp',
-    brow: 'fierce',
+    brow: 'neutral',
+    trousers: '#c8a02c',
     head: 'none', mark: 'shades', prop: 'none', build: 'broad',
   },
   killer: {
@@ -685,12 +737,14 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   bonney: {
-    note: 'Longs cheveux roses, casquette plate, tenue courte, teint hâlé.',
+    note:
+      'Jeune fille de petite taille et à la silhouette mince, longs cheveux rose clair, grands yeux, petite marque dorée sous l\'œil droit. Débardeur blanc, short rayé orange et noir, bottes noires.',
     hair: '#e87aa8', cut: 'long', skin: HALE, outfit: '#c0546a',
     accessory: '#f0ece2',
-    extras: ['bare-midriff', 'boots', 'belt'],
+    extras: ['bare-midriff', 'boots', 'belt', 'twin-tails'],
     eyes: 'wide',
     brow: 'arched',
+    trousers: '#e8842c',
     head: 'cap', mark: 'none', prop: 'none', build: 'slim',
   },
   'capone-bege': {
@@ -707,20 +761,26 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   // --- Légendaires : Dressrosa, Thriller Bark, Wano --------------------------
 
   cavendish: {
-    note: 'Longs cheveux blonds ondulés, tenue blanche, rapière.',
+    note:
+      'Extraordinairement beau, grand et élancé, silhouette aristocratique. Grands yeux bleu ciel et fins. Longs cheveux blond doré naturellement ondulés descendant sous les épaules. Visage symétrique, nez fin, mâchoire élégante. Tricorne noir à grande plume turquoise, chemise blanche à volants, manteau sur les épaules, pantalon violet, bottes marron à talons.',
     hair: '#e8cf6a', cut: 'wavy', skin: PALE, outfit: '#f0ece2', coat: '#d8c8a8',
-    extras: ['cape', 'cravat', 'boots'],
+    extras: ['cape', 'cravat', 'boots', 'feather'],
     face: 'sharp',
     eyes: 'wide',
     brow: 'arched',
+    accessory: '#241c18',
+    trousers: '#5a3a7a',
     head: 'none', mark: 'none', prop: 'sword', build: 'slim',
   },
   bartolomeo: {
-    note: 'Crête verte, piercings, dents pointues, manteau ouvert.',
-    hair: '#4c8b45', cut: 'mohawk', skin: CLAIR, outfit: '#8a4a5a', coat: '#5a2a3a',
-    extras: ['open-vest', 'belt', 'boots'],
+    note:
+      'Très grand, mince mais musclé. Traits anguleux, crocs visibles, regard sauvage, anneau au nez, aucun sourcil. Yeux brun-orange. Deux lignes tatouées sous l\'œil droit. Cheveux vert clair en énorme mohawk désordonné. Long manteau violet sombre, ceinture claire, pantalon large à carreaux, bottes volumineuses.',
+    hair: '#4c8b45', cut: 'mohawk', skin: CLAIR, outfit: '#6a3a7a', coat: '#4a2a5a',
+    extras: ['nose-ring', 'face-lines', 'sharp-teeth', 'boots'],
     face: 'sharp',
     eyes: 'wide',
+    brow: 'neutral',
+    trousers: '#5a4a5a',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   perona: {
@@ -772,11 +832,13 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     head: 'brim', mark: 'freckles', prop: 'none', build: 'slim',
   },
   sabo: {
-    note: 'Cheveux blonds ondulés, haut-de-forme à lunettes d’aviateur, brûlure sur l’œil gauche, manteau bleu, tuyau de fer.',
+    note:
+      'Grand, mince et athlétique, visage fin et allongé proche de celui de Luffy. Cheveux blond clair souples et légèrement désordonnés. Cicatrice marquée autour de l\'œil gauche. Long manteau sombre, chemise claire, gants, haut-de-forme noir orné de lunettes de protection bleues.',
     hair: '#e8cf6a', cut: 'wavy', skin: PALE, outfit: '#2f5a8a', coat: '#1f3d5f',
     accessory: '#1b1620',
-    extras: ['cravat', 'goggles', 'gloves'],
+    extras: ['cravat', 'goggles', 'gloves', 'boots'],
     face: 'sharp',
+    trousers: '#1f3d5f',
     head: 'tophat', mark: 'scar-eye', prop: 'staff', build: 'slim',
   },
   arlong: {
