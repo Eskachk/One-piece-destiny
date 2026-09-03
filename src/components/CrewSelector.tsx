@@ -1,6 +1,12 @@
 'use client';
 
 import { RARITY_LABEL } from '@/domain/collection/rarity';
+import { CardFilters } from './CardFilters';
+import {
+  CRITERES_PAR_DEFAUT,
+  compterParRarete,
+  trier,
+} from '@/domain/collection/tri';
 import { attempt } from './attempt';
 import Link from 'next/link';
 
@@ -65,12 +71,15 @@ export function CrewSelector({
       .filter((c): c is Character => c !== undefined);
   });
   const [picking, setPicking] = useState(false);
+  const [criteres, setCriteres] = useState(CRITERES_PAR_DEFAUT);
   const [feedback, setFeedback] = useState<
     { kind: 'ok' | 'error'; message: string } | null
   >(null);
   const [pending, startTransition] = useTransition();
 
   const risk = useMemo(() => teamRisk(crew), [crew]);
+  const comptes = useMemo(() => compterParRarete(owned), [owned]);
+  const visibles = useMemo(() => trier(owned, criteres), [owned, criteres]);
   const complete = crew.length === CREW_SIZE;
 
   const toggle = (character: Character) => {
@@ -259,8 +268,29 @@ export function CrewSelector({
             </p>
           ) : null}
 
+          {/* La recherche n'apparaît qu'au-delà d'une poignée de cartes :
+              trois filtres au-dessus de quatre personnages occupent plus de
+              place que ce qu'ils servent à trouver. */}
+          {owned.length > 8 && (
+            <CardFilters
+              criteres={criteres}
+              onChange={setCriteres}
+              comptes={comptes}
+              total={owned.length}
+              affiches={visibles.length}
+              nom="personnage"
+            />
+          )}
+
+          {visibles.length === 0 && owned.length > 0 && (
+            <p className="hb-card mt-3 text-sm">
+              Aucun personnage ne correspond. Essaie un autre nom, ou remets la
+              rareté sur « Toutes ».
+            </p>
+          )}
+
           <ul className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
-            {owned.map((character) => {
+            {visibles.map((character) => {
               const selected = crew.some((c) => c.id === character.id);
               const full = crew.length >= CREW_SIZE && !selected;
               return (

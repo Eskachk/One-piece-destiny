@@ -4303,3 +4303,82 @@ button[aria-busy='true']:not(.hb-btn)::before {
     transform: translate3d(0, -7px, 0) rotate(1.5deg);
   }
 }
+
+/* ===========================================================================
+   Recherche et tri d'une liste de cartes.
+   ---------------------------------------------------------------------------
+   Trois contrôles sur une ligne quand la place le permet, empilés sinon. Le
+   champ de recherche prend le double de la largeur des deux listes : c'est
+   celui dans lequel on écrit, et un champ de saisie trop court donne
+   l'impression qu'on n'y met qu'un mot.
+
+   Les commandes reposent sur le voile de contenu, qui est clair : elles sont
+   donc traitées en encre marine sur blanc, comme le reste des formulaires du
+   jeu, et non en clair sur sombre.
+   =========================================================================== */
+
+.hb-filtres {
+  margin-top: 0.9rem;
+}
+
+.hb-filtres__ligne {
+  display: grid;
+  /* Le champ de recherche vaut deux fois une liste déroulante. */
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 0.5rem;
+}
+
+@media (max-width: 560px) {
+  .hb-filtres__ligne {
+    /* Sur téléphone, trois colonnes réduiraient chaque libellé à deux lettres.
+       La recherche prend toute la largeur, les deux listes se partagent la
+       ligne suivante. */
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hb-filtres__champ:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+.hb-filtres__champ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.hb-filtres__label {
+  font-family: var(--font-poster), system-ui, sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #4a5f7d;
+}
+
+.hb-filtres__saisie {
+  width: 100%;
+  min-width: 0;
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.6rem;
+  border: 1.5px solid rgba(18, 62, 96, 0.22);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-ink);
+  font-size: 0.92rem;
+  /* 16 px minimum sur téléphone : en deçà, iOS zoome tout seul sur le champ au
+     moment où on le touche, et l'on se retrouve à devoir dézoomer la page pour
+     lire le résultat de sa propre recherche. */
+  font-size: max(0.92rem, 16px);
+}
+
+.hb-filtres__saisie:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.hb-filtres__compte {
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+  color: #4a5f7d;
+}

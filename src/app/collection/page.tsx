@@ -6,6 +6,7 @@ import { ChestPanel } from '@/components/ChestPanel';
 import { chestOdds } from '@/domain/collection/odds';
 import { CraftButton } from '@/components/CraftButton';
 import { RarityCard } from '@/components/RarityCard';
+import { OwnedCollection } from '@/components/OwnedCollection';
 import { attributesOf } from '@/domain/collection/attributes';
 import { CHARACTERS, CHARACTER_INDEX } from '@/data/characters';
 import { allSetsProgress, collectionSummary } from '@/domain/collection/sets';
@@ -93,38 +94,53 @@ export default async function CollectionPage() {
       {/* Possédés */}
       {ownedIds.length > 0 && (
         <section className="mt-8">
+          {/* « Ton équipage » désignait ici les cartes possédées, alors que
+              l'équipage est la sélection de trois qu'on compose sur l'accueil.
+              Deux choses pour un seul mot : on ne savait plus laquelle on
+              regardait. */}
           <h2 className="hb-legend">
-            Ton équipage
+            Tes cartes
           </h2>
-          <ul className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
-            {ownedIds.map((id) => {
+          {/* Les cartes sont dessinées ici, par le serveur, puis remises à
+              `OwnedCollection` qui se contente de choisir lesquelles montrer.
+              Les dessiner côté navigateur enverrait `CharacterArt` et la table
+              des signatures physiques à chaque joueur, pour un travail déjà
+              fait. Seuls le nom et la rareté traversent — c'est tout ce dont
+              le tri a besoin. */}
+          <OwnedCollection
+            cartes={ownedIds.flatMap((id) => {
               const character = CHARACTER_INDEX.get(id);
-              if (!character) return null;
+              if (!character) return [];
               const identity = identities.get(id);
-              return (
-                <li key={id}>
-                  <RarityCard
-                    characterId={character.id}
-                    name={character.name}
-                    rarity={character.rarity}
-                    attributes={attributesOf(character)}
-                    serial={
-                      /* Identité de l'exemplaire : ce code suit la carte, y
-                         compris lorsqu'elle change de propriétaire au Market. */
-                      identity?.serialCode ? (
-                        <span className="hb-serial">
-                          {identity.serialCode}
-                          {identity.mintNumber !== null && (
-                            <span className="hb-num"> · n°{identity.mintNumber}</span>
-                          )}
-                        </span>
-                      ) : null
-                    }
-                  />
-                </li>
-              );
+              return [
+                {
+                  id: character.id,
+                  name: character.name,
+                  rarity: character.rarity,
+                  vue: (
+                    <RarityCard
+                      characterId={character.id}
+                      name={character.name}
+                      rarity={character.rarity}
+                      attributes={attributesOf(character)}
+                      serial={
+                        /* Identité de l'exemplaire : ce code suit la carte, y
+                           compris lorsqu'elle change de propriétaire au Market. */
+                        identity?.serialCode ? (
+                          <span className="hb-serial">
+                            {identity.serialCode}
+                            {identity.mintNumber !== null && (
+                              <span className="hb-num"> · n°{identity.mintNumber}</span>
+                            )}
+                          </span>
+                        ) : null
+                      }
+                    />
+                  ),
+                },
+              ];
             })}
-          </ul>
+          />
         </section>
       )}
 
