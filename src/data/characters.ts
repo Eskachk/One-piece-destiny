@@ -110,7 +110,10 @@ const ALL_CHARACTERS: Character[] = [
       { to: 'pingouin', kind: 'CREW' },
     ],
     abilities: ['Capitaine', 'Haki armement', 'Fruit du démon', 'Haki observation', 'Épéiste', 'Médecin'],
-    presenceExpectation: 'MEDIUM',
+    // Haute, comme l'annonçait la fiche en double : Law est de tous les arcs
+    // depuis Punk Hazard. Conséquence assumée — un pari sûr rapporte moins
+    // de points de risque qu'un pari incertain.
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'kid',
