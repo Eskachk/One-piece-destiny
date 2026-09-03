@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { attempt } from './attempt';
-import { setTeamLockAt } from '@/app/actions/admin';
+import { migrateOpenChapterEngine, setTeamLockAt } from '@/app/actions/admin';
 
 /**
  * Verrouillage des équipages, à la main (cahier §2.2, §76).
@@ -55,6 +55,8 @@ export function TeamLockControls({
   nextSunday,
   locked,
   chapterNumber,
+  scoringVersion,
+  currentScoringVersion,
 }: {
   /** Échéance actuelle du chapitre ouvert, en ISO. */
   lockAt: string;
@@ -63,10 +65,27 @@ export function TeamLockControls({
   /** Les équipages sont-ils verrouillés à cet instant ? */
   locked: boolean;
   chapterNumber: number;
+  /** Moteur avec lequel ce chapitre sera jugé. */
+  scoringVersion: string;
+  /** Moteur qu'utiliseraient les chapitres ouverts maintenant. */
+  currentScoringVersion: string;
 }) {
   const [personnalise, setPersonnalise] = useState(() => pourChamp(lockAt));
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
   const [pending, startTransition] = useTransition();
+
+  const executer = (
+    action: () => Promise<{ ok: boolean; message?: string; error?: string }>,
+  ) => {
+    startTransition(async () => {
+      const r: { ok: boolean; message?: string; error?: string } = await attempt(action());
+      setMessage(
+        r.ok && r.message
+          ? { ok: true, text: r.message }
+          : { ok: false, text: String(r.error ?? 'Échec.') },
+      );
+    });
+  };
 
   const lancer = (iso: string) => {
     startTransition(async () => {
@@ -172,6 +191,34 @@ export function TeamLockControls({
           Poser cette échéance
         </button>
       </div>
+
+      {/* --- Moteur de score --------------------------------------------- */}
+      {scoringVersion !== currentScoringVersion && (
+        <div className="mt-5 rounded-lg border border-orange/50 bg-orange/10 p-3">
+          <p className="text-sm text-parchment/85">
+            Ce chapitre sera jugé en <strong>{scoringVersion}</strong>, alors
+            que le moteur courant est le <strong>{currentScoringVersion}</strong>.
+            Un chapitre garde à vie sa version — c’est ce qui permet de
+            recalculer un classement des mois plus tard avec les règles qui
+            étaient affichées quand les joueurs ont composé.
+          </p>
+          <button
+            type="button"
+            disabled={pending}
+            aria-busy={pending}
+            onClick={() => executer(migrateOpenChapterEngine)}
+            className="transition-quick mt-2 w-full rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-abyss disabled:opacity-40"
+          >
+            Passer ce chapitre en {currentScoringVersion}
+          </button>
+          <p className="mt-2 text-xs text-parchment/50">
+            Refusé si le chapitre est publié, ou s’il porte déjà des scores
+            calculés par l’ancien moteur : les garder à côté d’une nouvelle
+            version promettrait un recalcul qui ne rendrait pas les mêmes
+            chiffres.
+          </p>
+        </div>
+      )}
 
       <p className="mt-4 text-xs text-parchment/45">
         Aucune équipe n’est touchée : rouvrir laisse les joueurs modifier la

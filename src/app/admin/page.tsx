@@ -14,6 +14,7 @@ import {
 import { expectedChapterNumber } from '@/domain/chapter/schedule';
 import { requireAdmin } from '@/lib/auth/guards';
 import { getRepository, PERSISTENCE_MODE } from '@/lib/repository';
+import { CURRENT_SCORING_VERSION } from '@/domain/scoring';
 import { chapterAnchorIsStored, getChapterAnchor } from '@/lib/settings/anchor';
 import { Nav } from '@/components/Nav';
 
@@ -227,6 +228,8 @@ export default async function AdminPage() {
             lockAt={chapter.teamLockAt.toISOString()}
             nextSunday={nextSundayLockInstant(new Date()).toISOString()}
             locked={teamsLocked}
+            scoringVersion={chapter.scoringVersion}
+            currentScoringVersion={CURRENT_SCORING_VERSION}
           />
         </div>
       </section>

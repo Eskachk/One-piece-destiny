@@ -27,6 +27,7 @@ import * as social from '@/lib/social/repository';
 import { dispatch } from '@/lib/notifications/dispatch';
 import { resultsReadyEmail, rewardReadyEmail } from '@/lib/email/templates';
 import { getRepository } from '@/lib/repository';
+import { CURRENT_SCORING_VERSION } from '@/domain/scoring';
 import { setChapterAnchor } from '@/lib/settings/anchor';
 import { requireAdmin } from '@/lib/auth/guards';
 import { requiresReauthentication } from '@/lib/auth/session-store';
@@ -307,6 +308,99 @@ export async function setTeamLockAt(
     message: ouvert
       ? `Équipages rouverts jusqu’au ${lockAt.toISOString()}.`
       : 'Équipages verrouillés.',
+  };
+}
+
+/**
+ * Fait passer le chapitre **ouvert** au moteur de score courant.
+ *
+ * ## Pourquoi cette action existe
+ *
+ * Un chapitre garde à vie la version de moteur avec laquelle il a été ouvert
+ * (§78). C'est la bonne règle : elle garantit qu'un classement se recalcule
+ * des mois plus tard avec les règles qui étaient affichées quand les joueurs
+ * ont composé.
+ *
+ * Mais elle avait un effet de bord : après avoir écrit un nouveau moteur, il
+ * fallait attendre la publication du chapitre en cours puis l'ouverture du
+ * suivant pour le voir servir. Sur un chapitre à peine ouvert, dont personne
+ * n'a encore rien tiré, c'est une semaine d'attente pour rien — et la seule
+ * échappatoire était de modifier la ligne en base à la main.
+ *
+ * ## Les deux verrous
+ *
+ * Le §78 reste protégé par deux refus, et ils ne sont pas négociables :
+ *
+ *   — **un chapitre publié ne bouge pas.** Son classement est figé et servi
+ *     tel quel ; changer son moteur rendrait ses scores irreproductibles ;
+ *   — **un chapitre qui porte déjà des scores ne bouge pas non plus**, même
+ *     non publié. Des scores existants ont été calculés par l'ancien moteur :
+ *     les laisser à côté d'une nouvelle version, c'est promettre un recalcul
+ *     qui ne rendrait pas les mêmes chiffres.
+ *
+ * Reste le cas légitime : un chapitre ouvert, sans apparition validée ni
+ * score, dont on veut qu'il soit jugé avec les règles qu'on vient d'écrire.
+ */
+export async function migrateOpenChapterEngine(): Promise<AdminActionResult> {
+  await assertSameOrigin();
+  const session = await requireAdmin();
+
+  const chapter = await getRepository().getCurrentChapter();
+  if (!chapter) return { ok: false, error: 'Aucun chapitre ouvert.' };
+
+  if (chapter.status === 'RESULTS_PUBLISHED') {
+    return {
+      ok: false,
+      error: 'Chapitre publié : son moteur de score ne peut plus changer.',
+    };
+  }
+
+  if (chapter.scoringVersion === CURRENT_SCORING_VERSION) {
+    return { ok: true, message: `Déjà en ${CURRENT_SCORING_VERSION}.` };
+  }
+
+  // Des scores déjà calculés interdisent la bascule : ils viennent de l'ancien
+  // moteur, et les garder à côté d'une nouvelle version promettrait un recalcul
+  // qui ne rendrait pas les mêmes chiffres.
+  const { count } = await db()
+    .from('team_scores')
+    .select('player_id', { count: 'exact', head: true })
+    .eq('chapter_id', chapter.id);
+
+  if ((count ?? 0) > 0) {
+    return {
+      ok: false,
+      error: `Ce chapitre porte déjà ${count} score(s) calculés en ${chapter.scoringVersion}. Publie-le, puis ouvre le suivant.`,
+    };
+  }
+
+  const { error } = await db()
+    .from('chapter_events')
+    .update({ scoring_version: CURRENT_SCORING_VERSION })
+    .eq('id', chapter.id)
+    .neq('status', 'RESULTS_PUBLISHED');
+
+  if (error) return { ok: false, error: 'Bascule impossible.' };
+
+  await audit({
+    playerId: session.playerId,
+    action: 'admin.chapter_engine_migrated',
+    status: 'SUCCESS',
+    metadata: {
+      chapterNumber: chapter.chapterNumber,
+      from: chapter.scoringVersion,
+      to: CURRENT_SCORING_VERSION,
+    },
+  });
+
+  revalidateTag(CURRENT_CHAPTER_TAG);
+  revalidateTag(chapterTag(chapter.id));
+  revalidatePath('/');
+  revalidatePath('/admin');
+
+  return {
+    ok: true,
+    message: `Chapitre ${chapter.chapterNumber} : ${chapter.scoringVersion} → ${CURRENT_SCORING_VERSION}.`,
   };
 }
 
