@@ -326,7 +326,7 @@ const ALL_CHARACTERS: Character[] = [
     id: 'baby-5',
     name: 'Baby 5',
     rarity: 'EPIC',
-    affiliations: ['Armarda du Chapeau de Paille'],
+    affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Armo-Fruit'],
     presenceExpectation: 'LOW',
@@ -522,7 +522,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'krieg-don-krieg',
-    name: 'Krieg / Don Krieg',
+    name: 'Don Krieg',
     rarity: 'EPIC',
     affiliations: ['Don Krieg\'s Pirate Armada'],
     relations: [{ to: 'gyn', kind: 'CREW' }, { to: 'pearl', kind: 'CREW' }],
@@ -675,7 +675,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'pingouin',
-    name: 'Pingouin',
+    name: 'Penguin',
     rarity: 'EPIC',
     affiliations: ['The Hearth crew'],
     relations: [{ to: 'law', kind: 'CREW' }, { to: 'bepo', kind: 'CREW' }, { to: 'jean-bart', kind: 'CREW' }, { to: 'shachi', kind: 'CREW' }, { to: 'trafalgar-d-water-law', kind: 'CREW' }],
@@ -837,7 +837,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'ficher-tiger',
-    name: 'Ficher Tiger',
+    name: 'Fisher Tiger',
     rarity: 'EPIC',
     affiliations: ['The Sun Pirates crew'],
     relations: [{ to: 'aladdin', kind: 'CREW' }, { to: 'charlotte-praline', kind: 'CREW' }],
@@ -873,7 +873,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'edward-weeble',
-    name: 'Edward Weeble',
+    name: 'Edward Weevil',
     rarity: 'EPIC',
     affiliations: [],
     relations: [],
@@ -882,7 +882,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'ben-beckmann',
-    name: 'Ben Beckmann',
+    name: 'Benn Beckman',
     rarity: 'EPIC',
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }, { to: 'building-snake', kind: 'CREW' }, { to: 'hongo', kind: 'CREW' }, { to: 'howling-dab', kind: 'CREW' }],
@@ -891,7 +891,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'lucky-roo',
-    name: 'Lucky Roo',
+    name: 'Lucky Roux',
     rarity: 'EPIC',
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }, { to: 'building-snake', kind: 'CREW' }, { to: 'hongo', kind: 'CREW' }, { to: 'howling-dab', kind: 'CREW' }],
@@ -900,7 +900,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'yassop',
-    name: 'Yassop',
+    name: 'Yasopp',
     rarity: 'EPIC',
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }, { to: 'building-snake', kind: 'CREW' }, { to: 'hongo', kind: 'CREW' }, { to: 'howling-dab', kind: 'CREW' }],
@@ -981,7 +981,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'charlotte-dent-de-chien',
-    name: 'Charlotte Dent-de-chien',
+    name: 'Charlotte Katakuri',
     rarity: 'EPIC',
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }, { to: 'charlotte-daifuku', kind: 'CREW' }, { to: 'charlotte-oven', kind: 'CREW' }, { to: 'charlotte-amande', kind: 'CREW' }, { to: 'charlotte-opera', kind: 'CREW' }, { to: 'charlotte-brulee', kind: 'CREW' }, { to: 'charlotte-mont-d-or', kind: 'CREW' }, { to: 'charlotte-galette', kind: 'CREW' }, { to: 'charlotte-pudding', kind: 'CREW' }, { to: 'charlotte-flampee', kind: 'CREW' }, { to: 'charlotte-compote', kind: 'CREW' }, { to: 'charlotte-monde', kind: 'CREW' }, { to: 'charlotte-hachee', kind: 'CREW' }, { to: 'charlotte-effilee', kind: 'CREW' }, { to: 'charlotte-counter', kind: 'CREW' }, { to: 'charlotte-cadenza', kind: 'CREW' }, { to: 'charlotte-cabaletta', kind: 'CREW' }, { to: 'charlotte-gala', kind: 'CREW' }, { to: 'charlotte-angel', kind: 'CREW' }, { to: 'charlotte-creme', kind: 'CREW' }, { to: 'charlotte-zuccoto', kind: 'CREW' }, { to: 'charlotte-broyee', kind: 'CREW' }, { to: 'charlotte-nusstorte', kind: 'CREW' }, { to: 'charlotte-basskarte', kind: 'CREW' }, { to: 'charlotte-dosmarche', kind: 'CREW' }, { to: 'charlotte-noisette', kind: 'CREW' }, { to: 'charlotte-moscato', kind: 'CREW' }, { to: 'charlotte-mash', kind: 'CREW' }, { to: 'charlotte-corn-starch', kind: 'CREW' }, { to: 'charlotte-compo', kind: 'CREW' }, { to: 'charlotte-laurin', kind: 'CREW' }, { to: 'charlotte-mozart', kind: 'CREW' }, { to: 'charlotte-marnier', kind: 'CREW' }, { to: 'charlotte-high-fat', kind: 'CREW' }, { to: 'charlotte-tablet', kind: 'CREW' }, { to: 'charlotte-citron', kind: 'CREW' }, { to: 'charlotte-cannelle', kind: 'CREW' }, { to: 'charlotte-saint-marc', kind: 'CREW' }, { to: 'charlotte-basans', kind: 'CREW' }, { to: 'charlotte-melisee', kind: 'CREW' }, { to: 'charlotte-dacquoise', kind: 'CREW' }, { to: 'charlotte-poire', kind: 'CREW' }, { to: 'charlotte-bavarois', kind: 'CREW' }, { to: 'charlotte-prim', kind: 'CREW' }, { to: 'charlotte-kanten', kind: 'CREW' }, { to: 'charlotte-kato', kind: 'CREW' }, { to: 'charlotte-montb', kind: 'CREW' }, { to: 'charlotte-chiboust', kind: 'CREW' }, { to: 'charlotte-mobile', kind: 'CREW' }, { to: 'charlotte-marble', kind: 'CREW' }, { to: 'charlotte-mucre', kind: 'CREW' }, { to: 'charlotte-mapple', kind: 'CREW' }, { to: 'charlotte-brownie', kind: 'CREW' }, { to: 'charlotte-joconde', kind: 'CREW' }, { to: 'charlotte-raisin', kind: 'CREW' }, { to: 'charlotte-panna', kind: 'CREW' }, { to: 'charlotte-mascarpone', kind: 'CREW' }, { to: 'charlotte-joscarpone', kind: 'CREW' }, { to: 'charlotte-yu-yuan', kind: 'CREW' }, { to: 'charlotte-newichi', kind: 'CREW' }, { to: 'charlotte-newji', kind: 'CREW' }, { to: 'charlotte-newsan', kind: 'CREW' }, { to: 'charlotte-newshi', kind: 'CREW' }, { to: 'charlotte-newgo', kind: 'CREW' }, { to: 'charlotte-muscade', kind: 'CREW' }, { to: 'charlotte-muscadia', kind: 'CREW' }, { to: 'charlotte-muscadelle', kind: 'CREW' }, { to: 'charlotte-muscadine', kind: 'CREW' }, { to: 'charlotte-muscadette', kind: 'CREW' }, { to: 'charlotte-nougat', kind: 'CREW' }, { to: 'charlotte-anglais', kind: 'CREW' }, { to: 'charlotte-wafers', kind: 'CREW' }, { to: 'charlotte-wiro', kind: 'CREW' }, { to: 'charlotte-de-chat', kind: 'CREW' }, { to: 'charlotte-normande', kind: 'CREW' }, { to: 'charlotte-dolce', kind: 'CREW' }, { to: 'charlotte-dragee', kind: 'CREW' }, { to: 'charlotte-anana', kind: 'CREW' }, { to: 'pekoms', kind: 'CREW' }, { to: 'boddin', kind: 'CREW' }, { to: 'streusen', kind: 'CREW' }, { to: 'promethee', kind: 'CREW' }, { to: 'napoleon', kind: 'CREW' }, { to: 'hera', kind: 'CREW' }, { to: 'kingbaum', kind: 'CREW' }],
@@ -2358,7 +2358,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'van-auger',
-    name: 'Van Auger',
+    name: 'Van Augur',
     rarity: 'EPIC',
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }, { to: 'shiliew', kind: 'CREW' }, { to: 'avalo-pizarro', kind: 'CREW' }, { to: 'catarina-devon', kind: 'CREW' }, { to: 'sanjuan-wolf', kind: 'CREW' }, { to: 'vasco-shot', kind: 'CREW' }, { to: 'stronger', kind: 'CREW' }],
@@ -2727,7 +2727,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'diamond-joz',
-    name: 'Diamond Joz',
+    name: 'Diamond Jozu',
     rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }, { to: 'blamenco', kind: 'CREW' }, { to: 'rakuyo', kind: 'CREW' }, { to: 'blenheim', kind: 'CREW' }, { to: 'curiel', kind: 'CREW' }, { to: 'kingdew', kind: 'CREW' }, { to: 'haruta', kind: 'CREW' }, { to: 'atmos', kind: 'CREW' }, { to: 'speed-jill', kind: 'CREW' }, { to: 'fossa', kind: 'CREW' }, { to: 'izou', kind: 'CREW' }, { to: 'doma', kind: 'CREW' }, { to: 'freres-decalvan', kind: 'CREW' }, { to: 'whitey-bay', kind: 'CREW' }, { to: 'mc-guy', kind: 'CREW' }, { to: 'a-o', kind: 'CREW' }, { to: 'karma', kind: 'CREW' }, { to: 'elmy', kind: 'CREW' }, { to: 'ramba', kind: 'CREW' }, { to: 'delacuaji', kind: 'CREW' }, { to: 'zodia', kind: 'CREW' }, { to: 'palms', kind: 'CREW' }, { to: 'bizarre', kind: 'CREW' }, { to: 'pavlik', kind: 'CREW' }, { to: 'vitan', kind: 'CREW' }, { to: 'islewan', kind: 'CREW' }, { to: 'epoida', kind: 'CREW' }, { to: 'kechatch', kind: 'CREW' }, { to: 'choi', kind: 'CREW' }, { to: 'arhur', kind: 'CREW' }, { to: 'hangan', kind: 'CREW' }, { to: 'reforte', kind: 'CREW' }, { to: 'andre', kind: 'CREW' }, { to: 'ninth', kind: 'CREW' }, { to: 'blondie', kind: 'CREW' }, { to: 'nosgarl', kind: 'CREW' }, { to: 'amadob', kind: 'CREW' }, { to: 'baggaley', kind: 'CREW' }, { to: 'wakkem', kind: 'CREW' }, { to: 'brew', kind: 'CREW' }, { to: 'brocca', kind: 'CREW' }, { to: 'rush', kind: 'CREW' }, { to: 'great-micheal', kind: 'CREW' }, { to: 'zucca', kind: 'CREW' }, { to: 'cands', kind: 'CREW' }, { to: 'kinga', kind: 'CREW' }, { to: 'colscon', kind: 'CREW' }, { to: 'agsilly', kind: 'CREW' }, { to: 'julius', kind: 'CREW' }, { to: 'happygun', kind: 'CREW' }, { to: 'sleepy', kind: 'CREW' }, { to: 'forliewbs', kind: 'CREW' }],
@@ -2880,7 +2880,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'little-oz-junior',
-    name: 'Little Oz Junior',
+    name: 'Little Oars Jr.',
     rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }, { to: 'blamenco', kind: 'CREW' }, { to: 'rakuyo', kind: 'CREW' }, { to: 'blenheim', kind: 'CREW' }, { to: 'curiel', kind: 'CREW' }, { to: 'kingdew', kind: 'CREW' }, { to: 'haruta', kind: 'CREW' }, { to: 'atmos', kind: 'CREW' }, { to: 'speed-jill', kind: 'CREW' }, { to: 'fossa', kind: 'CREW' }, { to: 'izou', kind: 'CREW' }, { to: 'doma', kind: 'CREW' }, { to: 'freres-decalvan', kind: 'CREW' }, { to: 'whitey-bay', kind: 'CREW' }, { to: 'mc-guy', kind: 'CREW' }, { to: 'a-o', kind: 'CREW' }, { to: 'karma', kind: 'CREW' }, { to: 'elmy', kind: 'CREW' }, { to: 'ramba', kind: 'CREW' }, { to: 'delacuaji', kind: 'CREW' }, { to: 'zodia', kind: 'CREW' }, { to: 'palms', kind: 'CREW' }, { to: 'bizarre', kind: 'CREW' }, { to: 'pavlik', kind: 'CREW' }, { to: 'vitan', kind: 'CREW' }, { to: 'islewan', kind: 'CREW' }, { to: 'epoida', kind: 'CREW' }, { to: 'kechatch', kind: 'CREW' }, { to: 'choi', kind: 'CREW' }, { to: 'arhur', kind: 'CREW' }, { to: 'hangan', kind: 'CREW' }, { to: 'reforte', kind: 'CREW' }, { to: 'andre', kind: 'CREW' }, { to: 'ninth', kind: 'CREW' }, { to: 'blondie', kind: 'CREW' }, { to: 'nosgarl', kind: 'CREW' }, { to: 'amadob', kind: 'CREW' }, { to: 'baggaley', kind: 'CREW' }, { to: 'wakkem', kind: 'CREW' }, { to: 'brew', kind: 'CREW' }, { to: 'brocca', kind: 'CREW' }, { to: 'rush', kind: 'CREW' }, { to: 'great-micheal', kind: 'CREW' }, { to: 'zucca', kind: 'CREW' }, { to: 'cands', kind: 'CREW' }, { to: 'kinga', kind: 'CREW' }, { to: 'colscon', kind: 'CREW' }, { to: 'agsilly', kind: 'CREW' }, { to: 'julius', kind: 'CREW' }, { to: 'happygun', kind: 'CREW' }, { to: 'sleepy', kind: 'CREW' }, { to: 'forliewbs', kind: 'CREW' }],
@@ -3501,7 +3501,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'buffallo',
-    name: 'Buffallo',
+    name: 'Buffalo',
     rarity: 'EPIC',
     affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }],
@@ -4077,7 +4077,7 @@ const ALL_CHARACTERS: Character[] = [
   },
   {
     id: 'don-quijote-rosinante',
-    name: 'Don Quijote Rosinante',
+    name: 'Donquixote Rosinante',
     rarity: 'EPIC',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],

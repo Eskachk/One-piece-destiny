@@ -859,1103 +859,1900 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
      ========================================================================= */
 
   alvida: {
-    note: 'Très longs cheveux noirs, teint pâle, tenue de capitaine, massue à pointes.',
-    hair: '#141018', cut: 'long', skin: PALE, outfit: '#c0243c', coat: '#8a1a30',
-    face: 'round', eyes: 'sharp', brow: 'arched',
-    extras: ['high-collar', 'boots', 'belt'],
-    head: 'none', mark: 'none', prop: 'club', build: 'slim',
+    note:
+      'Dans sa première apparition, elle est très corpulente, avec un visage ' +
+      'rond, des joues épaisses et une imposante masse corporelle. Peau très ' +
+      'claire. Ses cheveux noirs sont très longs et abondants, descendant ' +
+      'loin dans le dos. Ses yeux sont petits et son sourire dévoile une ' +
+      'large bouche. Elle porte un énorme manteau de capitaine et des ' +
+      'vêtements de pirate voyants. Sa massue métallique à pointes est l’un ' +
+      'de ses principaux éléments visuels. Après avoir mangé le Sube Sube no ' +
+      'Mi, elle devient extrêmement mince : visage affiné, taille fine, ' +
+      'jambes longues et silhouette beaucoup plus élancée.',
+    hair: '#1c1c22', cut: 'long', skin: PALE, outfit: '#c25a8a',
+    face: 'round',
+    head: 'none', mark: 'none', prop: 'club', build: 'broad',
   },
   kuro: {
-    note: 'Cheveux noirs plaqués, petites lunettes rondes qu’il remonte de la paume, costume de majordome, griffes.',
-    hair: '#131313', cut: 'short', skin: PALE, outfit: '#22222c', coat: '#15151c',
-    face: 'long', eyes: 'narrow', brow: 'calm',
-    extras: ['necktie', 'gloves', 'boots'],
-    accessory: '#e8e2d4',
+    note:
+      'Homme grand, extrêmement mince et élégant. Cheveux noirs lisses, ' +
+      'plaqués en arrière. Visage anguleux, nez étroit. Porte de petites ' +
+      'lunettes rondes qu’il remet avec le dos de sa main. Costume de ' +
+      'majordome impeccable : veste, chemise, pantalon et chaussures bien ' +
+      'entretenues. Ses griffes donnent une apparence extrêmement fine et ' +
+      'inquiétante aux mains.',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['boots'],
+    face: 'sharp',
+    height: 'tall',
     head: 'none', mark: 'glasses', prop: 'knives', build: 'slim',
   },
   'krieg-don-krieg': {
-    note: 'Cheveux noirs hérissés, armure dorée massive, cape, carrure de colosse.',
-    hair: '#1a1a1a', cut: 'spiky', skin: HALE, outfit: '#c8a04a', coat: '#8a6a2a',
-    face: 'square', eyes: 'sharp', brow: 'fierce', height: 'tall',
-    extras: ['pauldrons', 'cape', 'belt'],
-    head: 'none', mark: 'none', prop: 'axe', build: 'giant',
+    note:
+      'Homme extrêmement grand et très massif. Cheveux noirs courts et ' +
+      'hérissés. Visage large et mâchoire puissante. Porte une gigantesque ' +
+      'armure dorée, couvrant presque entièrement le corps, avec épaulières, ' +
+      'protections métalliques et nombreuses armes. Cape sombre dans ' +
+      'certaines apparitions. Sans son armure, son corps reste déjà très ' +
+      'robuste. C’est l’archétype du chef de guerre lourdement blindé.',
+    hair: '#1c1c22', cut: 'spiky', skin: CLAIR, outfit: '#c9a33a', coat: '#2c2f3a',
+    extras: ['pauldrons', 'cape'],
+    face: 'square',
+    height: 'towering',
+    head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   cabaji: {
-    note: 'Cheveux bleus, écharpe qui couvre le bas du visage, tenue d’acrobate, sabre.',
-    hair: '#2f6fb5', cut: 'short', skin: PALE, outfit: '#4a7a4a',
-    face: 'sharp', eyes: 'narrow', brow: 'neutral',
-    extras: ['sash', 'boots', 'belt'],
+    note:
+      'Homme mince et athlétique. Cheveux bleus, longs sur les côtés et ' +
+      'généralement coiffés vers l’arrière. Le bas de son visage peut être ' +
+      'couvert par une écharpe ou un tissu. Visage plutôt fin, yeux étroits. ' +
+      'Corps souple plutôt que massif, adapté à ses mouvements acrobatiques. ' +
+      'Il porte une tenue rappelant celle d’un acrobate ou d’un artiste de ' +
+      'cirque, avec un sabre. Silhouette très légère.',
+    hair: '#3f6bb5', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    eyes: 'narrow',
     head: 'none', mark: 'none', prop: 'sword', build: 'slim',
   },
   galdino: {
-    note: 'Cheveux blonds coiffés en trois pointes, masque de cire, costume clair.',
-    hair: '#e8cf6a', cut: 'spiky', skin: PALE, outfit: '#e8e2d4', coat: '#c8b88a',
-    face: 'long', eyes: 'narrow', brow: 'arched',
-    extras: ['necktie', 'gloves', 'boots'],
-    head: 'none', mark: 'none', prop: 'staff', build: 'slim',
-  },
-  foxy: {
-    note: 'Immense nez rouge et pointu, cheveux violets en pointes, longue cape.',
-    hair: '#6a4a8a', cut: 'spiky', skin: PALE, outfit: '#8a4a5a', coat: '#5a2a3a',
-    face: 'sharp', eyes: 'wide', brow: 'arched', height: 'tall',
-    extras: ['long-nose', 'cape', 'boots'],
+    note:
+      'Homme mince de taille moyenne. Visage long et nez pointu. Cheveux ' +
+      'blonds coiffés en trois grandes pointes caractéristiques. Porte ' +
+      'souvent une structure de cire autour du visage. Costume clair très ' +
+      'propre. Bras et jambes assez fins. Apparence de gentleman bizarre et ' +
+      'très théâtral.',
+    hair: '#e6cf7e', cut: 'spiky', skin: CLAIR, outfit: '#ded6c2',
+    face: 'long',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
+  foxy: {
+    note:
+      'Homme relativement grand mais avec une silhouette peu athlétique. ' +
+      'Visage particulièrement caricatural, surtout à cause de son énorme nez ' +
+      'rouge très long et pointu. Cheveux violets, dressés en pointes. Grands ' +
+      'sourcils et grands yeux. Porte une longue cape et des vêtements ' +
+      'voyants. Corps plutôt mou que musclé.',
+    hair: '#8a5fae', cut: 'spiky', skin: CLAIR, outfit: '#c25a8a',
+    extras: ['cape'],
+    eyes: 'wide',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'none', build: 'broad',
+  },
   hogback: {
-    note: 'Cheveux noirs plaqués, menton en galoche, blouse de chirurgien.',
-    hair: '#1a1a1a', cut: 'short', skin: PALE, outfit: '#e8e2d4', coat: '#c8ccd4',
-    face: 'square', eyes: 'narrow', brow: 'arched',
-    extras: ['necktie', 'gloves', 'boots'],
+    note:
+      'Homme assez grand, légèrement voûté. Très grosse tête par rapport au ' +
+      'corps. Cheveux noirs plaqués vers l’arrière. Visage très pâle avec ' +
+      'menton extrêmement allongé, donnant un aspect presque cartoonesque. ' +
+      'Petit corps comparativement mince. Porte une blouse blanche de ' +
+      'chirurgien et souvent des gants. Apparence d’un scientifique maladif.',
+    hair: '#1c1c22', cut: 'short', skin: PALE, outfit: '#f0ece2',
+    extras: ['gloves'],
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   absalom: {
-    note: 'Crinière et gueule de lion, cheveux blancs hirsutes, manteau sombre.',
-    hair: '#e2ded2', cut: 'spiky', skin: HALE, outfit: '#2a2a33', coat: '#181820',
-    face: 'square', eyes: 'sharp', brow: 'fierce', height: 'tall',
-    extras: ['mane', 'sharp-teeth', 'cape'],
-    head: 'none', mark: 'none', prop: 'gun', build: 'broad',
+    note:
+      'Très grand homme à la carrure extrêmement massive, avec des épaules ' +
+      'très larges et un torse épais. Son visage est particulièrement bestial ' +
+      ': museau et bouche inspirés d’un lion, mâchoire volumineuse et dents ' +
+      'visibles. Sa peau est claire. Il possède une épaisse crinière de ' +
+      'cheveux blancs, longs, hérissés et très désordonnés, qui encadre toute ' +
+      'sa tête. Ses sourcils sont épais et son regard est agressif. Son corps ' +
+      'comporte de nombreuses zones couturées à la suite des modifications ' +
+      'chirurgicales de Hogback. Il porte généralement un long manteau ' +
+      'sombre, un pantalon et des chaussures lourdes. Silhouette globale : ' +
+      'énorme, animale et très imposante.',
+    hair: '#e9e5da', cut: 'spiky', skin: CLAIR, outfit: '#2c2f3a',
+    extras: ['boots', 'sharp-teeth', 'mane', 'stitches'],
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   bepo: {
-    note: 'Ours blanc à la fourrure épaisse, combinaison orange des Heart Pirates.',
-    hair: '#f0ede4', cut: 'short', skin: '#f0ede4', outfit: '#e8842c',
-    frame: 'bear', face: 'round', eyes: 'wide', brow: 'calm',
-    extras: ['gloves', 'boots', 'belt'],
+    note:
+      'Ours polaire anthropomorphe. Corps entièrement recouvert d’une ' +
+      'fourrure blanche extrêmement épaisse. Grande tête d’ours avec museau ' +
+      'allongé, oreilles rondes, nez noir et grands yeux. Malgré son ' +
+      'apparence animale, il possède des bras et jambes humanoïdes. Corps ' +
+      'robuste, avec ventre arrondi et pattes épaisses. Il porte généralement ' +
+      'une combinaison orange caractéristique des Heart Pirates. Son ' +
+      'apparence est nettement plus douce et ronde que celle des autres ' +
+      'combattants.',
+    hair: '#e9e5da', cut: 'short', skin: CLAIR, outfit: '#d97a2b',
+    extras: ['belt'],
+    frame: 'bear',
+    eyes: 'wide',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   'jean-bart': {
-    note: 'Colosse au crâne rasé, barbe fournie, cicatrices, torse nu.',
-    hair: '#241a12', cut: 'bald', skin: MAT, outfit: '#3a4250',
-    face: 'square', eyes: 'sharp', brow: 'fierce', height: 'towering',
-    extras: ['bare-chest', 'chest-scar', 'belt'],
+    note:
+      'Colosse extrêmement massif. Crâne rasé, barbe noire ou brune très ' +
+      'fournie. Visage extrêmement large et mâchoire massive. Nombreuses ' +
+      'cicatrices. Torse nu ou très peu couvert, montrant un torse ' +
+      'extrêmement développé. Bras énormes. Apparence de véritable montagne ' +
+      'humaine.',
+    hair: '#6a4326', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    extras: ['bare-chest'],
     head: 'none', mark: 'beard', prop: 'none', build: 'giant',
   },
   shiki: {
-    note: 'Cheveux blancs relevés, gouvernail planté dans le crâne, deux sabres en guise de jambes.',
-    hair: '#e6e3d8', cut: 'spiky', skin: CLAIR, outfit: '#3a3a48', coat: '#22222c',
-    face: 'sharp', eyes: 'sharp', brow: 'fierce', height: 'tall',
-    extras: ['cape', 'high-collar', 'boots'],
+    note:
+      'Homme grand et très robuste, d’âge mûr. Cheveux très abondants et ' +
+      'dressés vers le haut. Un gouvernail est littéralement planté dans son ' +
+      'crâne. Visage large, moustache et traits sévères. Ses jambes ont été ' +
+      'remplacées par deux sabres, ce qui donne une silhouette extrêmement ' +
+      'particulière : corps humain avec deux longues lames à la place des ' +
+      'jambes.',
+    hair: '#2a2a33', cut: 'spiky', skin: CLAIR, outfit: '#3a4250',
+    face: 'square',
+    height: 'tall',
     head: 'none', mark: 'moustache', prop: 'sword', build: 'broad',
   },
   caribou: {
-    note: 'Cheveux noirs en dreadlocks, sourire figé, tenue sombre, deux pistolets.',
-    hair: '#141414', cut: 'long', skin: PALE, outfit: '#2a3a2a', coat: '#1a281a',
-    face: 'long', eyes: 'narrow', brow: 'arched',
-    extras: ['sharp-teeth', 'belt', 'boots'],
+    note:
+      'Homme grand mais assez mince, avec une silhouette irrégulière et un ' +
+      'peu voûtée. Cheveux noirs en longues dreadlocks, très abondants. ' +
+      'Visage pâle, long et déformé par un sourire permanent. Yeux rapprochés ' +
+      'et expression inquiétante. Il porte des vêtements sombres, ' +
+      'généralement relativement lourds. Ses deux pistolets sont très ' +
+      'visibles à la ceinture. Physique moins impressionnant par la ' +
+      'musculature que par son apparence étrange.',
+    hair: '#1c1c22', cut: 'long', skin: PALE, outfit: '#2c2f3a',
+    extras: ['belt'],
+    eyes: 'narrow',
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'gun', build: 'slim',
   },
   'ficher-tiger': {
-    note: 'Homme-poisson-tigre, rayures sombres, torse nu, tatouages sur les bras.',
-    hair: '#3a2a1a', cut: 'long', skin: '#c8a86a', outfit: '#5a3a1a',
-    frame: 'fishman', face: 'square', eyes: 'sharp', brow: 'fierce', height: 'tall',
-    extras: ['bare-chest', 'arm-tattoo', 'belt'],
+    note:
+      'Homme-poisson de type tigre. Corps extrêmement musclé et puissant. ' +
+      'Peau rouge-orangée avec des rayures sombres typiques du tigre. Visage ' +
+      'très large, mâchoire forte, dents acérées. Torse nu, muscles pectoraux ' +
+      'et abdominaux très développés. Longues oreilles et caractéristiques ' +
+      'faciales félines. Nombreux tatouages sur les bras. Très grande ' +
+      'silhouette.',
+    hair: '#2a2a33', cut: 'short', skin: '#c4664a', outfit: '#3a4250',
+    extras: ['bare-chest', 'striped-suit', 'sharp-teeth', 'arm-tattoo'],
+    frame: 'fishman',
+    face: 'square',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   aladdin: {
-    note: 'Homme-poisson-raie, cheveux noirs, grande barbe, tenue de médecin de bord.',
-    hair: '#141414', cut: 'long', skin: '#5d8fb8', outfit: '#2b4f7a',
-    frame: 'fishman', face: 'square', eyes: 'normal', brow: 'calm', height: 'tall',
-    extras: ['fins', 'sash', 'belt'],
-    head: 'none', mark: 'beard', prop: 'none', build: 'broad',
+    note:
+      'Homme-poisson à l’apparence de raie manta. Corps humain puissant mais ' +
+      'allongé, avec une peau claire et des caractéristiques aquatiques très ' +
+      'visibles. Son visage est large, son nez et ses traits sont plats, et ' +
+      'il possède une très grande barbe noire qui descend sous le menton. Ses ' +
+      'cheveux sont noirs et relativement courts. Ses yeux sont étroits. Ses ' +
+      'bras sont musclés, avec des caractéristiques de nageoires près des ' +
+      'membres. Il porte une tenue de médecin de bord, avec un style pratique ' +
+      'et relativement ample.',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['fins'],
+    frame: 'fishman',
+    head: 'none', mark: 'beard', prop: 'none', build: 'slim',
   },
   'ben-beckmann': {
-    note: 'Cheveux gris tirés en arrière, cigarette, gilet sans manches, fusil.',
-    hair: '#b8b4ab', cut: 'ponytail', skin: HALE, outfit: '#3a4250', coat: '#252b36',
-    face: 'sharp', eyes: 'narrow', brow: 'calm', height: 'tall',
-    extras: ['bare-chest', 'belt', 'boots'],
+    note:
+      'Homme grand et robuste sans être excessivement musclé. Visage long et ' +
+      'relativement anguleux, avec une mâchoire forte et une barbe courte. ' +
+      'Ses cheveux sont gris, épais et tirés vers l’arrière. Ses yeux sont ' +
+      'étroits, souvent plissés. Il présente des rides et lignes de fatigue ' +
+      'autour des yeux. Il porte généralement un gilet sans manches, laissant ' +
+      'apparaître une partie de ses bras et de son torse, avec un long ' +
+      'manteau sombre. Il fume régulièrement une cigarette et porte un fusil ' +
+      'massif. Son apparence générale est celle d’un homme mûr, calme et très ' +
+      'robuste.',
+    hair: '#a8a89e', cut: 'short', skin: CLAIR, outfit: '#2c2f3a',
+    extras: ['open-vest', 'face-lines'],
+    face: 'long',
+    height: 'tall',
     head: 'none', mark: 'cigarette', prop: 'gun', build: 'broad',
   },
   yassop: {
-    note: 'Longues dreadlocks blondes, teint mat, tireur d’élite, fusil.',
-    hair: '#c8a84a', cut: 'long', skin: SOMBRE, outfit: '#4a7a4a',
-    face: 'sharp', eyes: 'sharp', brow: 'neutral',
-    extras: ['bare-chest', 'belt', 'boots'],
-    head: 'none', mark: 'none', prop: 'gun', build: 'slim',
+    note:
+      'Homme grand et mince mais athlétique. Peau mate. Très longs cheveux ' +
+      'blonds en dreadlocks, descendant largement dans le dos. Visage ' +
+      'allongé, nez assez long et barbe légère. Corps sec avec épaules ' +
+      'relativement larges. Porte des vêtements de tireur et un immense ' +
+      'fusil. Ses bras sont bien développés mais sa silhouette reste celle ' +
+      'd’un homme très élancé.',
+    hair: '#e6cf7e', cut: 'long', skin: HALE, outfit: '#3a4250',
+    face: 'long',
+    height: 'tall',
+    head: 'none', mark: 'goatee', prop: 'gun', build: 'slim',
   },
   'lucky-roo': {
-    note: 'Silhouette ronde, mangeur perpétuel, chapeau à large bord, tenue verte.',
-    hair: '#3a2a1a', cut: 'short', skin: CLAIR, outfit: '#4a7a4a', coat: '#2a5a3a',
-    accessory: '#3a2a1a',
-    face: 'round', eyes: 'narrow', brow: 'neutral',
-    extras: ['belt', 'boots', 'gloves'],
-    head: 'brim', mark: 'none', prop: 'none', build: 'giant',
+    note:
+      'Homme extrêmement rond et corpulent. Gros ventre, joues épaisses et ' +
+      'visage large. Cheveux généralement dissimulés sous un large chapeau. ' +
+      'Il porte des vêtements verts et amples. Bras relativement épais, ' +
+      'jambes plus courtes visuellement à cause de son ventre. Souvent vu en ' +
+      'train de manger, ce qui accentue encore sa silhouette ronde.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#5a7a44',
+    extras: ['belt'],
+    face: 'square',
+    head: 'brim', mark: 'none', prop: 'none', build: 'broad',
   },
   'charlotte-cracker': {
-    note: 'Cheveux roses relevés en pointes, armure claire, immense bouclier, sourire large.',
-    hair: '#e05a8a', cut: 'spiky', skin: CLAIR, outfit: '#e8e2d4', coat: '#c8b88a',
-    face: 'long', eyes: 'sharp', brow: 'arched', height: 'tall',
-    extras: ['pauldrons', 'cape', 'boots'],
-    head: 'none', mark: 'none', prop: 'sword', build: 'broad',
+    note:
+      'Homme grand et très athlétique. Cheveux roses, dressés en nombreuses ' +
+      'pointes. Visage fin, mâchoire étroite et grand sourire. Peau claire. ' +
+      'Bras et épaules musclés. Il porte une armure très claire, presque ' +
+      'blanche, très structurée, ainsi qu’un énorme bouclier. Son apparence ' +
+      'réelle sans l’armure est nettement plus mince que l’image gigantesque ' +
+      'donnée par son équipement.',
+    hair: '#e88ab0', cut: 'spiky', skin: CLAIR, outfit: '#ded6c2',
+    extras: ['pauldrons'],
+    face: 'sharp',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'club', build: 'giant',
   },
   'charlotte-smoothie': {
-    note: 'Très grande, longs cheveux clairs, robe sombre, immense sabre.',
-    hair: '#e8e2d4', cut: 'long', skin: CLAIR, outfit: '#3a2a4a', coat: '#241a30',
-    face: 'long', eyes: 'narrow', brow: 'arched', height: 'towering',
-    extras: ['high-collar', 'boots', 'belt'],
-    head: 'none', mark: 'none', prop: 'greatsword', build: 'slim',
+    note:
+      'Femme gigantesque et extrêmement élancée. Très longues jambes, taille ' +
+      'fine et poitrine importante. Cheveux clairs, longs et lisses. Visage ' +
+      'très fin. Peau claire. Elle porte généralement une tenue sombre très ' +
+      'élégante, avec des bottes et une grande cape ou robe. Son immense ' +
+      'sabre accentue encore sa taille. Apparence générale : géante élégante ' +
+      'et athlétique.',
+    hair: '#d8cbb0', cut: 'long', skin: CLAIR, outfit: '#2c2f3a',
+    extras: ['cape', 'boots'],
+    face: 'sharp',
+    height: 'towering',
+    head: 'none', mark: 'none', prop: 'greatsword', build: 'giant',
   },
   'charlotte-dent-de-chien': {
-    note: 'Cheveux rouges hérissés, écharpe qui masque la mâchoire, manteau sombre, trident.',
-    hair: '#c0342c', cut: 'spiky', skin: CLAIR, outfit: '#2a2a33', coat: '#181820',
-    face: 'sharp', eyes: 'sharp', brow: 'fierce', height: 'tall',
-    extras: ['sash', 'high-collar', 'boots'],
-    head: 'none', mark: 'none', prop: 'staff', build: 'broad',
+    note:
+      'Très grand homme, extrêmement athlétique et musclé. Silhouette en V : ' +
+      'épaules extrêmement larges, taille relativement étroite, bras massifs. ' +
+      'Cheveux rouge sombre, courts et dressés en pointes. Visage anguleux, ' +
+      'yeux étroits. Il possède une mâchoire et une bouche très grandes, avec ' +
+      'des dents extrêmement pointues, habituellement cachées par un large ' +
+      'col de fourrure. Il porte un pantalon sombre, des bottes épaisses et ' +
+      'un gilet laissant largement apparaître son torse. Silhouette générale ' +
+      ': combattant très grand, sec et extrêmement musclé.',
+    hair: '#8f2f2a', cut: 'spiky', skin: CLAIR, outfit: '#3a4250',
+    extras: ['fur-collar', 'boots'],
+    face: 'sharp',
+    eyes: 'narrow',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   'charlotte-brulee': {
-    note: 'Cheveux violets, longue cicatrice sur le visage, robe sombre.',
-    hair: '#6a4a8a', cut: 'long', skin: PALE, outfit: '#3a2a4a', coat: '#241a30',
-    face: 'long', eyes: 'sharp', brow: 'arched',
-    extras: ['high-collar', 'boots', 'belt'],
+    note:
+      'Femme assez grande et mince, mais son visage est déformé par une ' +
+      'longue cicatrice qui traverse une grande partie du visage. Cheveux ' +
+      'violets très épais. Nez et menton relativement longs. Sourcils fins. ' +
+      'Elle porte des vêtements sombres, souvent amples. Ses traits sont ' +
+      'volontairement très irréguliers et donnent une apparence de sorcière ' +
+      'âgée.',
+    hair: '#8a5fae', cut: 'short', skin: CLAIR, outfit: '#2c2f3a',
+    brow: 'arched',
+    height: 'tall',
     head: 'none', mark: 'scar-face', prop: 'none', build: 'slim',
   },
   'charlotte-pudding': {
-    note: 'Cheveux châtains, teint clair, robe claire, œil supplémentaire caché sous la frange.',
-    hair: '#8a5a33', cut: 'long', skin: PALE, outfit: '#e8c8d0', coat: '#c89aa8',
-    face: 'round', eyes: 'wide', brow: 'arched',
-    extras: ['high-collar', 'boots', 'earrings'],
+    note:
+      'Jeune femme assez petite et mince. Visage très fin et peau très ' +
+      'claire. Longs cheveux châtains, lisses, tombant de chaque côté du ' +
+      'visage et souvent sur un œil. Grands yeux. Elle possède un troisième ' +
+      'œil au milieu du front, habituellement caché par ses cheveux. ' +
+      'Silhouette mince et féminine. Elle porte des robes élégantes aux tons ' +
+      'clairs.',
+    hair: '#7a5230', cut: 'long', skin: PALE, outfit: '#ded6c2',
+    face: 'sharp',
+    eyes: 'wide',
+    height: 'short',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   pekoms: {
-    note: 'Lion anthropomorphe, crinière fournie, carapace de tortue dans le dos.',
-    hair: '#c8a04a', cut: 'spiky', skin: '#d8b070', outfit: '#4a7a4a',
-    frame: 'bear', face: 'square', eyes: 'sharp', brow: 'fierce',
-    extras: ['mane', 'belt', 'boots'],
+    note:
+      'Lion anthropomorphe. Tête entièrement féline avec crinière épaisse, ' +
+      'museau large, nez noir et grandes dents. Fourrure brun clair/orangée. ' +
+      'Corps humain extrêmement musclé. Son trait le plus particulier est une ' +
+      'carapace de tortue portée sur le dos. Bras et jambes humanoïdes, mais ' +
+      'recouverts de fourrure.',
+    hair: '#e08a3c', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['mane'],
+    frame: 'bear',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   'page-one': {
-    note: 'Cheveux noirs courts, veste sombre, expression fermée.',
-    hair: '#141414', cut: 'short', skin: CLAIR, outfit: '#2a2a33', coat: '#181820',
-    face: 'sharp', eyes: 'sharp', brow: 'fierce',
-    extras: ['high-collar', 'belt', 'boots'],
-    head: 'none', mark: 'none', prop: 'none', build: 'broad',
+    note:
+      'Jeune homme grand et athlétique. Cheveux noirs courts. Visage ' +
+      'anguleux, yeux étroits et expression presque constamment fermée. Cou ' +
+      'puissant, épaules larges et bras développés. Porte une veste sombre et ' +
+      'un pantalon. Sous forme de Zoan antique, il devient un Spinosaurus, ' +
+      'avec une énorme mâchoire, une queue, des griffes et une grande voile ' +
+      'dorsale.',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#2c2f3a',
+    face: 'sharp',
+    eyes: 'narrow',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'knives', build: 'slim',
   },
   ulti: {
-    note: 'Longs cheveux roses et bleus, cornes, tenue courte.',
-    hair: '#e87aa8', cut: 'long', skin: PALE, outfit: '#4a2a5a',
-    face: 'round', eyes: 'sharp', brow: 'fierce',
-    accessory: '#d8cfc0',
-    extras: ['bare-midriff', 'boots', 'belt'],
+    note:
+      'Jeune femme grande et athlétique. Longs cheveux roses et bleus, ' +
+      'souvent volumineux. Deux cornes sur la tête. Visage fin mais ' +
+      'expression énergique. Corps très bien proportionné, jambes longues et ' +
+      'taille relativement fine. Porte une tenue courte laissant apparaître ' +
+      'les jambes et une partie du ventre. Forme Zoan antique : tête et corps ' +
+      'transformés en Pachycéphalosaure, avec crâne extrêmement puissant.',
+    hair: '#e88ab0', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    extras: ['bare-midriff', 'belt', 'tusks'],
+    face: 'sharp',
+    height: 'tall',
     head: 'horns', mark: 'none', prop: 'none', build: 'slim',
   },
   'black-maria': {
-    note: 'Immense, très longs cheveux noirs, kimono ouvert, ombrelle.',
-    hair: '#141018', cut: 'long', skin: PALE, outfit: '#8a1a30', coat: '#5a0f20',
-    face: 'long', eyes: 'sharp', brow: 'arched', height: 'towering',
-    extras: ['high-collar', 'boots', 'earrings'],
-    head: 'none', mark: 'none', prop: 'cane', build: 'slim',
+    note:
+      'Femme gigantesque, extrêmement grande et très élancée malgré des ' +
+      'formes très développées. Très longs cheveux noirs, épais et ondulés, ' +
+      'tombant très bas dans le dos. Visage féminin allongé, yeux étirés, ' +
+      'lèvres marquées. Peau claire. Elle possède une silhouette avec une ' +
+      'poitrine et des hanches extrêmement développées. Elle porte un kimono ' +
+      'très ouvert, laissant largement apparaître le buste et les jambes, ' +
+      'avec de nombreux ornements. Elle est souvent accompagnée d’une ' +
+      'ombrelle. En forme de Zoan, son bas du corps devient celui d’une ' +
+      'araignée géante, donnant une apparence extrêmement massive.',
+    hair: '#1c1c22', cut: 'wavy', skin: CLAIR, outfit: '#3a4250',
+    extras: ['beads', 'open-vest'],
+    eyes: 'sharp',
+    height: 'towering',
+    head: 'none', mark: 'none', prop: 'staff', build: 'giant',
   },
   fukurokuju: {
-    note: 'Front démesuré, longs cheveux noirs, kimono de chef ninja.',
-    hair: '#141414', cut: 'long', skin: CLAIR, outfit: '#3a3550', coat: '#241f38',
-    face: 'long', eyes: 'narrow', brow: 'calm', height: 'tall',
-    extras: ['sash', 'gloves', 'boots'],
-    head: 'none', mark: 'beard', prop: 'none', build: 'slim',
+    note:
+      'Homme adulte assez grand et extrêmement mince. Son trait principal est ' +
+      'son front gigantesquement allongé, qui donne au crâne une forme très ' +
+      'inhabituelle. Cheveux noirs très longs, tombant dans le dos. Visage ' +
+      'étroit. Il porte le costume traditionnel des ninjas d’Oniwabanshu, ' +
+      'avec un grand kimono. Bras et jambes fins.',
+    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    face: 'long',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   'jesus-burgess': {
-    note: 'Colosse au crâne dégarni, moustache, masque de catcheur, torse nu.',
-    hair: '#3a2a1a', cut: 'bald', skin: HALE, outfit: '#c0342c',
-    face: 'square', eyes: 'sharp', brow: 'fierce', height: 'towering',
-    extras: ['bare-chest', 'belt', 'boots'],
-    head: 'none', mark: 'moustache', prop: 'none', build: 'giant',
+    note:
+      'Très grand homme, extrêmement musclé et large d’épaules. Crâne ' +
+      'partiellement dégarni. Petite moustache. Visage large avec nez ' +
+      'proéminent. Porte le fameux masque de catcheur autour du visage et du ' +
+      'cou. Torse presque toujours nu, révélant une musculature énorme. Bras ' +
+      'et épaules surdéveloppés.',
+    hair: '#2a2a33', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    extras: ['bare-chest'],
+    face: 'square',
+    height: 'tall',
+    head: 'mask', mark: 'moustache', prop: 'none', build: 'broad',
   },
   shiliew: {
-    note: 'Cheveux noirs et barbe, cicatrice, manteau de geôlier, sabre.',
-    hair: '#1a1a1a', cut: 'short', skin: HALE, outfit: '#3a4250', coat: '#252b36',
-    face: 'square', eyes: 'sharp', brow: 'fierce', height: 'tall',
-    extras: ['cape', 'belt', 'boots'],
-    head: 'none', mark: 'beard', prop: 'sword', build: 'broad',
+    note:
+      'Homme grand, mince mais musclé. Cheveux noirs, barbe noire et visage ' +
+      'anguleux. Plusieurs cicatrices. Regard très calme. Porte le manteau et ' +
+      'les vêtements de geôlier d’Impel Down, généralement sombres. Son sabre ' +
+      'imposant est porté à la taille. Silhouette de combattant très sec.',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    face: 'sharp',
+    brow: 'calm',
+    height: 'tall',
+    head: 'none', mark: 'beard', prop: 'greatsword', build: 'slim',
   },
   'van-auger': {
-    note: 'Longs cheveux noirs, lunettes rondes, silhouette élancée, fusil de précision.',
-    hair: '#141414', cut: 'long', skin: PALE, outfit: '#2a2a33', coat: '#181820',
-    face: 'long', eyes: 'narrow', brow: 'calm', height: 'tall',
-    extras: ['cape', 'gloves', 'boots'],
+    note:
+      'Homme grand et mince. Très longs cheveux noirs, généralement lisses. ' +
+      'Visage étroit. Porte de petites lunettes rondes. Corps extrêmement sec ' +
+      'avec longs bras et longues jambes. Vêtements sombres et longs ' +
+      'manteaux. Porte un très long fusil de précision. Silhouette de tireur ' +
+      'extrêmement élancé.',
+    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#2c2f3a',
+    face: 'long',
+    height: 'tall',
     head: 'none', mark: 'glasses', prop: 'gun', build: 'slim',
   },
   lafitte: {
-    note: 'Teint très pâle, cheveux blancs, haut-de-forme, canne, ailes dans le dos.',
-    hair: '#e8e4da', cut: 'short', skin: '#f2ece0', outfit: '#22222c', coat: '#15151c',
-    accessory: '#1b1620',
-    face: 'long', eyes: 'narrow', brow: 'arched', height: 'tall',
-    extras: ['wings', 'necktie', 'gloves'],
+    note:
+      'Homme grand et extrêmement mince. Teint anormalement pâle. Cheveux ' +
+      'blancs assez longs et lisses. Visage très étroit. Yeux petits et ' +
+      'lèvres fines. Porte un haut-de-forme blanc, une canne et des vêtements ' +
+      'élégants rappelant ceux d’un gentleman du XIXe siècle. Lorsqu’il ' +
+      'révèle ses capacités de fruit du démon, de grandes ailes blanches ' +
+      'apparaissent dans son dos. Cela transforme sa silhouette en celle d’un ' +
+      'oiseau humanoïde.',
+    hair: '#e9e5da', cut: 'long', skin: PALE, outfit: '#3a4250',
+    extras: ['wings'],
+    eyes: 'narrow',
+    height: 'tall',
     head: 'tophat', mark: 'none', prop: 'cane', build: 'slim',
   },
   'catarina-devon': {
-    note: 'Longs cheveux blonds, tenue sombre, sourire carnassier.',
-    hair: '#e0c05a', cut: 'long', skin: PALE, outfit: '#2a2a33', coat: '#181820',
-    face: 'sharp', eyes: 'sharp', brow: 'arched',
-    extras: ['sharp-teeth', 'high-collar', 'boots'],
-    head: 'none', mark: 'none', prop: 'sword', build: 'slim',
+    note:
+      'Femme grande, mince et très inquiétante. Très longs cheveux blonds, ' +
+      'généralement laissés tomber dans le dos. Visage allongé, nez long, ' +
+      'sourire carnassier et dents visibles. Yeux fins et regard agressif. Sa ' +
+      'tenue sombre accentue son apparence de criminelle. Elle possède une ' +
+      'silhouette féminine mais assez anguleuse. Sous forme de Zoan mythique, ' +
+      'elle peut prendre l’apparence d’un renard à neuf queues.',
+    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#2c2f3a',
+    extras: ['sharp-teeth'],
+    face: 'long',
+    eyes: 'sharp',
+    brow: 'fierce',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   'sanjuan-wolf': {
-    note: 'Géant démesuré, cheveux sombres, silhouette voûtée.',
-    hair: '#1f1a2a', cut: 'long', skin: MAT, outfit: '#3a3a48',
-    face: 'square', eyes: 'sharp', brow: 'fierce', height: 'towering',
-    extras: ['bare-chest', 'belt', 'boots'],
+    note:
+      'Géant colossal, encore plus grand que beaucoup d’autres géants. Son ' +
+      'corps est très long et extrêmement massif. Cheveux sombres, visage ' +
+      'large et légèrement allongé. Silhouette souvent voûtée, comme s’il ne ' +
+      'pouvait pas se tenir complètement droit. Bras et jambes gigantesques. ' +
+      'Vêtements très simples.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    face: 'square',
+    height: 'towering',
     head: 'none', mark: 'none', prop: 'none', build: 'giant',
   },
   'doc-q': {
-    note: 'Très maigre, longs cheveux noirs, cernes marqués, faux et blouse.',
-    hair: '#141414', cut: 'long', skin: '#e0d4c4', outfit: '#2a2a33', coat: '#181820',
-    face: 'long', eyes: 'narrow', brow: 'calm',
-    extras: ['cape', 'gloves', 'boots'],
-    head: 'none', mark: 'goatee', prop: 'knives', build: 'slim',
+    note:
+      'Homme extrêmement maigre. Corps presque squelettique, épaules étroites ' +
+      'et membres très fins. Visage pâle, creusé et malade. Très longs ' +
+      'cheveux noirs, tombant autour du visage. Cernes très marquées sous les ' +
+      'yeux. Porte des vêtements de médecin et une longue blouse. Se déplace ' +
+      'avec une grande faux. Son apparence rappelle délibérément celle d’un ' +
+      'malade chronique.',
+    hair: '#1c1c22', cut: 'long', skin: PALE, outfit: '#3a4250',
+    extras: ['eye-bags'],
+    head: 'none', mark: 'none', prop: 'staff', build: 'slim',
   },
   kuroobi: {
-    note: 'Homme-poisson-raie, peau claire, coiffure noire tirée, tenue de karatéka.',
-    hair: '#141414', cut: 'topknot', skin: '#8ab0c8', outfit: '#e8e2d4',
-    frame: 'fishman', face: 'sharp', eyes: 'sharp', brow: 'fierce', height: 'tall',
-    extras: ['sash', 'fins', 'belt'],
+    note:
+      'Homme-poisson de type raie. Corps très musclé et compact. Peau claire. ' +
+      'Visage large, nez aplati et caractéristiques de raie. Cheveux noirs ' +
+      'tirés vers l’arrière. Torse très large. Porte un pantalon et une tenue ' +
+      'de karatéka, laissant le torse largement exposé. Bras et épaules ' +
+      'particulièrement développés.',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    frame: 'fishman',
+    face: 'square',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   'diamond-joz': {
-    note: 'Colosse au crâne rasé, teint mat, torse nu, peau de diamant.',
-    hair: '#1a1a1a', cut: 'bald', skin: MAT, outfit: '#3a4250',
-    face: 'square', eyes: 'sharp', brow: 'fierce', height: 'towering',
-    extras: ['bare-chest', 'belt', 'boots'],
+    note:
+      'Colosse extrêmement massif. Torse énorme, épaules gigantesques et bras ' +
+      'très épais. Crâne rasé. Peau mate. Visage large et mâchoire puissante. ' +
+      'Souvent torse nu, révélant une musculature énorme. Lors de sa ' +
+      'transformation, une grande partie de son corps devient entièrement ' +
+      'constituée de diamant, ce qui le rend extrêmement volumineux et ' +
+      'brillant.',
+    hair: '#2a2a33', cut: 'bald', skin: HALE, outfit: '#3a4250',
+    extras: ['bare-chest'],
+    face: 'square',
     head: 'none', mark: 'none', prop: 'none', build: 'giant',
   },
   vista: {
-    note: 'Chapeau à large bord, moustache en guidon, deux sabres, roses.',
-    hair: '#1a1a1a', cut: 'short', skin: CLAIR, outfit: '#2a3a5a', coat: '#1c2740',
-    accessory: '#2a3a5a',
-    face: 'sharp', eyes: 'normal', brow: 'calm', height: 'tall',
-    extras: ['cape', 'gloves', 'boots'],
-    head: 'brim', mark: 'moustache', prop: 'sword', build: 'broad',
+    note:
+      'Homme adulte grand et élégant. Porte un chapeau à large bord. Cheveux ' +
+      'sombres. Grande moustache en forme de guidon. Visage fin mais mâchoire ' +
+      'solide. Corps athlétique. Vêtements de pirate très élégants, souvent ' +
+      'avec une longue veste. Deux sabres. Des motifs floraux, notamment des ' +
+      'roses, apparaissent sur sa tenue.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    face: 'sharp',
+    height: 'tall',
+    head: 'brim', mark: 'moustache', prop: 'sword', build: 'slim',
   },
   izou: {
-    note: 'Kimono, longs cheveux noirs relevés, maquillage, deux pistolets.',
-    hair: '#141414', cut: 'topknot', skin: PALE, outfit: '#8a1a30', coat: '#5a0f20',
-    face: 'long', eyes: 'narrow', brow: 'calm',
-    extras: ['sash', 'boots', 'earrings'],
+    note:
+      'Homme à l’apparence extrêmement élégante et androgyne. Très longs ' +
+      'cheveux noirs, souvent attachés ou relevés. Visage fin et peau claire. ' +
+      'Porte un maquillage rappelant les acteurs de kabuki, notamment autour ' +
+      'des yeux et des lèvres. Kimono traditionnel avec plusieurs couches et ' +
+      'motifs. Deux pistolets. Corps mince et droit, peu massif.',
+    hair: '#1c1c22', cut: 'topknot', skin: CLAIR, outfit: '#3a4250',
+    extras: ['face-tattoo'],
+    face: 'sharp',
     head: 'none', mark: 'none', prop: 'gun', build: 'slim',
   },
   'hody-jones': {
-    note: 'Homme-requin, peau bleu-gris, dents en scie, cheveux blancs tirés.',
-    hair: '#e8e4da', cut: 'ponytail', skin: '#7a9ab0', outfit: '#2a4a5a',
-    frame: 'fishman', face: 'sharp', eyes: 'sharp', brow: 'fierce', height: 'tall',
-    extras: ['sharp-teeth', 'bare-chest', 'belt'],
-    head: 'none', mark: 'none', prop: 'sword', build: 'giant',
+    note:
+      'Homme-poisson de type grand requin. Corps gigantesque, extrêmement ' +
+      'musclé. Peau bleu-gris. Cheveux blancs dressés vers l’arrière. Visage ' +
+      'de requin avec nez aplati, mâchoire extrêmement large et dents ' +
+      'triangulaires en scie. Yeux agressifs. Bras et épaules gigantesques. ' +
+      'Porte une tenue sombre sans manches, laissant apparaître son torse.',
+    hair: '#e9e5da', cut: 'spiky', skin: '#8fb4c4', outfit: '#2c2f3a',
+    extras: ['open-vest', 'sharp-teeth'],
+    frame: 'fishman',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'none', build: 'giant',
   },
   trebol: {
-    note: 'Silhouette informe et massive, morve permanente, lunettes noires, manteau vert.',
-    hair: '#1a1a1a', cut: 'short', skin: CLAIR, outfit: '#4a7a4a', coat: '#2a5a3a',
-    face: 'round', eyes: 'narrow', brow: 'neutral', height: 'towering',
-    extras: ['high-collar', 'gloves', 'boots'],
-    head: 'none', mark: 'shades', prop: 'none', build: 'giant',
+    note:
+      'Homme très étrange dont le corps semble informe et extrêmement ' +
+      'volumineux. Cheveux courts ou peu visibles sous ses accessoires. Porte ' +
+      'de grosses lunettes noires. Visage long et nez particulièrement ' +
+      'volumineux. Son vêtement vert est extrêmement large et recouvre une ' +
+      'grande partie de son corps. Une quantité importante de mucus est ' +
+      'continuellement visible autour de son nez et de sa bouche. Sa ' +
+      'silhouette réelle est volontairement difficile à distinguer.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    face: 'long',
+    head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
   },
   diamante: {
-    note: 'Cheveux blonds ondulés, tricorne à plume, cape rouge, silhouette élancée.',
-    hair: '#e8cf6a', cut: 'wavy', skin: CLAIR, outfit: '#c0243c', coat: '#8a1a30',
-    accessory: '#241c18',
-    face: 'long', eyes: 'sharp', brow: 'arched', height: 'tall',
-    extras: ['cape', 'gloves', 'boots'],
-    head: 'tricorne', mark: 'none', prop: 'sword', build: 'slim',
+    note:
+      'Homme grand, mince et très élancé. Longs cheveux blonds, légèrement ' +
+      'ondulés. Visage fin et nez relativement long. Porte un grand tricorne ' +
+      'à plume, une cape rouge et une tenue très colorée. Jambes longues et ' +
+      'silhouette d’escrimeur. Son physique est davantage élégant et théâtral ' +
+      'que massif.',
+    hair: '#e6cf7e', cut: 'wavy', skin: CLAIR, outfit: '#b8362c',
+    extras: ['cape', 'feather'],
+    face: 'sharp',
+    height: 'tall',
+    head: 'tricorne', mark: 'none', prop: 'none', build: 'slim',
   },
   pica: {
-    note: 'Colosse de pierre, cheveux noirs, mâchoire massive.',
-    hair: '#141414', cut: 'short', skin: '#8a8a94', outfit: '#5a5a66', coat: '#3a3a44',
-    face: 'square', eyes: 'sharp', brow: 'fierce', height: 'towering',
-    extras: ['pauldrons', 'belt', 'boots'],
-    head: 'none', mark: 'none', prop: 'sword', build: 'giant',
+    note:
+      'Homme gigantesque dans sa forme normale et encore plus énorme ' +
+      'lorsqu’il fusionne avec la pierre. Visage assez fin malgré son corps ' +
+      'immense. Cheveux noirs courts. Son principal trait corporel est son ' +
+      'volume démesuré lorsqu’il forme un colosse de roche. Lorsqu’il ' +
+      'fusionne avec la pierre, il peut prendre la forme d’un véritable géant ' +
+      'minéral avec une tête humaine géante.',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    height: 'towering',
+    head: 'none', mark: 'none', prop: 'none', build: 'giant',
   },
   vergo: {
-    note: 'Cheveux noirs, lunettes de soleil, bambou toujours collé à la joue, manteau sombre.',
-    hair: '#141414', cut: 'short', skin: HALE, outfit: '#2a2a33', coat: '#181820',
-    face: 'square', eyes: 'sharp', brow: 'fierce', height: 'tall',
-    extras: ['coat-shoulders', 'gloves', 'boots'],
+    note:
+      'Homme grand, large d’épaules et très musclé. Cheveux noirs courts. ' +
+      'Lunettes de soleil. Visage assez carré. Porte une veste sombre et des ' +
+      'vêtements bien ajustés. Son signe le plus absurde est le morceau de ' +
+      'nourriture collé sur son visage à certaines occasions. Utilise un long ' +
+      'bambou comme arme. Corps athlétique et puissant.',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#2c2f3a',
+    height: 'tall',
     head: 'none', mark: 'shades', prop: 'staff', build: 'broad',
   },
   sugar: {
-    note: 'Petite fille aux longs cheveux noirs, raisins à la main, teint pâle.',
-    hair: '#141018', cut: 'long', skin: PALE, outfit: '#c8a02c',
-    face: 'round', eyes: 'wide', brow: 'neutral', height: 'short',
-    extras: ['high-collar', 'boots', 'twin-tails'],
+    note:
+      'Physiquement, elle ressemble à une petite fille très jeune. Petite ' +
+      'taille, corps extrêmement mince et peau très pâle. Très longs cheveux ' +
+      'noirs. Grands yeux. Visage enfantin. Porte une robe sombre assez ' +
+      'simple. Son fruit du démon stoppe son vieillissement, ce qui explique ' +
+      'son apparence enfantine malgré son âge réel.',
+    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#2c2f3a',
+    face: 'round',
+    eyes: 'wide',
+    height: 'short',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   'senor-pink': {
-    note: 'Costume de bébé, casque, cigarette, carrure de docker.',
-    hair: '#1a1a1a', cut: 'short', skin: HALE, outfit: '#e88fa8', coat: '#c05a8a',
-    accessory: '#4a5a6e',
-    face: 'square', eyes: 'narrow', brow: 'neutral',
-    extras: ['gloves', 'boots', 'belt'],
+    note:
+      'Homme très robuste, avec une carrure de travailleur manuel ou de ' +
+      'docker. Visage large, nez volumineux, petite barbe. Porte un costume ' +
+      'de bébé, avec bonnet, tétine et vêtements enfantins, malgré son corps ' +
+      'd’adulte massif. Une cigarette est souvent présente à ses lèvres. ' +
+      'Contraste visuel très marqué entre son physique adulte et ses ' +
+      'vêtements de nourrisson.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    face: 'square',
     head: 'cap', mark: 'cigarette', prop: 'none', build: 'broad',
   },
   monet: {
-    note: 'Cheveux verts, ailes et serres d’oiseau des neiges, tenue sombre.',
-    hair: '#4c8b45', cut: 'long', skin: PALE, outfit: '#2a3a4a', coat: '#1c2740',
-    face: 'sharp', eyes: 'sharp', brow: 'arched',
-    extras: ['wings', 'high-collar', 'boots'],
+    note:
+      'Femme grande et mince. Très longs cheveux verts, lisses. Visage fin et ' +
+      'regard généralement doux ou froid. Haut du corps humain avec ' +
+      'silhouette féminine fine. Après sa transformation, le bas du corps ' +
+      'peut devenir celui d’un grand oiseau, avec ailes couvertes de plumes ' +
+      'et serres puissantes. Elle porte généralement des vêtements noirs ou ' +
+      'sombres.',
+    hair: '#5a9a55', cut: 'long', skin: CLAIR, outfit: '#22222c',
+    extras: ['feather-coat', 'wings'],
+    face: 'sharp',
+    brow: 'calm',
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   kaku: {
-    note: 'Nez carré et démesuré, casquette, cheveux clairs, deux sabres.',
-    hair: '#c8a04a', cut: 'short', skin: CLAIR, outfit: '#3a4250', coat: '#252b36',
-    accessory: '#2a3a5a',
-    face: 'square', eyes: 'narrow', brow: 'neutral',
-    extras: ['long-nose', 'gloves', 'boots'],
+    note:
+      'Homme grand et mince, mais athlétique. Visage très long avec nez carré ' +
+      'anormalement grand. Cheveux clairs courts. Porte souvent une ' +
+      'casquette. Yeux fins. Corps élancé, jambes longues. Utilise deux ' +
+      'sabres. Son fruit du démon lui donne un long cou de girafe et des ' +
+      'membres très allongés lorsqu’il se transforme.',
+    hair: '#d8cbb0', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    eyes: 'sharp',
+    height: 'tall',
     head: 'cap', mark: 'none', prop: 'sword', build: 'slim',
   },
   spandam: {
-    note: 'Masque qui couvre le nez et la bouche, cheveux bruns longs, cape du CP9.',
-    hair: '#5a4a3a', cut: 'long', skin: PALE, outfit: '#2a2a33', coat: '#181820',
-    face: 'long', eyes: 'narrow', brow: 'arched',
-    extras: ['cape', 'gloves', 'boots'],
-    head: 'none', mark: 'none', prop: 'sword', build: 'slim',
+    note:
+      'Homme mince et assez grand. Cheveux bruns relativement longs. Visage ' +
+      'partiellement dissimulé par un masque métallique, surtout autour du ' +
+      'nez et de la bouche. Épaules relativement étroites. Porte la tenue et ' +
+      'la cape caractéristiques du CP9. Bras fins, jambes longues. Physique ' +
+      'peu imposant.',
+    hair: '#6a4326', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    extras: ['cape'],
+    height: 'tall',
+    head: 'mask', mark: 'none', prop: 'none', build: 'slim',
   },
   hannyabal: {
-    note: 'Visage de démon Hannya, cornes, uniforme de vice-directeur.',
-    hair: '#8a4a2a', cut: 'short', skin: '#c88a5a', outfit: '#4a5a6e', coat: '#2a3a4a',
-    frame: 'oni', face: 'square', eyes: 'sharp', brow: 'fierce', height: 'tall',
-    extras: ['pauldrons', 'belt', 'boots'],
-    head: 'horns', mark: 'none', prop: 'staff', build: 'broad',
+    note:
+      'Homme grand et mince, avec des proportions très théâtrales. Visage ' +
+      'marqué par une apparence de masque Hannya, avec des traits ' +
+      'démoniaques. Porte les vêtements rouges et noirs de l’administration ' +
+      'd’Impel Down. Corps longiligne avec bras et jambes relativement longs.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#b8362c',
+    height: 'tall',
+    head: 'mask', mark: 'none', prop: 'none', build: 'slim',
   },
   domino: {
-    note: 'Cheveux blonds, masque sur les yeux, tenue noire de gardienne, fouet.',
-    hair: '#e0c05a', cut: 'long', skin: PALE, outfit: '#22222c', coat: '#15151c',
-    face: 'long', eyes: 'narrow', brow: 'arched',
-    extras: ['gloves', 'boots', 'belt'],
-    head: 'none', mark: 'shades', prop: 'none', build: 'slim',
+    note:
+      'Femme grande et très mince. Cheveux blonds, longs et lisses. Visage ' +
+      'fin, lèvres marquées. Porte un petit masque noir autour des yeux. ' +
+      'Uniforme très ajusté de gardienne d’Impel Down, généralement sombre. ' +
+      'Jambes longues, posture droite. Fouet comme arme.',
+    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    face: 'sharp',
+    height: 'tall',
+    head: 'mask', mark: 'none', prop: 'knives', build: 'slim',
   },
   sadi: {
-    note: 'Longs cheveux roses, cornes, tenue noire, fouet.',
-    hair: '#e87aa8', cut: 'long', skin: PALE, outfit: '#22222c', coat: '#15151c',
-    accessory: '#d8cfc0',
-    face: 'sharp', eyes: 'sharp', brow: 'arched',
-    extras: ['bare-midriff', 'boots', 'gloves'],
-    head: 'horns', mark: 'none', prop: 'none', build: 'slim',
+    note:
+      'Femme grande et très mince. Longs cheveux roses, lisses. Visage fin, ' +
+      'yeux étroits. Deux petites cornes sur la tête. Porte une tenue noire ' +
+      'extrêmement ajustée, souvent très ouverte au niveau des jambes et du ' +
+      'buste. Bottes hautes et fouet. Silhouette longue, féminine et très ' +
+      'élancée.',
+    hair: '#e88ab0', cut: 'long', skin: CLAIR, outfit: '#22222c',
+    extras: ['open-vest', 'boots', 'tusks'],
+    face: 'sharp',
+    eyes: 'narrow',
+    height: 'tall',
+    head: 'horns', mark: 'none', prop: 'knives', build: 'slim',
   },
   tsuru: {
-    note: 'Cheveux blancs relevés, âgée, manteau de la Marine, pipe.',
-    hair: '#e8e4da', cut: 'topknot', skin: CLAIR, outfit: '#2d3a4a', coat: '#f0ede4',
-    face: 'long', eyes: 'narrow', brow: 'calm',
-    extras: ['coat-shoulders', 'gloves', 'boots'],
-    head: 'none', mark: 'none', prop: 'none', build: 'slim',
+    note:
+      'Vieille femme de la Marine, grande et relativement mince. Cheveux ' +
+      'blancs, coiffés en hauteur et parfois attachés. Visage fin et très ' +
+      'ridé. Porte le manteau de Marine. Corps plutôt sec, posture droite ' +
+      'malgré l’âge. Utilise une pipe. Son apparence est celle d’une vieille ' +
+      'femme élégante et autoritaire plutôt que d’une combattante massive.',
+    hair: '#e9e5da', cut: 'ponytail', skin: CLAIR, outfit: '#3a4250',
+    extras: ['face-lines'],
+    face: 'sharp',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'cane', build: 'slim',
   },
   momonga: {
-    note: 'Cheveux noirs, barbe taillée, manteau de la Marine, sabre.',
-    hair: '#1a1a1a', cut: 'short', skin: CLAIR, outfit: '#2d3a4a', coat: '#f0ede4',
-    face: 'square', eyes: 'normal', brow: 'calm', height: 'tall',
-    extras: ['coat-shoulders', 'belt', 'boots'],
-    head: 'none', mark: 'beard', prop: 'sword', build: 'broad',
+    note:
+      'Homme grand et athlétique. Cheveux noirs, relativement longs mais bien ' +
+      'entretenus. Barbe soigneusement taillée. Visage anguleux avec nez ' +
+      'fort. Porte le manteau de vice-amiral sur les épaules et un sabre. ' +
+      'Jambes et bras proportionnés, musculature visible mais pas ' +
+      'gigantesque.',
+    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    extras: ['coat-shoulders'],
+    face: 'sharp',
+    height: 'tall',
+    head: 'none', mark: 'beard', prop: 'sword', build: 'slim',
   },
   hina: {
-    note: 'Longs cheveux roses, cigarette, manteau de la Marine sur tenue sombre.',
-    hair: '#e87aa8', cut: 'long', skin: PALE, outfit: '#2a2a33', coat: '#f0ede4',
-    face: 'long', eyes: 'narrow', brow: 'arched',
-    extras: ['coat-shoulders', 'boots', 'earrings'],
+    note:
+      'Femme grande, mince et élégante. Très longs cheveux roses, lisses et ' +
+      'volumineux. Visage fin, yeux étroits et lèvres marquées. Corps élancé ' +
+      'avec longues jambes. Elle porte une tenue noire ajustée sous le ' +
+      'manteau blanc de la Marine. Fume souvent une cigarette. Son apparence ' +
+      'est particulièrement sophistiquée.',
+    hair: '#e88ab0', cut: 'long', skin: CLAIR, outfit: '#22222c', coat: '#f0ece2',
+    face: 'sharp',
+    eyes: 'narrow',
+    height: 'tall',
     head: 'none', mark: 'cigarette', prop: 'none', build: 'slim',
   },
   't-bone': {
-    note: 'Silhouette squelettique, armure, casque à plumet, sabre.',
-    hair: '#e2ded2', cut: 'short', skin: '#e8e2d4', outfit: '#c8ccd4', coat: '#8a94a4',
-    accessory: '#c0243c',
-    face: 'long', eyes: 'narrow', brow: 'calm', height: 'tall',
-    extras: ['pauldrons', 'cape', 'boots'],
-    head: 'cap', mark: 'none', prop: 'sword', build: 'slim',
+    note:
+      'Homme extraordinairement maigre, presque squelettique. Bras et jambes ' +
+      'très longs et très fins. Visage extrêmement émacié, joues creuses. ' +
+      'Porte une armure et un casque avec plumet. Sabre très imposant par ' +
+      'rapport à son corps. Son physique donne l’impression d’un squelette ' +
+      'humain vivant.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['feather', 'pauldrons', 'face-lines'],
+    head: 'horns', mark: 'none', prop: 'greatsword', build: 'slim',
   },
   'don-quijote-rosinante': {
-    note: 'Très grand, maquillage de clown, manteau à plumes, cigarettes, cœur peint sur le torse.',
-    hair: '#e8cf6a', cut: 'wavy', skin: CLAIR, outfit: '#c0243c', coat: '#e8842c',
-    face: 'long', eyes: 'narrow', brow: 'calm', height: 'towering',
-    extras: ['feather-coat', 'gloves', 'boots'],
+    note:
+      'Très grand homme, extrêmement longiligne. Jambes et bras longs, ' +
+      'épaules relativement étroites. Visage allongé couvert de maquillage ' +
+      'blanc et rouge de clown. Longs cheveux clairs. Il porte un gigantesque ' +
+      'manteau noir couvert de plumes. Son torse comporte un motif de cœur ' +
+      'rouge. Fume souvent plusieurs cigarettes en même temps. Son apparence ' +
+      'est volontairement extravagante.',
+    hair: '#d8cbb0', cut: 'long', skin: CLAIR, outfit: '#22222c',
+    extras: ['face-tattoo', 'feather-coat'],
+    face: 'long',
+    height: 'tall',
     head: 'none', mark: 'cigarette', prop: 'none', build: 'slim',
   },
   jango: {
-    note: 'Longs cheveux noirs sous un bonnet, lunettes rondes bleues, anneau hypnotique.',
-    hair: '#141414', cut: 'long', skin: HALE, outfit: '#2a4a5a', coat: '#1a3040',
-    accessory: '#e8e2d4',
-    face: 'long', eyes: 'narrow', brow: 'arched',
-    extras: ['bare-chest', 'boots', 'belt'],
-    head: 'bandana', mark: 'shades', prop: 'knives', build: 'slim',
+    note:
+      'Homme grand et mince. Très longs cheveux noirs, souvent regroupés sous ' +
+      'un bonnet ou un chapeau. Visage fin. Porte de grandes lunettes rondes ' +
+      'bleues. Menton étroit. Vêtements militaires puis uniformes de Marine. ' +
+      'Son anneau hypnotique ajoute un élément circulaire très visible à sa ' +
+      'silhouette.',
+    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    face: 'sharp',
+    height: 'tall',
+    head: 'brim', mark: 'glasses', prop: 'none', build: 'slim',
   },
   sentomaru: {
-    note: 'Silhouette massive, barbe en collier, casque, hache géante.',
-    hair: '#1a1a1a', cut: 'topknot', skin: HALE, outfit: '#4a5a6e', coat: '#2a3a4a',
-    accessory: '#8a94a4',
-    face: 'square', eyes: 'narrow', brow: 'fierce', height: 'tall',
-    extras: ['pauldrons', 'belt', 'boots'],
-    head: 'cap', mark: 'beard', prop: 'axe', build: 'giant',
+    note:
+      'Homme extrêmement massif et large. Gros ventre, épaules énormes et ' +
+      'bras très épais. Barbe formant un collier autour du menton et de la ' +
+      'mâchoire. Porte un casque et des vêtements de garde militaire. Son ' +
+      'énorme hache accentue la largeur de sa silhouette. Corps ' +
+      'particulièrement lourd.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['pendant', 'belt'],
+    head: 'horns', mark: 'beard', prop: 'axe', build: 'broad',
   },
   makino: {
-    note: 'Cheveux verts, tablier de tavernière, sourire calme.',
-    hair: '#4c8b45', cut: 'long', skin: PALE, outfit: '#e8e2d4', coat: '#c8b88a',
-    face: 'round', eyes: 'normal', brow: 'calm',
-    extras: ['boots', 'belt', 'earrings'],
+    note:
+      'Jeune femme adulte de taille moyenne et de morphologie mince. Cheveux ' +
+      'verts, longs et lisses, généralement attachés ou tombant sur les ' +
+      'épaules. Visage doux, grands yeux et sourire calme. Porte un tablier ' +
+      'de tavernière au-dessus d’une robe simple. Peau claire. Apparence très ' +
+      'naturelle et élégante.',
+    hair: '#5a9a55', cut: 'ponytail', skin: CLAIR, outfit: '#ded6c2',
+    extras: ['coat-shoulders', 'necktie'],
+    face: 'round',
+    eyes: 'wide',
+    brow: 'calm',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   'curly-dadan': {
-    note: 'Cheveux orange bouclés en masse, cigarette, carrure imposante.',
-    hair: '#e8842c', cut: 'afro', skin: HALE, outfit: '#8a5a33', coat: '#5a3a1a',
-    face: 'square', eyes: 'narrow', brow: 'fierce', height: 'tall',
-    extras: ['belt', 'boots', 'gloves'],
-    head: 'none', mark: 'cigarette', prop: 'none', build: 'giant',
+    note:
+      'Femme âgée de forte corpulence, avec de larges épaules et un corps ' +
+      'volumineux. Cheveux orange très abondants et fortement bouclés, ' +
+      'formant presque une masse autour de sa tête. Visage large et ridé, ' +
+      'gros nez. Cigarette souvent à la bouche. Elle porte des vêtements ' +
+      'simples et robustes. Malgré son âge, ses bras et épaules restent ' +
+      'imposants.',
+    hair: '#e08a3c', cut: 'wavy', skin: CLAIR, outfit: '#3a4250',
+    extras: ['face-lines'],
+    face: 'square',
+    head: 'none', mark: 'cigarette', prop: 'none', build: 'slim',
   },
   koshiro: {
-    note: 'Kimono blanc, longs cheveux noirs relevés, lunettes, sabre de maître.',
-    hair: '#141414', cut: 'topknot', skin: CLAIR, outfit: '#e8e2d4', coat: '#c8b88a',
-    face: 'long', eyes: 'narrow', brow: 'calm', height: 'tall',
-    extras: ['sash', 'boots', 'belt'],
+    note:
+      'Homme adulte grand et mince, mais encore très droit et athlétique. ' +
+      'Longs cheveux noirs, coiffés vers l’arrière ou attachés. Porte des ' +
+      'lunettes. Visage fin et sérieux. Kimono blanc traditionnel. Porte un ' +
+      'katana de maître. Ses bras ne sont pas volumineux, mais son corps est ' +
+      'sec et entraîné.',
+    hair: '#1c1c22', cut: 'ponytail', skin: CLAIR, outfit: '#f0ece2',
+    face: 'sharp',
+    brow: 'calm',
+    height: 'tall',
     head: 'none', mark: 'glasses', prop: 'sword', build: 'slim',
   },
   kuina: {
-    note: 'Cheveux bleu-noir courts, tenue d’entraînement, sabre.',
-    hair: '#26303f', cut: 'short', skin: PALE, outfit: '#e8e2d4', coat: '#4a5a6e',
-    face: 'round', eyes: 'normal', brow: 'fierce', height: 'short',
-    extras: ['sash', 'belt', 'boots'],
+    note:
+      'Jeune fille mince mais athlétique. Cheveux bleu-noir, relativement ' +
+      'courts et souvent attachés en arrière. Visage fin et juvénile. Peau ' +
+      'claire. Corps svelte avec bras et jambes fins mais entraînés. Porte un ' +
+      'kimono ou une tenue d’entraînement simple. Katana attaché à la ' +
+      'ceinture.',
+    hair: '#2a2f42', cut: 'ponytail', skin: CLAIR, outfit: '#3a4250',
+    extras: ['belt'],
+    face: 'sharp',
     head: 'none', mark: 'none', prop: 'sword', build: 'slim',
   },
   kaya: {
-    note: 'Longs cheveux blonds, teint pâle, robe claire, silhouette frêle.',
-    hair: '#e8cf6a', cut: 'long', skin: '#f6e2d2', outfit: '#e8e2d4', coat: '#c8d8e0',
-    face: 'round', eyes: 'wide', brow: 'calm',
-    extras: ['high-collar', 'boots', 'earrings'],
+    note:
+      'Jeune femme très mince et délicate. Longs cheveux blonds, lisses, ' +
+      'tombant largement dans le dos. Visage très fin et pâle. Grands yeux. ' +
+      'Épaules étroites, bras fins et jambes longues. Porte des robes claires ' +
+      'et élégantes, souvent blanches ou pastel. Impression générale : jeune ' +
+      'aristocrate fragile.',
+    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#ded6c2',
+    face: 'sharp',
+    eyes: 'wide',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   helmeppo: {
-    note: 'Cheveux blonds courts, uniforme de la Marine, expression inquiète.',
-    hair: '#e8cf6a', cut: 'short', skin: PALE, outfit: '#e8e2d4', coat: '#4a5a6e',
-    accessory: '#2d3a4a',
-    face: 'long', eyes: 'wide', brow: 'arched',
-    extras: ['epaulettes', 'necktie', 'boots'],
-    head: 'none', mark: 'none', prop: 'sword', build: 'slim',
-  },
-  'boa-sandersonia': {
-    note: 'Très grande, cheveux verts, robe légère, serpent en motif.',
-    hair: '#4c8b45', cut: 'long', skin: PALE, outfit: '#4a7a4a', coat: '#2a5a3a',
-    face: 'long', eyes: 'sharp', brow: 'arched', height: 'towering',
-    extras: ['snake', 'boots', 'earrings'],
+    note:
+      'Jeune homme relativement grand et mince. Cheveux blonds courts, ' +
+      'coiffés proprement. Visage allongé et peau claire. Yeux souvent grands ' +
+      'ou légèrement inquiets. Corps athlétique mais pas particulièrement ' +
+      'musclé. Uniforme de Marine parfaitement ajusté. Sa silhouette devient ' +
+      'progressivement plus sportive au fil de l’histoire.',
+    hair: '#e6cf7e', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    face: 'long',
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
+  'boa-sandersonia': {
+    note:
+      'Femme extrêmement grande et imposante, au physique athlétique et ' +
+      'musclé. Très longs cheveux verts, épais, descendant dans le dos. ' +
+      'Visage allongé, yeux étroits. Peau claire. Bras et jambes longs et ' +
+      'puissants. Elle porte une tenue Kuja légère, avec une robe ou un haut ' +
+      'très ouvert et des ornements de serpent. Son corps est plus robuste ' +
+      'que celui de Hancock mais beaucoup plus élancé que celui de Marigold.',
+    hair: '#5a9a55', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    extras: ['beads', 'open-vest'],
+    face: 'long',
+    eyes: 'narrow',
+    height: 'towering',
+    head: 'none', mark: 'none', prop: 'none', build: 'broad',
+  },
   'boa-marigold': {
-    note: 'Corpulente, cheveux orange relevés, robe ample.',
-    hair: '#e8842c', cut: 'topknot', skin: PALE, outfit: '#c0546a', coat: '#8a2a44',
-    face: 'round', eyes: 'sharp', brow: 'arched', height: 'towering',
-    extras: ['snake', 'boots', 'earrings'],
-    head: 'none', mark: 'none', prop: 'none', build: 'giant',
+    note:
+      'Très grande femme, mais extrêmement corpulente. Bras et jambes épais, ' +
+      'hanches larges, ventre développé. Cheveux orange/roux, attachés en ' +
+      'hauteur. Visage rond et joues pleines. Ses yeux sont grands. Elle ' +
+      'porte une grande robe traditionnelle ample, avec des éléments ' +
+      'rappelant le style de Kuja. Son physique est beaucoup plus massif que ' +
+      'celui de sa sœur Boa Hancock.',
+    hair: '#c4562a', cut: 'topknot', skin: CLAIR, outfit: '#3a4250',
+    extras: ['belt'],
+    face: 'round',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   hajrudin: {
-    note: 'Géant d’Elbaf, cheveux blonds, barbe tressée, armure et casque.',
-    hair: '#e0c05a', cut: 'long', skin: CLAIR, outfit: '#5a4a34', coat: '#3a2f20',
-    accessory: '#8a94a4',
-    face: 'square', eyes: 'sharp', brow: 'fierce', height: 'towering',
-    extras: ['pauldrons', 'belt', 'boots'],
-    head: 'cap', mark: 'beard', prop: 'sword', build: 'giant',
+    note:
+      'Géant d’Elbaf de taille gigantesque comparé aux humains normaux. Corps ' +
+      'extrêmement massif et athlétique, avec des bras et jambes énormes. ' +
+      'Cheveux blonds longs. Barbe blonde souvent tressée. Visage très large ' +
+      'avec grosses dents et traits typiquement nordiques. Porte une armure ' +
+      'métallique, un casque et de grandes protections. Physiquement, il ' +
+      'domine complètement un humain normal.',
+    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    extras: ['pauldrons', 'sharp-teeth'],
+    face: 'square',
+    height: 'towering',
+    head: 'horns', mark: 'beard', prop: 'none', build: 'giant',
   },
   leo: {
-    note: 'Nain du Tontatta, très petit, casque à oreilles de lapin, aiguille et fil.',
-    hair: '#4c8b45', cut: 'short', skin: CLAIR, outfit: '#e8842c',
-    accessory: '#c8a02c',
-    face: 'round', eyes: 'wide', brow: 'neutral', height: 'short',
-    extras: ['belt', 'boots', 'gloves'],
-    head: 'cap', mark: 'none', prop: 'staff', build: 'slim',
+    note:
+      'Très petit nain Tontatta. Corps extrêmement minuscule comparé à un ' +
+      'humain normal. Tête disproportionnellement grande, oreilles longues, ' +
+      'nez pointu. Cheveux clairs. Porte un casque avec de grandes oreilles ' +
+      'ressemblant à celles d’un lapin. Corps mince et agile. Transporte une ' +
+      'gigantesque aiguille et du fil pour sa taille.',
+    hair: '#d8cbb0', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    height: 'short',
+    head: 'horns', mark: 'none', prop: 'staff', build: 'slim',
   },
   'baby-5': {
-    note: 'Cheveux noirs mi-longs, robe sombre, membres qui se changent en armes.',
-    hair: '#141414', cut: 'long', skin: PALE, outfit: '#22222c', coat: '#15151c',
-    face: 'round', eyes: 'wide', brow: 'arched',
-    extras: ['gloves', 'boots', 'high-collar'],
-    head: 'none', mark: 'none', prop: 'gun', build: 'slim',
+    note:
+      'Femme jeune et mince, avec une silhouette féminine fine mais bien ' +
+      'proportionnée. Peau claire. Ses cheveux noirs sont relativement longs, ' +
+      'lisses et tombent autour de son visage et sur ses épaules. Grands yeux ' +
+      'et traits fins. Elle porte généralement une robe noire ou très sombre, ' +
+      'moulante au niveau du buste, avec des bottes et des accessoires de ' +
+      'servante/combat. Son corps peut se transformer en armes : bras ' +
+      'transformés en canons ou lames, jambes en armes, etc., ce qui modifie ' +
+      'radicalement sa silhouette lorsqu’elle utilise son fruit.',
+    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#22222c',
+    extras: ['boots'],
+    eyes: 'wide',
+    head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   // --- Épiques : équipage de Big Mom ----------------------------------------
 
   'charlotte-chiffon': {
-    note: 'Jeune femme au visage rond et aux lèvres marquées, longs cheveux blond clair. Robe sombre à col haut.',
-    hair: '#e8d48a', cut: 'long', skin: CLAIR, outfit: '#3b2a44',
-    extras: ['high-collar', 'earrings'],
-    face: 'round', eyes: 'wide',
-    head: 'none', mark: 'none', prop: 'none', build: 'slim',
+    note:
+      'Jeune femme grande et assez ronde, visage doux et arrondi. Peau ' +
+      'claire. Cheveux blond très pâle, longs et volumineux. Grands yeux et ' +
+      'lèvres bien dessinées. Elle porte une robe sombre avec un col haut et ' +
+      'des vêtements élégants. Sa silhouette reste féminine et relativement ' +
+      'douce, sans musculature apparente.',
+    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#2c2f3a',
+    extras: ['high-collar'],
+    face: 'round',
+    eyes: 'wide',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   'charlotte-praline': {
-    note: 'Femme-poisson au teint clair et aux longs cheveux bruns ondulés, nageoires aux avant-bras. Robe claire.',
-    hair: '#6a4a32', cut: 'wavy', skin: '#cfe4ee', outfit: '#e8dcc8',
+    note:
+      'Femme-poisson de type requin. Corps féminin assez grand et voluptueux. ' +
+      'Peau claire. Cheveux bruns très longs et ondulés. Visage humain, mais ' +
+      'avec des caractéristiques de poisson, notamment la structure autour de ' +
+      'la bouche et les nageoires. Ses avant-bras présentent des éléments ' +
+      'rappelant des nageoires. Porte une robe claire et élégante.',
+    hair: '#6a4326', cut: 'wavy', skin: CLAIR, outfit: '#ded6c2',
+    extras: ['fins'],
     frame: 'fishman',
-    extras: ['fins', 'earrings'],
-    face: 'round',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   'charlotte-daifuku': {
-    note: 'Homme large et musculeux, crâne rasé, épaisse moustache et barbiche noires, torse nu sous une veste ouverte, sabre.',
-    hair: '#1c1c1c', cut: 'bald', skin: HALE, outfit: '#7a2c3a', coat: '#3a1c26',
-    extras: ['bare-chest', 'sash', 'chin-tuft'],
-    face: 'square', brow: 'fierce', height: 'tall',
-    head: 'none', mark: 'moustache', prop: 'sword', build: 'broad',
+    note:
+      'Homme extrêmement grand et musclé. Épaules très larges, torse massif ' +
+      'et bras puissants. Crâne presque entièrement rasé. Très grosse ' +
+      'moustache noire, accompagnée d’une barbiche. Visage large et dur. Il ' +
+      'porte une veste ouverte laissant le torse nu. Sabre à la ceinture. ' +
+      'Physique de lutteur ou culturiste lourd.',
+    hair: '#1c1c22', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    extras: ['bare-chest', 'open-vest', 'belt'],
+    face: 'square',
+    height: 'towering',
+    head: 'none', mark: 'goatee', prop: 'sword', build: 'broad',
   },
   'charlotte-oven': {
-    note: 'Colosse au visage carré et anguleux, cheveux noirs courts, tenue rouge sombre à col montant, bras nus.',
-    hair: '#20202a', cut: 'short', skin: HALE, outfit: '#8c2b26',
-    extras: ['high-collar', 'gloves', 'boots'],
-    face: 'square', brow: 'fierce', eyes: 'sharp', height: 'towering',
+    note:
+      'Homme colossal et extrêmement musclé. Visage large et carré, avec des ' +
+      'pommettes massives et une mâchoire puissante. Cheveux noirs courts. ' +
+      'Peau mate. Cou épais et épaules énormes. Il porte une tenue rouge ' +
+      'foncé ouverte sur les bras, avec un pantalon et des bottes. Ses bras ' +
+      'sont particulièrement volumineux. Physiquement, c’est l’un des hommes ' +
+      'les plus massifs de la famille Charlotte.',
+    hair: '#1c1c22', cut: 'short', skin: HALE, outfit: '#b8362c',
+    extras: ['boots'],
+    face: 'square',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   'charlotte-mont-d-or': {
-    note: 'Homme mince à lunettes rondes, cheveux clairs coiffés en arrière, longue tenue claire de bibliothécaire.',
-    hair: '#d8cbb0', cut: 'short', skin: PALE, outfit: '#e4dcc8', coat: '#b8a68a',
-    extras: ['high-collar', 'cravat'],
-    face: 'long', eyes: 'narrow',
+    note:
+      'Homme de taille moyenne à grande, assez mince. Visage étroit, petit ' +
+      'nez et lunettes rondes. Cheveux clairs plaqués vers l’arrière. Cou fin ' +
+      'et épaules modestes. Porte une longue tenue claire rappelant ' +
+      'énormément celle d’un bibliothécaire ou archiviste. Son apparence est ' +
+      'élégante et intellectuelle plutôt que physique.',
+    hair: '#d8cbb0', cut: 'short', skin: CLAIR, outfit: '#ded6c2',
+    face: 'long',
+    height: 'tall',
     head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
   },
   streusen: {
-    note: 'Vieil homme sec, longue barbe blanche en pointe, toque de cuisinier, tablier, grand couteau.',
-    hair: '#e8e4d8', cut: 'short', skin: CLAIR, outfit: '#e8e2d4',
-    accessory: '#f2efe6',
-    extras: ['necktie', 'belt'],
-    face: 'long', height: 'short',
+    note:
+      'Vieil homme petit à moyen et plutôt mince. Très longue barbe blanche ' +
+      'pointue, cheveux blancs ou gris. Visage ridé et yeux petits. Porte la ' +
+      'toque de chef et un grand tablier de cuisinier. Corps sec avec bras ' +
+      'fins. Grand couteau souvent visible.',
+    hair: '#e9e5da', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    extras: ['necktie', 'face-lines'],
+    eyes: 'narrow',
+    height: 'short',
     head: 'cap', mark: 'beard', prop: 'knives', build: 'slim',
   },
   promethee: {
-    note: 'Petit soleil incandescent au visage souriant, teinte orange vif entourée de flammes.',
-    hair: '#ff8c1a', cut: 'spiky', skin: '#ffb347', outfit: '#ff6a1a',
-    accessory: '#ffd166',
-    extras: ['sharp-teeth'],
-    face: 'round', eyes: 'wide', height: 'short',
+    note:
+      'Petite entité solaire. Forme de boule de feu jaune/orange avec un ' +
+      'visage humain souriant intégré. Corps constitué principalement de ' +
+      'flammes. Pas de jambes ni d’anatomie humaine classique. Flammes ' +
+      'irrégulières formant une sorte de chevelure autour du visage. Taille ' +
+      'généralement compacte, mais pouvant augmenter.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    height: 'short',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   napoleon: {
-    note: 'Bicorne vivant bleu nuit à visage moustachu, lame au sommet.',
-    hair: '#2b3a63', cut: 'bald', skin: '#3d4f7d', outfit: '#2b3a63',
-    accessory: '#1c2647',
-    extras: ['epaulettes'],
-    face: 'round', height: 'short',
-    head: 'tricorne', mark: 'moustache', prop: 'sword', build: 'slim',
+    note:
+      'Objet animé : bicorne bleu nuit prenant la forme d’un visage humain. ' +
+      'Deux yeux, grand nez et moustache intégrés à la surface du chapeau. ' +
+      'Une lame est fixée sur le sommet. La forme du corps dépend du chapeau ' +
+      'lui-même. Il possède une expression faciale très mobile.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    head: 'tricorne', mark: 'moustache', prop: 'none', build: 'slim',
   },
   hera: {
-    note: 'Nuage d’orage vivant, teinte violine, joues rondes et regard mauvais, éclairs.',
-    hair: '#8f7fc4', cut: 'wavy', skin: '#b5a8dc', outfit: '#6b5aa6',
-    extras: ['sharp-teeth'],
-    face: 'round', eyes: 'sharp', brow: 'fierce', height: 'short',
+    note:
+      'Être constitué d’un nuage d’orage vivant. Corps flottant sans ' +
+      'structure humaine classique. Forme principalement nuageuse, de couleur ' +
+      'gris-violet. Visage rond intégré dans le nuage, avec des joues ' +
+      'visibles, deux yeux et une expression agressive. De petits éclairs ' +
+      'apparaissent autour du corps. Texture générale : nuage épais et ' +
+      'irrégulier.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    face: 'round',
+    brow: 'fierce',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   zeus: {
-    note: 'Nuage vivant gris-bleu au visage rond et naïf, petits éclairs jaunes.',
-    hair: '#9db4cc', cut: 'wavy', skin: '#c4d4e2', outfit: '#8aa3bd',
-    accessory: '#f2d24a',
-    face: 'round', eyes: 'wide', height: 'short',
-    head: 'none', mark: 'none', prop: 'none', build: 'slim',
+    note:
+      'Nuage vivant principalement gris-bleu, plus compact et plus rond que ' +
+      'Prométhée. Visage humain extrêmement simple, avec grands yeux et ' +
+      'expression naïve. Corps duveteux avec petites pointes de nuage. De ' +
+      'petits éclairs jaunes apparaissent autour de lui. Pas de membres ' +
+      'humains classiques. Il peut s’étendre et grossir considérablement.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    eyes: 'wide',
+    head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
 
   // --- Épiques : équipage aux Cent Bêtes ------------------------------------
 
   'who-s-who': {
-    note: 'Homme félin élancé, cheveux clairs mi-longs, masque relevé, longue veste claire, deux sabres.',
-    hair: '#d8cfc0', cut: 'long', skin: CLAIR, outfit: '#e2ddd0', coat: '#c8bfae',
-    extras: ['fur-collar', 'sharp-teeth', 'gloves'],
-    face: 'sharp', eyes: 'sharp',
+    note:
+      'Homme grand et athlétique, à l’apparence très féline. Cheveux clairs ' +
+      'mi-longs. Visage allongé et mâchoire marquée. Porte un masque de félin ' +
+      'couvrant la partie supérieure du visage dans certaines scènes. Longue ' +
+      'veste claire et pantalon assorti. Deux sabres. En forme Zoan, il ' +
+      'devient un sabre à dents humanoïde, avec museau félin, oreilles, ' +
+      'fourrure et énorme mâchoire.',
+    hair: '#d8cbb0', cut: 'long', skin: CLAIR, outfit: '#ded6c2',
+    face: 'long',
+    height: 'tall',
     head: 'mask', mark: 'none', prop: 'sword', build: 'slim',
   },
   sasaki: {
-    note: 'Homme robuste au crâne rasé et à la barbe fournie, longue veste sombre, grand sabre.',
-    hair: '#2a2a2a', cut: 'bald', skin: HALE, outfit: '#2e3a4a', coat: '#1c2430',
-    extras: ['fur-collar', 'boots'],
-    face: 'square', brow: 'fierce', height: 'tall',
-    head: 'none', mark: 'beard', prop: 'greatsword', build: 'broad',
+    note:
+      'Homme grand et très massif. Crâne rasé, barbe noire et très fournie. ' +
+      'Visage large. Cou et épaules puissants. Porte une longue veste sombre ' +
+      'et un grand sabre. Corps athlétique mais surtout épais et lourd. En ' +
+      'forme Zoan antique, il devient un Triceratops, avec large crâne, ' +
+      'cornes et immense collerette.',
+    hair: '#1c1c22', cut: 'bald', skin: CLAIR, outfit: '#2c2f3a',
+    extras: ['tusks'],
+    face: 'square',
+    height: 'tall',
+    head: 'horns', mark: 'beard', prop: 'greatsword', build: 'broad',
   },
   holdem: {
-    note: 'Homme-lion aux cheveux hérissés, tête de lion au niveau du ventre, kimono ouvert.',
-    hair: '#c98a2e', cut: 'spiky', skin: HALE, outfit: '#7a5230',
-    extras: ['mane', 'bare-chest', 'sharp-teeth'],
-    face: 'square', brow: 'fierce',
+    note:
+      'Homme grand et robuste. Cheveux hérissés et visage humain relativement ' +
+      'large. Son trait majeur est la tête de lion intégrée dans le ventre, ' +
+      'avec bouche, yeux et crinière. Il porte un kimono très ouvert montrant ' +
+      'une grande partie du torse et du ventre. Bras puissants. Apparence ' +
+      'hybride homme/lion très particulière.',
+    hair: '#2a2a33', cut: 'spiky', skin: CLAIR, outfit: '#3a4250',
+    extras: ['belt', 'open-vest', 'mane'],
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   speed: {
-    note: 'Femme-poney, longue crinière blonde, chapeau, corps de cheval sous la taille.',
-    hair: '#e2c96a', cut: 'long', skin: CLAIR, outfit: '#c46a8a',
-    extras: ['mane', 'boots'],
-    face: 'round', eyes: 'wide',
+    note:
+      'Femme-centaure de type cheval. Partie supérieure : corps féminin ' +
+      'mince, visage fin, longs cheveux blonds et généralement un chapeau. ' +
+      'Partie inférieure : grand corps de cheval, musclé au niveau des jambes ' +
+      'et du bassin, avec quatre sabots. Cette combinaison donne une ' +
+      'silhouette très haute et très longue.',
+    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    extras: ['boots'],
+    face: 'sharp',
     head: 'brim', mark: 'none', prop: 'none', build: 'slim',
   },
 
   // --- Épiques : équipage de Barbe Blanche ----------------------------------
 
   thatch: {
-    note: 'Homme souriant à la haute banane brune coiffée en arrière, tenue claire de cuisinier, sabre.',
-    hair: '#6a4326', cut: 'pompadour', skin: CLAIR, outfit: '#e4ddcc', coat: '#2f4a63',
-    extras: ['necktie', 'belt'],
-    face: 'long',
-    head: 'none', mark: 'none', prop: 'sword', build: 'broad',
+    note:
+      'Homme grand, mince mais athlétique. Visage souriant, mâchoire moyenne. ' +
+      'Cheveux bruns très volumineux, dressés en arrière en une grande ' +
+      'banane. Porte une tenue claire de cuisinier avec tablier. Corps assez ' +
+      'sec. Sabre à la ceinture. Son apparence combine celle d’un cuisinier ' +
+      'et d’un épéiste.',
+    hair: '#6a4326', cut: 'pompadour', skin: CLAIR, outfit: '#ded6c2',
+    extras: ['belt', 'necktie'],
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'sword', build: 'slim',
   },
   haruta: {
-    note: 'Silhouette juvénile et fine, cheveux bruns courts au carré, veste claire, rapière.',
-    hair: '#5a4028', cut: 'short', skin: PALE, outfit: '#dcd6c4', coat: '#8a6a44',
-    extras: ['belt'],
-    face: 'round', eyes: 'wide', height: 'short',
+    note:
+      'Jeune homme très fin et de petite stature comparé aux autres ' +
+      'commandants. Visage juvénile. Cheveux bruns courts, tombant légèrement ' +
+      'autour du visage. Corps mince mais souple. Porte une veste claire et ' +
+      'une tenue de combat légère. Utilise une rapière. Apparence presque ' +
+      'androgyne.',
+    hair: '#6a4326', cut: 'short', skin: CLAIR, outfit: '#ded6c2',
+    face: 'round',
+    height: 'short',
     head: 'none', mark: 'none', prop: 'sword', build: 'slim',
   },
   atmos: {
-    note: 'Homme massif au visage bovin et aux petites cornes, torse nu, hache.',
-    hair: '#3a2a1c', cut: 'short', skin: MAT, outfit: '#5a3a24',
-    extras: ['tusks', 'bare-chest'],
-    face: 'square', brow: 'fierce', height: 'tall',
+    note:
+      'Homme extrêmement massif, large au niveau du torse et des bras. Son ' +
+      'visage évoque celui d’un bovin : nez large, traits épais, mâchoire ' +
+      'puissante et petites cornes sur la tête. Peau sombre. Son torse est ' +
+      'entièrement découvert, montrant une musculature très développée. Il ' +
+      'porte peu de vêtements, principalement des éléments destinés au ' +
+      'combat. Son arme est une grande hache. Impression générale : brute ' +
+      'géante extrêmement robuste.',
+    hair: '#2a2a33', cut: 'short', skin: MAT, outfit: '#3a4250',
+    extras: ['tusks'],
     head: 'horns', mark: 'none', prop: 'axe', build: 'broad',
   },
   fossa: {
-    note: 'Homme au visage anguleux barré d’une cicatrice, cigare aux lèvres, veste sombre, sabre.',
-    hair: '#2a2a2a', cut: 'short', skin: HALE, outfit: '#2b2b33', coat: '#1c1c24',
-    extras: ['boots', 'belt'],
-    face: 'sharp', eyes: 'narrow',
+    note:
+      'Homme adulte grand et robuste. Visage anguleux, nez prononcé, yeux ' +
+      'étroits. Une grande cicatrice traverse son visage. Porte un cigare. ' +
+      'Cheveux et barbe foncés. Torse assez large. Veste sombre et pantalon ' +
+      'robuste. Son sabre est généralement visible. Physique de combattant ' +
+      'expérimenté plutôt que de colosse.',
+    hair: '#33291f', cut: 'short', skin: CLAIR, outfit: '#2c2f3a',
+    face: 'sharp',
+    eyes: 'narrow',
+    height: 'tall',
     head: 'none', mark: 'cigar', prop: 'sword', build: 'broad',
   },
   squardo: {
-    note: 'Homme mince aux longs cheveux sombres, bandana, veste ouverte, sabre.',
-    hair: '#2f2f3a', cut: 'long', skin: HALE, outfit: '#3f5a6a', coat: '#28404d',
-    accessory: '#7a2c2c',
-    extras: ['open-vest', 'sash'],
-    face: 'sharp', eyes: 'sharp',
+    note:
+      'Homme adulte plutôt mince mais de taille importante. Cheveux sombres ' +
+      'assez longs. Bandana sur la tête. Visage étroit et marqué. Porte une ' +
+      'veste ouverte laissant apparaître une partie du torse. Bras ' +
+      'relativement musclés mais corps sec. Sabre long porté au côté.',
+    hair: '#2a2a33', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    extras: ['open-vest'],
+    face: 'long',
     head: 'bandana', mark: 'none', prop: 'sword', build: 'slim',
   },
   'whitey-bay': {
-    note: 'Femme aux cheveux blancs coupés court, manteau de fourrure claire, air glacial.',
-    hair: '#eae7de', cut: 'short', skin: PALE, outfit: '#cfe0e8', coat: '#e8e8e2',
-    extras: ['fur-collar', 'boots'],
-    face: 'sharp', eyes: 'narrow', brow: 'calm',
-    head: 'none', mark: 'none', prop: 'sword', build: 'slim',
+    note:
+      'Femme adulte grande et assez mince. Cheveux blancs courts, coupés ' +
+      'autour de la tête. Visage fin avec traits froids. Peau claire. Porte ' +
+      'un épais manteau de fourrure clair, donnant beaucoup de volume autour ' +
+      'des épaules et du cou. Silhouette féminine mais robuste.',
+    hair: '#e9e5da', cut: 'short', skin: CLAIR, outfit: '#ded6c2',
+    extras: ['fur-collar'],
+    face: 'sharp',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   'little-oz-junior': {
-    note: 'Géant démesuré au visage carré, petites cornes, tenue sommaire, force brute.',
-    hair: '#4a3020', cut: 'short', skin: MAT, outfit: '#6a4a2a',
-    extras: ['bare-chest', 'tusks'],
-    face: 'square', brow: 'fierce', height: 'towering',
+    note:
+      'Géant colossal, encore bien plus massif qu’un humain gigantesque ' +
+      'standard. Corps incroyablement épais, avec épaules, bras et jambes ' +
+      'gigantesques. Visage carré, grosses dents et petites cornes sur la ' +
+      'tête. Porte très peu de vêtements. Torse et bras couverts de muscles ' +
+      'épais. Sa taille donne l’impression d’un véritable monstre humanoïde.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['sharp-teeth', 'tusks'],
+    face: 'square',
+    height: 'towering',
     head: 'horns', mark: 'none', prop: 'none', build: 'giant',
   },
 
   // --- Épiques : famille Don Quichotte --------------------------------------
 
   jora: {
-    note: 'Femme d’âge mûr aux formes lourdes, coiffure haute et fleurie, robe voyante.',
-    hair: '#c96a9a', cut: 'wavy', skin: CLAIR, outfit: '#d46a9a',
-    extras: ['earrings', 'pendant'],
-    face: 'round', eyes: 'narrow',
+    note:
+      'Femme d’âge mûr, relativement grande et surtout très corpulente. ' +
+      'Visage rond. Cheveux colorés, volumineux et coiffés très haut. Porte ' +
+      'des vêtements extrêmement voyants et fantaisistes. Bras et jambes ' +
+      'épais. Forte poitrine et hanches larges. Apparence volontairement ' +
+      'extravagante.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#c25a8a',
+    face: 'round',
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   'lao-g': {
-    note: 'Vieillard sec et voûté, longue barbe blanche, lunettes rondes, tenue d’arts martiaux.',
-    hair: '#e6e2d6', cut: 'bald', skin: CLAIR, outfit: '#c8b898',
-    extras: ['sash'],
-    face: 'long', height: 'short',
-    head: 'none', mark: 'beard', prop: 'none', build: 'slim',
+    note:
+      'Vieillard extrêmement sec et voûté. Corps maigre avec muscles très peu ' +
+      'volumineux. Très longue barbe blanche. Lunettes rondes. Visage ridé et ' +
+      'profondément marqué par l’âge. Porte des vêtements traditionnels ' +
+      'd’arts martiaux. Bras et jambes très fins, mais extrêmement nerveux.',
+    hair: '#e9e5da', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    extras: ['face-lines'],
+    head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
   },
   machvise: {
-    note: 'Homme énorme et rond, crâne dégarni, petites lunettes, tenue de lutteur.',
-    hair: '#3a3a3a', cut: 'bald', skin: CLAIR, outfit: '#4a6a8a',
-    extras: ['bare-chest', 'belt'],
-    face: 'round', height: 'tall',
-    head: 'none', mark: 'glasses', prop: 'none', build: 'broad',
+    note:
+      'Homme gigantesque, très lourd et extraordinairement rond. Crâne ' +
+      'dégarni, petite paire de lunettes. Visage large et ventre énorme. Bras ' +
+      'et jambes épais. Porte une tenue rappelant celle d’un lutteur ou d’un ' +
+      'catcheur. Son corps combine masse graisseuse et puissance physique.',
+    hair: '#2a2a33', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    extras: ['belt'],
+    face: 'square',
+    height: 'towering',
+    head: 'none', mark: 'glasses', prop: 'none', build: 'giant',
   },
   dellinger: {
-    note: 'Adolescent hybride de poisson-combattant, cheveux blonds mi-longs, dents pointues, tenue claire.',
-    hair: '#e8d06a', cut: 'long', skin: PALE, outfit: '#e2dcd0',
-    extras: ['sharp-teeth', 'fins', 'boots'],
-    face: 'sharp', eyes: 'sharp', height: 'short',
+    note:
+      'Jeune homme très mince et relativement petit. Apparence androgyne. ' +
+      'Cheveux blonds mi-longs. Peau claire. Visage fin avec des dents ' +
+      'extrêmement pointues et un sourire inquiétant. Corps souple, jambes ' +
+      'relativement longues. Ses particularités de poisson-combattant lui ' +
+      'donnent des oreilles et éléments aquatiques caractéristiques. Porte ' +
+      'une tenue claire et élégante.',
+    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#ded6c2',
+    face: 'sharp',
+    height: 'short',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   gladius: {
-    note: 'Homme au visage masqué de cuir, cheveux sombres, longue veste, gants.',
-    hair: '#2a2a33', cut: 'short', skin: PALE, outfit: '#3a3a48', coat: '#22222c',
-    extras: ['gloves', 'high-collar'],
-    face: 'sharp', eyes: 'narrow',
+    note:
+      'Homme adulte plutôt grand et mince. Cheveux sombres courts ou mi- ' +
+      'longs. Visage anguleux, souvent partiellement couvert par un masque ou ' +
+      'des protections de cuir. Longue veste sombre et gants. Bras et jambes ' +
+      'relativement fins. Apparence sophistiquée et inquiétante.',
+    hair: '#2a2a33', cut: 'long', skin: CLAIR, outfit: '#2c2f3a',
+    extras: ['gloves'],
+    face: 'sharp',
+    height: 'tall',
     head: 'mask', mark: 'none', prop: 'none', build: 'slim',
   },
   buffallo: {
-    note: 'Homme rond au menton proéminent et aux cheveux noirs hérissés, tenue sombre.',
-    hair: '#1f1f28', cut: 'spiky', skin: HALE, outfit: '#3a3a4a',
-    extras: ['belt'],
-    face: 'square', brow: 'fierce',
+    note:
+      'Homme très rond et trapu, avec un visage large et un menton ' +
+      'extrêmement proéminent. Cheveux noirs dressés en pointes. Gros nez, ' +
+      'petites lèvres et yeux assez rapprochés. Son corps est ' +
+      'particulièrement compact. Porte des vêtements sombres et amples, avec ' +
+      'des éléments métalliques de son équipement. Sa tête et son menton ' +
+      'donnent à sa silhouette un aspect presque caricatural.',
+    hair: '#1c1c22', cut: 'spiky', skin: CLAIR, outfit: '#2c2f3a',
+    face: 'square',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
 
   // --- Épiques : équipage de Trafalgar Law et de Kid -------------------------
 
   shachi: {
-    note: 'Homme à la casquette et aux lunettes teintées, combinaison claire de l’équipage, sourire facile.',
-    hair: '#5a3a24', cut: 'short', skin: CLAIR, outfit: '#e4e0d4',
-    accessory: '#2d4a5e',
-    extras: ['boots'],
-    face: 'round',
+    note:
+      'Homme relativement petit et mince. Porte une casquette, des lunettes ' +
+      'teintées et une combinaison claire des Heart Pirates. Visage souriant ' +
+      'et assez rond. Corps mince, bras peu volumineux. Son apparence est ' +
+      'volontairement similaire à celle de Penguin.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#ded6c2',
+    height: 'short',
     head: 'cap', mark: 'shades', prop: 'none', build: 'slim',
   },
   pingouin: {
-    note: 'Homme au bonnet blanc à visière, combinaison claire de l’équipage, visage à demi caché.',
-    hair: '#2a2a2a', cut: 'short', skin: CLAIR, outfit: '#e4e0d4',
-    accessory: '#f0ede4',
-    extras: ['boots'],
-    face: 'round', eyes: 'narrow',
+    note:
+      'Homme de petite à moyenne taille. Visage assez mince. Porte un bonnet ' +
+      'blanc à visière, cachant une partie de ses cheveux. Combinaison claire ' +
+      'caractéristique des Heart Pirates. Yeux et bouche assez simples. Corps ' +
+      'mince et agile. Son apparence est coordonnée avec celle de Shachi.',
+    hair: '#e9e5da', cut: 'short', skin: CLAIR, outfit: '#ded6c2',
+    height: 'short',
     head: 'cap', mark: 'none', prop: 'none', build: 'slim',
   },
   heat: {
-    note: 'Homme grand et mince aux lèvres marquées, cheveux roux plaqués, veste sombre.',
-    hair: '#c4562a', cut: 'short', skin: PALE, outfit: '#2e2e38', coat: '#1f1f28',
-    extras: ['high-collar', 'gloves'],
-    face: 'long', eyes: 'narrow', height: 'tall',
+    note:
+      'Homme grand, mince et très élancé. Visage long, lèvres très épaisses ' +
+      'et bien visibles. Cheveux roux soigneusement plaqués. Peau claire. ' +
+      'Porte une veste sombre, souvent ouverte, et des vêtements de pirate ' +
+      'relativement simples. Jambes longues et corps sec.',
+    hair: '#c4562a', cut: 'short', skin: CLAIR, outfit: '#2c2f3a',
+    face: 'long',
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   wire: {
-    note: 'Homme très grand et décharné, crâne rasé, teint pâle, longue lance.',
-    hair: '#2a2a2a', cut: 'bald', skin: PALE, outfit: '#3a3a46',
-    extras: ['high-collar'],
-    face: 'long', eyes: 'narrow', height: 'towering',
+    note:
+      'Homme extrêmement grand et très décharné. Crâne rasé. Visage pâle, ' +
+      'étroit et émacié. Bras et jambes très longs. Corps maigre mais ' +
+      'légèrement musclé. Porte des vêtements de pirate simples. Utilise une ' +
+      'très longue lance, qui accentue encore sa silhouette verticale.',
+    hair: '#2a2a33', cut: 'bald', skin: PALE, outfit: '#3a4250',
+    height: 'towering',
     head: 'none', mark: 'none', prop: 'staff', build: 'slim',
   },
 
   // --- Épiques : Fire Tank et grande flotte ---------------------------------
 
   vito: {
-    note: 'Homme mince à lunettes rondes et cheveux clairs plaqués, costume rayé de gangster.',
-    hair: '#d8cbb0', cut: 'short', skin: PALE, outfit: '#3a3a4a',
-    extras: ['striped-suit', 'necktie'],
+    note:
+      'Homme grand et mince. Cheveux clairs plaqués en arrière. Porte de ' +
+      'petites lunettes rondes. Visage étroit. Costume à rayures de gangster, ' +
+      'souvent avec veste et cravate. Bras fins mais relativement longs. ' +
+      'Silhouette d’un mafieux élégant.',
+    hair: '#d8cbb0', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['necktie', 'striped-suit'],
     face: 'long',
-    head: 'brim', mark: 'glasses', prop: 'gun', build: 'slim',
+    height: 'tall',
+    head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
   },
   gotti: {
-    note: 'Homme trapu au visage large et fermé, costume sombre, mâchoire carrée.',
-    hair: '#1f1f28', cut: 'short', skin: HALE, outfit: '#2a2a38',
-    extras: ['striped-suit', 'necktie'],
-    face: 'square', brow: 'fierce',
-    head: 'none', mark: 'none', prop: 'gun', build: 'broad',
+    note:
+      'Homme trapu et très large. Visage énorme, mâchoire carrée et joues ' +
+      'épaisses. Cou très épais. Cheveux sombres. Corps lourd et musclé, ' +
+      'surtout au niveau des bras. Porte un costume sombre typique d’un ' +
+      'gangster. Ressemble davantage à un garde du corps massif qu’à un ' +
+      'combattant agile.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#2c2f3a',
+    face: 'square',
+    head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   suleiman: {
-    note: 'Homme au regard dur et aux longs cheveux sombres, cicatrices au visage, sabre.',
-    hair: '#2a2a33', cut: 'long', skin: HALE, outfit: '#5a4a3a', coat: '#3a2f26',
-    extras: ['face-lines', 'sash'],
-    face: 'sharp', eyes: 'sharp', brow: 'fierce',
+    note:
+      'Homme grand et très mince. Cheveux longs et sombres. Visage dur, peau ' +
+      'plutôt mate. Plusieurs cicatrices sur le visage. Nez droit, yeux ' +
+      'étroits. Porte des vêtements de gladiateur/combat et un sabre. Corps ' +
+      'sec, surtout adapté au maniement de l’épée.',
+    hair: '#2a2a33', cut: 'long', skin: HALE, outfit: '#3a4250',
+    eyes: 'narrow',
+    height: 'tall',
     head: 'none', mark: 'scar-face', prop: 'sword', build: 'slim',
   },
   gambia: {
-    note: 'Jeune homme aux cheveux clairs hérissés et au bandeau, tenue légère, bâton.',
-    hair: '#d8c07a', cut: 'spiky', skin: HALE, outfit: '#6a8a4a',
-    accessory: '#c4a24a',
-    extras: ['bare-midriff'],
-    face: 'round', eyes: 'wide',
+    note:
+      'Jeune homme mince et assez petit. Cheveux clairs dressés et bandeau ' +
+      'sur le front. Visage fin. Corps léger et athlétique. Porte une tenue ' +
+      'de combat courte et légère. Utilise un bâton. Silhouette de jeune ' +
+      'combattant agile.',
+    hair: '#d8cbb0', cut: 'spiky', skin: CLAIR, outfit: '#3a4250',
+    face: 'sharp',
+    height: 'short',
     head: 'bandana', mark: 'none', prop: 'staff', build: 'slim',
   },
   sai: {
-    note: 'Jeune homme aux cheveux noirs mi-longs et au bandeau, tenue traditionnelle claire, lances.',
-    hair: '#20202a', cut: 'long', skin: HALE, outfit: '#d8d0bc', coat: '#8a6a44',
-    accessory: '#2f4a63',
-    extras: ['sash', 'belt'],
-    face: 'sharp', eyes: 'sharp',
-    head: 'bandana', mark: 'none', prop: 'staff', build: 'slim',
+    note:
+      'Jeune homme grand et athlétique. Cheveux noirs mi-longs et bandeau. ' +
+      'Visage fin, nez droit. Bras musclés et épaules assez larges. Porte une ' +
+      'tenue traditionnelle claire, avec pantalon ample et haut adapté aux ' +
+      'arts martiaux. Utilise deux longues lances dans certaines ' +
+      'configurations.',
+    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#ded6c2',
+    face: 'sharp',
+    height: 'tall',
+    head: 'bandana', mark: 'none', prop: 'staff', build: 'broad',
   },
   boo: {
-    note: 'Homme très corpulent au visage rond et placide, tenue traditionnelle ample.',
-    hair: '#2a2a2a', cut: 'short', skin: HALE, outfit: '#c8b48a',
-    extras: ['sash'],
-    face: 'round', eyes: 'narrow', height: 'tall',
+    note:
+      'Homme extrêmement corpulent et très large. Ventre volumineux, épaules ' +
+      'larges et visage rond. Nez large et joues épaisses. Peau mate. Cheveux ' +
+      'courts et relativement sombres. Il porte des vêtements traditionnels ' +
+      'amples, donnant encore plus de volume à sa silhouette. Apparence ' +
+      'générale : homme très lourd et placide.',
+    hair: '#2a2a33', cut: 'short', skin: HALE, outfit: '#3a4250',
+    extras: ['belt'],
+    face: 'round',
+    brow: 'calm',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   ideo: {
-    note: 'Boxeur au crâne étroit et allongé, cheveux sombres, gants de combat, torse découvert.',
-    hair: '#2a2a33', cut: 'short', skin: MAT, outfit: '#7a2c3a',
-    extras: ['gloves', 'bare-chest', 'sash'],
-    face: 'long', eyes: 'sharp', brow: 'fierce',
+    note:
+      'Homme grand, musclé et athlétique. Crâne très allongé et étroit. ' +
+      'Cheveux courts et sombres. Visage anguleux. Torse entièrement ' +
+      'découvert, avec muscles pectoraux et abdominaux visibles. Bras ' +
+      'puissants. Porte de gros gants de boxe. Jambes longues et fortes. ' +
+      'Corps de boxeur pur.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['bare-chest', 'gloves'],
+    face: 'sharp',
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   'blue-gilly': {
-    note: 'Homme aux longues jambes et au teint bleuté, cheveux sombres tirés, tenue de combat légère.',
-    hair: '#20202a', cut: 'ponytail', skin: '#8aa8bd', outfit: '#3a5a7a',
-    extras: ['bare-chest', 'sash'],
-    face: 'long', eyes: 'sharp', height: 'tall',
+    note:
+      'Homme très grand et extrêmement longiligne. Ses jambes sont ' +
+      'anormalement longues en raison de son style de combattant et de sa ' +
+      'physiologie particulière. Peau bleuâtre. Visage étroit avec menton ' +
+      'pointu. Cheveux noirs tirés vers l’arrière. Corps musclé mais très ' +
+      'sec, avec peu de masse grasse. Il porte une tenue de combat légère ' +
+      'couvrant assez peu le corps. Son principal élément visuel est le ' +
+      'rapport jambes/torse extrêmement disproportionné.',
+    hair: '#1c1c22', cut: 'short', skin: '#8fb4c4', outfit: '#3a4250',
+    face: 'long',
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   orlumbus: {
-    note: 'Homme massif à la grande barbe et au bicorne d’amiral, longue veste, ancre.',
-    hair: '#3a2a1c', cut: 'short', skin: CLAIR, outfit: '#2f4a63', coat: '#22364a',
-    extras: ['epaulettes', 'belt', 'boots'],
-    face: 'square', brow: 'fierce', height: 'tall',
-    head: 'tricorne', mark: 'beard', prop: 'none', build: 'broad',
+    note:
+      'Homme massif et très grand. Corps extrêmement large et lourd, avec ' +
+      'énorme torse et bras épais. Grande barbe sombre ou brun foncé. Porte ' +
+      'un bicorne d’amiral, une longue veste et plusieurs accessoires de ' +
+      'commandement. Son ventre est relativement développé. Porte une énorme ' +
+      'ancre ou une arme de grande taille.',
+    hair: '#6a4326', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['belt'],
+    height: 'tall',
+    head: 'tricorne', mark: 'beard', prop: 'club', build: 'broad',
   },
 
   // --- Épiques : Marine et Cipher Pol ---------------------------------------
 
   onigumo: {
-    note: 'Officier au visage anguleux et aux cheveux noirs mi-longs, manteau de la Marine sur les épaules.',
-    hair: '#1f1f28', cut: 'long', skin: HALE, outfit: '#e8e2d4', coat: '#e0d8c4',
-    extras: ['coat-shoulders', 'epaulettes'],
-    face: 'sharp', eyes: 'sharp', brow: 'fierce',
-    head: 'none', mark: 'none', prop: 'sword', build: 'broad',
+    note:
+      'Homme grand, mince mais athlétique. Visage anguleux, nez prononcé. ' +
+      'Cheveux noirs mi-longs. Porte le manteau de Marine sur les épaules. Sa ' +
+      'tenue est celle d’un vice-amiral. Lorsqu’il utilise son pouvoir, ' +
+      'plusieurs pattes d’araignée apparaissent derrière son corps, ' +
+      'transformant fortement sa silhouette.',
+    hair: '#1c1c22', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    extras: ['coat-shoulders'],
+    face: 'sharp',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   doberman: {
-    note: 'Officier maigre au visage émacié, cheveux noirs coiffés en arrière, manteau de la Marine.',
-    hair: '#20202a', cut: 'short', skin: PALE, outfit: '#e8e2d4', coat: '#e0d8c4',
-    extras: ['coat-shoulders', 'necktie'],
-    face: 'long', eyes: 'narrow', brow: 'fierce',
+    note:
+      'Homme grand et relativement mince. Visage très émacié, joues creusées ' +
+      'et mâchoire longue. Cheveux noirs coiffés en arrière. Sourcils épais. ' +
+      'Il porte l’uniforme d’officier de la Marine et le manteau blanc sur ' +
+      'les épaules. Corps athlétique mais sec, sans volume musculaire ' +
+      'excessif.',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#f0ece2',
+    extras: ['face-lines', 'coat-shoulders'],
+    face: 'long',
+    brow: 'fierce',
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   strawberry: {
-    note: 'Officier au crâne démesurément allongé, longue moustache tombante, manteau de la Marine.',
-    hair: '#3a3a3a', cut: 'short', skin: CLAIR, outfit: '#e8e2d4', coat: '#e0d8c4',
-    extras: ['coat-shoulders'],
-    face: 'long', eyes: 'narrow', height: 'tall',
+    note:
+      'Homme très grand et très mince. Le crâne est anormalement haut et ' +
+      'allongé, avec un visage extrêmement étroit. Longue moustache tombante ' +
+      'de chaque côté de la bouche. Cheveux sombres. Manteau de Marine et ' +
+      'tenue d’officier. Ses proportions sont particulièrement inhabituelles ' +
+      'à cause de la forme du crâne.',
+    hair: '#2a2a33', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    height: 'tall',
     head: 'none', mark: 'moustache', prop: 'none', build: 'slim',
   },
   yamakaji: {
-    note: 'Officier corpulent au cigare permanent, chemise à motifs sous le manteau de la Marine, lunettes teintées.',
-    hair: '#2a2a2a', cut: 'short', skin: HALE, outfit: '#c4c0a8', coat: '#e0d8c4',
-    extras: ['coat-shoulders'],
+    note:
+      'Homme grand et plutôt corpulent. Visage assez large. Porte des ' +
+      'lunettes teintées. Chemise à motifs sous le manteau de Marine. Cigare ' +
+      'souvent présent à la bouche. Cheveux sombres et courts. Corps robuste ' +
+      'avec ventre légèrement développé. Silhouette de haut gradé confortable ' +
+      'mais toujours solide.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['belt'],
     face: 'square',
+    height: 'tall',
     head: 'none', mark: 'cigar', prop: 'none', build: 'broad',
   },
   bastille: {
-    note: 'Officier massif au casque à cornes, mâchoire carrée, grand sabre, manteau de la Marine.',
-    hair: '#3a3a44', cut: 'short', skin: HALE, outfit: '#4a5a6a', coat: '#e0d8c4',
-    accessory: '#7a8090',
-    extras: ['coat-shoulders', 'pauldrons'],
-    face: 'square', brow: 'fierce', height: 'tall',
+    note:
+      'Très grand officier de la Marine, extrêmement massif. Épaules énormes, ' +
+      'bras épais et jambes puissantes. Son visage est carré et sa mâchoire ' +
+      'particulièrement imposante. Son casque possède des cornes, donnant à ' +
+      'son apparence un aspect démoniaque. Peau mate. Il porte le manteau ' +
+      'blanc de la Marine sur une tenue militaire sombre. Son arme est un ' +
+      'très grand sabre. Son physique évoque un soldat blindé très lourd.',
+    hair: '#2a2a33', cut: 'short', skin: HALE, outfit: '#2c2f3a', coat: '#f0ece2',
+    extras: ['tusks'],
+    height: 'tall',
     head: 'horns', mark: 'none', prop: 'greatsword', build: 'broad',
   },
   maynard: {
-    note: 'Officier au crâne rasé et à la moustache fine, tenue sombre d’instructeur, sabre.',
-    hair: '#2a2a2a', cut: 'bald', skin: HALE, outfit: '#3a4450',
-    extras: ['belt'],
-    face: 'square', eyes: 'narrow',
+    note:
+      'Homme adulte assez grand, robuste et athlétique. Crâne rasé, moustache ' +
+      'fine. Visage large mais relativement sérieux. Porte une tenue sombre ' +
+      'd’instructeur de la Marine et un sabre. Épaules assez larges, bras ' +
+      'musclés sans exagération.',
+    hair: '#2a2a33', cut: 'bald', skin: CLAIR, outfit: '#2c2f3a',
+    face: 'square',
+    brow: 'calm',
+    height: 'tall',
     head: 'none', mark: 'moustache', prop: 'sword', build: 'broad',
   },
   brandnew: {
-    note: 'Officier mince à lunettes rondes, cheveux clairs plaqués, uniforme de la Marine, dossiers.',
-    hair: '#c4b48a', cut: 'short', skin: PALE, outfit: '#e8e2d4',
-    extras: ['necktie'],
-    face: 'long', eyes: 'narrow',
-    head: 'cap', mark: 'glasses', prop: 'none', build: 'slim',
+    note:
+      'Homme adulte assez mince. Visage allongé, nez fin, menton étroit. ' +
+      'Porte de petites lunettes rondes. Cheveux clairs coiffés soigneusement ' +
+      'vers l’arrière. Peau claire. Uniforme classique d’officier de Marine ' +
+      'et manteau blanc. Sa silhouette est beaucoup plus sèche et élégante ' +
+      'que celle des soldats de première ligne.',
+    hair: '#d8cbb0', cut: 'short', skin: CLAIR, outfit: '#f0ece2',
+    face: 'long',
+    head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
   },
   nezumi: {
-    note: 'Officier au visage de rongeur, fine moustache, cheveux gris plaqués, uniforme de la Marine.',
-    hair: '#9a9a92', cut: 'short', skin: CLAIR, outfit: '#e8e2d4',
-    extras: ['necktie'],
-    face: 'sharp', eyes: 'narrow', height: 'short',
+    note:
+      'Officier de Marine ayant une tête inspirée d’un rat. Visage allongé, ' +
+      'nez pointu, oreilles rondes et grandes moustaches fines. Cheveux gris ' +
+      'plaqués. Corps humain relativement mince. Uniforme de Marine très ' +
+      'propre. Ses mains et jambes restent humaines malgré le visage animal.',
+    hair: '#a8a89e', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    face: 'long',
     head: 'none', mark: 'moustache', prop: 'none', build: 'slim',
   },
   fullbody: {
-    note: 'Officier aux cheveux bleus coiffés en arrière, poings bagués, uniforme de la Marine.',
-    hair: '#4a6ab0', cut: 'short', skin: CLAIR, outfit: '#e8e2d4',
-    extras: ['gloves', 'necktie'],
-    face: 'sharp', eyes: 'sharp', brow: 'arched',
+    note:
+      'Homme grand, athlétique mais peu massif. Cheveux bleus, coiffés en ' +
+      'arrière. Visage carré et sourcils épais. Porte l’uniforme de Marine. ' +
+      'Ses poings sont protégés par de gros accessoires métalliques. Corps ' +
+      'relativement bien entretenu, mais moins imposant que celui des vice- ' +
+      'amiraux.',
+    hair: '#3f6bb5', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    face: 'square',
+    brow: 'fierce',
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   stussy: {
-    note: 'Femme élégante aux longs cheveux clairs ondulés, robe sombre décolletée, verre à la main.',
-    hair: '#e4d8b0', cut: 'wavy', skin: PALE, outfit: '#2b2434',
-    extras: ['earrings', 'pendant'],
-    face: 'round', eyes: 'narrow', brow: 'calm',
+    note:
+      'Femme adulte grande, mince et très élégante. Longs cheveux ' +
+      'clairs/blonds, légèrement ondulés. Visage fin, mâchoire petite et ' +
+      'grands yeux. Robe sombre très élégante, souvent décolletée. Porte des ' +
+      'gants et accessoires raffinés, parfois un verre. Silhouette élancée, ' +
+      'longue et sophistiquée.',
+    hair: '#e6cf7e', cut: 'wavy', skin: CLAIR, outfit: '#2c2f3a',
+    extras: ['bare-midriff', 'beads', 'gloves'],
+    face: 'sharp',
+    eyes: 'wide',
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   saldeath: {
-    note: 'Silhouette étroite au masque à crâne et à la cape sombre, trident, très petite taille.',
-    hair: '#2a2a33', cut: 'bald', skin: OS, outfit: '#2f2f3c', coat: '#22222c',
+    note:
+      'Personnage extrêmement petit. Silhouette étroite et presque frêle. ' +
+      'Porte un masque en forme de crâne, qui dissimule une grande partie du ' +
+      'visage. Cape sombre. Bras et jambes fins. Trident plus grand que son ' +
+      'propre corps ou presque. Son allure contraste fortement avec son ' +
+      'équipement.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#2c2f3a',
     extras: ['cape'],
-    face: 'sharp', height: 'short',
-    head: 'mask', mark: 'skull', prop: 'staff', build: 'slim',
+    height: 'short',
+    head: 'mask', mark: 'none', prop: 'staff', build: 'slim',
   },
   guernica: {
-    note: 'Agent au crâne rasé et au visage large, tenue sombre du Cipher Pol, gants.',
-    hair: '#2a2a2a', cut: 'bald', skin: MAT, outfit: '#2e2e3a',
-    extras: ['gloves', 'necktie'],
-    face: 'square', brow: 'fierce', height: 'tall',
+    note:
+      'Homme grand et robuste, mais sans musculature extravagante. Crâne ' +
+      'entièrement ou presque rasé. Visage très large et anguleux. Yeux ' +
+      'sévères. Vêtements noirs caractéristiques du Cipher Pol, avec gants et ' +
+      'chaussures sombres. Cou épais et épaules relativement larges. ' +
+      'Apparence froide et professionnelle.',
+    hair: '#2a2a33', cut: 'bald', skin: CLAIR, outfit: '#22222c',
+    extras: ['boots', 'gloves'],
+    face: 'square',
+    eyes: 'sharp',
+    brow: 'fierce',
+    height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
 
   // --- Épiques : Dragons Célestes -------------------------------------------
 
   roswald: {
-    note: 'Noble corpulent au visage rond, cheveux blonds bouffants, bulle sur la tête, tenue immaculée.',
-    hair: '#e8d88a', cut: 'afro', skin: PALE, outfit: '#f2efe6',
-    extras: ['high-collar', 'pendant'],
-    face: 'round', eyes: 'narrow',
-    head: 'none', mark: 'moustache', prop: 'gun', build: 'broad',
+    note:
+      'Homme noble massif et corpulent. Visage rond, joues épaisses et menton ' +
+      'peu prononcé. Cheveux blonds extrêmement volumineux et bouffants. ' +
+      'Petits yeux. Peau très claire. Vêtements entièrement blancs et ' +
+      'luxueux. Bulle transparente autour de la tête. Beaucoup plus rond que ' +
+      'Jalmack.',
+    hair: '#e6cf7e', cut: 'wavy', skin: PALE, outfit: '#f0ece2',
+    extras: ['high-collar'],
+    face: 'round',
+    eyes: 'narrow',
+    head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   charloss: {
-    note: 'Noble au visage mou et à la coiffure blonde bouffante, bulle sur la tête, tenue immaculée, pistolet.',
-    hair: '#e8d88a', cut: 'afro', skin: PALE, outfit: '#f2efe6',
-    extras: ['high-collar', 'pendant'],
-    face: 'round', eyes: 'narrow', brow: 'arched',
-    head: 'none', mark: 'shades', prop: 'gun', build: 'broad',
+    note:
+      'Homme très corpulent, mou et peu athlétique. Visage rond et bouffi, ' +
+      'joues lourdes, petit menton. Cheveux blonds très volumineux, bouclés ' +
+      'et gonflés autour de la tête. Petits yeux. Peau très claire. Il porte ' +
+      'des vêtements immaculés extrêmement luxueux, souvent blancs, et ' +
+      'surtout une bulle transparente autour de la tête. Silhouette globale : ' +
+      'aristocrate obèse et fragile.',
+    hair: '#e6cf7e', cut: 'wavy', skin: PALE, outfit: '#f4f1e8',
+    extras: ['high-collar'],
+    face: 'round',
+    eyes: 'narrow',
+    head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   sharlia: {
-    note: 'Noble hautaine aux cheveux blonds relevés, bulle sur la tête, robe immaculée.',
-    hair: '#e8d88a', cut: 'topknot', skin: PALE, outfit: '#f2efe6',
-    extras: ['high-collar', 'earrings'],
-    face: 'sharp', eyes: 'narrow', brow: 'arched',
-    head: 'none', mark: 'none', prop: 'gun', build: 'slim',
+    note:
+      'Jeune femme de la noblesse mondiale. Cheveux blonds volumineux, ' +
+      'généralement attachés ou coiffés vers le haut. Visage fin et hautain. ' +
+      'Peau très claire. Porte une robe immaculée extrêmement luxueuse. Bulle ' +
+      'transparente autour de la tête. Silhouette mince et élégante.',
+    hair: '#e6cf7e', cut: 'topknot', skin: PALE, outfit: '#f4f1e8',
+    extras: ['high-collar'],
+    face: 'sharp',
+    brow: 'arched',
+    head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   jalmack: {
-    note: 'Noble au visage étiré et aux cheveux blonds, bulle sur la tête, tenue immaculée.',
-    hair: '#e8d88a', cut: 'short', skin: PALE, outfit: '#f2efe6',
-    extras: ['high-collar', 'pendant'],
-    face: 'long', eyes: 'narrow', brow: 'arched',
-    head: 'none', mark: 'none', prop: 'gun', build: 'slim',
+    note:
+      'Homme noble corpulent mais pas gigantesque. Visage long, lèvres ' +
+      'épaisses et nez prononcé. Cheveux blonds plaqués. Peau très claire. ' +
+      'Porte des vêtements immaculés extrêmement luxueux. Bulle transparente ' +
+      'autour de la tête. Silhouette légèrement bedonnante.',
+    hair: '#e6cf7e', cut: 'short', skin: PALE, outfit: '#f4f1e8',
+    extras: ['high-collar'],
+    face: 'long',
+    height: 'towering',
+    head: 'none', mark: 'none', prop: 'none', build: 'giant',
   },
 
   // --- Épiques : équipage de Barbe Noire -------------------------------------
 
   'avalo-pizarro': {
-    note: 'Homme au visage large et souriant, longs cheveux sombres, tenue de bagnard, air narquois.',
-    hair: '#2a2a33', cut: 'long', skin: HALE, outfit: '#5a5a66',
-    extras: ['striped-suit', 'sharp-teeth'],
-    face: 'square', eyes: 'narrow',
+    note:
+      'Homme immense et très large, avec une musculature importante et une ' +
+      'silhouette lourde. Son visage est extrêmement large, presque carré, ' +
+      'avec des joues épaisses et un grand sourire permanent et narquois. ' +
+      'Cheveux foncés, longs et volumineux, descendant sur les côtés du ' +
+      'visage. Son nez et ses lèvres sont larges. Il porte une tenue ' +
+      'rappelant les prisonniers d’Impel Down : vêtements rayés ou très ' +
+      'simples, avec une apparence négligée. Son apparence générale est celle ' +
+      'd’un criminel massif et arrogant.',
+    hair: '#33291f', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    extras: ['striped-suit'],
+    face: 'square',
+    brow: 'arched',
+    height: 'towering',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   'vasco-shot': {
-    note: 'Homme énorme au crâne rasé, grande gourde d’alcool, teint rougeaud, tenue sommaire.',
-    hair: '#2a2a2a', cut: 'bald', skin: MAT, outfit: '#6a4a2a',
-    extras: ['bare-chest', 'sash'],
-    face: 'round', eyes: 'narrow', height: 'tall',
-    head: 'none', mark: 'beard', prop: 'club', build: 'broad',
+    note:
+      'Homme énorme et très corpulent. Crâne rasé. Visage large et fortement ' +
+      'rougi, nez volumineux, joues épaisses. Cou massif. Ventre gigantesque. ' +
+      'Porte des vêtements très simples et une énorme gourde. Physique lourd ' +
+      'et extrêmement massif.',
+    hair: '#2a2a33', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    extras: ['belt'],
+    face: 'square',
+    head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   rockstar: {
-    note: 'Jeune homme aux cheveux noirs plaqués et aux lunettes teintées, veste sombre, sabre.',
-    hair: '#20202a', cut: 'short', skin: CLAIR, outfit: '#2e2e3a', coat: '#22222c',
-    extras: ['high-collar', 'belt'],
-    face: 'sharp', eyes: 'sharp',
+    note:
+      'Jeune homme grand, assez mince et athlétique. Cheveux noirs plaqués ' +
+      'vers l’arrière. Porte des lunettes teintées. Visage fin. Veste sombre ' +
+      'et vêtements de pirate relativement élégants. Sabre à la ceinture. ' +
+      'Corps sec et droit.',
+    hair: '#1c1c22', cut: 'short', skin: CLAIR, outfit: '#2c2f3a',
+    extras: ['belt'],
+    face: 'sharp',
+    height: 'tall',
     head: 'none', mark: 'shades', prop: 'sword', build: 'slim',
   },
 
   // --- Épiques : Foxy, Jaya et la mer d’en bas ------------------------------
 
   porche: {
-    note: 'Jeune femme aux longs cheveux roses relevés, tenue voyante d’artiste, sourire figé.',
-    hair: '#e88ab0', cut: 'long', skin: PALE, outfit: '#e2c0d4',
-    extras: ['twin-tails', 'earrings'],
-    face: 'round', eyes: 'wide',
+    note:
+      'Jeune femme relativement mince. Cheveux roses très longs, généralement ' +
+      'attachés ou relevés. Visage fin et sourire fixe. Porte des vêtements ' +
+      'très voyants rappelant un artiste ou une idole de spectacle. Corps ' +
+      'féminin assez élancé. Beaucoup d’ornements dans sa tenue.',
+    hair: '#e88ab0', cut: 'topknot', skin: CLAIR, outfit: '#c25a8a',
+    extras: ['beads'],
+    face: 'sharp',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   hamburg: {
-    note: 'Homme-ours massif au museau court, fourrure sombre, tenue légère.',
-    hair: '#5a3a24', cut: 'short', skin: '#7a5230', outfit: '#c46a3a',
+    note:
+      'Créature anthropomorphe ressemblant à un ours, mais avec une ' +
+      'morphologie humanoïde. Très massif et large, avec une fourrure sombre. ' +
+      'Museau court, petites oreilles et gros nez. Bras puissants et épaisses ' +
+      'jambes. Porte très peu de vêtements, principalement une tenue légère ' +
+      'de combat.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
     frame: 'bear',
-    extras: ['sharp-teeth', 'bare-chest'],
-    face: 'square', brow: 'fierce', height: 'tall',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   'montblanc-cricket': {
-    note: 'Homme robuste au torse nu et au bandeau, cheveux sombres hérissés, tenue de plongée.',
-    hair: '#2f2f3a', cut: 'spiky', skin: MAT, outfit: '#3a5a7a',
-    accessory: '#c4a24a',
-    extras: ['bare-chest', 'chest-scar'],
-    face: 'square', brow: 'fierce',
-    head: 'bandana', mark: 'none', prop: 'none', build: 'broad',
+    note:
+      'Homme robuste et assez grand. Torse nu, avec une musculature ' +
+      'importante, surtout au niveau des bras et des épaules. Cheveux sombres ' +
+      'hérissés. Porte un bandeau autour de la tête. Visage marqué, barbe ' +
+      'légère et plusieurs traces de vie en mer. Pantalon et équipement de ' +
+      'plongée. Apparence de vieux aventurier très physique.',
+    hair: '#2a2a33', cut: 'spiky', skin: CLAIR, outfit: '#3a4250',
+    extras: ['bare-chest'],
+    height: 'tall',
+    head: 'bandana', mark: 'goatee', prop: 'none', build: 'broad',
   },
   masira: {
-    note: 'Homme-singe au pelage brun et au museau clair, casquette, salopette.',
-    hair: '#7a4a28', cut: 'short', skin: '#a9713f', outfit: '#c4a24a',
-    accessory: '#d4b45a',
-    extras: ['sharp-teeth', 'bare-chest'],
-    face: 'round', eyes: 'wide',
+    note:
+      'Homme-singe, ou humanoïde très simiesque. Corps massif recouvert d’un ' +
+      'épais pelage brun. Museau clair, nez large et bouche de singe. Bras ' +
+      'particulièrement longs et forts. Porte une casquette et une salopette. ' +
+      'Ventre relativement volumineux. Apparence globale : gros primate ' +
+      'humanoïde.',
+    hair: '#6a4326', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['belt'],
     head: 'cap', mark: 'none', prop: 'none', build: 'broad',
   },
   'vander-decken-ix': {
-    note: 'Homme-poisson au heaume et à la cape sombre, teint verdâtre, silhouette voûtée.',
-    hair: '#3a5a4a', cut: 'long', skin: '#6a8a72', outfit: '#3a4a5a', coat: '#2a3644',
+    note:
+      'Homme-poisson très âgé à l’apparence grotesque. Corps voûté et assez ' +
+      'mince. Peau verdâtre. Porte un heaume/casque et une cape sombre. ' +
+      'Visage allongé avec caractéristiques de poisson, nez et bouche ' +
+      'prononcés. Bras et jambes longs. Apparence de pirate sous-marin ' +
+      'vieillissant.',
+    hair: '#2a2a33', cut: 'short', skin: '#7fa07a', outfit: '#2c2f3a',
+    extras: ['cape'],
     frame: 'fishman',
-    extras: ['cape', 'fins'],
-    face: 'sharp', eyes: 'sharp',
-    head: 'mask', mark: 'none', prop: 'knives', build: 'slim',
+    face: 'long',
+    head: 'horns', mark: 'none', prop: 'none', build: 'slim',
   },
   'edward-weeble': {
-    note: 'Colosse au visage juvénile et au crâne dégarni, tenue sommaire, immense bisento.',
-    hair: '#e8e2d4', cut: 'bald', skin: CLAIR, outfit: '#4a6a8a',
-    extras: ['bare-chest', 'sash'],
-    face: 'round', eyes: 'wide', height: 'towering',
+    note:
+      'Homme extrêmement grand et massivement construit. Corps énorme, bras ' +
+      'épais, ventre développé et jambes relativement courtes. Visage ' +
+      'étonnamment jeune et enfantin par rapport à son corps. Cheveux blonds ' +
+      'rares et irréguliers avec une zone dégarnie sur le haut du crâne. Peau ' +
+      'claire. Porte des vêtements de pirate simples et un immense bisento. ' +
+      'Silhouette de colosse disproportionné.',
+    hair: '#e6cf7e', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    extras: ['belt'],
+    height: 'towering',
     head: 'none', mark: 'none', prop: 'staff', build: 'giant',
   },
   laura: {
-    note: 'Jeune femme aux cheveux sombres et au chapeau à large bord, tenue légère de voyage.',
-    hair: '#3a2a24', cut: 'long', skin: HALE, outfit: '#c4a47a',
-    accessory: '#8a6a44',
-    extras: ['bare-midriff', 'satchel'],
-    face: 'round', eyes: 'wide',
+    note:
+      'Jeune femme assez grande et mince. Cheveux sombres et longs, visage ' +
+      'fin. Porte souvent un grand chapeau à large bord. Traits assez doux. ' +
+      'Corps féminin et élancé. Vêtements simples de voyage ou de pirate, ' +
+      'laissant les bras et jambes relativement libres.',
+    hair: '#2a2a33', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    face: 'sharp',
+    brow: 'calm',
+    height: 'tall',
     head: 'brim', mark: 'none', prop: 'none', build: 'slim',
   },
   margaret: {
-    note: 'Guerrière d’Amazon Lily aux cheveux blonds mi-longs, tenue légère, arc.',
-    hair: '#e2cc7a', cut: 'long', skin: CLAIR, outfit: '#c4d47a',
-    extras: ['bare-midriff', 'beads'],
-    face: 'round', eyes: 'wide',
-    head: 'none', mark: 'none', prop: 'staff', build: 'slim',
+    note:
+      'Jeune femme grande et athlétique. Cheveux blonds mi-longs, visage fin ' +
+      'et peau claire. Bras et jambes bien dessinés mais pas fortement ' +
+      'musclés. Porte la tenue légère traditionnelle des Kuja, souvent ' +
+      'accompagnée d’un arc et de flèches. Silhouette de combattante agile.',
+    hair: '#e6cf7e', cut: 'long', skin: CLAIR, outfit: '#3a4250',
+    face: 'sharp',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'gun', build: 'slim',
   },
   coribou: {
-    note: 'Homme corpulent au bonnet et à la barbe sombre, tenue de marin, sourire mauvais.',
-    hair: '#3a2f28', cut: 'short', skin: HALE, outfit: '#5a6a4a',
-    accessory: '#3a4a3a',
-    extras: ['sharp-teeth', 'belt'],
-    face: 'round', eyes: 'narrow', height: 'tall',
+    note:
+      'Plus petit mais très corpulent que son frère Caribou. Barbe sombre et ' +
+      'épaisse. Porte un bonnet et des vêtements évoquant un marin ou un ' +
+      'pirate. Visage rond, nez volumineux, dents visibles lors de son ' +
+      'sourire. Corps très large et ventre développé. Apparence plus compacte ' +
+      'que celle de Caribou.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['belt', 'sharp-teeth'],
+    face: 'round',
+    height: 'short',
     head: 'cap', mark: 'beard', prop: 'none', build: 'broad',
   },
   'demaro-black': {
-    note: 'Imposteur en chapeau de paille et cardigan rouge, visage maigre et mâchoire de travers.',
-    hair: '#20202a', cut: 'short', skin: HALE, outfit: '#c4463a',
-    accessory: '#c8a24a',
-    extras: ['open-vest', 'sash'],
-    face: 'long', eyes: 'narrow',
+    note:
+      'Homme de taille moyenne, mince et légèrement voûté. Visage maigre, ' +
+      'joues creuses et mâchoire asymétrique. Cheveux sombres. Porte un ' +
+      'chapeau de paille similaire à celui de Luffy, mais avec une apparence ' +
+      'grossièrement imitée. Cardigan rouge et vêtements de pirate ' +
+      'ordinaires. Sa silhouette est nettement moins athlétique que celle de ' +
+      'Luffy.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['face-lines'],
+    face: 'long',
     head: 'strawhat', mark: 'none', prop: 'none', build: 'slim',
   },
 
   // --- Épiques : East Blue et souvenirs d’enfance ---------------------------
 
   bluejam: {
-    note: 'Pirate au visage barré de cicatrices, cheveux bleus hérissés, longue veste, deux pistolets.',
-    hair: '#3a5a9a', cut: 'spiky', skin: HALE, outfit: '#5a4a3a', coat: '#3a2f26',
-    extras: ['sash', 'boots'],
-    face: 'sharp', eyes: 'sharp', brow: 'fierce',
-    head: 'none', mark: 'scar-face', prop: 'gun', build: 'broad',
+    note:
+      'Pirate grand et robuste, au visage large et marqué. Cheveux bleus très ' +
+      'courts et hérissés. Nombreuses cicatrices sur le visage. Regard dur et ' +
+      'sourcils épais. Barbe ou duvet facial irrégulier. Porte une longue ' +
+      'veste sombre, généralement ouverte sur une tenue de pirate. Deux ' +
+      'pistolets complètent sa silhouette. Il a l’apparence d’un pirate ' +
+      'brutal et vieillissant.',
+    hair: '#3f6bb5', cut: 'spiky', skin: CLAIR, outfit: '#2c2f3a',
+    face: 'square',
+    eyes: 'sharp',
+    brow: 'fierce',
+    height: 'tall',
+    head: 'none', mark: 'goatee', prop: 'gun', build: 'broad',
   },
   porchemy: {
-    note: 'Pirate au visage large et aux cheveux sombres, gants cloutés, tenue sommaire.',
-    hair: '#2a2a33', cut: 'short', skin: MAT, outfit: '#7a5230',
-    extras: ['gloves', 'bare-chest'],
-    face: 'square', brow: 'fierce',
+    note:
+      'Homme pirate assez massif. Visage très large et cheveux sombres. Front ' +
+      'large, nez imposant et mâchoire puissante. Corps robuste. Porte des ' +
+      'gants avec éléments métalliques ou pointes et des vêtements de pirate ' +
+      'relativement simples. Bras épais. Apparence de brute de combat.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['gloves'],
+    face: 'square',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   higuma: {
-    note: 'Bandit au visage dur et à la barbe naissante, cheveux sombres, tenue de brigand, sabre.',
-    hair: '#2f2a26', cut: 'short', skin: HALE, outfit: '#6a5a3a',
-    extras: ['sash', 'boots'],
-    face: 'square', eyes: 'sharp', brow: 'fierce',
-    head: 'none', mark: 'goatee', prop: 'sword', build: 'broad',
+    note:
+      'Homme adulte de corpulence moyenne à forte. Visage dur, nez épais, ' +
+      'yeux étroits. Cheveux sombres assez courts. Barbe naissante. Vêtements ' +
+      'de bandit simples, sales et robustes. Porte un sabre. Sa silhouette ' +
+      'est celle d’un homme habitué à la violence mais pas d’un véritable ' +
+      'colosse.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    eyes: 'narrow',
+    head: 'none', mark: 'goatee', prop: 'sword', build: 'giant',
   },
   'woop-slap': {
-    note: 'Vieux maire au crâne dégarni et à la barbe blanche, lunettes, tenue villageoise.',
-    hair: '#e4e0d4', cut: 'bald', skin: CLAIR, outfit: '#8a7a5a',
-    extras: ['necktie'],
-    face: 'round', height: 'short',
-    head: 'none', mark: 'beard', prop: 'cane', build: 'slim',
+    note:
+      'Vieil homme de petite à moyenne taille. Crâne fortement dégarni. Barbe ' +
+      'blanche assez volumineuse. Lunettes. Visage rond et ridé. Porte des ' +
+      'vêtements simples de maire/villageois. Corps plutôt petit et trapu. ' +
+      'Apparence globale de vieux notable de village.',
+    hair: '#e9e5da', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    extras: ['face-lines'],
+    face: 'round',
+    height: 'short',
+    head: 'none', mark: 'glasses', prop: 'none', build: 'broad',
   },
   dogra: {
-    note: 'Petit bandit trapu au visage rond et aux cheveux sombres, tenue rapiécée.',
-    hair: '#3a2f28', cut: 'short', skin: MAT, outfit: '#7a6a4a',
-    extras: ['belt'],
-    face: 'round', height: 'short',
+    note:
+      'Petit homme trapu et robuste. Visage rond, front large, nez épais. ' +
+      'Cheveux sombres courts et désordonnés. Bras courts mais relativement ' +
+      'musclés. Vêtements pauvres et rapiécés. Son corps est compact plutôt ' +
+      'qu’élancé.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    face: 'round',
+    height: 'short',
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   magra: {
-    note: 'Bandit mince au visage étiré et aux cheveux sombres, tenue rapiécée.',
-    hair: '#2f2f2a', cut: 'short', skin: HALE, outfit: '#6a7a5a',
-    extras: ['belt'],
-    face: 'long', eyes: 'narrow',
+    note:
+      'Homme mince et assez petit. Visage allongé, cheveux sombres et corps ' +
+      'peu musclé. Vêtements très simples et rapiécés. Silhouette de bandit ' +
+      'pauvre plutôt que de combattant puissant. Mains et jambes fines.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    face: 'long',
+    height: 'short',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   stelly: {
-    note: 'Noble au visage arrogant et aux cheveux clairs bouffants, costume immaculé, monocle.',
-    hair: '#d8c88a', cut: 'afro', skin: PALE, outfit: '#f0ede2',
-    extras: ['high-collar', 'cravat'],
-    face: 'round', eyes: 'narrow', brow: 'arched',
-    head: 'none', mark: 'glasses', prop: 'cane', build: 'slim',
+    note:
+      'Jeune homme adulte de la noblesse. Cheveux clairs très bouffants. ' +
+      'Visage relativement rond mais expression arrogante. Sourcils fins. ' +
+      'Porte un costume parfaitement ajusté et très luxueux. Corps mince avec ' +
+      'ventre légèrement arrondi.',
+    hair: '#d8cbb0', cut: 'wavy', skin: CLAIR, outfit: '#3a4250',
+    extras: ['belt'],
+    brow: 'arched',
+    head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   'outlook-iii': {
-    note: 'Noble d’âge mûr au visage sévère et aux cheveux blonds plaqués, costume immaculé.',
-    hair: '#d8c88a', cut: 'short', skin: PALE, outfit: '#f0ede2',
-    extras: ['high-collar', 'cravat'],
-    face: 'long', eyes: 'narrow', brow: 'arched',
-    head: 'none', mark: 'moustache', prop: 'cane', build: 'slim',
+    note:
+      'Homme noble d’âge mûr. Visage long et sévère. Cheveux blonds très ' +
+      'soigneusement plaqués vers l’arrière. Peau claire. Nez long. Corps ' +
+      'plutôt mince mais légèrement corpulent au niveau du ventre. Porte un ' +
+      'costume immaculé extrêmement luxueux, avec chaussures élégantes et ' +
+      'accessoires aristocratiques.',
+    hair: '#e6cf7e', cut: 'short', skin: CLAIR, outfit: '#f4f1e8',
+    extras: ['boots', 'belt'],
+    face: 'long',
+    head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
   'kozaburo-shimotsuki': {
-    note: 'Vieux forgeron au crâne dégarni et à la longue barbe blanche, tablier, katana.',
-    hair: '#e6e2d6', cut: 'bald', skin: CLAIR, outfit: '#7a5a3a',
-    extras: ['sash', 'chin-tuft'],
-    face: 'long', eyes: 'narrow', height: 'short',
+    note:
+      'Vieil homme relativement grand. Crâne fortement dégarni. Très longue ' +
+      'barbe blanche, volumineuse, descendant sur la poitrine. Visage ridé, ' +
+      'joues creuses et nez important. Porte un tablier de forgeron et des ' +
+      'vêtements de travail. Bras et mains épaissis par des décennies de ' +
+      'forge. Porte ou travaille régulièrement avec un katana.',
+    hair: '#e9e5da', cut: 'bald', skin: CLAIR, outfit: '#3a4250',
+    extras: ['face-lines', 'necktie'],
+    height: 'tall',
     head: 'none', mark: 'beard', prop: 'sword', build: 'slim',
   },
   merry: {
-    note: 'Intendant au visage étroit et aux cheveux sombres plaqués, monocle, costume de majordome.',
-    hair: '#2f2f2a', cut: 'short', skin: PALE, outfit: '#2e2e38',
-    extras: ['necktie', 'high-collar'],
-    face: 'long', eyes: 'narrow',
+    note:
+      'Homme maigre et assez grand. Visage étroit, nez long et cheveux ' +
+      'sombres plaqués. Porte un monocle. Uniforme de majordome très soigné, ' +
+      'avec veste, pantalon, chaussures et gants. Corps longiligne et gestes ' +
+      'élégants. Apparence d’un serviteur aristocratique.',
+    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    extras: ['boots', 'gloves'],
+    face: 'long',
+    height: 'tall',
     head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
   },
 
