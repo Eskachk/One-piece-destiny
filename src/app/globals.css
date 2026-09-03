@@ -450,20 +450,37 @@ body {
   text-align: center;
 }
 
+/* Le nom du jeu, traité en **marque** et non en surtitre.
+ *
+ * Il était en 1 rem au-dessus d'un « CONNEXION » de 5,6 rem : la page se
+ * présentait cinq fois plus grand que le jeu auquel elle appartient. Un
+ * visiteur qui arrive par un lien lisait d'abord le nom de l'écran, et devait
+ * chercher celui du site.
+ *
+ * L'interlettrage descend de 0,22 à 0,12 em en même temps que le corps monte :
+ * un espacement calculé pour un petit texte capitales devient une débandade
+ * dès qu'on l'agrandit — les lettres cessent de faire un mot. */
 .harbor__eyebrow {
   font-family: var(--font-poster), system-ui, sans-serif;
-  font-size: clamp(0.8rem, 3.4vw, 1.05rem);
-  letter-spacing: 0.22em;
+  font-size: clamp(1.55rem, 6.6vw, 2.5rem);
+  line-height: 1.05;
+  letter-spacing: 0.12em;
   color: var(--color-flag);
   text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+  text-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.55),
+    0 3px 10px rgba(9, 26, 45, 0.22);
 }
 
 
 .harbor__title {
   font-family: var(--font-poster), system-ui, sans-serif;
-  /* Très grand et condensé : la typographie est le sujet, pas un véhicule. */
-  font-size: clamp(3.2rem, 15vw, 5.6rem);
+  /* Très grand et condensé : la typographie est le sujet, pas un véhicule.
+     Réduit d'un cran quand le nom du jeu est passé en marque : à 5,6 rem
+     au-dessus de 2,5, l'écart restait tel que la marque disparaissait quand
+     même. Le titre reste le plus gros élément de la page — il cesse
+     simplement d'être le seul qu'on voie. */
+  font-size: clamp(2.7rem, 12vw, 4.5rem);
   line-height: 0.92;
   letter-spacing: 0.01em;
   color: var(--color-ink);
@@ -751,8 +768,11 @@ body {
 
 .hb-eyebrow {
   font-family: var(--font-poster), system-ui, sans-serif;
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
+  /* Une demi-taille de plus qu'avant, pas davantage : sur une page intérieure
+     le nom du jeu est un rappel, pas une enseigne — la page a déjà son titre,
+     et deux enseignes l'une sur l'autre n'en font aucune. */
+  font-size: 1.02rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-flag);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
@@ -4242,7 +4262,7 @@ button[aria-busy='true']:not(.hb-btn)::before {
    rendrait deux fois plus petit à l'œil. */
 .harbor__marque {
   display: block;
-  width: clamp(4.6rem, 17vw, 6.4rem);
+  width: clamp(5.4rem, 20vw, 7.6rem);
   height: auto;
   margin: 0.35rem auto 0.15rem;
   filter: drop-shadow(0 4px 8px rgba(12, 45, 80, 0.28));

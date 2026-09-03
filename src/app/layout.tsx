@@ -2,11 +2,19 @@ import type { Metadata, Viewport } from 'next';
 import { Anton, Caveat } from 'next/font/google';
 import Script from 'next/script';
 import { AppShell } from '@/components/AppShell';
+import { baseUrl } from '@/lib/email/templates';
 import { readDisplaySettings } from '@/lib/settings/store';
 import './globals.css';
 
 /** SEO : titres uniques, Open Graph, canonical (cahier §106). */
 export const metadata: Metadata = {
+  /**
+   * Sans cette base, les images d'Open Graph sont annoncées en chemin relatif.
+   * Un chemin relatif ne veut rien dire pour le robot qui lit la page depuis
+   * ailleurs : il n'a aucun moyen de savoir sur quel domaine le résoudre, et
+   * la carte de partage est simplement ignorée.
+   */
+  metadataBase: new URL(baseUrl()),
   title: {
     default: 'One Piece Quest',
     template: '%s — One Piece Quest',
@@ -17,7 +25,17 @@ export const metadata: Metadata = {
     title: 'One Piece Quest',
     description: 'Devine qui apparaîtra dans le prochain chapitre.',
     type: 'website',
+    siteName: 'One Piece Quest',
+    locale: 'fr_FR',
   },
+  // `summary_large_image` plutôt que la vignette carrée : la carte fait
+  // 1200 × 630, elle est faite pour être vue en grand.
+  twitter: {
+    card: 'summary_large_image',
+    title: 'One Piece Quest',
+    description: 'Devine qui apparaîtra dans le prochain chapitre.',
+  },
+  applicationName: 'One Piece Quest',
   other: {
     // Identifiant d'éditeur AdSense. Il est aussi porté par le script
     // ci-dessous ; la balise sert à la vérification du site par Google, qui
@@ -72,6 +90,10 @@ export default async function RootLayout({
    * traduction automatique.
    */
   const display = await readDisplaySettings();
+  // Décidée par le serveur, jamais par l'en-tête de la requête : une origine
+  // fournie par le client dans des données structurées reviendrait à laisser
+  // un visiteur déclarer l'identité du site.
+  const site = baseUrl();
 
   return (
     <html
@@ -83,6 +105,59 @@ export default async function RootLayout({
       className={`${anton.variable} ${caveat.variable}`}
     >
       <body className="chart-grid">
+        {/*
+          Données structurées : qui est ce site, et quel est son logo.
+
+          Il faut distinguer deux choses que Google traite séparément.
+
+          Le **favicon** est ce qui s'affiche à côté du titre dans une page de
+          résultats. Il vient de `app/icon.png`, et Google exige un carré dont
+          le côté est un multiple de 48 — le nôtre faisait 256, qui n'en est
+          pas un : le fichier existait, la balise était correcte, et l'icône
+          n'aurait jamais paru. Il est passé à 192.
+
+          Le **logo** déclaré ici est autre chose : c'est celui que Google
+          associe à l'organisation, dans un panneau de connaissance ou une
+          fiche. Sans déclaration, il devine — souvent mal, parfois rien.
+
+          `WebSite` et `Organization` dans un même graphe, liés par `publisher` :
+          deux blocs séparés laisseraient Google apparier lui-même le site et
+          son éditeur.
+        */}
+        <script
+          type="application/ld+json"
+          // Contenu écrit ici, jamais reçu : aucune donnée de joueur n'entre
+          // dans cette chaîne, et rien n'y est interpolé depuis une requête.
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'Organization',
+                  '@id': `${site}/#organisation`,
+                  name: 'One Piece Quest',
+                  url: site,
+                  logo: {
+                    '@type': 'ImageObject',
+                    url: `${site}/icon.png`,
+                    width: 192,
+                    height: 192,
+                  },
+                },
+                {
+                  '@type': 'WebSite',
+                  '@id': `${site}/#site`,
+                  name: 'One Piece Quest',
+                  alternateName: 'OP Quest',
+                  url: site,
+                  inLanguage: display.locale === 'fr' ? 'fr-FR' : 'en',
+                  publisher: { '@id': `${site}/#organisation` },
+                },
+              ],
+            }),
+          }}
+        />
+
         <AppShell>{children}</AppShell>
 
         {/*
