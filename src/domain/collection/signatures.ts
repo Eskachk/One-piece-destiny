@@ -668,17 +668,6 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     trousers: '#1f3644',
     head: 'cap', mark: 'goatee', prop: 'sword', build: 'slim',
   },
-  'trafalgar-d-water-law': {
-    note:
-      'Voir `law` : teint hâlé, yeux cernés, bonnet blanc à taches, barbiche, mains tatouées, nodachi.',
-    hair: '#1a1a1a', cut: 'short', skin: HALE, outfit: '#2a4a5a', coat: '#f0ece2',
-    extras: ['spotted-hat', 'belt', 'boots', 'eye-bags'],
-    face: 'sharp',
-    eyes: 'sharp',
-    brow: 'calm',
-    trousers: '#1f3644',
-    head: 'cap', mark: 'goatee', prop: 'sword', build: 'slim',
-  },
   kid: {
     note:
       'Très grand et massif, épaules larges. Cheveux rouge vif extrêmement hérissés en forme de flammes. Visage anguleux et agressif, nez pointu, lèvres rouge sombre, yeux orange-rouge, aucun sourcil visible. Lunettes de protection jaunes relevées sur le front, cape de fourrure sombre, pantalon jaune et noir, bottes épaisses.',

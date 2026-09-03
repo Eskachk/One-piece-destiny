@@ -140,6 +140,20 @@ export const NON_CANON_IDS: ReadonlySet<string> = new Set([
 export const DUPLICATE_IDS: ReadonlySet<string> = new Set([
   // Buggy (anglais) et Baggy / Le Clown (français) sont le même personnage.
   'buggy',
+
+  // Trafalgar Law, entré deux fois sous son nom court et son nom complet.
+  // On garde `law`. La fiche en double portait les quatre liens d'équipage —
+  // Bepo, Jean Bart, Shachi, Pingouin — et la mention de capitaine : les uns
+  // et l'autre ont été repris sur `law` avant le retrait, et les quatre liens
+  // entrants repointés. Retirer un doublon ne doit rien faire perdre.
+  'trafalgar-d-water-law',
+
+  // Koby, entré une seconde fois sous la transcription « Kobby ». On garde
+  // `koby`, qui est la fiche complète : Légendaire, affilié à SWORD, lié à
+  // Luffy, Garp et Helmeppo. Le doublon était Épique, ne portait que le grade
+  // de colonel et des liens vers les amiraux — des liens d'institution, pas
+  // d'équipage : les reprendre inventerait des synergies qui n'existent pas.
+  'kobby',
 ]);
 
 /**
