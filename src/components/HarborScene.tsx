@@ -247,6 +247,7 @@ export function HarborScene({
   children,
   variant = 'hero',
   island = 'harbor',
+  decor = true,
 }: {
   children: React.ReactNode;
   /**
@@ -265,6 +266,26 @@ export function HarborScene({
    * classement ou d'un détail de score (§51).
    */
   variant?: 'hero' | 'page';
+  /**
+   * Faut-il dessiner le décor ?
+   *
+   * `false` pour le seul écran d'attente (`app/loading.tsx`), et voici
+   * pourquoi. Pendant une navigation, React tient **les deux** à l'écran : le
+   * squelette et la page qui arrive. Le décor était donc monté en double —
+   * deux jeux de SVG, deux couches de lumière, huit animations plein écran en
+   * parallèle — précisément à l'instant où l'appareil est occupé à afficher la
+   * nouvelle page. C'est le pire moment pour lui donner deux fois le travail.
+   *
+   * Et il était **faux** par-dessus le marché : l'écran d'attente ne connaît
+   * pas la destination, il dessinait donc toujours le port. On voyait le port
+   * une fraction de seconde avant Alabasta ou Wano, à chaque changement
+   * d'onglet.
+   *
+   * Le ciel, lui, reste : sa teinte vient de `data-island` sur la coquille,
+   * qui est déjà à jour. Le fond ne bouge donc pas d'un pixel entre l'attente
+   * et la page — seule la silhouette apparaît, une fois, au bon moment.
+   */
+  decor?: boolean;
 }) {
   return (
     <div className={variant === 'page' ? 'harbor harbor--page' : 'harbor'}>
@@ -272,79 +293,85 @@ export function HarborScene({
       <div className="harbor__backdrop" aria-hidden="true">
         <div className="harbor__sky" />
 
-        {/*
-          Le lever de soleil, **et lui seul sur la scène d'entrée**.
-
-          Il était rendu partout. Sur les pages intérieures, où il n'y a plus
-          ni mer ni horizon pour l'accueillir, son disque de 26 vmax se
-          retrouvait posé n'importe où — le plus souvent à moitié hors du
-          cadre, coupé net par un bord. Et il n'y avait aucune raison qu'un
-          soleil levant traîne au fond de l'Île des hommes-poissons, à dix
-          mille mètres sous la surface.
-
-          Chaque île a désormais son ciel à elle (`IslandSky`), avec ce qui lui
-          revient : des rais de lumière sous la mer, un soleil de plomb à
-          Alabasta, des nuages d'orage à Logue Town.
-        */}
-        {variant === 'hero' && (
+        {decor && (
           <>
-            <div className="harbor__sunrays" />
-            <div className="harbor__sun" />
+          {/*
+            Le lever de soleil, **et lui seul sur la scène d'entrée**.
+
+            Il était rendu partout. Sur les pages intérieures, où il n'y a plus
+            ni mer ni horizon pour l'accueillir, son disque de 26 vmax se
+            retrouvait posé n'importe où — le plus souvent à moitié hors du
+            cadre, coupé net par un bord. Et il n'y avait aucune raison qu'un
+            soleil levant traîne au fond de l'Île des hommes-poissons, à dix
+            mille mètres sous la surface.
+
+            Chaque île a désormais son ciel à elle (`IslandSky`), avec ce qui lui
+            revient : des rais de lumière sous la mer, un soleil de plomb à
+            Alabasta, des nuages d'orage à Logue Town.
+          */}
+          {variant === 'hero' && (
+            <>
+              <div className="harbor__sunrays" />
+              <div className="harbor__sun" />
+            </>
+          )}
+
+          {/*
+            Décor de l'île, **dans le fond**, derrière tout le contenu.
+
+            Il est posé avant les nuages, donc sous eux : les nuages appartiennent
+            au ciel, l'île à l'horizon.
+
+            Ce qui rend cela lisible n'est pas le décor mais ce qui passe
+            par-dessus : le voile du contenu s'est allégé et ne couvre plus que
+            la colonne de texte. Voir `.harbor__header` dans `globals.css` — c'est
+            là que se joue l'équilibre entre « on voit l'île » et « on lit le
+            classement » (§51).
+          */}
+          <IslandDecor island={island} />
+
+          {/* Le haut et le milieu du décor : ce qui nage, vole, monte ou dérive.
+
+              La silhouette occupe le tiers inférieur ; au-dessus, il n'y avait
+              qu'un tapis de dégradés. Convenable pour ce qui est innombrable —
+              pluie, neige, pétales — et inapte au reste : un banc de poissons a
+              une direction et une silhouette, ce n'est pas une trame. */}
+          <IslandSky island={island} />
+
+          {/* Les jeux de lumière : nappes qui dérivent et rais qui balaient.
+
+              Couche à part, et non un dégradé de plus sur `.isl-fx` : la lumière
+              se compose en `screen` avec ce qu'il y a dessous, alors que la pluie
+              ou les pétales se posent dessus en opaque. Les mêler sur un seul
+              élément imposerait un seul mode de fusion, donc de renoncer à l'un
+              des deux. Voir `.isl-lux` dans `globals.css`. */}
+          <div className="isl-lux" aria-hidden="true">
+            {/* Les nappes ont besoin d’un élément à elles : `.isl-lux` porte
+                déjà ses deux pseudo-éléments, et le transformer les
+                emporterait avec lui. Quatre couches, quatre translations
+                indépendantes, aucun repaint. */}
+            <div className="isl-lux__nappes" />
+          </div>
+
+          {/* Ambiance : ce qui tombe, monte ou dérive. C'est cette couche qui
+              occupe la hauteur de l'écran — le décor, lui, est posé en bas. Tout
+              est en CSS (`.isl-fx`), donc rien n'est ajouté au balisage. */}
+          <div className="isl-fx" aria-hidden="true" />
+
+          <span className="isl-name" aria-hidden="true">
+            {island !== 'harbor' && island !== 'hq' ? ISLANDS[island].name : ''}
+          </span>
           </>
         )}
 
-        {/*
-          Décor de l'île, **dans le fond**, derrière tout le contenu.
-
-          Il est posé avant les nuages, donc sous eux : les nuages appartiennent
-          au ciel, l'île à l'horizon.
-
-          Ce qui rend cela lisible n'est pas le décor mais ce qui passe
-          par-dessus : le voile du contenu s'est allégé et ne couvre plus que
-          la colonne de texte. Voir `.harbor__header` dans `globals.css` — c'est
-          là que se joue l'équilibre entre « on voit l'île » et « on lit le
-          classement » (§51).
-        */}
-        <IslandDecor island={island} />
-
-        {/* Le haut et le milieu du décor : ce qui nage, vole, monte ou dérive.
-
-            La silhouette occupe le tiers inférieur ; au-dessus, il n'y avait
-            qu'un tapis de dégradés. Convenable pour ce qui est innombrable —
-            pluie, neige, pétales — et inapte au reste : un banc de poissons a
-            une direction et une silhouette, ce n'est pas une trame. */}
-        <IslandSky island={island} />
-
-        {/* Les jeux de lumière : nappes qui dérivent et rais qui balaient.
-
-            Couche à part, et non un dégradé de plus sur `.isl-fx` : la lumière
-            se compose en `screen` avec ce qu'il y a dessous, alors que la pluie
-            ou les pétales se posent dessus en opaque. Les mêler sur un seul
-            élément imposerait un seul mode de fusion, donc de renoncer à l'un
-            des deux. Voir `.isl-lux` dans `globals.css`. */}
-        <div className="isl-lux" aria-hidden="true">
-          {/* Les nappes ont besoin d’un élément à elles : `.isl-lux` porte
-              déjà ses deux pseudo-éléments, et le transformer les
-              emporterait avec lui. Quatre couches, quatre translations
-              indépendantes, aucun repaint. */}
-          <div className="isl-lux__nappes" />
-        </div>
-
-        {/* Ambiance : ce qui tombe, monte ou dérive. C'est cette couche qui
-            occupe la hauteur de l'écran — le décor, lui, est posé en bas. Tout
-            est en CSS (`.isl-fx`), donc rien n'est ajouté au balisage. */}
-        <div className="isl-fx" aria-hidden="true" />
-
-        <span className="isl-name" aria-hidden="true">
-          {island !== 'harbor' && island !== 'hq' ? ISLANDS[island].name : ''}
-        </span>
-
-        <div className="harbor__clouds">
-          <Cloud className="harbor__cloud harbor__cloud--1" />
-          <Cloud className="harbor__cloud harbor__cloud--2" flip />
-          <Cloud className="harbor__cloud harbor__cloud--3" />
-          <Cloud className="harbor__cloud harbor__cloud--4" flip />
-        </div>
+        {decor && (
+          <div className="harbor__clouds">
+            <Cloud className="harbor__cloud harbor__cloud--1" />
+            <Cloud className="harbor__cloud harbor__cloud--2" flip />
+            <Cloud className="harbor__cloud harbor__cloud--3" />
+            <Cloud className="harbor__cloud harbor__cloud--4" flip />
+          </div>
+        )}
 
         {/*
           Mer, pont et mât : **uniquement sur la scène d'entrée**.

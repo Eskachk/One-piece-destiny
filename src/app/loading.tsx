@@ -20,6 +20,17 @@ import { MainNav } from '@/components/MainNav';
  * La barre de navigation en fait partie **à dessein** : c'est le seul élément
  * commun à toutes les pages, et le voir survivre à la transition est ce qui
  * fait la différence entre « ça charge » et « ça a planté ».
+ *
+ * ## `decor={false}`
+ *
+ * Le squelette et la page qui arrive coexistent à l'écran le temps de la
+ * transition. Avec le décor, celui-ci était donc monté en double — deux jeux
+ * de SVG et huit animations plein écran — juste au moment où l'appareil a le
+ * plus à faire. Et il montrait le port quelle que soit la destination, cet
+ * écran ne la connaissant pas : on voyait le port clignoter avant Alabasta.
+ *
+ * Le ciel reste, sa teinte venant de la coquille : le fond ne bouge pas d'un
+ * pixel entre l'attente et la page.
  */
 
 /** Bloc gris à la place d'un contenu à venir. */
@@ -35,7 +46,7 @@ function Bar({ width, height = '1rem' }: { width: string; height?: string }) {
 
 export default function Loading() {
   return (
-    <HarborScene variant="page">
+    <HarborScene variant="page" decor={false}>
       {/* `aria-busy` plutôt qu'un texte « Chargement… » : un lecteur d'écran
           annonce l'état de la région, sans qu'on ajoute une ligne de texte que
           les autres devraient voir clignoter à chaque navigation. */}

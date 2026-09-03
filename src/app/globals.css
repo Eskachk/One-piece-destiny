@@ -2094,15 +2094,28 @@ button[aria-busy='true']:not(.hb-btn)::before {
 
    L'opacité, elle, ne crée aucun bloc conteneur. Et un fondu d'opacité est
    exactement ce qu'on voulait : le décalage n'ajoutait rien qu'on remarque. */
+/* ## La durée, et pourquoi elle a été divisée par deux
+ *
+ * Ce fondu durait 320 ms **en partant de l'invisible**. Il s'ajoutait aux
+ * ~140 ms que met le serveur à répondre : au clic, le joueur attendait donc
+ * près d'une demi-seconde avant de pouvoir lire quoi que ce soit — et la
+ * moitié de cette attente était une décoration que nous avions choisie.
+ *
+ * Un fondu sert à masquer un remplacement brutal, pas à faire durer une
+ * arrivée. 140 ms suffisent pour cela, et **partir de 0,55 plutôt que de 0**
+ * change tout : la page est lisible dès la première image, le fondu ne fait
+ * plus que finir de l'asseoir. On garde l'adoucissement en supprimant
+ * l'attente.
+ */
 @media (prefers-reduced-motion: no-preference) {
   .app-shell {
-    animation: shell-fade 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation: shell-fade 140ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
 }
 
 @keyframes shell-fade {
   from {
-    opacity: 0;
+    opacity: 0.55;
   }
   to {
     opacity: 1;
@@ -3714,6 +3727,11 @@ button[aria-busy='true']:not(.hb-btn)::before {
   inset: 0;
   pointer-events: none;
   overflow: hidden;
+  /* Quatre couches y sont animées en permanence, sur toutes les pages. Le
+     confinement dit au navigateur que rien de ce qui s'y passe ne peut
+     déborder : il n'a plus à reconsidérer la mise en page du reste du document
+     à chaque image. */
+  contain: strict;
   /* La lumière *ajoute* de la clarté et n'assombrit jamais : c'est le
      comportement d'une lueur, et c'est ce que fait `screen`. */
   mix-blend-mode: screen;
@@ -3826,8 +3844,28 @@ button[aria-busy='true']:not(.hb-btn)::before {
   content: '';
   position: absolute;
   inset: -40%;
+  /* ## Pourquoi l'apex est si haut, et le masque si bas
+   *
+   * La douceur d'un dégradé conique ne se mesure pas en pixels mais en degrés.
+   * Un même écart angulaire couvre d'autant plus de pixels qu'on s'éloigne du
+   * sommet — et **au sommet, il n'en couvre aucun**. Les îles aux rais fins
+   * (Sabaody à 3°, l'Île des hommes-poissons à 2,2°) montraient donc des
+   * arêtes verticales franches en haut de page, là où le sommet était proche.
+   *
+   * Deux corrections, et il fallait les deux. Le sommet remonte de −8 % à
+   * −34 % : la zone visible en est assez loin pour que les mêmes degrés
+   * deviennent des dizaines de pixels. Et le masque, qui était **opaque au
+   * sommet** — c'est-à-dire exactement là où le dégradé est le plus dur —
+   * y est maintenant transparent. Il ouvre au tiers de la hauteur et se
+   * referme avant le bas.
+   *
+   * Un masque vertical plutôt qu'une ellipse : ce pseudo-élément déborde de
+   * 40 % de chaque côté, et sur une ellipse les pourcentages se comptent sur
+   * cette boîte-là, pas sur l'écran. Un dégradé linéaire, lui, reste
+   * prévisible — le haut de l'écran tombe à 22 % de la boîte, le bas à 78 %.
+   */
   background: repeating-conic-gradient(
-    from -14deg at var(--lux-apex) -8%,
+    from -14deg at var(--lux-apex) -34%,
     rgb(var(--lux-r) / 0) 0deg,
     rgb(var(--lux-r) / calc(var(--lux-i) * 0.45 * var(--lux-force)))
       calc(var(--lux-arc) * 0.45),
@@ -3836,23 +3874,25 @@ button[aria-busy='true']:not(.hb-btn)::before {
       calc(var(--lux-arc) * 1.55),
     rgb(var(--lux-r) / 0) calc(var(--lux-arc) * 2.6)
   );
-  -webkit-mask-image: radial-gradient(
-    ellipse 78% 66% at var(--lux-apex) 6%,
-    #000 0%,
-    #000 34%,
-    rgba(0, 0, 0, 0.55) 62%,
-    transparent 92%
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 20%,
+    rgba(0, 0, 0, 0.45) 31%,
+    #000 43%,
+    rgba(0, 0, 0, 0.6) 62%,
+    transparent 76%
   );
-  mask-image: radial-gradient(
-    ellipse 78% 66% at var(--lux-apex) 6%,
-    #000 0%,
-    #000 34%,
-    rgba(0, 0, 0, 0.55) 62%,
-    transparent 92%
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 20%,
+    rgba(0, 0, 0, 0.45) 31%,
+    #000 43%,
+    rgba(0, 0, 0, 0.6) 62%,
+    transparent 76%
   );
   /* L'éventail bascule autour de sa source, jamais autour du centre de
      l'écran : une lumière ne pivote pas sur le milieu de la page. */
-  transform-origin: var(--lux-apex) -8%;
+  transform-origin: var(--lux-apex) -34%;
 }
 
 /* --- Une lumière par île --------------------------------------------------
@@ -3907,7 +3947,10 @@ button[aria-busy='true']:not(.hb-btn)::before {
   --lux-b: 120 186 255;
   --lux-r: 214 250 255;
   --lux-i: 0.2;
-  --lux-arc: 2.2deg;
+  /* 3,6° et non 2,2° : en deçà, l'écart entre deux rais devient trop court
+     pour que le dégradé ait la place de s'adoucir, même avec le sommet
+     éloigné. C'est le seuil sous lequel une caustique redevient un barreau. */
+  --lux-arc: 3.6deg;
   --lux-apex: 52%;
   --lux-force: 1.1;
 }
@@ -3942,7 +3985,7 @@ button[aria-busy='true']:not(.hb-btn)::before {
   --lux-b: 166 236 255;
   --lux-r: 246 232 255;
   --lux-i: 0.15;
-  --lux-arc: 3deg;
+  --lux-arc: 4.2deg;
   --lux-apex: 58%;
 }
 
