@@ -20,7 +20,7 @@ export type ProductId =
   | 'berries_hold'
   | 'character_shanks'
   | 'character_mihawk'
-  | 'character_crocodile';
+  | 'character_luffy';
 
 /**
  * Rayons de la boutique.
@@ -125,10 +125,15 @@ export const CATALOG: Record<ProductId, Product> = {
   /**
    * Rayon personnages.
    *
-   * Trois Légendaires nommés, et **seulement trois** : un catalogue complet
-   * reviendrait à mettre un prix sur chaque personnage de l'œuvre, ce qui
-   * transformerait la collection en boutique. Ceux-ci restent obtenables en
-   * coffre, gratuitement — l'achat abrège, il n'ouvre rien d'exclusif.
+   * **Trois personnages nommés, et seulement trois : un Mythique et deux
+   * Légendaires.** Un catalogue complet reviendrait à mettre un prix sur
+   * chaque personnage de l'œuvre, ce qui transformerait la collection en
+   * boutique. Ceux-ci restent obtenables en coffre, gratuitement — l'achat
+   * abrège, il n'ouvre rien d'exclusif.
+   *
+   * La composition est vérifiée par un test : elle décide de ce que la
+   * boutique promet, et une quatrième carte ajoutée sans y penser ferait
+   * glisser le rayon vers le catalogue qu'on refuse.
    *
    * Le personnage accordé est lu **ici**, côté serveur. Un identifiant venu du
    * client serait un personnage choisi par le client.
@@ -155,16 +160,35 @@ export const CATALOG: Record<ProductId, Product> = {
     description:
       'Ajoute Mihawk à ta collection. Légendaire — valeur de collection, aucun point au classement.',
   },
-  character_crocodile: {
-    id: 'character_crocodile',
+  /**
+   * Le Mythique du rayon.
+   *
+   * Un seul, et c'est délibéré : les dix Mythiques sont l'équipage au complet,
+   * et le tirage en donne un pour mille. En vendre plusieurs ferait de la
+   * boutique le chemin normal pour les obtenir, alors qu'elle doit rester un
+   * raccourci.
+   *
+   * Il coûte plus cher qu'un Légendaire parce qu'il est dix fois plus rare au
+   * coffre — 0,1 % contre 1,2 %. Un même prix pour deux raretés différentes
+   * dirait au joueur que la rareté ne veut rien dire.
+   *
+   * §25 et §48 restent tenus : la rareté est une valeur de collection. Le
+   * moteur de score ne la lit jamais pour accorder des points, et l'y voir
+   * **abaisser** le bonus de risque signifie qu'aligner des Mythiques est le
+   * jeu le plus prudent, jamais le plus rentable. Acheter Luffy n'achète donc
+   * pas une place au classement — d'autant qu'au v6, un personnage que tout le
+   * monde choisit vaut moins.
+   */
+  character_luffy: {
+    id: 'character_luffy',
     category: 'CHARACTER',
-    label: 'Crocodile',
-    priceCents: 699,
+    label: 'Monkey D. Luffy',
+    priceCents: 1299,
     currency: 'EUR',
-    grants: { berries: 0, chests: 0, characterId: 'crocodile' },
-    rarity: 'LEGENDARY',
+    grants: { berries: 0, chests: 0, characterId: 'luffy' },
+    rarity: 'MYTHIC',
     description:
-      'Ajoute Crocodile à ta collection. Légendaire — valeur de collection, aucun point au classement.',
+      'Ajoute Luffy à ta collection. Mythique — valeur de collection, aucun point au classement.',
   },
 };
 

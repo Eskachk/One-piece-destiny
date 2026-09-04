@@ -1161,26 +1161,28 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   },
   'charlotte-dent-de-chien': {
     note:
-      'Homme extrêmement grand et musclé, près de trois fois la taille de ' +
-      'Luffy et légèrement plus grand que ses frères triplés Daifuku et Oven. ' +
-      'Cheveux violets, courts et pointus. Deux cicatrices symétriques ' +
-      'longeant les extrémités de la bouche ; celle-ci, habituellement ' +
-      'couverte, contient des dents extrêmement pointues et peut s’étendre ' +
-      'énormément. Yeux vifs et intenses, sourcils fortement arqués, cils ' +
-      'inférieurs proéminents. Écharpe blanche et noire couvrant la bouche et ' +
-      'atteignant les épaules. Veste noire en cuir sans manches, légèrement ' +
-      'déchirée, exposant le torse ; gants, pantalon noir, ceinture à boucle ' +
-      'en forme de crâne, bottes à éperons. Torse couvert de tatouages roses. ' +
-      'Bracelets à pointes aux jambes et au bras gauche, genouillères à ' +
-      'pointes, sangles cloutées autour de la cuisse gauche.',
-    hair: '#7a3f96', cut: 'spiky', skin: HALE, outfit: '#1a1a20',
-    trousers: '#141419',
-    extras: ['bare-chest', 'sharp-teeth', 'high-collar', 'boots'],
+      'Homme extrêmement grand et musclé, silhouette en V, près de trois fois ' +
+      'la taille de Luffy. Cheveux magenta sombre, courts et hérissés vers ' +
+      'l’arrière. Deux cicatrices symétriques aux commissures ; la bouche, ' +
+      'habituellement couverte, porte des dents très pointues. Regard dur, ' +
+      'sourcils froncés. Immense col de fourrure rayé blanc et noir couvrant ' +
+      'les épaules. Veste noire en cuir sans manches, ouverte sur un maillot ' +
+      'à rayures verticales roses et rouges laissant voir les abdominaux. ' +
+      'Gants sombres, large ceinture cloutée à boucle ronde, pantalon noir. ' +
+      'Sangles cloutées et genouillères à pointes sur la jambe droite, ' +
+      'bracelets à pointes au poignet gauche, bottes à éperons. Tatouage rose ' +
+      'sur le bras gauche. Arme : une longue lance à trois pointes, hampe ' +
+      'brun sombre et fer clair.',
+    hair: '#7e3358', cut: 'spiky', skin: HALE, outfit: '#d1476e',
+    coat: '#1c1c22',
+    trousers: '#17171c',
+    accessory: '#efe9dc',
+    extras: ['fur-collar', 'bare-chest', 'belt', 'boots'],
     face: 'sharp',
     eyes: 'sharp',
-    brow: 'arched',
+    brow: 'fierce',
     height: 'towering',
-    head: 'none', mark: 'scar-face', prop: 'none', build: 'broad',
+    head: 'none', mark: 'scar-face', prop: 'staff', build: 'broad',
   },
   'charlotte-brulee': {
     note:

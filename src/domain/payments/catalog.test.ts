@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { CATALOG, productOf, verifyClaim, withinDailyCap } from './catalog';
+import { CHARACTER_INDEX } from '../../data/characters';
 import { restrictionsForBirthDate } from '../compliance/age';
 
 const VALIDE = {
@@ -107,5 +108,51 @@ describe('plafond de dépense', () => {
 
     expect(restrictions.mayPurchase).toBe(false);
     expect(withinDailyCap(0, 299, restrictions.dailySpendCapCents)).toBe(false);
+  });
+});
+
+/**
+ * Le rayon personnages.
+ *
+ * Trois cartes, pas quatre, et une composition arrêtée : un Mythique et deux
+ * Légendaires. Ce n'est pas une préférence d'affichage — c'est la limite qui
+ * empêche le rayon de devenir un catalogue où chaque personnage a son prix.
+ */
+describe('rayon personnages', () => {
+  const personnages = Object.values(CATALOG).filter((p) => p.category === 'CHARACTER');
+
+  it('vend exactement trois personnages', () => {
+    expect(personnages).toHaveLength(3);
+  });
+
+  it('propose un Mythique et deux Légendaires', () => {
+    const parRarete = personnages.reduce<Record<string, number>>((acc, p) => {
+      acc[p.rarity ?? '?'] = (acc[p.rarity ?? '?'] ?? 0) + 1;
+      return acc;
+    }, {});
+    expect(parRarete).toEqual({ MYTHIC: 1, LEGENDARY: 2 });
+  });
+
+  it('annonce la rareté que le référentiel donne au personnage', () => {
+    // Le catalogue déclare une rareté pour l'affichage et le prix ; le
+    // référentiel en tient une autre pour le jeu. Rien ne les reliait : une
+    // carte pouvait être vendue « Légendaire » et arriver Épique dans la
+    // collection, sans qu'aucune erreur ne le signale.
+    for (const p of personnages) {
+      const id = p.grants.characterId;
+      expect(id, `${p.id} n’accorde aucun personnage`).toBeDefined();
+      const reel = CHARACTER_INDEX.get(id!);
+      expect(reel, `${id} est absent du référentiel jouable`).toBeDefined();
+      expect(reel!.rarity, `${id} annoncé ${p.rarity}`).toBe(p.rarity);
+    }
+  });
+
+  it('fait payer le Mythique plus cher que les Légendaires', () => {
+    // Il est dix fois plus rare au coffre. Un même prix pour deux raretés
+    // dirait au joueur que la rareté ne veut rien dire.
+    const mythique = personnages.find((p) => p.rarity === 'MYTHIC')!;
+    for (const legendaire of personnages.filter((p) => p.rarity === 'LEGENDARY')) {
+      expect(mythique.priceCents).toBeGreaterThan(legendaire.priceCents);
+    }
   });
 });
