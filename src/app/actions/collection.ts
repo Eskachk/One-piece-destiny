@@ -18,6 +18,10 @@ import {
 import { CHEST_PRICE_BERRIES } from '@/domain/collection/rewards';
 import { isAllowedAdmin, requireSession } from '@/lib/auth/guards';
 import { assertSameOrigin } from '@/lib/auth/request-guard';
+import {
+  consumeQuotaByPlayer,
+  throttleMessage,
+} from '@/lib/auth/action-throttle';
 import { getRepository } from '@/lib/repository';
 import { recordEvent } from '@/lib/antiabuse/events';
 
@@ -83,6 +87,12 @@ function secureRandom(): number {
 export async function openStarterChestAction(): Promise<OpenStarterResult> {
   await assertSameOrigin();
   const session = await requireSession();
+
+  // Le frein de cadence. L'idempotence en base reste le garde-fou réel — elle
+  // interdit d'ouvrir deux fois le même coffre ; celui-ci interdit d'essayer
+  // mille fois par seconde, ce qui est un coût serveur même quand ça échoue.
+  const cadence = await consumeQuotaByPlayer('coffre', session.playerId);
+  if (!cadence.autorise) return { ok: false, error: throttleMessage(cadence) };
 
   const repository = getRepository();
   const progress = await repository.getProgress(session.playerId);
@@ -151,6 +161,9 @@ export async function openOwnedChestAction(
   const parsedKind = z.enum(['WEEKLY', 'ROYAL']).safeParse(kind);
   if (!parsedKind.success) return { ok: false, error: 'Coffre inconnu.' };
   const royal = parsedKind.data === 'ROYAL';
+
+  const cadence = await consumeQuotaByPlayer('coffre', session.playerId);
+  if (!cadence.autorise) return { ok: false, error: throttleMessage(cadence) };
 
   const repository = getRepository();
 
@@ -269,6 +282,9 @@ export async function craftCharacterAction(
 
   const parsed = z.string().min(1).max(64).safeParse(characterId);
   if (!parsed.success) return { ok: false, error: 'Personnage inconnu.' };
+
+  const cadence = await consumeQuotaByPlayer('fabrication', session.playerId);
+  if (!cadence.autorise) return { ok: false, error: throttleMessage(cadence) };
 
   const character = CHARACTER_INDEX.get(parsed.data);
   const repository = getRepository();

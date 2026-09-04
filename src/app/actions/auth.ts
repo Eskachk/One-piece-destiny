@@ -8,6 +8,10 @@ import {
   assertSameOrigin,
   getRequestContext,
 } from '@/lib/auth/request-guard';
+import {
+  consumeQuotaByIp,
+  throttleMessage,
+} from '@/lib/auth/action-throttle';
 
 /**
  * Actions d'authentification.
@@ -79,6 +83,19 @@ export async function registerAction(
   if (!parsed.success) {
     return { error: 'Pseudo, adresse e-mail ou mot de passe invalide.' };
   }
+
+  /*
+   * Le quota le plus important du produit. Chaque inscription ouvre un coffre
+   * de départ et peut déclencher un versement de parrainage : c'est de la
+   * valeur créée, et la seule chose qui en gardait le rythme était le moteur
+   * anti-abus — qui détecte après coup au lieu de freiner.
+   *
+   * Compté **après** la validation du formulaire : un champ mal rempli est une
+   * faute d'humain, pas une tentative, et la consommer punirait une faute de
+   * frappe.
+   */
+  const cadence = await consumeQuotaByIp('inscription');
+  if (!cadence.autorise) return { error: throttleMessage(cadence) };
 
   const result = await register(
     parsed.data.email,

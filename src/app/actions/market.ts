@@ -17,6 +17,10 @@ import {
 } from '@/domain/market/pricing';
 import { requireSession } from '@/lib/auth/guards';
 import { assertSameOrigin } from '@/lib/auth/request-guard';
+import {
+  consumeQuotaByPlayer,
+  throttleMessage,
+} from '@/lib/auth/action-throttle';
 import * as market from '@/lib/market/repository';
 import { audit } from '@/lib/audit';
 import {
@@ -95,6 +99,12 @@ export async function createListingAction(
   const parsed = ListingSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: 'Annonce invalide.' };
 
+  // Le frein de cadence, avant les lectures : inonder le Marché d'annonces est
+  // un levier de manipulation des prix, et chaque tentative coûte plusieurs
+  // allers-retours même lorsqu'elle est refusée plus bas.
+  const cadence = await consumeQuotaByPlayer('annonce', session.playerId);
+  if (!cadence.autorise) return { ok: false, error: throttleMessage(cadence) };
+
   const character = CHARACTER_INDEX.get(parsed.data.characterId);
   if (!character) return { ok: false, error: 'Personnage inconnu.' };
 
@@ -154,6 +164,9 @@ export async function cancelListingAction(
 
   const parsed = z.string().uuid().safeParse(listingId);
   if (!parsed.success) return { ok: false, error: 'Annonce introuvable.' };
+
+  const cadence = await consumeQuotaByPlayer('achat', session.playerId);
+  if (!cadence.autorise) return { ok: false, error: throttleMessage(cadence) };
 
   const cancelled = await market.cancelListing(session.playerId, parsed.data);
   if (!cancelled) {

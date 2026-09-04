@@ -6,6 +6,10 @@ import { CHARACTER_INDEX } from '@/data/characters';
 import { isTeamEditable } from '@/domain/chapter/lock';
 import { requireSession } from '@/lib/auth/guards';
 import { assertSameOrigin } from '@/lib/auth/request-guard';
+import {
+  consumeQuotaByPlayer,
+  throttleMessage,
+} from '@/lib/auth/action-throttle';
 import { getRepository } from '@/lib/repository';
 import { payReferrerOnFirstCrew } from '@/lib/social/referral-payout';
 import { recordEvent } from '@/lib/antiabuse/events';
@@ -45,6 +49,12 @@ export async function saveCrew(characterIds: unknown): Promise<SaveCrewResult> {
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0].message };
   }
+
+  // On peut changer d'avis autant qu'on veut avant dimanche : trente
+  // verrouillages par minute laissent largement la place à l'hésitation, et
+  // chaque enregistrement empile un instantané d'historique (§83).
+  const cadence = await consumeQuotaByPlayer('equipage', session.playerId);
+  if (!cadence.autorise) return { ok: false, error: throttleMessage(cadence) };
 
   const repository = getRepository();
 

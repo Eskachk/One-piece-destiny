@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { drainOutbox } from '@/lib/email/outbox';
 import { authorizeJob } from '@/lib/jobs/guard';
+import { db } from '@/lib/supabase-admin';
 
 /**
  * Vidange de la file d'envoi.
@@ -27,6 +28,25 @@ async function handle(request: Request) {
 
   try {
     const report = await drainOutbox();
+
+    /*
+     * Purge des fenêtres de cadence, greffée sur le travail quotidien.
+     *
+     * `action_rate_limits` garde une ligne par joueur et par action ; sans
+     * purge, la table ne redescend jamais. Elle n'a pas mérité son propre cron
+     * — c'est une suppression sur index qui dure quelques millisecondes — et un
+     * cron de plus est une chose de plus qui peut être mal configurée.
+     *
+     * `allSettled` : une purge en échec ne doit pas faire répondre 500 sur un
+     * envoi d'e-mails qui, lui, a réussi. Vercel réessaierait alors le lot.
+     */
+    const [purge] = await Promise.allSettled([
+      db().rpc('purge_rate_limits'),
+    ]);
+    if (purge.status === 'rejected') {
+      console.error('[email] RATE_LIMIT_PURGE_FAILED', purge.reason);
+    }
+
     return NextResponse.json(report);
   } catch (error) {
     // Le message d'erreur peut contenir un détail d'infrastructure : il est
