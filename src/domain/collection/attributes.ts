@@ -52,6 +52,7 @@ export interface Attribute {
  * personnage maîtrise, puis ce qu'il est, puis où il se range.
  */
 export type Family =
+  | 'etat'
   | 'haki'
   | 'fruit'
   | 'weapon'
@@ -63,6 +64,16 @@ export type Family =
   | 'role';
 
 const FAMILY_ORDER: readonly Family[] = [
+  /*
+   * L'état vient **en premier**, et c'est le seul cas où l'ordre n'obéit pas à
+   * « ce qu'il maîtrise d'abord ».
+   *
+   * Le jeu consiste à prédire qui paraîtra dans le chapitre de la semaine. Un
+   * personnage mort ne peut y figurer qu'en flashback : c'est le signal le
+   * plus fort qu'une carte puisse porter, et il doit survivre au plafond de
+   * six symboles. Il ne coûte rien aux autres — seuls les morts en portent un.
+   */
+  'etat',
   'haki',
   'fruit',
   'weapon',
@@ -100,6 +111,12 @@ interface Rule {
  * corrigera pas — elle vient de la source.
  */
 const RULES: readonly Rule[] = [
+  // --- État ----------------------------------------------------------------
+  //
+  // Motif ancré : le libellé est écrit par `scripts/enrich-from-api.mjs`, et
+  // un motif large attraperait « décédé » dans une description de poste.
+  { id: 'deceased', symbol: '🕯', label: 'Décédé dans l’œuvre', family: 'etat', match: /^d.c.d.$/i },
+
   // --- Haki ----------------------------------------------------------------
   { id: 'conqueror', symbol: '👑', label: 'Haki des Rois', family: 'haki', match: /haki des rois|conqueror/i },
   { id: 'armament', symbol: '✊', label: 'Haki de l’armement', family: 'haki', match: /haki (de l.)?armement|armament/i },

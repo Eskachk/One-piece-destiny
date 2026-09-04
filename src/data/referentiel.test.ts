@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { CHARACTERS } from './characters';
+import { ALL_CHARACTERS, CHARACTERS } from './characters';
+import { MISSING_CHARACTERS } from './characters.manquants';
 import { isCanon } from './non-canon';
 
 /**
@@ -99,5 +100,62 @@ describe('référentiel des personnages', () => {
     expect(JOUABLES.length).toBeGreaterThan(450);
     expect(JOUABLES.length).toBeLessThan(800);
     expect(new Set(JOUABLES.map((c) => c.id)).size).toBe(JOUABLES.length);
+  });
+
+  it('n’écrit pas à la main un personnage que l’API sert déjà', () => {
+    /*
+     * ## La faute qu'on a failli commettre
+     *
+     * Une note annonçait soixante-neuf personnages absents du référentiel. La
+     * vérification, graphie par graphie, en trouve huit : les autres étaient
+     * là depuis toujours sous un autre nom.
+     *
+     *   Enel → `Ener`   Wyper → `Wiper`   Brogy → `Broggy`   Dalton → `Dolton`
+     *   Ohm → `Om`      Kohza → `Koza`    Bell-mère → `Belmer`
+     *
+     * Les cinq agents de Baroque Works étaient les mieux cachés : l'API les
+     * sert sous leur **état civil**, jamais sous leur nom de code — `Gemme`
+     * pour Mr. 5, `Mikita` pour Miss Valentine, `Babe`, `Drophy`, `Marianne`.
+     *
+     * Un doublon ne casse rien de visible : il donne deux cartes pour la même
+     * personne, donc deux lignes à la saisie hebdomadaire des apparitions — et
+     * l'administrateur en remplit une, jamais les deux. La moitié des joueurs
+     * marque zéro sur un personnage bel et bien présent dans le chapitre.
+     *
+     * Le test compare sur l'identifiant **et** sur le nom, parce que c'est le
+     * nom qui a failli passer.
+     */
+    const importes = ALL_CHARACTERS.filter(
+      (c) => !MISSING_CHARACTERS.some((m) => m.id === c.id),
+    );
+
+    const idsImportes = new Set(importes.map((c) => c.id));
+    const nomsImportes = new Set(
+      importes.map((c) => c.name.trim().toLowerCase()),
+    );
+
+    for (const ecrit of MISSING_CHARACTERS) {
+      expect(idsImportes.has(ecrit.id), `identifiant en double : ${ecrit.id}`).toBe(
+        false,
+      );
+      expect(
+        nomsImportes.has(ecrit.name.trim().toLowerCase()),
+        `nom en double : ${ecrit.name}`,
+      ).toBe(false);
+    }
+  });
+
+  it('ne laisse aucune relation écrite à la main pointer dans le vide', () => {
+    // Les entrées manuelles sont les seules dont les liens ne sont pas dérivés
+    // d'un équipage : ce sont donc les seules qui peuvent viser un
+    // identifiant qui n'existe pas. Une relation orpheline s'affiche sur la
+    // fiche et promet une synergie impossible.
+    const connus = new Set(ALL_CHARACTERS.map((c) => c.id));
+
+    for (const ecrit of MISSING_CHARACTERS) {
+      for (const relation of ecrit.relations) {
+        expect(connus.has(relation.to), `${ecrit.id} → ${relation.to}`).toBe(true);
+      }
+    }
   });
 });

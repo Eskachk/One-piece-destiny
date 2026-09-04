@@ -136,6 +136,19 @@ function splitJob(job) {
 }
 
 /**
+ * Le personnage est-il mort dans l'œuvre ?
+ *
+ * Le champ `status` est renseigné sur 785 des 786 fiches, dans sept
+ * orthographes mêlant deux langues — `deceased`, `dead`, `living`, `alive`,
+ * `vivant`, `unknown`. On ne retient que ce dont on est sûr : la mort. Un
+ * `unknown` reste un vivant par défaut, ce qui est le bon sens de l'erreur
+ * dans un jeu de prédiction — mieux vaut ne pas avertir que d'avertir à tort.
+ */
+function estMort(status) {
+  return /^(deceased|dead|mort|d.c.d.)/i.test(String(status ?? '').trim());
+}
+
+/**
  * Palier de prime.
  *
  * Deux paliers, pas dix. Le nombre exact ne se lit pas d'un coup d'œil sur une
@@ -172,6 +185,23 @@ export function derivedAbilities(character) {
   if (prime) abilities.push(prime);
 
   if (heightOf(character.size) >= 500) abilities.push('Colosse');
+
+  /*
+   * La mort, et pourquoi elle est écrite sur la carte plutôt qu'appliquée au
+   * référentiel.
+   *
+   * L'API donne soixante-deux personnages pour morts. `non-canon.ts` n'en
+   * écarte que treize, choisis à la main parce qu'ils ne reparaissent
+   * qu'en flashback. Les quarante-neuf autres restaient jouables **sans que
+   * rien ne l'indique** : un joueur qui les choisissait faisait un pari très
+   * défavorable — leur seule apparition possible est un souvenir — et la carte
+   * ne le disait pas.
+   *
+   * Les retirer du jeu serait une décision d'équilibrage ; l'écrire sur la
+   * carte est une décision d'honnêteté. On fait la seconde : le personnage
+   * reste choisissable, et le joueur sait ce qu'il choisit.
+   */
+  if (estMort(character.status)) abilities.push('Décédé');
 
   return [...new Set(abilities)];
 }

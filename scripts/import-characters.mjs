@@ -328,9 +328,24 @@ async function main() {
 
 import type { Character } from '../domain/types';
 import { isCanon } from './non-canon';
+import { MISSING_CHARACTERS } from './characters.manquants';
 
-const ALL_CHARACTERS: Character[] = [
+const IMPORTED_CHARACTERS: Character[] = [
 ${body}
+];
+
+/**
+ * Le référentiel **brut** : l'import, plus ce que l'API ne sert pas.
+ *
+ * Les entrées écrites à la main sont **concaténées ici plutôt que collées
+ * dans le tableau ci-dessus**, parce que ce tableau est régénéré en bloc par
+ * \`scripts/import-characters.mjs\` : elles y disparaîtraient au premier
+ * import, sans erreur, et personne ne s'en apercevrait avant qu'un joueur
+ * cherche Hatchan.
+ */
+export const ALL_CHARACTERS: Character[] = [
+  ...IMPORTED_CHARACTERS,
+  ...MISSING_CHARACTERS,
 ];
 
 /**

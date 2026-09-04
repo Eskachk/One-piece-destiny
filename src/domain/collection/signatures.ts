@@ -3029,6 +3029,106 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
   },
 
+  /* =========================================================================
+     Sixième série — les personnages que l'API ne sert pas.
+
+     Ils viennent de `src/data/characters.manquants.ts`, écrits à la main
+     parce que la source ne les connaît pas. Chaque Épique doit sa signature :
+     sans elle, il tomberait sur la figurine de repli, et une carte de haut
+     rang à visage générique se remarque immédiatement dans une grille.
+     ========================================================================= */
+
+  'jaguar-d-saul': {
+    note:
+      'Race : Géant. Peau : claire. Cheveux : sombres, courts. Visage : ' +
+      'large, mâchoire carrée, rire perpétuel. Morphologie : colossale. ' +
+      'Vêtements : manteau de vice-amiral sur une tenue sombre.',
+    hair: '#2a2018', cut: 'short', skin: CLAIR, outfit: '#33455e',
+    coat: '#e8e2d4',
+    extras: ['coat-shoulders', 'epaulettes'],
+    face: 'square',
+    brow: 'calm',
+    height: 'towering',
+    head: 'none', mark: 'none', prop: 'none', build: 'giant',
+  },
+
+  'figarland-garling': {
+    note:
+      'Race : Humain. Peau : claire. Cheveux : blancs, longs. Visage : ' +
+      'anguleux, traits durs. Morphologie : grande, large. Vêtements : ' +
+      'armure claire de Chevalier de Dieu, cape, épaulières. Arme : grande ' +
+      'lame.',
+    hair: '#efeae0', cut: 'long', skin: CLAIR, outfit: '#e4e7ee',
+    accessory: '#c9a227',
+    extras: ['cape', 'pauldrons', 'high-collar'],
+    face: 'sharp',
+    eyes: 'sharp',
+    brow: 'fierce',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'greatsword', build: 'broad',
+  },
+
+  gunko: {
+    note:
+      'Race : Humain. Peau : claire. Cheveux : clairs, longs. Visage : fin. ' +
+      'Morphologie : élancée. Vêtements : tenue claire de Chevalier de Dieu, ' +
+      'cape. Arme : arc.',
+    hair: '#f2eddf', cut: 'long', skin: CLAIR, outfit: '#dfe4ec',
+    accessory: '#c9a227',
+    extras: ['cape', 'high-collar'],
+    face: 'sharp',
+    eyes: 'narrow',
+    brow: 'calm',
+    height: 'normal',
+    head: 'none', mark: 'none', prop: 'gun', build: 'slim',
+  },
+
+  killingham: {
+    note:
+      'Race : Humain. Peau : claire. Cheveux : sombres, longs et ondulés. ' +
+      'Visage : large. Morphologie : colossale. Vêtements : tenue de ' +
+      'Chevalier de Dieu, cape, col haut.',
+    hair: '#2b2430', cut: 'wavy', skin: CLAIR, outfit: '#d8dce6',
+    accessory: '#c9a227',
+    extras: ['cape', 'high-collar', 'pauldrons'],
+    face: 'square',
+    eyes: 'wide',
+    brow: 'fierce',
+    height: 'towering',
+    head: 'none', mark: 'none', prop: 'none', build: 'giant',
+  },
+
+  'shepherd-sommers': {
+    note:
+      'Race : Humain. Peau : claire. Cheveux : sombres, courts. Visage : ' +
+      'étroit, traits sévères. Morphologie : mince. Vêtements : tenue claire ' +
+      'de Chevalier de Dieu, cape, col haut. Accessoire : lunettes.',
+    hair: '#241f1c', cut: 'short', skin: CLAIR, outfit: '#dde2ea',
+    accessory: '#c9a227',
+    extras: ['cape', 'high-collar'],
+    face: 'long',
+    eyes: 'narrow',
+    brow: 'fierce',
+    height: 'tall',
+    head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
+  },
+
+  hatchan: {
+    note:
+      'Race : Homme-poisson, poulpe. Peau : rose-violacé. Cheveux : sombres, ' +
+      'coupe courte. Visage : large, lèvres épaisses. Morphologie : ' +
+      'imposante, six bras. Vêtements : haut ouvert, ceinture d’étoffe. ' +
+      'Armes : plusieurs sabres.',
+    hair: '#2c2230', cut: 'short', skin: '#c98fae', outfit: '#4e7f5e',
+    frame: 'fishman',
+    extras: ['open-vest', 'sash', 'fins'],
+    face: 'round',
+    eyes: 'wide',
+    brow: 'neutral',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'sword', build: 'broad',
+  },
+
 };
 
 /** Le personnage a-t-il une signature écrite ? */

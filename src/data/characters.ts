@@ -19,6 +19,7 @@
 
 import type { Character } from '../domain/types';
 import { isCanon } from './non-canon';
+import { MISSING_CHARACTERS } from './characters.manquants';
 
 /**
  * Le référentiel **brut**, exclusions comprises.
@@ -28,7 +29,7 @@ import { isCanon } from './non-canon';
  * personnage exclu n'est pas du travail perdu — elle attend qu'on le
  * réintègre. Une signature écrite pour un identifiant inconnu, si.
  */
-export const ALL_CHARACTERS: Character[] = [
+const IMPORTED_CHARACTERS: Character[] = [
   {
     id: 'luffy',
     name: 'Monkey D. Luffy',
@@ -633,7 +634,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Thriller Bark'],
     relations: [{ to: 'gecko-moria', kind: 'CREW' }, { to: 'hogback', kind: 'CREW' }],
-    abilities: ['Fruit of Invisibility', 'Mysterious Four'],
+    abilities: ['Fruit of Invisibility', 'Mysterious Four', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -1794,7 +1795,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
-    abilities: ['Homie', 'Équipage d\'Empereur', 'Colosse'],
+    abilities: ['Homie', 'Équipage d\'Empereur', 'Colosse', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -2442,7 +2443,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }, { to: 'millet-pine', kind: 'CREW' }, { to: 'ganryu', kind: 'CREW' }, { to: 'cb-galant', kind: 'CREW' }, { to: 'donquino', kind: 'CREW' }, { to: 'mr-momora', kind: 'CREW' }, { to: 'moon-isaac-jr', kind: 'CREW' }, { to: 'yui', kind: 'CREW' }, { to: 'rangram', kind: 'CREW' }, { to: 'colonel-mugren', kind: 'CREW' }, { to: 'max-marks', kind: 'CREW' }, { to: 'spencer', kind: 'CREW' }, { to: 'bankro', kind: 'CREW' }, { to: 'blumarine', kind: 'CREW' }, { to: 'elio', kind: 'CREW' }, { to: 'rowing', kind: 'CREW' }, { to: 'jacsonbaner', kind: 'CREW' }, { to: 'yamon', kind: 'CREW' }],
-    abilities: ['Captain', 'Haki des Rois', 'Haki armement', 'Haki observation', 'Équipage d\'Empereur', 'Prime au milliard'],
+    abilities: ['Captain', 'Haki des Rois', 'Haki armement', 'Haki observation', 'Équipage d\'Empereur', 'Prime au milliard', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -2685,7 +2686,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['The Rumbar crew'],
     relations: [{ to: 'madaisky-mizuta', kind: 'CREW' }, { to: 'mawaritovsky-mizuta', kind: 'CREW' }],
-    abilities: ['Captain', 'Charpentier'],
+    abilities: ['Captain', 'Charpentier', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -2694,7 +2695,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['The Rumbar crew'],
     relations: [{ to: 'yorki', kind: 'CREW' }, { to: 'mawaritovsky-mizuta', kind: 'CREW' }],
-    abilities: [],
+    abilities: ['Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -2703,7 +2704,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['The Rumbar crew'],
     relations: [{ to: 'yorki', kind: 'CREW' }, { to: 'madaisky-mizuta', kind: 'CREW' }],
-    abilities: [],
+    abilities: ['Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -2712,7 +2713,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: ['Pirate'],
+    abilities: ['Pirate', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -2721,7 +2722,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }, { to: 'blamenco', kind: 'CREW' }, { to: 'rakuyo', kind: 'CREW' }, { to: 'blenheim', kind: 'CREW' }, { to: 'curiel', kind: 'CREW' }, { to: 'kingdew', kind: 'CREW' }, { to: 'haruta', kind: 'CREW' }, { to: 'atmos', kind: 'CREW' }, { to: 'speed-jill', kind: 'CREW' }, { to: 'fossa', kind: 'CREW' }, { to: 'izou', kind: 'CREW' }, { to: 'doma', kind: 'CREW' }, { to: 'freres-decalvan', kind: 'CREW' }, { to: 'whitey-bay', kind: 'CREW' }, { to: 'mc-guy', kind: 'CREW' }, { to: 'a-o', kind: 'CREW' }, { to: 'karma', kind: 'CREW' }, { to: 'elmy', kind: 'CREW' }, { to: 'ramba', kind: 'CREW' }, { to: 'delacuaji', kind: 'CREW' }, { to: 'zodia', kind: 'CREW' }, { to: 'palms', kind: 'CREW' }, { to: 'bizarre', kind: 'CREW' }, { to: 'pavlik', kind: 'CREW' }, { to: 'vitan', kind: 'CREW' }, { to: 'islewan', kind: 'CREW' }, { to: 'epoida', kind: 'CREW' }, { to: 'kechatch', kind: 'CREW' }, { to: 'choi', kind: 'CREW' }, { to: 'arhur', kind: 'CREW' }, { to: 'hangan', kind: 'CREW' }, { to: 'reforte', kind: 'CREW' }, { to: 'andre', kind: 'CREW' }, { to: 'ninth', kind: 'CREW' }, { to: 'blondie', kind: 'CREW' }, { to: 'nosgarl', kind: 'CREW' }, { to: 'amadob', kind: 'CREW' }, { to: 'baggaley', kind: 'CREW' }, { to: 'wakkem', kind: 'CREW' }, { to: 'brew', kind: 'CREW' }, { to: 'brocca', kind: 'CREW' }, { to: 'rush', kind: 'CREW' }, { to: 'great-micheal', kind: 'CREW' }, { to: 'zucca', kind: 'CREW' }, { to: 'cands', kind: 'CREW' }, { to: 'kinga', kind: 'CREW' }, { to: 'colscon', kind: 'CREW' }, { to: 'agsilly', kind: 'CREW' }, { to: 'julius', kind: 'CREW' }, { to: 'happygun', kind: 'CREW' }, { to: 'sleepy', kind: 'CREW' }, { to: 'forliewbs', kind: 'CREW' }],
-    abilities: ['Fruit of Trembling', 'Captain', 'Haki des Rois', 'Haki armement', 'Haki observation', 'Équipage d\'Empereur', 'Prime au milliard', 'Colosse'],
+    abilities: ['Fruit of Trembling', 'Captain', 'Haki des Rois', 'Haki armement', 'Haki observation', 'Équipage d\'Empereur', 'Prime au milliard', 'Colosse', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -2730,7 +2731,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'LEGENDARY',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }, { to: 'blamenco', kind: 'CREW' }, { to: 'rakuyo', kind: 'CREW' }, { to: 'blenheim', kind: 'CREW' }, { to: 'curiel', kind: 'CREW' }, { to: 'kingdew', kind: 'CREW' }, { to: 'haruta', kind: 'CREW' }, { to: 'atmos', kind: 'CREW' }, { to: 'speed-jill', kind: 'CREW' }, { to: 'fossa', kind: 'CREW' }, { to: 'izou', kind: 'CREW' }, { to: 'doma', kind: 'CREW' }, { to: 'freres-decalvan', kind: 'CREW' }, { to: 'whitey-bay', kind: 'CREW' }, { to: 'mc-guy', kind: 'CREW' }, { to: 'a-o', kind: 'CREW' }, { to: 'karma', kind: 'CREW' }, { to: 'elmy', kind: 'CREW' }, { to: 'ramba', kind: 'CREW' }, { to: 'delacuaji', kind: 'CREW' }, { to: 'zodia', kind: 'CREW' }, { to: 'palms', kind: 'CREW' }, { to: 'bizarre', kind: 'CREW' }, { to: 'pavlik', kind: 'CREW' }, { to: 'vitan', kind: 'CREW' }, { to: 'islewan', kind: 'CREW' }, { to: 'epoida', kind: 'CREW' }, { to: 'kechatch', kind: 'CREW' }, { to: 'choi', kind: 'CREW' }, { to: 'arhur', kind: 'CREW' }, { to: 'hangan', kind: 'CREW' }, { to: 'reforte', kind: 'CREW' }, { to: 'andre', kind: 'CREW' }, { to: 'ninth', kind: 'CREW' }, { to: 'blondie', kind: 'CREW' }, { to: 'nosgarl', kind: 'CREW' }, { to: 'amadob', kind: 'CREW' }, { to: 'baggaley', kind: 'CREW' }, { to: 'wakkem', kind: 'CREW' }, { to: 'brew', kind: 'CREW' }, { to: 'brocca', kind: 'CREW' }, { to: 'rush', kind: 'CREW' }, { to: 'great-micheal', kind: 'CREW' }, { to: 'zucca', kind: 'CREW' }, { to: 'cands', kind: 'CREW' }, { to: 'kinga', kind: 'CREW' }, { to: 'colscon', kind: 'CREW' }, { to: 'agsilly', kind: 'CREW' }, { to: 'julius', kind: 'CREW' }, { to: 'happygun', kind: 'CREW' }, { to: 'sleepy', kind: 'CREW' }, { to: 'forliewbs', kind: 'CREW' }],
-    abilities: ['Pyro-Fruit', 'Commander 2nd Ship', 'Haki armement', 'Équipage d\'Empereur', 'Prime importante'],
+    abilities: ['Pyro-Fruit', 'Commander 2nd Ship', 'Haki armement', 'Équipage d\'Empereur', 'Prime importante', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -2748,7 +2749,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }, { to: 'blamenco', kind: 'CREW' }, { to: 'rakuyo', kind: 'CREW' }, { to: 'blenheim', kind: 'CREW' }, { to: 'curiel', kind: 'CREW' }, { to: 'kingdew', kind: 'CREW' }, { to: 'haruta', kind: 'CREW' }, { to: 'atmos', kind: 'CREW' }, { to: 'speed-jill', kind: 'CREW' }, { to: 'fossa', kind: 'CREW' }, { to: 'izou', kind: 'CREW' }, { to: 'doma', kind: 'CREW' }, { to: 'freres-decalvan', kind: 'CREW' }, { to: 'whitey-bay', kind: 'CREW' }, { to: 'mc-guy', kind: 'CREW' }, { to: 'a-o', kind: 'CREW' }, { to: 'karma', kind: 'CREW' }, { to: 'elmy', kind: 'CREW' }, { to: 'ramba', kind: 'CREW' }, { to: 'delacuaji', kind: 'CREW' }, { to: 'zodia', kind: 'CREW' }, { to: 'palms', kind: 'CREW' }, { to: 'bizarre', kind: 'CREW' }, { to: 'pavlik', kind: 'CREW' }, { to: 'vitan', kind: 'CREW' }, { to: 'islewan', kind: 'CREW' }, { to: 'epoida', kind: 'CREW' }, { to: 'kechatch', kind: 'CREW' }, { to: 'choi', kind: 'CREW' }, { to: 'arhur', kind: 'CREW' }, { to: 'hangan', kind: 'CREW' }, { to: 'reforte', kind: 'CREW' }, { to: 'andre', kind: 'CREW' }, { to: 'ninth', kind: 'CREW' }, { to: 'blondie', kind: 'CREW' }, { to: 'nosgarl', kind: 'CREW' }, { to: 'amadob', kind: 'CREW' }, { to: 'baggaley', kind: 'CREW' }, { to: 'wakkem', kind: 'CREW' }, { to: 'brew', kind: 'CREW' }, { to: 'brocca', kind: 'CREW' }, { to: 'rush', kind: 'CREW' }, { to: 'great-micheal', kind: 'CREW' }, { to: 'zucca', kind: 'CREW' }, { to: 'cands', kind: 'CREW' }, { to: 'kinga', kind: 'CREW' }, { to: 'colscon', kind: 'CREW' }, { to: 'agsilly', kind: 'CREW' }, { to: 'julius', kind: 'CREW' }, { to: 'happygun', kind: 'CREW' }, { to: 'sleepy', kind: 'CREW' }, { to: 'forliewbs', kind: 'CREW' }],
-    abilities: ['Commander 4th Ship', 'Équipage d\'Empereur'],
+    abilities: ['Commander 4th Ship', 'Équipage d\'Empereur', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -2847,7 +2848,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
-    abilities: ['Commander 16th Ship', 'Épéiste', 'Équipage d\'Empereur'],
+    abilities: ['Commander 16th Ship', 'Épéiste', 'Équipage d\'Empereur', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3252,7 +3253,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['The Bluejam crew'],
     relations: [{ to: 'porchemy', kind: 'CREW' }],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3261,7 +3262,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['The Bluejam crew'],
     relations: [{ to: 'bluejam', kind: 'CREW' }],
-    abilities: [],
+    abilities: ['Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3441,7 +3442,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }],
-    abilities: ['Lieutenant-Chef'],
+    abilities: ['Lieutenant-Chef', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3522,7 +3523,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }],
-    abilities: ['Fruit du Flocon', 'Lieutenant'],
+    abilities: ['Fruit du Flocon', 'Lieutenant', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3549,7 +3550,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Gouvernement Mondial'],
     relations: [{ to: 'im-sama', kind: 'CREW' }, { to: '2e-doyen', kind: 'CREW' }, { to: '3e-doyen', kind: 'CREW' }, { to: '4e-doyen', kind: 'CREW' }, { to: '5e-doyen', kind: 'CREW' }],
-    abilities: ['Council of Five Deans', 'Zoan mythique', 'Haki armement', 'God of science', 'research-related matters'],
+    abilities: ['Council of Five Deans', 'Zoan mythique', 'Haki armement', 'God of science', 'research-related matters', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -3621,7 +3622,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Dragon Célestes'],
     relations: [{ to: 'roswald', kind: 'CREW' }, { to: 'charloss', kind: 'CREW' }, { to: 'sharlia', kind: 'CREW' }, { to: 'jalmack', kind: 'CREW' }, { to: 'don-quijote-homing', kind: 'CREW' }],
-    abilities: [],
+    abilities: ['Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4008,7 +4009,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Rear Admiral'],
+    abilities: ['Rear Admiral', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4350,7 +4351,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Royaume de Goa'],
     relations: [{ to: 'stelly', kind: 'CREW' }, { to: 'sally-entoilette', kind: 'CREW' }, { to: 'outlook-iii', kind: 'CREW' }, { to: 'didit', kind: 'CREW' }, { to: 'makino', kind: 'CREW' }, { to: 'woop-slap', kind: 'CREW' }],
-    abilities: ['Resident'],
+    abilities: ['Resident', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4359,7 +4360,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Village de Shimotsuki'],
     relations: [{ to: 'koshiro', kind: 'CREW' }, { to: 'kuina', kind: 'CREW' }],
-    abilities: ['Resident', 'Épéiste'],
+    abilities: ['Resident', 'Épéiste', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4377,7 +4378,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Village de Shimotsuki'],
     relations: [{ to: 'kozaburo-shimotsuki', kind: 'CREW' }, { to: 'koshiro', kind: 'CREW' }],
-    abilities: ['Resident', 'Épéiste'],
+    abilities: ['Resident', 'Épéiste', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4467,7 +4468,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Archipel des Gecko'],
     relations: [{ to: 'kaya', kind: 'CREW' }, { to: 'merry', kind: 'CREW' }, { to: 'oignon', kind: 'CREW' }, { to: 'piment', kind: 'CREW' }, { to: 'carotte', kind: 'CREW' }],
-    abilities: ['Resident of vilalge de Sirop'],
+    abilities: ['Resident of vilalge de Sirop', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4503,7 +4504,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Archipel Conomi'],
     relations: [{ to: 'nojiko', kind: 'CREW' }, { to: 'genzo', kind: 'CREW' }, { to: 'nako', kind: 'CREW' }, { to: 'chabo', kind: 'CREW' }, { to: 'johny', kind: 'CREW' }, { to: 'yosaku', kind: 'CREW' }],
-    abilities: ['Tangerine grower'],
+    abilities: ['Tangerine grower', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4575,7 +4576,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: ['Explorer'],
+    abilities: ['Explorer', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4584,7 +4585,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Dragon Célestes'],
     relations: [{ to: 'roswald', kind: 'CREW' }, { to: 'charloss', kind: 'CREW' }, { to: 'sharlia', kind: 'CREW' }, { to: 'don-quijote-myosgard', kind: 'CREW' }, { to: 'jalmack', kind: 'CREW' }],
-    abilities: [],
+    abilities: ['Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4593,7 +4594,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: ['Résident'],
+    abilities: ['Résident', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4620,7 +4621,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Ohara'],
     relations: [{ to: 'nico-olvia', kind: 'CREW' }, { to: 'haguar-d-sauro', kind: 'CREW' }],
-    abilities: ['Library Manager', 'Archéologue'],
+    abilities: ['Library Manager', 'Archéologue', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4629,7 +4630,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Ohara'],
     relations: [{ to: 'clover', kind: 'CREW' }, { to: 'haguar-d-sauro', kind: 'CREW' }],
-    abilities: ['Archaeologist', 'Archéologue'],
+    abilities: ['Archaeologist', 'Archéologue', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4638,7 +4639,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Ohara'],
     relations: [{ to: 'clover', kind: 'CREW' }, { to: 'nico-olvia', kind: 'CREW' }],
-    abilities: ['Vice-Admiral', 'Colosse'],
+    abilities: ['Vice-Admiral', 'Colosse', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4737,7 +4738,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Île de Drum'],
     relations: [{ to: 'dolton', kind: 'CREW' }, { to: 'kureha', kind: 'CREW' }, { to: 'chess', kind: 'CREW' }, { to: 'kuromarimo', kind: 'CREW' }],
-    abilities: ['Doctor', 'Médecin'],
+    abilities: ['Doctor', 'Médecin', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4773,7 +4774,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Alabasta'],
     relations: [{ to: 'nefertari-cobra', kind: 'CREW' }, { to: 'nefertari-vivi', kind: 'CREW' }, { to: 'igaram', kind: 'CREW' }, { to: 'chaka', kind: 'CREW' }, { to: 'pell', kind: 'CREW' }, { to: 'kaloo', kind: 'CREW' }, { to: 'longs-cils', kind: 'CREW' }, { to: 'stomp', kind: 'CREW' }, { to: 'ivan-x', kind: 'CREW' }, { to: 'cowboy', kind: 'CREW' }, { to: 'bourdon-jr', kind: 'CREW' }, { to: 'kentaros', kind: 'CREW' }, { to: 'hikoichi', kind: 'CREW' }, { to: 'koza', kind: 'CREW' }, { to: 'toto', kind: 'CREW' }],
-    abilities: ['Queen'],
+    abilities: ['Queen', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -4998,7 +4999,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Water Seven'],
     relations: [{ to: 'icebarg', kind: 'CREW' }, { to: 'pauly', kind: 'CREW' }, { to: 'peeply-lulu', kind: 'CREW' }, { to: 'tilestone', kind: 'CREW' }, { to: 'zanbai', kind: 'CREW' }, { to: 'mozu', kind: 'CREW' }],
-    abilities: ['Tom\'s Workers (boss)', 'Charpentier', 'Tom\'s Workers', 'boss'],
+    abilities: ['Tom\'s Workers (boss)', 'Charpentier', 'Tom\'s Workers', 'boss', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5097,7 +5098,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Erbaf'],
     relations: [{ to: 'loki', kind: 'CREW' }, { to: 'jarl', kind: 'CREW' }, { to: 'oimo', kind: 'CREW' }, { to: 'kaashii', kind: 'CREW' }],
-    abilities: ['Resident', 'Colosse'],
+    abilities: ['Resident', 'Colosse', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5142,7 +5143,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }, { to: 'kinemon', kind: 'CREW' }, { to: 'denjiro', kind: 'CREW' }, { to: 'kikunojo', kind: 'CREW' }, { to: 'raizo', kind: 'CREW' }, { to: 'ashura-doji', kind: 'CREW' }, { to: 'kawamatsu', kind: 'CREW' }, { to: 'shinobu', kind: 'CREW' }, { to: 'orochi-kurozumi', kind: 'CREW' }, { to: 'kanjuro-kurozumi', kind: 'CREW' }, { to: 'semimaru-kurozumi', kind: 'CREW' }, { to: 'higurashi-kurozumi', kind: 'CREW' }, { to: 'ryuma-shimotsuki', kind: 'CREW' }, { to: 'yasui-shimotsuki', kind: 'CREW' }, { to: 'toko', kind: 'CREW' }, { to: 'onimaru', kind: 'CREW' }, { to: 'hyogoro', kind: 'CREW' }, { to: 'omasa', kind: 'CREW' }, { to: 'tsunagoro', kind: 'CREW' }, { to: 'cho', kind: 'CREW' }, { to: 'yatappe', kind: 'CREW' }, { to: 'tama', kind: 'CREW' }, { to: 'tsurujo', kind: 'CREW' }, { to: 'komachiyo', kind: 'CREW' }, { to: 'baboumaru', kind: 'CREW' }, { to: 'bunbuku', kind: 'CREW' }, { to: 'yamato', kind: 'CREW' }, { to: 'tenguyama-hitetsu', kind: 'CREW' }],
-    abilities: ['Lord of Kuri'],
+    abilities: ['Lord of Kuri', 'Décédé'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -5151,7 +5152,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }, { to: 'kinemon', kind: 'CREW' }, { to: 'denjiro', kind: 'CREW' }, { to: 'kikunojo', kind: 'CREW' }, { to: 'raizo', kind: 'CREW' }, { to: 'ashura-doji', kind: 'CREW' }, { to: 'kawamatsu', kind: 'CREW' }, { to: 'shinobu', kind: 'CREW' }, { to: 'orochi-kurozumi', kind: 'CREW' }, { to: 'kanjuro-kurozumi', kind: 'CREW' }, { to: 'semimaru-kurozumi', kind: 'CREW' }, { to: 'higurashi-kurozumi', kind: 'CREW' }, { to: 'ryuma-shimotsuki', kind: 'CREW' }, { to: 'yasui-shimotsuki', kind: 'CREW' }, { to: 'toko', kind: 'CREW' }, { to: 'onimaru', kind: 'CREW' }, { to: 'hyogoro', kind: 'CREW' }, { to: 'omasa', kind: 'CREW' }, { to: 'tsunagoro', kind: 'CREW' }, { to: 'cho', kind: 'CREW' }, { to: 'yatappe', kind: 'CREW' }, { to: 'tama', kind: 'CREW' }, { to: 'tsurujo', kind: 'CREW' }, { to: 'komachiyo', kind: 'CREW' }, { to: 'baboumaru', kind: 'CREW' }, { to: 'bunbuku', kind: 'CREW' }, { to: 'yamato', kind: 'CREW' }, { to: 'tenguyama-hitetsu', kind: 'CREW' }],
-    abilities: ['Fruit of Time', 'Resident'],
+    abilities: ['Fruit of Time', 'Resident', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5196,7 +5197,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }, { to: 'kinemon', kind: 'CREW' }, { to: 'denjiro', kind: 'CREW' }, { to: 'kikunojo', kind: 'CREW' }, { to: 'raizo', kind: 'CREW' }, { to: 'ashura-doji', kind: 'CREW' }, { to: 'kawamatsu', kind: 'CREW' }, { to: 'shinobu', kind: 'CREW' }, { to: 'orochi-kurozumi', kind: 'CREW' }, { to: 'kanjuro-kurozumi', kind: 'CREW' }, { to: 'semimaru-kurozumi', kind: 'CREW' }, { to: 'higurashi-kurozumi', kind: 'CREW' }, { to: 'ryuma-shimotsuki', kind: 'CREW' }, { to: 'yasui-shimotsuki', kind: 'CREW' }, { to: 'toko', kind: 'CREW' }, { to: 'onimaru', kind: 'CREW' }, { to: 'hyogoro', kind: 'CREW' }, { to: 'omasa', kind: 'CREW' }, { to: 'tsunagoro', kind: 'CREW' }, { to: 'cho', kind: 'CREW' }, { to: 'yatappe', kind: 'CREW' }, { to: 'tama', kind: 'CREW' }, { to: 'tsurujo', kind: 'CREW' }, { to: 'komachiyo', kind: 'CREW' }, { to: 'baboumaru', kind: 'CREW' }, { to: 'bunbuku', kind: 'CREW' }, { to: 'yamato', kind: 'CREW' }, { to: 'tenguyama-hitetsu', kind: 'CREW' }],
-    abilities: ['Red sheaths', 'Prime importante'],
+    abilities: ['Red sheaths', 'Prime importante', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5223,7 +5224,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Red sheaths', 'Épéiste', 'Colosse'],
+    abilities: ['Red sheaths', 'Épéiste', 'Colosse', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5250,7 +5251,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa', 'Zoan Mythique'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Fruit of the Reptile, eight-headed dragon version', 'Shogun'],
+    abilities: ['Fruit of the Reptile, eight-headed dragon version', 'Shogun', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5268,7 +5269,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Fruit of the Barrier', 'Kurozumo clan'],
+    abilities: ['Fruit of the Barrier', 'Kurozumo clan', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5277,7 +5278,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Travesti-Fruit', 'Kurozumo clan'],
+    abilities: ['Travesti-Fruit', 'Kurozumo clan', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5286,7 +5287,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Shimotsuki clan'],
+    abilities: ['Shimotsuki clan', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5295,7 +5296,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Shimotsuki clan'],
+    abilities: ['Shimotsuki clan', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5304,7 +5305,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
-    abilities: ['Shimotsuki clan'],
+    abilities: ['Shimotsuki clan', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5439,7 +5440,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Punk Hazard'],
     relations: [{ to: 'cesar-clown', kind: 'CREW' }, { to: 'rock', kind: 'CREW' }, { to: 'scotch', kind: 'CREW' }],
-    abilities: ['Fruit of the Salamander, Axolotl version', 'Resident', 'Colosse'],
+    abilities: ['Fruit of the Salamander, Axolotl version', 'Resident', 'Colosse', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5457,7 +5458,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Dressrosa'],
     relations: [{ to: 'riku-dold-iii', kind: 'CREW' }, { to: 'kyros', kind: 'CREW' }, { to: 'viola', kind: 'CREW' }, { to: 'rebecca', kind: 'CREW' }, { to: 'gatz', kind: 'CREW' }, { to: 'tank-lepanto', kind: 'CREW' }],
-    abilities: ['Princess'],
+    abilities: ['Princess', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5610,7 +5611,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Zo'],
     relations: [{ to: 'zunesh', kind: 'CREW' }, { to: 'begis-khan', kind: 'CREW' }, { to: 'caborage', kind: 'CREW' }, { to: 'chavipere', kind: 'CREW' }, { to: 'sicilion', kind: 'CREW' }, { to: 'cancelot', kind: 'CREW' }],
-    abilities: ['Musketeer unit'],
+    abilities: ['Musketeer unit', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5664,7 +5665,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Royaume de Germa'],
     relations: [{ to: 'judge-vinsmoke', kind: 'CREW' }, { to: 'reiju-vinsmoke', kind: 'CREW' }, { to: 'ichiji-vinsmoke', kind: 'CREW' }, { to: 'niji-vinsmoke', kind: 'CREW' }, { to: 'yonji-vinsmoke', kind: 'CREW' }],
-    abilities: ['Queen'],
+    abilities: ['Queen', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5835,7 +5836,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Skypiea'],
     relations: [{ to: 'gan-forr', kind: 'CREW' }, { to: 'pierre', kind: 'CREW' }, { to: 'conis', kind: 'CREW' }, { to: 'pagaya', kind: 'CREW' }, { to: 'amazon', kind: 'CREW' }, { to: 'chef-shandia', kind: 'CREW' }],
-    abilities: ['Shandia tribe'],
+    abilities: ['Shandia tribe', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -5916,7 +5917,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Île des hommes-poissons'],
     relations: [{ to: 'octy', kind: 'CREW' }, { to: 'neptune', kind: 'CREW' }, { to: 'fukaboshi', kind: 'CREW' }, { to: 'ryuboshi', kind: 'CREW' }, { to: 'mamboshi', kind: 'CREW' }, { to: 'shirahoshi', kind: 'CREW' }, { to: 'hoe', kind: 'CREW' }, { to: 'megalo', kind: 'CREW' }, { to: 'ministre-senestre', kind: 'CREW' }, { to: 'ministre-dextre', kind: 'CREW' }, { to: 'shyarly', kind: 'CREW' }, { to: 'keimi', kind: 'CREW' }, { to: 'pappag', kind: 'CREW' }, { to: 'den', kind: 'CREW' }],
-    abilities: ['Queen'],
+    abilities: ['Queen', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -6348,7 +6349,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: [],
     relations: [],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -6564,7 +6565,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Pirate des flèches rouges'],
     relations: [{ to: 'lily-carnation', kind: 'CREW' }],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -6573,7 +6574,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'RARE',
     affiliations: ['Pirate des flèches rouges'],
     relations: [{ to: 'omatsuri', kind: 'CREW' }],
-    abilities: ['Captain'],
+    abilities: ['Captain', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -6690,7 +6691,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Néo Marine'],
     relations: [{ to: 'ain', kind: 'CREW' }, { to: 'bins', kind: 'CREW' }],
-    abilities: ['Chef'],
+    abilities: ['Chef', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -6879,7 +6880,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
-    abilities: ['Commodore'],
+    abilities: ['Commodore', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -6906,7 +6907,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: ['Mayor'],
+    abilities: ['Mayor', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -6924,7 +6925,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: ['Fruit du Ciboulot', 'Scientist'],
+    abilities: ['Fruit du Ciboulot', 'Scientist', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -7104,7 +7105,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: ['Scientist - Justice / Logic', 'Scientist - Justice', 'Logic'],
+    abilities: ['Scientist - Justice / Logic', 'Scientist - Justice', 'Logic', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -7122,7 +7123,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: ['Scientist - Creativity/Engineering', 'Scientist - Creativity', 'Engineering'],
+    abilities: ['Scientist - Creativity/Engineering', 'Scientist - Creativity', 'Engineering', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -7131,7 +7132,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: ['Scientist - Analysis/robotics', 'Scientist - Analysis', 'robotics'],
+    abilities: ['Scientist - Analysis/robotics', 'Scientist - Analysis', 'robotics', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -7140,7 +7141,7 @@ export const ALL_CHARACTERS: Character[] = [
     rarity: 'COMMON',
     affiliations: [],
     relations: [],
-    abilities: ['Scientist - Strength/combat', 'Scientist - Strength', 'combat'],
+    abilities: ['Scientist - Strength/combat', 'Scientist - Strength', 'combat', 'Décédé'],
     presenceExpectation: 'LOW',
   },
   {
@@ -7166,6 +7167,76 @@ export const ALL_CHARACTERS: Character[] = [
  * liste des exclusions se relit et se corrige dans `non-canon.ts`, sans avoir
  * à régénérer 7 000 lignes pour changer d'avis sur un personnage.
  */
+/**
+ * Le référentiel **brut** : l'import, plus ce que l'API ne sert pas.
+ *
+ * Les entrées écrites à la main sont **concaténées ici plutôt que collées
+ * dans le tableau ci-dessus**, parce que ce tableau est régénéré en bloc par
+ * `scripts/import-characters.mjs` : elles y disparaîtraient au premier
+ * import, sans erreur, et personne ne s'en apercevrait avant qu'un joueur
+ * cherche Hatchan.
+ *
+ * Exporté pour une seule raison : distinguer « ce personnage n'existe pas » de
+ * « ce personnage existe mais ne se joue pas ». Une signature écrite pour un
+ * personnage exclu n'est pas du travail perdu — elle attend qu'on le
+ * réintègre. Une signature écrite pour un identifiant inconnu, si.
+ */
+/**
+ * Rend symétriques les liens déclarés par les entrées manuelles.
+ *
+ * Le référentiel tient un invariant : **toute relation a son retour**. Il a
+ * été gagné de haute lutte — le graphe importé n'était réciproque qu'à 40 %,
+ * et l'asymétrie faussait la synergie de façon invisible, un joueur touchant
+ * le bonus et son voisin non pour le même duo.
+ *
+ * Une entrée écrite à la main déclare son lien une fois — « Hatchan est de
+ * l'équipage d'Arlong ». Le retour doit exister aussi, et il ne peut pas être
+ * écrit en face : Arlong vit dans le tableau régénéré par l'import, où toute
+ * retouche disparaîtrait au passage suivant.
+ *
+ * On le pose donc **à l'assemblage**, sur une copie, et sur le référentiel
+ * entier — les Chevaliers de Dieu se citent entre eux, et ils sont tous du
+ * côté manuel. Le fichier généré reste le fichier généré, et le fichier
+ * manuel n'énonce chaque lien qu'une fois : une donnée saisie deux fois est
+ * une donnée qui finit par diverger.
+ */
+function avecRetours(
+  tous: Character[],
+  manuels: Character[],
+): Character[] {
+  const retours = new Map<string, Character['relations']>();
+
+  for (const manuel of manuels) {
+    for (const relation of manuel.relations) {
+      const liste = retours.get(relation.to) ?? [];
+      liste.push({ to: manuel.id, kind: relation.kind });
+      retours.set(relation.to, liste);
+    }
+  }
+
+  return tous.map((character) => {
+    const ajouts = retours.get(character.id);
+    if (!ajouts || ajouts.length === 0) return character;
+
+    // Un retour déjà présent n'est pas ajouté deux fois : le lien serait
+    // affiché en double sur la fiche.
+    const manquants = ajouts.filter(
+      (ajout) =>
+        !character.relations.some(
+          (existante) => existante.to === ajout.to && existante.kind === ajout.kind,
+        ),
+    );
+    if (manquants.length === 0) return character;
+
+    return { ...character, relations: [...character.relations, ...manquants] };
+  });
+}
+
+export const ALL_CHARACTERS: Character[] = avecRetours(
+  [...IMPORTED_CHARACTERS, ...MISSING_CHARACTERS],
+  MISSING_CHARACTERS,
+);
+
 export const CHARACTERS: Character[] = ALL_CHARACTERS.filter((character) =>
   isCanon(character.id),
 ).map((character) => ({
