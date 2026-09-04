@@ -5,6 +5,7 @@ import { getScoringEngine, CURRENT_SCORING_VERSION } from './index';
 import { CHARACTER_INDEX, CHARACTERS } from '../../data/characters';
 import { isCanon } from '../../data/non-canon';
 import { riskRankOf } from './prominence';
+import type { Character } from '../types';
 import type { ScoringContext } from './v1';
 
 /**
@@ -89,16 +90,24 @@ describe('moteur v6 — le risque redevient un risque', () => {
   it('un absent sans le moindre lien ne touche rien', () => {
     // Le défaut central du v5 : ce cas rapportait ~26 points, soit 78 pour une
     // équipe de trois inconnus qui n'avaient rien deviné.
-    const isole = JOUABLES.find(
-      (c) =>
-        c.rarity === 'COMMON' &&
-        c.presenceExpectation === 'LOW' &&
-        c.relations.length === 0 &&
-        c.affiliations.length === 0,
-    );
-    expect(isole, 'aucun personnage isolé dans le référentiel').toBeDefined();
+    //
+    // Le personnage est **construit** ici, non cherché dans le référentiel.
+    // La première version le cherchait, et elle est tombée le jour où les
+    // Communs de fond de tableau ont été retirés du jeu : c'étaient
+    // exactement eux. Un test sur une règle du moteur ne doit pas dépendre de
+    // la présence d'un cas particulier dans les données — la règle vaut que le
+    // référentiel en contienne un ou non.
+    const isole: Character = {
+      id: 'temoin-isole',
+      name: 'Témoin isolé',
+      rarity: 'COMMON',
+      affiliations: [],
+      relations: [],
+      abilities: [],
+      presenceExpectation: 'LOW',
+    };
 
-    const s = scoreCharacter(isole!, ctx(['luffy', 'zoro'], [isole!.id]));
+    const s = scoreCharacter(isole, ctx(['luffy', 'zoro'], []));
     expect(s.base).toBe(0);
     expect(s.synergy).toBe(0);
     expect(s.risk).toBe(0);

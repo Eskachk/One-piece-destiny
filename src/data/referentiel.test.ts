@@ -91,7 +91,13 @@ describe('référentiel des personnages', () => {
   it('le référentiel jouable garde une taille plausible', () => {
     // Un import raté qui viderait le fichier passerait tous les tests
     // ci-dessus sans en casser un seul.
-    expect(JOUABLES.length).toBeGreaterThan(700);
+    //
+    // Le seuil a suivi une réduction voulue : 724 personnages jouables, moins
+    // les treize qui n'apparaissent qu'en flashback et les deux cents Communs
+    // de fond de tableau, en laissent 524. Le cliquet est posé sous ce chiffre
+    // avec de la marge — il attrape un effondrement, pas un élagage décidé.
+    expect(JOUABLES.length).toBeGreaterThan(450);
+    expect(JOUABLES.length).toBeLessThan(800);
     expect(new Set(JOUABLES.map((c) => c.id)).size).toBe(JOUABLES.length);
   });
 });
