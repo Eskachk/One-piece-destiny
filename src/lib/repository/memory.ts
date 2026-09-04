@@ -163,6 +163,30 @@ export const memoryRepository: Repository = {
     );
   },
 
+  async getLeaderboardTop(chapterId, limit) {
+    const rows = await this.getLeaderboard(chapterId);
+    return rows
+      .slice(0, limit)
+      .map(({ playerId, handle, total }) => ({ playerId, handle, total }));
+  },
+
+  async getLeaderboardSize(chapterId) {
+    return (store().results.get(chapterId) ?? []).length;
+  },
+
+  async getPlayerChapterResult(chapterId, playerId) {
+    const rows = store().results.get(chapterId) ?? [];
+    const mien = rows.find((row) => row.playerId === playerId);
+    if (!mien) return null;
+
+    // Même règle que le dépôt Postgres : rang sportif, par comptage des
+    // scores strictement supérieurs. Les deux implémentations doivent
+    // s'accorder, sinon les tests valident un comportement que la production
+    // n'a pas.
+    const devant = rows.filter((row) => row.total > mien.total).length;
+    return { rank: devant + 1, total: mien.total, breakdown: mien.breakdown };
+  },
+
   async getOwnedCharacterIds(playerId) {
     return [...(store().inventory.get(playerId) ?? [])];
   },

@@ -95,10 +95,53 @@ export async function getCachedLatestPublishedChapter(): Promise<ChapterEvent | 
  * l'étiquette. C'est la lecture la plus concurrente du produit : tout le monde
  * consulte le classement dans la même heure.
  */
-export function getCachedLeaderboard(chapterId: string) {
+/**
+ * Nombre de lignes de classement affichées sur la page.
+ *
+ * Exporté pour que la page et le cache s'accordent : la clé de cache contient
+ * cette valeur, et deux appelants qui demanderaient des tailles différentes
+ * garderaient chacun leur entrée au lieu de se croiser.
+ */
+export const LEADERBOARD_ROWS = 50;
+
+/**
+ * Les cinquante premières lignes du classement.
+ *
+ * **Le défaut corrigé ici.** Cette fonction mettait en cache le classement
+ * *entier*, `breakdown` de chaque joueur compris — le détail par personnage du
+ * replay de performance — alors que la page n'affiche que cinquante lignes et
+ * la position du visiteur.
+ *
+ * Or `unstable_cache` refuse les entrées au-delà d'environ deux méga-octets :
+ * il ne les conserve pas, et ne le signale que dans les journaux du serveur. À
+ * un kilo-octet de détail par équipage, le seuil tombait vers **deux mille
+ * joueurs**. Passé ce cap, chaque consultation aurait refait la requête
+ * complète — précisément le dimanche soir, quand tout le monde arrive en même
+ * temps. L'optimisation principale de `docs/charge.md` se serait annulée
+ * d'elle-même, sans erreur et sans que rien ne le montre.
+ *
+ * L'entrée pèse maintenant quelques kilo-octets, quel que soit le nombre de
+ * joueurs : cinquante pseudos et cinquante entiers.
+ */
+export function getCachedLeaderboardTop(chapterId: string, limit = LEADERBOARD_ROWS) {
   return unstable_cache(
-    async () => getRepository().getLeaderboard(chapterId),
-    ['leaderboard', chapterId],
+    async () => getRepository().getLeaderboardTop(chapterId, limit),
+    ['leaderboard-top', chapterId, String(limit)],
+    { tags: [chapterTag(chapterId)], revalidate: 300 },
+  )();
+}
+
+/**
+ * Nombre d'équipages classés.
+ *
+ * Un entier, partagé par tout le monde — c'est le dénominateur du percentile.
+ * Il était jusqu'ici obtenu en lisant le classement complet puis en comptant
+ * les lignes, ce qui est la façon la plus coûteuse d'obtenir un nombre.
+ */
+export function getCachedLeaderboardSize(chapterId: string) {
+  return unstable_cache(
+    async () => getRepository().getLeaderboardSize(chapterId),
+    ['leaderboard-size', chapterId],
     { tags: [chapterTag(chapterId)], revalidate: 300 },
   )();
 }

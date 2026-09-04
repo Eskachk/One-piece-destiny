@@ -438,6 +438,83 @@ export const postgresRepository: Repository = {
     });
   },
 
+  async getLeaderboardTop(chapterId, limit) {
+    const { data, error } = await db()
+      .from('team_scores')
+      // Pas de `breakdown` : c'est tout l'objet de cette lecture.
+      .select('total, teams!inner(player_id, players!inner(handle))')
+      .eq('chapter_id', chapterId)
+      .order('total', { ascending: false })
+      .order('team_id', { ascending: true })
+      .limit(limit);
+
+    if (error) throw new Error(`team_scores.top : ${error.message}`);
+
+    return (data ?? []).map((row) => {
+      const team = row.teams as unknown as {
+        player_id: string;
+        players: { handle: string };
+      };
+      return {
+        playerId: team.player_id,
+        handle: team.players.handle,
+        total: row.total,
+      };
+    });
+  },
+
+  async getLeaderboardSize(chapterId) {
+    // `head: true` : Postgres compte, et ne renvoie **aucune ligne**. Le
+    // dénominateur du percentile ne coûte donc qu'un entier sur le réseau,
+    // quel que soit le nombre de joueurs.
+    const { count, error } = await db()
+      .from('team_scores')
+      .select('team_id', { count: 'exact', head: true })
+      .eq('chapter_id', chapterId);
+
+    if (error) throw new Error(`team_scores.count : ${error.message}`);
+    return count ?? 0;
+  },
+
+  async getPlayerChapterResult(chapterId, playerId) {
+    const mien = await db()
+      .from('team_scores')
+      .select('total, breakdown, teams!inner(player_id)')
+      .eq('chapter_id', chapterId)
+      .eq('teams.player_id', playerId)
+      .maybeSingle();
+
+    if (mien.error) throw new Error(`team_scores.mine : ${mien.error.message}`);
+    if (!mien.data) return null;
+
+    /*
+     * Le rang, par comptage plutôt que par recherche dans une liste.
+     *
+     * L'ancienne page trouvait sa position avec un `findIndex` sur le
+     * classement entier — ce qui obligeait à charger le classement entier. Un
+     * `count` sur les scores strictement supérieurs donne la même réponse en
+     * un entier, et il s'appuie sur `team_scores_ranking_idx`.
+     *
+     * « Strictement supérieurs » donne le classement **sportif** : deux
+     * joueurs à égalité partagent le rang, et le suivant saute. C'est aussi
+     * plus juste que l'ancien comportement, où l'ordre entre ex æquo — donc
+     * le rang affiché — dépendait de l'ordre de la base.
+     */
+    const devant = await db()
+      .from('team_scores')
+      .select('team_id', { count: 'exact', head: true })
+      .eq('chapter_id', chapterId)
+      .gt('total', mien.data.total);
+
+    if (devant.error) throw new Error(`team_scores.rank : ${devant.error.message}`);
+
+    return {
+      rank: (devant.count ?? 0) + 1,
+      total: mien.data.total,
+      breakdown: mien.data.breakdown,
+    };
+  },
+
   async getOwnedCharacterIds(playerId) {
     const { data, error } = await db()
       .from('inventory')

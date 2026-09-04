@@ -22,6 +22,22 @@ export interface ChapterResultRow {
   breakdown: unknown;
 }
 
+/**
+ * Une ligne de classement telle qu'elle s'affiche : un pseudo, un total.
+ *
+ * `ChapterResultRow` sans le `breakdown`, et c'est tout l'intérêt — voir
+ * `getLeaderboardTop`.
+ */
+export type LeaderboardEntry = Omit<ChapterResultRow, 'breakdown'>;
+
+/** Ce qu'un joueur voit de son propre résultat. */
+export interface PlayerChapterResult {
+  /** Rang sportif : deux ex æquo partagent le même. */
+  rank: number;
+  total: number;
+  breakdown: unknown;
+}
+
 export interface Repository {
   /**
    * Chapitre ouvert aux prédictions, ou `null` si aucun ne l'est.
@@ -80,8 +96,45 @@ export interface Repository {
 
   saveResults(chapterId: string, rows: ChapterResultRow[]): Promise<void>;
 
-  /** Classement pré-calculé, jamais recalculé à la consultation (§75). */
+  /**
+   * Classement **complet**, détail par personnage compris.
+   *
+   * Réservé aux chemins d'administration — la correction d'un chapitre, qui
+   * compare l'avant et l'après. La page publique ne s'en sert plus : voir
+   * les trois lectures ci-dessous et la note de `getLeaderboardTop`.
+   */
   getLeaderboard(chapterId: string): Promise<ChapterResultRow[]>;
+
+  /**
+   * Les `limit` premières lignes du classement, **sans le détail**.
+   *
+   * C'est ce que la page publique affiche, et rien de plus. La version
+   * complète chargeait le `breakdown` de chaque joueur — le détail par
+   * personnage servant au replay de performance — pour n'en afficher que
+   * cinquante lignes et un total.
+   *
+   * Le poids comptait doublement : ce résultat est mis en cache partagé, et
+   * Next refuse de conserver une entrée au-delà d'environ deux méga-octets. À
+   * un kilo-octet de détail par équipage, le cache se serait **désarmé tout
+   * seul vers deux mille joueurs** — sans rien dire, et un dimanche soir,
+   * c'est-à-dire au seul moment où il sert.
+   */
+  getLeaderboardTop(chapterId: string, limit: number): Promise<LeaderboardEntry[]>;
+
+  /** Nombre d'équipages classés : le dénominateur du percentile. */
+  getLeaderboardSize(chapterId: string): Promise<number>;
+
+  /**
+   * Résultat personnel d'un joueur : son rang, son total, son détail.
+   *
+   * Lecture **personnelle**, donc jamais mise en cache partagé. Le rang est
+   * calculé par un `count` sur les scores strictement supérieurs — un
+   * classement sportif : deux ex æquo partagent le même rang.
+   */
+  getPlayerChapterResult(
+    chapterId: string,
+    playerId: string,
+  ): Promise<PlayerChapterResult | null>;
 
   // --- Collection (cahier §26 à §33) -------------------------------------
 

@@ -6,7 +6,8 @@ import {
   getCachedChapterAwards,
   getCachedCurrentChapter,
   getCachedLatestPublishedChapter,
-  getCachedLeaderboard,
+  getCachedLeaderboardSize,
+  getCachedLeaderboardTop,
 } from '@/lib/cache';
 import { Nav } from '@/components/Nav';
 import Link from 'next/link';
@@ -22,6 +23,7 @@ import {
 } from '@/domain/scoring/chapter-analysis';
 import type { CharacterScore } from '@/domain/scoring';
 import { getAuthenticatedSession } from '@/lib/auth/session-store';
+import { getRepository } from '@/lib/repository';
 import { AdBanner } from '@/components/AdBanner';
 
 export const dynamic = 'force-dynamic';
@@ -92,23 +94,33 @@ export default async function LeaderboardPage() {
     );
   }
 
-  // Trois requêtes indépendantes, lancées ensemble : enchaînées, elles
-  // cumulaient trois allers-retours sur la page consultée par tout le monde
-  // en même temps, le dimanche soir.
-  const [leaderboard, rawAnalysis, awards, display] = await Promise.all([
-    getCachedLeaderboard(chapter.id),
+  /*
+   * Cinq lectures indépendantes, lancées ensemble.
+   *
+   * Les quatre premières sont **partagées** — identiques pour tout le monde,
+   * donc mises en cache et purgées à la publication. La cinquième est
+   * personnelle : le rang, le total et le détail du visiteur. Elle n'entre
+   * jamais dans le cache partagé, où elle serait servie à un autre joueur.
+   *
+   * Cette séparation est ce qui remplace l'ancien chargement du classement
+   * entier. On lisait toutes les lignes, `breakdown` de chacun compris, pour
+   * en afficher cinquante et retrouver la sienne par `findIndex` — et on
+   * mettait le tout en cache, jusqu'à ce que Next refuse l'entrée devenue trop
+   * lourde et cesse silencieusement de cacher quoi que ce soit.
+   */
+  const [top, total, rawAnalysis, awards, display, mine] = await Promise.all([
+    getCachedLeaderboardTop(chapter.id),
+    getCachedLeaderboardSize(chapter.id),
     getCachedChapterAnalysis(chapter.id),
     getCachedChapterAwards(chapter.id),
     readDisplaySettings(),
+    session
+      ? getRepository().getPlayerChapterResult(chapter.id, session.playerId)
+      : Promise.resolve(null),
   ]);
   const analysis = rawAnalysis as ChapterAnalysis | null;
 
-  const myIndex = session
-    ? leaderboard.findIndex((row) => row.playerId === session.playerId)
-    : -1;
-  const mine = myIndex >= 0 ? leaderboard[myIndex] : null;
-  const percentile =
-    myIndex >= 0 ? percentileFromRank(myIndex + 1, leaderboard.length) : null;
+  const percentile = mine ? percentileFromRank(mine.rank, total) : null;
 
   return (
     <HarborScene variant="page" island={islandOf('/classement')}>
@@ -131,13 +143,12 @@ export default async function LeaderboardPage() {
           <p className="hb-legend">
             Ta position
           </p>
-          <p className="hb-title" style={{ fontSize: '2.6rem' }}>#{myIndex + 1}</p>
+          <p className="hb-title" style={{ fontSize: '2.6rem' }}>#{mine.rank}</p>
           <p className="hb-num mt-1">{mine.total} pts</p>
           {percentile !== null && (
             <p className="mt-3 text-sm">
               Top <span className="hb-num">{percentile}%</span>{' '}
-              sur {leaderboard.length} capitaine
-              {leaderboard.length > 1 ? 's' : ''}
+              sur {total} capitaine{total > 1 ? 's' : ''}
             </p>
           )}
         </section>
@@ -248,13 +259,13 @@ export default async function LeaderboardPage() {
           Classement
         </h2>
 
-        {leaderboard.length === 0 ? (
+        {top.length === 0 ? (
           <p className="hb-muted mt-3 text-sm">
             Aucune équipe classée pour ce chapitre.
           </p>
         ) : (
           <ol className="mt-3 space-y-1">
-            {leaderboard.slice(0, 50).map((row, index) => {
+            {top.map((row, index) => {
               const isMine = row.playerId === session?.playerId;
               return (
                 <li
