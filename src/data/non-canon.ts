@@ -163,6 +163,45 @@ export const DUPLICATE_IDS: ReadonlySet<string> = new Set([
  * la fonction dit « canon » pour des raisons d'histoire ; ce qu'elle décide,
  * c'est l'entrée dans le jeu.
  */
+/**
+ * Personnages dont l'apparition en chapitre courant est **impossible**.
+ *
+ * Ils sont morts dans l'œuvre : leur seule apparition possible est un
+ * souvenir. Les laisser jouables revenait à proposer un pari qui ne peut pas
+ * être gagné — et le moteur de score, qui les tenait pour des valeurs sûres,
+ * leur accordait en plus un bonus de risque minimal. C'étaient les cartes les
+ * plus mauvaises du jeu, sans que rien le signale.
+ *
+ * ## Ce qui n'est **pas** dans cette liste
+ *
+ * Les personnages « évoqués ». Le document de récurrence distingue les deux, et
+ * la confusion serait une faute : un personnage évoqué est vivant, simplement
+ * hors champ — Law, Kid, Hawkins, Apoo. Il peut revenir au prochain chapitre,
+ * et le retirer priverait le joueur d'un pari parfaitement légitime.
+ *
+ * Big Mom non plus : vaincue mais vivante. La retirer serait un jugement sur
+ * l'intrigue, pas la constatation d'un fait.
+ */
+export const FLASHBACK_ONLY_IDS: ReadonlySet<string> = new Set([
+  'gol-d-roger',
+  'edward-newgate-barbe-blanche',
+  'portgas-d-ace',
+  'ficher-tiger',
+  'oden-kozuki',
+  'toki-kozuki',
+  'rocks-d-xebec',
+  'don-quijote-rosinante',
+  'kuina',
+  'hiluluk',
+  'pedro',
+  'ashura-doji',
+  'sukiyaki-kozuki',
+]);
+
 export function isCanon(id: string): boolean {
-  return !NON_CANON_IDS.has(id) && !DUPLICATE_IDS.has(id);
+  return (
+    !NON_CANON_IDS.has(id) &&
+    !DUPLICATE_IDS.has(id) &&
+    !FLASHBACK_ONLY_IDS.has(id)
+  );
 }

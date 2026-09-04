@@ -20,7 +20,15 @@
 import type { Character } from '../domain/types';
 import { isCanon } from './non-canon';
 
-const ALL_CHARACTERS: Character[] = [
+/**
+ * Le référentiel **brut**, exclusions comprises.
+ *
+ * Exporté pour une seule raison : distinguer « ce personnage n'existe pas » de
+ * « ce personnage existe mais ne se joue pas ». Une signature écrite pour un
+ * personnage exclu n'est pas du travail perdu — elle attend qu'on le
+ * réintègre. Une signature écrite pour un identifiant inconnu, si.
+ */
+export const ALL_CHARACTERS: Character[] = [
   {
     id: 'luffy',
     name: 'Monkey D. Luffy',

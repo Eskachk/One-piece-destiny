@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { isCanon } from '../../data/non-canon';
-import { CHARACTERS } from '../../data/characters';
+import { ALL_CHARACTERS, CHARACTERS } from '../../data/characters';
 import { SIGNATURES, signatureOf } from './signatures';
 import { spriteTraits } from './portrait';
 
@@ -59,9 +59,15 @@ describe('signatures physiques', () => {
 
   it('ne décrit personne qui n’existe pas', () => {
     // Une signature orpheline est du travail perdu qui ne se voit nulle part :
-    // le personnage a été renommé ou retiré du référentiel, et le portrait
-    // écrit pour lui ne sera jamais rendu.
-    const connus = new Set(CHARACTERS.map((c) => c.id));
+    // le personnage a été renommé, et le portrait écrit pour lui ne sera
+    // jamais rendu.
+    //
+    // La comparaison porte sur le référentiel **brut**, exclusions comprises.
+    // Un personnage retiré du jeu — un mort, un doublon — garde sa signature
+    // à dessein : elle attend qu'on le réintègre. Comparer aux seuls
+    // personnages jouables ferait échouer ce test à chaque exclusion, pour
+    // une donnée qu'on veut justement conserver.
+    const connus = new Set(ALL_CHARACTERS.map((c) => c.id));
     const orphelines = Object.keys(SIGNATURES).filter((id) => !connus.has(id));
     expect(orphelines).toEqual([]);
   });

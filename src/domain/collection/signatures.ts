@@ -1161,21 +1161,26 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   },
   'charlotte-dent-de-chien': {
     note:
-      'Race : Humain. Peau : claire. Cheveux : rouge foncé/cramoisi, courts, ' +
-      'hérissés. Yeux : sombres. Visage : très anguleux, nez droit, mâchoire ' +
-      'extrêmement forte. Bouche : exceptionnellement large, avec dents très ' +
-      'pointues. Morphologie : gigantesque, très musclé, épaules très larges, ' +
-      'taille relativement étroite, jambes longues. Vêtements : gilet ' +
-      'noir/dark red, pantalon noir, bottes brunes/noires, foulard et long ' +
-      'col/écharpe blanc cassé/crème couvrant le bas du visage. Accessoires : ' +
-      'boucles/ornements métalliques, trident très sombre avec détails ' +
-      'métalliques. Particularité : design extrêmement reconnaissable grâce ' +
-      'au col de fourrure, à la bouche surdimensionnée et au physique en V.',
-    hair: '#842720', cut: 'spiky', skin: CLAIR, outfit: '#1c1c24',
-    extras: ['fur-collar', 'boots', 'sash', 'belt'],
+      'Homme extrêmement grand et musclé, près de trois fois la taille de ' +
+      'Luffy et légèrement plus grand que ses frères triplés Daifuku et Oven. ' +
+      'Cheveux violets, courts et pointus. Deux cicatrices symétriques ' +
+      'longeant les extrémités de la bouche ; celle-ci, habituellement ' +
+      'couverte, contient des dents extrêmement pointues et peut s’étendre ' +
+      'énormément. Yeux vifs et intenses, sourcils fortement arqués, cils ' +
+      'inférieurs proéminents. Écharpe blanche et noire couvrant la bouche et ' +
+      'atteignant les épaules. Veste noire en cuir sans manches, légèrement ' +
+      'déchirée, exposant le torse ; gants, pantalon noir, ceinture à boucle ' +
+      'en forme de crâne, bottes à éperons. Torse couvert de tatouages roses. ' +
+      'Bracelets à pointes aux jambes et au bras gauche, genouillères à ' +
+      'pointes, sangles cloutées autour de la cuisse gauche.',
+    hair: '#7a3f96', cut: 'spiky', skin: HALE, outfit: '#1a1a20',
+    trousers: '#141419',
+    extras: ['bare-chest', 'sharp-teeth', 'high-collar', 'boots'],
     face: 'sharp',
+    eyes: 'sharp',
+    brow: 'arched',
     height: 'towering',
-    head: 'bandana', mark: 'none', prop: 'staff', build: 'giant',
+    head: 'none', mark: 'scar-face', prop: 'none', build: 'broad',
   },
   'charlotte-brulee': {
     note:

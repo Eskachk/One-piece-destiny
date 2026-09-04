@@ -163,7 +163,9 @@ describe('recherche et tri des cartes', () => {
         ['zoro', 'zoro'],
         ['kinemon', 'kinemon'],
         ['chopper', 'chopper'],
-        ['barbe blanche', 'edward-newgate-barbe-blanche'],
+        // Barbe Blanche est mort : il ne fait plus partie du jeu. On vérifie
+        // la recherche en plusieurs mots sur un personnage encore jouable.
+        ['monkey luffy', 'luffy'],
       ];
       for (const [saisie, attendu] of cas) {
         const out = trier(jouables, { ...CRITERES_PAR_DEFAUT, recherche: saisie });
