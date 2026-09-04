@@ -665,13 +665,18 @@ export interface SpriteTraits {
   height: Height;
   /** Effets réservés au Mythique : aura et éclats. */
   effects: boolean;
+  /** Le second anneau, réservé au Mythique. */
+  doubleAura: boolean;
   /** Les traits viennent-ils d'une signature écrite, ou du repli ? */
   named: boolean;
 }
 
 export function spriteTraits(subject: PortraitSubject): SpriteTraits {
   const signature = signatureOf(subject.id);
-  const effects = subject.rarity === 'MYTHIC';
+  // Le halo remplace la différence de dessin, qui n'en est plus une : Épique
+  // et Légendaire partagent la figurine, il faut que l'œil voie quand même
+  // laquelle est la plus rare.
+  const effects = subject.rarity === 'MYTHIC' || subject.rarity === 'LEGENDARY';
 
   if (signature) {
     return {
@@ -693,6 +698,7 @@ export function spriteTraits(subject: PortraitSubject): SpriteTraits {
       brow: signature.brow ?? 'neutral',
       height: signature.height ?? 'normal',
       effects,
+      doubleAura: subject.rarity === 'MYTHIC',
       named: true,
     };
   }
@@ -770,6 +776,7 @@ export function spriteTraits(subject: PortraitSubject): SpriteTraits {
     brow: pick<Brow>(['neutral', 'neutral', 'fierce', 'calm', 'arched'], random()),
     height: pick<Height>(['normal', 'normal', 'normal', 'short', 'tall'], random()),
     effects,
+    doubleAura: subject.rarity === 'MYTHIC',
     named: false,
   };
 }
@@ -783,8 +790,13 @@ export function artLevelOf(rarity: Rarity): ArtLevel {
       return 'none';
     case 'RARE':
       return 'emoji';
+    // L'Épique a la figurine, pas le buste. Le portrait pixel ignore la
+    // carrure, la taille, le plan du corps, l'arme et les signes particuliers
+    // — c'est-à-dire tout ce qui fait reconnaître quelqu'un. Cent quarante-cinq
+    // cartes montraient un visage générique quelle que soit la finesse de leur
+    // description.
     case 'EPIC':
-      return 'pixel';
+      return 'sprite';
     case 'LEGENDARY':
     case 'MYTHIC':
       return 'sprite';

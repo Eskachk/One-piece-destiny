@@ -1133,17 +1133,25 @@ function SpriteFigure({
 
       {traits.effects && (
         <>
-          {/* Aura du Mythique. Deux anneaux à des rythmes différents : au même
-              rythme, ils lisent comme un seul trait épais. */}
-          <circle
-            className="hb-art__aura hb-art__aura--slow"
-            cx="32"
-            cy="34"
-            r="27"
-            fill="none"
-            stroke={accent}
-            strokeWidth="1.6"
-          />
+          {/* L'anneau extérieur n'appartient qu'au Mythique. Deux anneaux à des
+              rythmes différents : au même rythme, ils lisent comme un seul
+              trait épais.
+
+              C'est ce qui sépare désormais les trois derniers paliers, la
+              figurine étant commune à l'Épique et au Légendaire. Le halo
+              simple dit « Légendaire », les deux anneaux disent
+              « Mythique ». */}
+          {traits.doubleAura && (
+            <circle
+              className="hb-art__aura hb-art__aura--slow"
+              cx="32"
+              cy="34"
+              r="27"
+              fill="none"
+              stroke={accent}
+              strokeWidth="1.6"
+            />
+          )}
           <circle className="hb-art__aura" cx="32" cy="34" r="21" fill="none" stroke={accent} strokeWidth="1" />
         </>
       )}
