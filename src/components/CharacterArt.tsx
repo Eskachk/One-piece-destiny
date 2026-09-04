@@ -27,6 +27,46 @@ import { signatureOf } from '@/domain/collection/signatures';
  */
 
 /** Portrait en pixels — Épique. */
+/**
+ * Découpe une grille de pixels en **plages horizontales**.
+ *
+ * Une rangée de portrait est faite de longues suites d'une même couleur — le
+ * front, la joue, l'épaule. Émettre un rectangle par pixel produisait, à
+ * trente-deux de côté, environ six cents nœuds par carte et douze mille pour
+ * une grille de vingt : le navigateur passait plus de temps à construire le
+ * DOM qu'à le peindre.
+ *
+ * Un rectangle par plage donne exactement le même dessin — les bords tombent
+ * aux mêmes coordonnées entières — pour six à sept fois moins de nœuds.
+ */
+function plages(grid: (string | null)[][]) {
+  const out: React.ReactElement[] = [];
+  grid.forEach((row, y) => {
+    let x = 0;
+    while (x < row.length) {
+      const couleur = row[x];
+      if (couleur === null) {
+        x += 1;
+        continue;
+      }
+      let fin = x;
+      while (fin + 1 < row.length && row[fin + 1] === couleur) fin += 1;
+      out.push(
+        <rect
+          key={`${x}-${y}`}
+          x={x}
+          y={y}
+          width={fin - x + 1}
+          height="1"
+          fill={couleur}
+        />,
+      );
+      x = fin + 1;
+    }
+  });
+  return out;
+}
+
 function PixelPortrait({
   grid,
   accent,
@@ -70,15 +110,7 @@ function PixelPortrait({
       </defs>
 
       <rect width={PIXEL_GRID} height={PIXEL_GRID} fill={accent} opacity="0.14" />
-      <g id={`px-${uid}`}>
-      {grid.map((row, y) =>
-        row.map((colour, x) =>
-          colour === null ? null : (
-            <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill={colour} />
-          ),
-        ),
-      )}
-      </g>
+      <g id={`px-${uid}`}>{plages(grid)}</g>
 
       {/* La lumière, découpée aux seuls pixels dessinés : le fond de rareté ne
           doit pas s'assombrir avec le personnage. */}

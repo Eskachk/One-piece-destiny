@@ -179,7 +179,7 @@ export function paletteOf(subject: PortraitSubject, rarityColor: string): Portra
  * de lunettes n'avaient nulle part où aller, et c'est précisément ce qui
  * distingue un personnage d'un autre.
  */
-export const PIXEL_GRID = 16;
+export const PIXEL_GRID = 32;
 
 /**
  * Portrait en pixels — Épique.
@@ -205,6 +205,29 @@ export const PIXEL_GRID = 16;
  * l'autre, une mèche d'un seul côté — et le résultat ne se lit plus comme un
  * visage.
  */
+/**
+ * Résolution du portrait Épique.
+ *
+ * Trente-deux et non seize. Le doublement n'est pas cosmétique : à seize, le
+ * visage occupait neuf rangées, ce qui laissait **une** rangée pour l'œil,
+ * **une** pour la bouche, et rien pour un nez, un sourcil ou un col. Tout ce
+ * qui distingue deux visages tombait sous le seuil du dessinable.
+ *
+ * À trente-deux, le visage en occupe dix-huit : deux rangées pour l'œil avec
+ * son blanc et sa pupille, une pour le sourcil, deux pour le nez, deux pour la
+ * bouche, et de quoi donner une épaisseur à la chevelure au lieu d'un bloc.
+ *
+ * ## Pourquoi tout est écrit en proportions
+ *
+ * La version précédente posait des coordonnées entières — visage de la rangée
+ * 4 à la rangée 12, joues sur cinq colonnes — calées sur seize. Changer la
+ * constante ne changeait donc rien d'autre que la taille du cadre : le dessin
+ * se retrouvait tassé dans un coin.
+ *
+ * Ici chaque repère est une fraction de `N`, arrondie au pixel. Passer à
+ * soixante-quatre ne demanderait qu'une ligne — et ajouter du détail, pas de
+ * la réécriture.
+ */
 export function pixelPortrait(traits: SpriteTraits): (string | null)[][] {
   const N = PIXEL_GRID;
   const half = N / 2;
@@ -212,163 +235,236 @@ export function pixelPortrait(traits: SpriteTraits): (string | null)[][] {
     new Array<string | null>(N).fill(null),
   );
 
+  /** Pose un pixel et son symétrique. Un visage est symétrique ; on n'en
+   *  dessine donc que la moitié, et l'on ne peut pas se tromper de côté. */
   const poser = (x: number, y: number, couleur: string) => {
     if (x < 0 || y < 0 || x >= half || y >= N) return;
     grid[y][x] = couleur;
     grid[y][N - 1 - x] = couleur;
   };
 
-  // Largeur du visage selon sa forme. C'est le premier trait qu'on lit.
-  const joue =
-    traits.face === 'long' ? 4 : traits.face === 'square' ? 6 : traits.face === 'sharp' ? 5 : 5;
+  /** `dx` compte depuis l'axe : 0 au centre, `half - 1` au bord. */
+  const colonne = (dx: number) => half - 1 - dx;
+  const bande = (y1: number, y2: number, dxMax: number, couleur: string,
+                 dxMin = 0) => {
+    for (let y = y1; y <= y2; y += 1) {
+      for (let dx = dxMin; dx <= dxMax; dx += 1) poser(colonne(dx), y, couleur);
+    }
+  };
 
-  const hautVisage = 4;
-  const basVisage = traits.face === 'long' ? 13 : 12;
+  // --- Repères, en fractions de la grille ----------------------------------
+  const r = (f: number) => Math.round(f * N);
+
+  // Largeur de la joue, mesurée depuis l'axe. C'est le premier trait qu'on lit
+  // d'un visage, avant tout ce qu'il porte.
+  const joue =
+    traits.face === 'long' ? r(0.2)
+    : traits.face === 'square' ? r(0.28)
+    : traits.face === 'sharp' ? r(0.24)
+    : r(0.26);
+
+  const hautVisage = r(0.19);
+  const basVisage = traits.face === 'long' ? r(0.68) : r(0.63);
+  const hautCrane = r(0.09);
+
+  /**
+   * Largeur du visage à une rangée donnée.
+   *
+   * Calculée une fois et partagée : le visage la suit, et la chevelure qui
+   * descend sur les côtés la suit aussi. Une chevelure posée à une colonne
+   * fixe laissait apparaître le fond entre elle et le menton, qui se
+   * rétrécit — un trou en plein milieu de la tête.
+   */
+  const largeurAu = (y: number) => {
+    const t = (y - hautVisage) / Math.max(1, basVisage - hautVisage);
+    let largeur = joue;
+    if (t < 0.14) largeur -= 2;
+    else if (t < 0.26) largeur -= 1;
+    if (t > 0.86) largeur -= traits.face === 'sharp' ? 3 : 2;
+    else if (t > 0.74) largeur -= traits.face === 'sharp' ? 2 : 1;
+    if (traits.face === 'square' && t > 0.74) largeur += 1;
+    return Math.max(1, largeur);
+  };
 
   // --- Le visage -----------------------------------------------------------
   for (let y = hautVisage; y <= basVisage; y += 1) {
-    for (let x = 0; x < half; x += 1) {
-      const dx = half - 1 - x;
-      if (dx > joue) continue;
-
-      // Les coins sont retirés : sans eux le visage est un rectangle. Un
-      // menton anguleux se rétrécit en plus sur les deux dernières rangées.
-      const coinHaut = y <= hautVisage + 1 && dx === joue;
-      const coinBas = y >= basVisage - 1 && dx === joue;
-      const menton = traits.face === 'sharp' && y >= basVisage - 1 && dx >= joue - 1;
-      if (coinHaut || coinBas || menton) continue;
-
-      poser(x, y, traits.skin);
-    }
+    bande(y, y, largeurAu(y), traits.skin);
   }
 
   // --- La chevelure --------------------------------------------------------
-  const frange = traits.cut === 'bald' ? -1 : traits.cut === 'spiky' ? 6 : 5;
-
   if (traits.cut !== 'bald') {
-    for (let y = 2; y <= frange; y += 1) {
-      for (let x = 0; x < half; x += 1) {
-        const dx = half - 1 - x;
-        if (dx > joue) continue;
-        // La banane et les épis montent d'une rangée au centre ; la coupe
-        // droite s'arrête net.
-        if (y === 2 && traits.cut !== 'spiky' && traits.cut !== 'pompadour') continue;
-        if (y <= 3 && dx > joue - 2) continue;
-        poser(x, y, traits.hair);
-      }
+    const volume =
+      traits.cut === 'afro' ? 3 : traits.cut === 'spiky' || traits.cut === 'pompadour' ? 2 : 1;
+    const frange =
+      traits.cut === 'pompadour' ? r(0.34)
+      : traits.cut === 'spiky' ? r(0.32)
+      : r(0.3);
+
+    // La calotte : elle déborde du crâne, sinon les cheveux ressemblent à un
+    // bonnet peint sur la peau.
+    for (let y = hautCrane; y <= frange; y += 1) {
+      const t = (y - hautCrane) / Math.max(1, frange - hautCrane);
+      let largeur = (y >= hautVisage ? largeurAu(y) : joue - 1) + (volume - 1);
+      if (t < 0.3) largeur -= 2;
+      else if (t < 0.5) largeur -= 1;
+      bande(y, y, Math.max(1, largeur), traits.hair);
     }
 
-    // Ce qui descend sur les côtés : long, ondulé, queue, couettes.
+    // Les épis : trois pointes qui dépassent, seulement là où il en faut.
+    if (traits.cut === 'spiky') {
+      for (const dx of [0, Math.round(joue * 0.55), joue - 1]) {
+        poser(colonne(dx), hautCrane - 2, traits.hair);
+        poser(colonne(dx), hautCrane - 1, traits.hair);
+      }
+    }
+    if (traits.cut === 'pompadour') {
+      bande(hautCrane - 3, hautCrane - 1, Math.round(joue * 0.6), traits.hair);
+    }
+
+    // Ce qui descend sur les côtés.
     const descend =
-      traits.cut === 'long' || traits.cut === 'wavy'
-        ? basVisage
-        : traits.cut === 'ponytail' || traits.extras.includes('twin-tails')
-          ? basVisage - 2
-          : traits.cut === 'afro'
-            ? basVisage - 4
-            : -1;
+      traits.cut === 'long' || traits.cut === 'wavy' ? basVisage + r(0.09)
+      : traits.cut === 'ponytail' ? basVisage - r(0.06)
+      : traits.cut === 'afro' ? r(0.5)
+      : traits.cut === 'topknot' ? r(0.34)
+      : -1;
+
     for (let y = frange + 1; y <= descend; y += 1) {
-      poser(half - 1 - joue, y, traits.hair);
-      if (traits.cut === 'afro') poser(half - 2 - joue, y, traits.hair);
+      const epaisseur = traits.cut === 'afro' ? 3 : traits.cut === 'wavy' ? 2 : 1;
+      // On part de la largeur du visage à cette rangée : la mèche épouse la
+      // joue au lieu de flotter à côté.
+      const bord = y <= basVisage ? largeurAu(y) : largeurAu(basVisage);
+      for (let e = 0; e < epaisseur; e += 1) poser(colonne(bord + e), y, traits.hair);
+    }
+
+    // Le chignon, posé au sommet.
+    if (traits.cut === 'topknot') {
+      bande(hautCrane - 4, hautCrane - 1, 2, traits.hair);
     }
   }
 
   // --- Le regard -----------------------------------------------------------
-  const yeux = traits.eyes === 'wide' ? 7 : 8;
-  poser(half - 1 - (joue - 1), yeux, '#ffffffdd');
-  poser(half - 1 - (joue - 2), yeux, '#1a1a22');
-  if (traits.eyes === 'wide') {
-    poser(half - 1 - (joue - 1), yeux + 1, '#1a1a22');
-    poser(half - 1 - (joue - 2), yeux + 1, '#1a1a22');
-  }
+  const ligneOeil = traits.eyes === 'wide' ? r(0.4) : r(0.42);
+  const dxOeil = Math.round(joue * 0.55);
+  const hauteurOeil = traits.eyes === 'narrow' ? 1 : 2;
 
-  /* --- Les sourcils --------------------------------------------------------
-   *
-   * `brow` était écrit dans les signatures et n'était lu nulle part : les
-   * Épiques avaient tous exactement la même expression, alors que la donnée
-   * qui les sépare existait déjà.
-   *
-   * Deux pixels par œil suffisent. Ce qui porte l'humeur n'est pas le dessin
-   * du sourcil mais son **inclinaison** : abaissé vers le nez pour la colère,
-   * relevé pour la hauteur, horizontal pour le calme. Un pixel plus haut ou
-   * plus bas que son voisin, et le visage change d'humeur.
-   */
+  for (let dy = 0; dy < hauteurOeil; dy += 1) {
+    poser(colonne(dxOeil), ligneOeil + dy, '#fbf7ec');
+    poser(colonne(dxOeil - 1), ligneOeil + dy, '#fbf7ec');
+  }
+  // La pupille, décalée vers le nez : un œil centré regarde dans le vide.
+  poser(colonne(dxOeil - 1), ligneOeil + (hauteurOeil > 1 ? 1 : 0), '#1a1a22');
+  if (traits.eyes === 'wide') poser(colonne(dxOeil), ligneOeil + 1, '#1a1a22');
+
+  // --- Les sourcils --------------------------------------------------------
   if (traits.brow && traits.brow !== 'neutral') {
-    const ligne = yeux - 2;
-    const interne = half - 1 - (joue - 2);
-    const externe = half - 1 - (joue - 1);
+    const y = ligneOeil - 2;
+    const ext = colonne(dxOeil + 1);
+    const centre = colonne(dxOeil - 1);
     if (traits.brow === 'fierce') {
-      // L'extrémité intérieure descend : c'est le froncement.
-      poser(externe, ligne, traits.hair);
-      poser(interne, ligne + 1, traits.hair);
+      poser(ext, y, traits.hair);
+      poser(colonne(dxOeil), y, traits.hair);
+      poser(centre, y + 1, traits.hair);
     } else if (traits.brow === 'arched') {
-      poser(externe, ligne + 1, traits.hair);
-      poser(interne, ligne, traits.hair);
+      poser(ext, y + 1, traits.hair);
+      poser(colonne(dxOeil), y, traits.hair);
+      poser(centre, y, traits.hair);
     } else {
-      poser(externe, ligne, traits.hair);
-      poser(interne, ligne, traits.hair);
+      for (let dx = dxOeil - 1; dx <= dxOeil + 1; dx += 1) poser(colonne(dx), y, traits.hair);
     }
   }
+
+  // --- Le nez et la bouche -------------------------------------------------
+  // Deux ombres de rien du tout, mais un visage sans elles n'a pas de milieu.
+  const ombre = '#00000026';
+  poser(colonne(1), r(0.5), ombre);
+  poser(colonne(0), r(0.52), ombre);
+
+  const ligneBouche = r(0.57);
+  for (let dx = 0; dx <= 2; dx += 1) poser(colonne(dx), ligneBouche, '#8a4a44');
 
   // --- La marque du visage -------------------------------------------------
   if (traits.mark === 'glasses' || traits.mark === 'shades' || traits.mark === 'blind') {
-    const teinte = traits.mark === 'glasses' ? '#33333d' : traits.mark === 'blind' ? '#e6e0d2' : '#15151c';
-    for (let dx = 0; dx <= joue; dx += 1) poser(half - 1 - dx, yeux, teinte);
+    const teinte =
+      traits.mark === 'glasses' ? '#33333d' : traits.mark === 'blind' ? '#e6e0d2' : '#15151c';
+    bande(ligneOeil, ligneOeil + hauteurOeil - 1, joue, teinte);
+    // La branche, qui rattache les verres aux tempes.
+    poser(colonne(joue), ligneOeil, teinte);
   }
   if (traits.mark === 'beard' || traits.mark === 'moustache' || traits.mark === 'goatee') {
-    const depart = traits.mark === 'moustache' ? basVisage - 2 : basVisage - 1;
-    const largeur = traits.mark === 'goatee' ? 1 : joue - 1;
-    for (let y = depart; y <= basVisage; y += 1) {
-      for (let dx = 0; dx <= largeur; dx += 1) poser(half - 1 - dx, y, traits.hair);
-    }
+    const depart = traits.mark === 'moustache' ? ligneBouche - 1 : ligneBouche;
+    const fin = traits.mark === 'moustache' ? ligneBouche - 1 : basVisage + 1;
+    const largeur = traits.mark === 'goatee' ? 2 : joue - 1;
+    bande(depart, fin, largeur, traits.hair);
   }
   if (traits.mark === 'scar-eye' || traits.mark === 'scar-triple') {
-    poser(half - 1 - (joue - 1), yeux - 1, '#8a3a30');
-    poser(half - 1 - (joue - 1), yeux + 1, '#8a3a30');
+    for (let dy = -2; dy <= 2; dy += 1) poser(colonne(dxOeil + 1), ligneOeil + dy, '#8a3a30');
+    if (traits.mark === 'scar-triple') {
+      for (let dy = -1; dy <= 1; dy += 1) poser(colonne(dxOeil + 2), ligneOeil + dy, '#8a3a30');
+    }
+  }
+  if (traits.mark === 'freckles') {
+    poser(colonne(dxOeil), ligneOeil + 3, '#00000030');
+    poser(colonne(dxOeil - 1), ligneOeil + 4, '#00000030');
+  }
+  if (traits.mark === 'cigarette' || traits.mark === 'cigar') {
+    const longueur = traits.mark === 'cigar' ? 4 : 3;
+    for (let dx = 2; dx < 2 + longueur; dx += 1) {
+      grid[ligneBouche][half - 1 - dx] = traits.mark === 'cigar' ? '#6a4a2a' : '#efe9dc';
+    }
   }
 
   // --- Le couvre-chef ------------------------------------------------------
-  const chapeau: Partial<Record<Headwear, { hauteur: number; bord: boolean }>> = {
-    strawhat: { hauteur: 2, bord: true },
-    brim: { hauteur: 2, bord: true },
-    tricorne: { hauteur: 2, bord: true },
-    tophat: { hauteur: 4, bord: true },
-    cap: { hauteur: 2, bord: false },
-    bandana: { hauteur: 1, bord: false },
-    hood: { hauteur: 3, bord: false },
-    crown: { hauteur: 2, bord: false },
-    mask: { hauteur: 0, bord: false },
+  const CHAPEAUX: Partial<Record<Headwear, { hauteur: number; bord: number }>> = {
+    strawhat: { hauteur: r(0.09), bord: 4 },
+    brim: { hauteur: r(0.09), bord: 4 },
+    tricorne: { hauteur: r(0.09), bord: 5 },
+    tophat: { hauteur: r(0.2), bord: 3 },
+    cap: { hauteur: r(0.09), bord: 0 },
+    bandana: { hauteur: r(0.05), bord: 0 },
+    hood: { hauteur: r(0.14), bord: 1 },
+    crown: { hauteur: r(0.06), bord: 0 },
+    horns: { hauteur: r(0.05), bord: 0 },
+    mask: { hauteur: 0, bord: 0 },
   };
-  const forme = chapeau[traits.head];
-  if (forme) {
+  const forme = CHAPEAUX[traits.head];
+  if (forme && traits.head !== 'mask') {
     const teinte = traits.head === 'strawhat' ? '#e8c87a' : traits.accessory;
-    const bas = traits.head === 'bandana' ? 4 : 3;
-    for (let y = bas - forme.hauteur + 1; y <= bas; y += 1) {
-      for (let dx = 0; dx <= joue; dx += 1) poser(half - 1 - dx, y, teinte);
+    const bas = traits.head === 'bandana' ? r(0.28) : r(0.22);
+    bande(bas - forme.hauteur + 1, bas, joue + 1, teinte);
+    if (forme.bord > 0) {
+      bande(bas + 1, bas + 1, joue + forme.bord, teinte);
+      // Une ombre sous le bord : sans elle, le chapeau flotte.
+      bande(bas + 2, bas + 2, joue + 1, '#00000022');
     }
-    if (forme.bord) {
-      for (let dx = 0; dx <= joue + 2; dx += 1) poser(half - 1 - dx, bas + 1, teinte);
+    if (traits.head === 'crown') {
+      for (const dx of [0, 3, 6]) poser(colonne(dx), bas - forme.hauteur, teinte);
+    }
+    if (traits.head === 'horns') {
+      for (let dy = 1; dy <= 3; dy += 1) {
+        poser(colonne(joue), bas - forme.hauteur - dy, teinte);
+      }
     }
   }
-  // Le masque couvre le visage entier, il ne se pose pas dessus.
   if (traits.head === 'mask') {
-    for (let y = hautVisage; y <= yeux + 1; y += 1) {
-      for (let dx = 0; dx <= joue; dx += 1) poser(half - 1 - dx, y, '#2a2a33');
-    }
-    poser(half - 1 - (joue - 2), yeux, traits.accessory);
+    bande(hautVisage, ligneOeil + hauteurOeil, joue, '#2a2a33');
+    poser(colonne(dxOeil - 1), ligneOeil, traits.accessory);
   }
 
   // --- Les épaules ---------------------------------------------------------
-  for (let y = basVisage + 1; y < N; y += 1) {
-    for (let x = 0; x < half; x += 1) {
-      const dx = half - 1 - x;
-      if (dx > joue + 2) continue;
-      if (y === basVisage + 1 && dx > joue) continue;
-      poser(x, y, traits.coat ?? traits.outfit);
-    }
+  const hautEpaules = basVisage + 2;
+  for (let y = hautEpaules; y < N; y += 1) {
+    const t = (y - hautEpaules) / Math.max(1, N - 1 - hautEpaules);
+    const largeur = Math.round(joue + 1 + t * (half - joue - 1));
+    bande(y, y, largeur, traits.coat ?? traits.outfit);
   }
-  // Un col, pour que les épaules ne soient pas un bloc.
-  for (let dx = 0; dx <= 1; dx += 1) poser(half - 1 - dx, basVisage + 1, traits.skin);
+
+  // Le cou, puis le col : sans eux, la tête est posée sur un bloc.
+  bande(basVisage + 1, hautEpaules, 2, traits.skin);
+  if (traits.coat) {
+    // Le revers du manteau laisse voir la tenue en dessous.
+    bande(hautEpaules + 1, N - 1, 2, traits.outfit);
+  }
 
   return grid;
 }

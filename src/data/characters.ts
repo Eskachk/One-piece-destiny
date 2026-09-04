@@ -46,7 +46,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Mugiwara'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'robin', kind: 'CREW' }],
     abilities: ['Navigation', 'Climat'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'sanji',
@@ -55,7 +55,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Mugiwara', 'Germa'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'zoro', kind: 'RIVALRY' }],
     abilities: ['Haki observation', 'Combat', 'Haki des Rois', 'Haki armement', 'Cuisinier'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'robin',
@@ -64,7 +64,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Mugiwara'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'nami', kind: 'CREW' }],
     abilities: ['Fruit du démon', 'Archéologie', 'Archéologue'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'chopper',
@@ -73,7 +73,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Mugiwara'],
     relations: [{ to: 'luffy', kind: 'CREW' }],
     abilities: ['Médecine', 'Fruit du démon', 'Médecin'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'usopp',
@@ -82,7 +82,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Mugiwara', 'Grand Fleet'],
     relations: [{ to: 'luffy', kind: 'CREW' }, { to: 'bartolomeo', kind: 'ALLIANCE' }],
     abilities: ['Haki observation', 'Tir', 'Tireur'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'jinbe',
@@ -91,7 +91,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Mugiwara'],
     relations: [{ to: 'luffy', kind: 'CREW' }],
     abilities: ['Haki armement', 'Combat', 'Haki observation', 'Barreur', 'Homme-poisson'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'law',
@@ -113,7 +113,7 @@ const ALL_CHARACTERS: Character[] = [
     // Haute, comme l'annonçait la fiche en double : Law est de tous les arcs
     // depuis Punk Hazard. Conséquence assumée — un pari sûr rapporte moins
     // de points de risque qu'un pari incertain.
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'kid',
@@ -122,7 +122,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Kid Pirates', 'Worst Generation'],
     relations: [{ to: 'law', kind: 'RIVALRY' }],
     abilities: ['Haki armement', 'Fruit du démon', 'Haki des Rois'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'bonney',
@@ -131,7 +131,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Worst Generation'],
     relations: [{ to: 'kuma', kind: 'FAMILY' }],
     abilities: ['Fruit du démon'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'kuma',
@@ -140,7 +140,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Révolutionnaires'],
     relations: [{ to: 'bonney', kind: 'FAMILY' }, { to: 'dragon', kind: 'FACTION' }],
     abilities: ['Fruit du démon', 'Révolutionnaire'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'dragon',
@@ -149,7 +149,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Révolutionnaires'],
     relations: [{ to: 'luffy', kind: 'FAMILY' }, { to: 'sabo', kind: 'FACTION' }, { to: 'kuma', kind: 'FACTION' }],
     abilities: ['Inconnu', 'Révolutionnaire'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'sabo',
@@ -158,7 +158,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Révolutionnaires'],
     relations: [{ to: 'luffy', kind: 'FAMILY' }, { to: 'dragon', kind: 'FACTION' }],
     abilities: ['Haki des Rois', 'Fruit du démon', 'Haki armement', 'Révolutionnaire'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'koby',
@@ -176,7 +176,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Marine', 'SWORD'],
     relations: [{ to: 'koby', kind: 'CREW' }],
     abilities: ['Combat', 'Marine'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'garp',
@@ -185,7 +185,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Marine'],
     relations: [{ to: 'koby', kind: 'MENTOR' }, { to: 'luffy', kind: 'FAMILY' }, { to: 'akainu', kind: 'FACTION' }],
     abilities: ['Haki armement', 'Haki observation', 'Marine'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'akainu',
@@ -194,7 +194,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Marine'],
     relations: [{ to: 'garp', kind: 'FACTION' }],
     abilities: ['Fruit du démon', 'Haki armement', 'Marine'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'mihawk',
@@ -203,7 +203,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Cross Guild'],
     relations: [{ to: 'zoro', kind: 'MENTOR' }, { to: 'buggy', kind: 'ALLIANCE' }, { to: 'crocodile', kind: 'ALLIANCE' }, { to: 'perona', kind: 'FACTION' }],
     abilities: ['Haki armement', 'Escrime', 'Haki observation', 'Épéiste'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'buggy',
@@ -212,7 +212,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Cross Guild'],
     relations: [{ to: 'mihawk', kind: 'ALLIANCE' }, { to: 'crocodile', kind: 'ALLIANCE' }],
     abilities: ['Fruit du démon'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'crocodile',
@@ -221,7 +221,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Cross Guild'],
     relations: [{ to: 'mihawk', kind: 'ALLIANCE' }, { to: 'buggy', kind: 'ALLIANCE' }],
     abilities: ['Fruit du démon'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'bartolomeo',
@@ -239,7 +239,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Red Hair Pirates', 'Yonko'],
     relations: [{ to: 'luffy', kind: 'MENTOR' }],
     abilities: ['Haki des Rois', 'Escrime', 'Haki armement', 'Haki observation', 'Épéiste'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'perona',
@@ -257,7 +257,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Chapeau de Paille crew'],
     relations: [{ to: 'brook', kind: 'CREW' }, { to: 'zeus', kind: 'CREW' }],
     abilities: ['Carpenter', 'Charpentier'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'brook',
@@ -266,7 +266,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Chapeau de Paille crew'],
     relations: [{ to: 'franky', kind: 'CREW' }, { to: 'zeus', kind: 'CREW' }],
     abilities: ['Fruit of the Resurrection', 'Musician', 'Épéiste', 'Musicien'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'zeus',
@@ -275,7 +275,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Chapeau de Paille crew'],
     relations: [{ to: 'franky', kind: 'CREW' }, { to: 'brook', kind: 'CREW' }],
     abilities: ['Nami Arme'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'cavendish',
@@ -284,7 +284,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }, { to: 'baby-5', kind: 'CREW' }, { to: 'ideo', kind: 'CREW' }, { to: 'blue-gilly', kind: 'CREW' }, { to: 'abdullah', kind: 'CREW' }, { to: 'jeet', kind: 'CREW' }, { to: 'leo', kind: 'CREW' }, { to: 'kabu', kind: 'CREW' }, { to: 'bee-anne', kind: 'CREW' }, { to: 'hajrudin', kind: 'CREW' }, { to: 'stansen', kind: 'CREW' }, { to: 'road', kind: 'CREW' }, { to: 'goldberg', kind: 'CREW' }, { to: 'gerd', kind: 'CREW' }],
     abilities: ['Captain', 'Épéiste'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'suleiman',
@@ -293,7 +293,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }, { to: 'baby-5', kind: 'CREW' }, { to: 'ideo', kind: 'CREW' }, { to: 'blue-gilly', kind: 'CREW' }, { to: 'abdullah', kind: 'CREW' }, { to: 'jeet', kind: 'CREW' }, { to: 'leo', kind: 'CREW' }, { to: 'kabu', kind: 'CREW' }, { to: 'bee-anne', kind: 'CREW' }, { to: 'hajrudin', kind: 'CREW' }, { to: 'stansen', kind: 'CREW' }, { to: 'road', kind: 'CREW' }, { to: 'goldberg', kind: 'CREW' }, { to: 'gerd', kind: 'CREW' }],
     abilities: ['Fighter'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'gambia',
@@ -302,7 +302,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }, { to: 'baby-5', kind: 'CREW' }, { to: 'ideo', kind: 'CREW' }, { to: 'blue-gilly', kind: 'CREW' }, { to: 'abdullah', kind: 'CREW' }, { to: 'jeet', kind: 'CREW' }, { to: 'leo', kind: 'CREW' }, { to: 'kabu', kind: 'CREW' }, { to: 'bee-anne', kind: 'CREW' }, { to: 'hajrudin', kind: 'CREW' }, { to: 'stansen', kind: 'CREW' }, { to: 'road', kind: 'CREW' }, { to: 'goldberg', kind: 'CREW' }, { to: 'gerd', kind: 'CREW' }],
     abilities: ['Advisor'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'sai',
@@ -311,7 +311,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }, { to: 'baby-5', kind: 'CREW' }, { to: 'ideo', kind: 'CREW' }, { to: 'blue-gilly', kind: 'CREW' }, { to: 'abdullah', kind: 'CREW' }, { to: 'jeet', kind: 'CREW' }, { to: 'leo', kind: 'CREW' }, { to: 'kabu', kind: 'CREW' }, { to: 'bee-anne', kind: 'CREW' }, { to: 'hajrudin', kind: 'CREW' }, { to: 'stansen', kind: 'CREW' }, { to: 'road', kind: 'CREW' }, { to: 'goldberg', kind: 'CREW' }, { to: 'gerd', kind: 'CREW' }],
     abilities: ['13th Chief Commander'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'boo',
@@ -401,7 +401,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Captain', 'Géant'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'stansen',
@@ -410,7 +410,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Carpenter', 'Géant'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'road',
@@ -419,7 +419,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Browser', 'Géant'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'goldberg',
@@ -428,7 +428,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Cook', 'Géant'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'gerd',
@@ -437,7 +437,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'orlumbus', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }],
     abilities: ['Doctor', 'Géant'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'orlumbus',
@@ -446,7 +446,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armarda du Chapeau de Paille'],
     relations: [{ to: 'suleiman', kind: 'CREW' }, { to: 'gambia', kind: 'CREW' }, { to: 'cavendish', kind: 'CREW' }, { to: 'sai', kind: 'CREW' }, { to: 'boo', kind: 'CREW' }, { to: 'baby-5', kind: 'CREW' }, { to: 'ideo', kind: 'CREW' }, { to: 'blue-gilly', kind: 'CREW' }, { to: 'abdullah', kind: 'CREW' }, { to: 'jeet', kind: 'CREW' }, { to: 'leo', kind: 'CREW' }, { to: 'kabu', kind: 'CREW' }, { to: 'bee-anne', kind: 'CREW' }, { to: 'hajrudin', kind: 'CREW' }, { to: 'stansen', kind: 'CREW' }, { to: 'road', kind: 'CREW' }, { to: 'goldberg', kind: 'CREW' }, { to: 'gerd', kind: 'CREW' }],
     abilities: ['Admiral'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'baggy-le-clown',
@@ -455,7 +455,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Baggy\'s Delivery'],
     relations: [{ to: 'galdino', kind: 'CREW' }, { to: 'alvida', kind: 'CREW' }, { to: 'morge', kind: 'CREW' }, { to: 'cabaji', kind: 'CREW' }],
     abilities: ['Fruit of Fragmentation', 'Chairman'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'alvida',
@@ -608,7 +608,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Thriller Bark'],
     relations: [{ to: 'hogback', kind: 'CREW' }, { to: 'absalom', kind: 'CREW' }],
     abilities: ['Fruit of the Shadow', 'Captain'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'hogback',
@@ -644,7 +644,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hearth crew'],
     relations: [{ to: 'bepo', kind: 'CREW' }, { to: 'jean-bart', kind: 'CREW' }, { to: 'shachi', kind: 'CREW' }, { to: 'pingouin', kind: 'CREW' }],
     abilities: ['Fruit of the Scalpel', 'Captain', 'Haki armement', 'Haki observation', 'Épéiste', 'Médecin'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'bepo',
@@ -716,7 +716,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Fire Tank crew'],
     relations: [{ to: 'vito', kind: 'CREW' }, { to: 'gotti', kind: 'CREW' }, { to: 'charlotte-chiffon', kind: 'CREW' }, { to: 'charlotte-pets', kind: 'CREW' }],
     abilities: ['Fruit du Château', 'Captain', 'Haki armement'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'vito',
@@ -725,7 +725,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Fire Tank crew'],
     relations: [{ to: 'capone-bege', kind: 'CREW' }, { to: 'gotti', kind: 'CREW' }, { to: 'charlotte-chiffon', kind: 'CREW' }, { to: 'charlotte-pets', kind: 'CREW' }],
     abilities: ['Advisor'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'gotti',
@@ -734,7 +734,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Fire Tank crew'],
     relations: [{ to: 'capone-bege', kind: 'CREW' }, { to: 'vito', kind: 'CREW' }, { to: 'charlotte-chiffon', kind: 'CREW' }, { to: 'charlotte-pets', kind: 'CREW' }],
     abilities: ['Assassin'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-chiffon',
@@ -761,7 +761,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: [],
     relations: [],
     abilities: ['Captain', 'Haki armement'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'boa-hancock',
@@ -824,7 +824,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Caribou crew'],
     relations: [{ to: 'coribou', kind: 'CREW' }],
     abilities: ['Fruit du Marais', 'Co-Captain'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'coribou',
@@ -833,7 +833,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Caribou crew'],
     relations: [{ to: 'caribou', kind: 'CREW' }],
     abilities: ['Co-Captain'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'ficher-tiger',
@@ -842,7 +842,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Sun Pirates crew'],
     relations: [{ to: 'aladdin', kind: 'CREW' }, { to: 'charlotte-praline', kind: 'CREW' }],
     abilities: ['Captain', 'Homme-poisson'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'aladdin',
@@ -869,7 +869,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: [],
     relations: [],
     abilities: ['Pirate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'edward-weeble',
@@ -878,7 +878,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: [],
     relations: [],
     abilities: ['Pirate', 'Capitaine'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'ben-beckmann',
@@ -887,7 +887,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }, { to: 'building-snake', kind: 'CREW' }, { to: 'hongo', kind: 'CREW' }, { to: 'howling-dab', kind: 'CREW' }],
     abilities: ['Vice-Captain', 'Barreur'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'lucky-roo',
@@ -896,7 +896,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }, { to: 'building-snake', kind: 'CREW' }, { to: 'hongo', kind: 'CREW' }, { to: 'howling-dab', kind: 'CREW' }],
     abilities: ['Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'yassop',
@@ -905,7 +905,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }, { to: 'building-snake', kind: 'CREW' }, { to: 'hongo', kind: 'CREW' }, { to: 'howling-dab', kind: 'CREW' }],
     abilities: ['Lieutenant', 'Tireur'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'limejuice',
@@ -914,7 +914,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }, { to: 'building-snake', kind: 'CREW' }, { to: 'hongo', kind: 'CREW' }, { to: 'howling-dab', kind: 'CREW' }],
     abilities: ['Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'bonk-punch',
@@ -923,7 +923,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }, { to: 'building-snake', kind: 'CREW' }, { to: 'hongo', kind: 'CREW' }, { to: 'howling-dab', kind: 'CREW' }],
     abilities: ['Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'monster',
@@ -932,7 +932,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }],
     abilities: ['Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'building-snake',
@@ -941,7 +941,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }],
     abilities: ['Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'hongo',
@@ -950,7 +950,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }],
     abilities: ['Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'howling-dab',
@@ -959,7 +959,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'rockstar', kind: 'CREW' }, { to: 'ben-beckmann', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }],
     abilities: ['Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'rockstar',
@@ -968,7 +968,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Le Roux crew'],
     relations: [{ to: 'ben-beckmann', kind: 'CREW' }, { to: 'lucky-roo', kind: 'CREW' }, { to: 'yassop', kind: 'CREW' }, { to: 'limejuice', kind: 'CREW' }, { to: 'bonk-punch', kind: 'CREW' }, { to: 'monster', kind: 'CREW' }, { to: 'building-snake', kind: 'CREW' }, { to: 'hongo', kind: 'CREW' }, { to: 'howling-dab', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-linlin-big-mom',
@@ -977,7 +977,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }, { to: 'charlotte-daifuku', kind: 'CREW' }, { to: 'charlotte-oven', kind: 'CREW' }, { to: 'charlotte-amande', kind: 'CREW' }, { to: 'charlotte-opera', kind: 'CREW' }, { to: 'charlotte-brulee', kind: 'CREW' }, { to: 'charlotte-mont-d-or', kind: 'CREW' }, { to: 'charlotte-galette', kind: 'CREW' }, { to: 'charlotte-pudding', kind: 'CREW' }, { to: 'charlotte-flampee', kind: 'CREW' }, { to: 'charlotte-compote', kind: 'CREW' }, { to: 'charlotte-monde', kind: 'CREW' }, { to: 'charlotte-hachee', kind: 'CREW' }, { to: 'charlotte-effilee', kind: 'CREW' }, { to: 'charlotte-counter', kind: 'CREW' }, { to: 'charlotte-cadenza', kind: 'CREW' }, { to: 'charlotte-cabaletta', kind: 'CREW' }, { to: 'charlotte-gala', kind: 'CREW' }, { to: 'charlotte-angel', kind: 'CREW' }, { to: 'charlotte-creme', kind: 'CREW' }, { to: 'charlotte-zuccoto', kind: 'CREW' }, { to: 'charlotte-broyee', kind: 'CREW' }, { to: 'charlotte-nusstorte', kind: 'CREW' }, { to: 'charlotte-basskarte', kind: 'CREW' }, { to: 'charlotte-dosmarche', kind: 'CREW' }, { to: 'charlotte-noisette', kind: 'CREW' }, { to: 'charlotte-moscato', kind: 'CREW' }, { to: 'charlotte-mash', kind: 'CREW' }, { to: 'charlotte-corn-starch', kind: 'CREW' }, { to: 'charlotte-compo', kind: 'CREW' }, { to: 'charlotte-laurin', kind: 'CREW' }, { to: 'charlotte-mozart', kind: 'CREW' }, { to: 'charlotte-marnier', kind: 'CREW' }, { to: 'charlotte-high-fat', kind: 'CREW' }, { to: 'charlotte-tablet', kind: 'CREW' }, { to: 'charlotte-citron', kind: 'CREW' }, { to: 'charlotte-cannelle', kind: 'CREW' }, { to: 'charlotte-saint-marc', kind: 'CREW' }, { to: 'charlotte-basans', kind: 'CREW' }, { to: 'charlotte-melisee', kind: 'CREW' }, { to: 'charlotte-dacquoise', kind: 'CREW' }, { to: 'charlotte-poire', kind: 'CREW' }, { to: 'charlotte-bavarois', kind: 'CREW' }, { to: 'charlotte-prim', kind: 'CREW' }, { to: 'charlotte-kanten', kind: 'CREW' }, { to: 'charlotte-kato', kind: 'CREW' }, { to: 'charlotte-montb', kind: 'CREW' }, { to: 'charlotte-chiboust', kind: 'CREW' }, { to: 'charlotte-mobile', kind: 'CREW' }, { to: 'charlotte-marble', kind: 'CREW' }, { to: 'charlotte-mucre', kind: 'CREW' }, { to: 'charlotte-mapple', kind: 'CREW' }, { to: 'charlotte-brownie', kind: 'CREW' }, { to: 'charlotte-joconde', kind: 'CREW' }, { to: 'charlotte-raisin', kind: 'CREW' }, { to: 'charlotte-panna', kind: 'CREW' }, { to: 'charlotte-mascarpone', kind: 'CREW' }, { to: 'charlotte-joscarpone', kind: 'CREW' }, { to: 'charlotte-yu-yuan', kind: 'CREW' }, { to: 'charlotte-newichi', kind: 'CREW' }, { to: 'charlotte-newji', kind: 'CREW' }, { to: 'charlotte-newsan', kind: 'CREW' }, { to: 'charlotte-newshi', kind: 'CREW' }, { to: 'charlotte-newgo', kind: 'CREW' }, { to: 'charlotte-muscade', kind: 'CREW' }, { to: 'charlotte-muscadia', kind: 'CREW' }, { to: 'charlotte-muscadelle', kind: 'CREW' }, { to: 'charlotte-muscadine', kind: 'CREW' }, { to: 'charlotte-muscadette', kind: 'CREW' }, { to: 'charlotte-nougat', kind: 'CREW' }, { to: 'charlotte-anglais', kind: 'CREW' }, { to: 'charlotte-wafers', kind: 'CREW' }, { to: 'charlotte-wiro', kind: 'CREW' }, { to: 'charlotte-de-chat', kind: 'CREW' }, { to: 'charlotte-normande', kind: 'CREW' }, { to: 'charlotte-dolce', kind: 'CREW' }, { to: 'charlotte-dragee', kind: 'CREW' }, { to: 'charlotte-anana', kind: 'CREW' }, { to: 'pekoms', kind: 'CREW' }, { to: 'boddin', kind: 'CREW' }, { to: 'streusen', kind: 'CREW' }, { to: 'promethee', kind: 'CREW' }, { to: 'napoleon', kind: 'CREW' }, { to: 'hera', kind: 'CREW' }, { to: 'kingbaum', kind: 'CREW' }],
     abilities: ['Fruit of Souls', 'Captain', 'Haki des Rois', 'Haki armement', 'Haki observation'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'charlotte-dent-de-chien',
@@ -986,7 +986,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }, { to: 'charlotte-daifuku', kind: 'CREW' }, { to: 'charlotte-oven', kind: 'CREW' }, { to: 'charlotte-amande', kind: 'CREW' }, { to: 'charlotte-opera', kind: 'CREW' }, { to: 'charlotte-brulee', kind: 'CREW' }, { to: 'charlotte-mont-d-or', kind: 'CREW' }, { to: 'charlotte-galette', kind: 'CREW' }, { to: 'charlotte-pudding', kind: 'CREW' }, { to: 'charlotte-flampee', kind: 'CREW' }, { to: 'charlotte-compote', kind: 'CREW' }, { to: 'charlotte-monde', kind: 'CREW' }, { to: 'charlotte-hachee', kind: 'CREW' }, { to: 'charlotte-effilee', kind: 'CREW' }, { to: 'charlotte-counter', kind: 'CREW' }, { to: 'charlotte-cadenza', kind: 'CREW' }, { to: 'charlotte-cabaletta', kind: 'CREW' }, { to: 'charlotte-gala', kind: 'CREW' }, { to: 'charlotte-angel', kind: 'CREW' }, { to: 'charlotte-creme', kind: 'CREW' }, { to: 'charlotte-zuccoto', kind: 'CREW' }, { to: 'charlotte-broyee', kind: 'CREW' }, { to: 'charlotte-nusstorte', kind: 'CREW' }, { to: 'charlotte-basskarte', kind: 'CREW' }, { to: 'charlotte-dosmarche', kind: 'CREW' }, { to: 'charlotte-noisette', kind: 'CREW' }, { to: 'charlotte-moscato', kind: 'CREW' }, { to: 'charlotte-mash', kind: 'CREW' }, { to: 'charlotte-corn-starch', kind: 'CREW' }, { to: 'charlotte-compo', kind: 'CREW' }, { to: 'charlotte-laurin', kind: 'CREW' }, { to: 'charlotte-mozart', kind: 'CREW' }, { to: 'charlotte-marnier', kind: 'CREW' }, { to: 'charlotte-high-fat', kind: 'CREW' }, { to: 'charlotte-tablet', kind: 'CREW' }, { to: 'charlotte-citron', kind: 'CREW' }, { to: 'charlotte-cannelle', kind: 'CREW' }, { to: 'charlotte-saint-marc', kind: 'CREW' }, { to: 'charlotte-basans', kind: 'CREW' }, { to: 'charlotte-melisee', kind: 'CREW' }, { to: 'charlotte-dacquoise', kind: 'CREW' }, { to: 'charlotte-poire', kind: 'CREW' }, { to: 'charlotte-bavarois', kind: 'CREW' }, { to: 'charlotte-prim', kind: 'CREW' }, { to: 'charlotte-kanten', kind: 'CREW' }, { to: 'charlotte-kato', kind: 'CREW' }, { to: 'charlotte-montb', kind: 'CREW' }, { to: 'charlotte-chiboust', kind: 'CREW' }, { to: 'charlotte-mobile', kind: 'CREW' }, { to: 'charlotte-marble', kind: 'CREW' }, { to: 'charlotte-mucre', kind: 'CREW' }, { to: 'charlotte-mapple', kind: 'CREW' }, { to: 'charlotte-brownie', kind: 'CREW' }, { to: 'charlotte-joconde', kind: 'CREW' }, { to: 'charlotte-raisin', kind: 'CREW' }, { to: 'charlotte-panna', kind: 'CREW' }, { to: 'charlotte-mascarpone', kind: 'CREW' }, { to: 'charlotte-joscarpone', kind: 'CREW' }, { to: 'charlotte-yu-yuan', kind: 'CREW' }, { to: 'charlotte-newichi', kind: 'CREW' }, { to: 'charlotte-newji', kind: 'CREW' }, { to: 'charlotte-newsan', kind: 'CREW' }, { to: 'charlotte-newshi', kind: 'CREW' }, { to: 'charlotte-newgo', kind: 'CREW' }, { to: 'charlotte-muscade', kind: 'CREW' }, { to: 'charlotte-muscadia', kind: 'CREW' }, { to: 'charlotte-muscadelle', kind: 'CREW' }, { to: 'charlotte-muscadine', kind: 'CREW' }, { to: 'charlotte-muscadette', kind: 'CREW' }, { to: 'charlotte-nougat', kind: 'CREW' }, { to: 'charlotte-anglais', kind: 'CREW' }, { to: 'charlotte-wafers', kind: 'CREW' }, { to: 'charlotte-wiro', kind: 'CREW' }, { to: 'charlotte-de-chat', kind: 'CREW' }, { to: 'charlotte-normande', kind: 'CREW' }, { to: 'charlotte-dolce', kind: 'CREW' }, { to: 'charlotte-dragee', kind: 'CREW' }, { to: 'charlotte-anana', kind: 'CREW' }, { to: 'pekoms', kind: 'CREW' }, { to: 'boddin', kind: 'CREW' }, { to: 'streusen', kind: 'CREW' }, { to: 'promethee', kind: 'CREW' }, { to: 'napoleon', kind: 'CREW' }, { to: 'hera', kind: 'CREW' }, { to: 'kingbaum', kind: 'CREW' }],
     abilities: ['Glutinous Rice Fruit', 'General Sucré', 'Haki armement', 'Haki observation'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'charlotte-smoothie',
@@ -1013,7 +1013,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }, { to: 'charlotte-daifuku', kind: 'CREW' }, { to: 'charlotte-oven', kind: 'CREW' }, { to: 'charlotte-amande', kind: 'CREW' }, { to: 'charlotte-opera', kind: 'CREW' }, { to: 'charlotte-brulee', kind: 'CREW' }, { to: 'charlotte-mont-d-or', kind: 'CREW' }, { to: 'charlotte-galette', kind: 'CREW' }, { to: 'charlotte-pudding', kind: 'CREW' }, { to: 'charlotte-flampee', kind: 'CREW' }, { to: 'charlotte-compote', kind: 'CREW' }, { to: 'charlotte-monde', kind: 'CREW' }, { to: 'charlotte-hachee', kind: 'CREW' }, { to: 'charlotte-effilee', kind: 'CREW' }, { to: 'charlotte-counter', kind: 'CREW' }, { to: 'charlotte-cadenza', kind: 'CREW' }, { to: 'charlotte-cabaletta', kind: 'CREW' }, { to: 'charlotte-gala', kind: 'CREW' }, { to: 'charlotte-angel', kind: 'CREW' }, { to: 'charlotte-creme', kind: 'CREW' }, { to: 'charlotte-zuccoto', kind: 'CREW' }, { to: 'charlotte-broyee', kind: 'CREW' }, { to: 'charlotte-nusstorte', kind: 'CREW' }, { to: 'charlotte-basskarte', kind: 'CREW' }, { to: 'charlotte-dosmarche', kind: 'CREW' }, { to: 'charlotte-noisette', kind: 'CREW' }, { to: 'charlotte-moscato', kind: 'CREW' }, { to: 'charlotte-mash', kind: 'CREW' }, { to: 'charlotte-corn-starch', kind: 'CREW' }, { to: 'charlotte-compo', kind: 'CREW' }, { to: 'charlotte-laurin', kind: 'CREW' }, { to: 'charlotte-mozart', kind: 'CREW' }, { to: 'charlotte-marnier', kind: 'CREW' }, { to: 'charlotte-high-fat', kind: 'CREW' }, { to: 'charlotte-tablet', kind: 'CREW' }, { to: 'charlotte-citron', kind: 'CREW' }, { to: 'charlotte-cannelle', kind: 'CREW' }, { to: 'charlotte-saint-marc', kind: 'CREW' }, { to: 'charlotte-basans', kind: 'CREW' }, { to: 'charlotte-melisee', kind: 'CREW' }, { to: 'charlotte-dacquoise', kind: 'CREW' }, { to: 'charlotte-poire', kind: 'CREW' }, { to: 'charlotte-bavarois', kind: 'CREW' }, { to: 'charlotte-prim', kind: 'CREW' }, { to: 'charlotte-kanten', kind: 'CREW' }, { to: 'charlotte-kato', kind: 'CREW' }, { to: 'charlotte-montb', kind: 'CREW' }, { to: 'charlotte-chiboust', kind: 'CREW' }, { to: 'charlotte-mobile', kind: 'CREW' }, { to: 'charlotte-marble', kind: 'CREW' }, { to: 'charlotte-mucre', kind: 'CREW' }, { to: 'charlotte-mapple', kind: 'CREW' }, { to: 'charlotte-brownie', kind: 'CREW' }, { to: 'charlotte-joconde', kind: 'CREW' }, { to: 'charlotte-raisin', kind: 'CREW' }, { to: 'charlotte-panna', kind: 'CREW' }, { to: 'charlotte-mascarpone', kind: 'CREW' }, { to: 'charlotte-joscarpone', kind: 'CREW' }, { to: 'charlotte-yu-yuan', kind: 'CREW' }, { to: 'charlotte-newichi', kind: 'CREW' }, { to: 'charlotte-newji', kind: 'CREW' }, { to: 'charlotte-newsan', kind: 'CREW' }, { to: 'charlotte-newshi', kind: 'CREW' }, { to: 'charlotte-newgo', kind: 'CREW' }, { to: 'charlotte-muscade', kind: 'CREW' }, { to: 'charlotte-muscadia', kind: 'CREW' }, { to: 'charlotte-muscadelle', kind: 'CREW' }, { to: 'charlotte-muscadine', kind: 'CREW' }, { to: 'charlotte-muscadette', kind: 'CREW' }, { to: 'charlotte-nougat', kind: 'CREW' }, { to: 'charlotte-anglais', kind: 'CREW' }, { to: 'charlotte-wafers', kind: 'CREW' }, { to: 'charlotte-wiro', kind: 'CREW' }, { to: 'charlotte-de-chat', kind: 'CREW' }, { to: 'charlotte-normande', kind: 'CREW' }, { to: 'charlotte-dolce', kind: 'CREW' }, { to: 'charlotte-dragee', kind: 'CREW' }, { to: 'charlotte-anana', kind: 'CREW' }, { to: 'pekoms', kind: 'CREW' }, { to: 'boddin', kind: 'CREW' }, { to: 'streusen', kind: 'CREW' }, { to: 'promethee', kind: 'CREW' }, { to: 'napoleon', kind: 'CREW' }, { to: 'hera', kind: 'CREW' }, { to: 'kingbaum', kind: 'CREW' }],
     abilities: ['Fruit de la Léchouille', 'Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-daifuku',
@@ -1022,7 +1022,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of the Lamp', 'Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-oven',
@@ -1031,7 +1031,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of Heat', 'Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-amande',
@@ -1040,7 +1040,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Lieutenant', 'Épéiste'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-opera',
@@ -1049,7 +1049,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit de la Crème', 'Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-brulee',
@@ -1058,7 +1058,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of the Mirror', 'Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-mont-d-or',
@@ -1067,7 +1067,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of the Book', 'Lieutenant', 'Musicien'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-galette',
@@ -1076,7 +1076,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Butter Fruit', 'Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-snack',
@@ -1085,7 +1085,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'del-uf', kind: 'CREW' }, { to: 'charlotte-daifuku', kind: 'CREW' }, { to: 'charlotte-oven', kind: 'CREW' }, { to: 'charlotte-amande', kind: 'CREW' }, { to: 'charlotte-opera', kind: 'CREW' }, { to: 'charlotte-brulee', kind: 'CREW' }, { to: 'charlotte-mont-d-or', kind: 'CREW' }, { to: 'charlotte-galette', kind: 'CREW' }, { to: 'charlotte-pudding', kind: 'CREW' }, { to: 'charlotte-flampee', kind: 'CREW' }, { to: 'charlotte-compote', kind: 'CREW' }, { to: 'charlotte-monde', kind: 'CREW' }, { to: 'charlotte-hachee', kind: 'CREW' }, { to: 'charlotte-effilee', kind: 'CREW' }, { to: 'charlotte-counter', kind: 'CREW' }, { to: 'charlotte-cadenza', kind: 'CREW' }, { to: 'charlotte-cabaletta', kind: 'CREW' }, { to: 'charlotte-gala', kind: 'CREW' }, { to: 'charlotte-angel', kind: 'CREW' }, { to: 'charlotte-creme', kind: 'CREW' }, { to: 'charlotte-zuccoto', kind: 'CREW' }, { to: 'charlotte-broyee', kind: 'CREW' }, { to: 'charlotte-nusstorte', kind: 'CREW' }, { to: 'charlotte-basskarte', kind: 'CREW' }, { to: 'charlotte-dosmarche', kind: 'CREW' }, { to: 'charlotte-noisette', kind: 'CREW' }, { to: 'charlotte-moscato', kind: 'CREW' }, { to: 'charlotte-mash', kind: 'CREW' }, { to: 'charlotte-corn-starch', kind: 'CREW' }, { to: 'charlotte-compo', kind: 'CREW' }, { to: 'charlotte-laurin', kind: 'CREW' }, { to: 'charlotte-mozart', kind: 'CREW' }, { to: 'charlotte-marnier', kind: 'CREW' }, { to: 'charlotte-high-fat', kind: 'CREW' }, { to: 'charlotte-tablet', kind: 'CREW' }, { to: 'charlotte-citron', kind: 'CREW' }, { to: 'charlotte-cannelle', kind: 'CREW' }, { to: 'charlotte-saint-marc', kind: 'CREW' }, { to: 'charlotte-basans', kind: 'CREW' }, { to: 'charlotte-melisee', kind: 'CREW' }, { to: 'charlotte-dacquoise', kind: 'CREW' }, { to: 'charlotte-poire', kind: 'CREW' }, { to: 'charlotte-bavarois', kind: 'CREW' }, { to: 'charlotte-prim', kind: 'CREW' }, { to: 'charlotte-kanten', kind: 'CREW' }, { to: 'charlotte-kato', kind: 'CREW' }, { to: 'charlotte-montb', kind: 'CREW' }, { to: 'charlotte-chiboust', kind: 'CREW' }, { to: 'charlotte-mobile', kind: 'CREW' }, { to: 'charlotte-marble', kind: 'CREW' }, { to: 'charlotte-mucre', kind: 'CREW' }, { to: 'charlotte-mapple', kind: 'CREW' }, { to: 'charlotte-brownie', kind: 'CREW' }, { to: 'charlotte-joconde', kind: 'CREW' }, { to: 'charlotte-raisin', kind: 'CREW' }, { to: 'charlotte-panna', kind: 'CREW' }, { to: 'charlotte-mascarpone', kind: 'CREW' }, { to: 'charlotte-joscarpone', kind: 'CREW' }, { to: 'charlotte-yu-yuan', kind: 'CREW' }, { to: 'charlotte-newichi', kind: 'CREW' }, { to: 'charlotte-newji', kind: 'CREW' }, { to: 'charlotte-newsan', kind: 'CREW' }, { to: 'charlotte-newshi', kind: 'CREW' }, { to: 'charlotte-newgo', kind: 'CREW' }, { to: 'charlotte-muscade', kind: 'CREW' }, { to: 'charlotte-muscadia', kind: 'CREW' }, { to: 'charlotte-muscadelle', kind: 'CREW' }, { to: 'charlotte-muscadine', kind: 'CREW' }, { to: 'charlotte-muscadette', kind: 'CREW' }, { to: 'charlotte-nougat', kind: 'CREW' }, { to: 'charlotte-anglais', kind: 'CREW' }, { to: 'charlotte-wafers', kind: 'CREW' }, { to: 'charlotte-wiro', kind: 'CREW' }, { to: 'charlotte-de-chat', kind: 'CREW' }, { to: 'charlotte-normande', kind: 'CREW' }, { to: 'charlotte-dolce', kind: 'CREW' }, { to: 'charlotte-dragee', kind: 'CREW' }, { to: 'charlotte-anana', kind: 'CREW' }, { to: 'pekoms', kind: 'CREW' }, { to: 'boddin', kind: 'CREW' }, { to: 'streusen', kind: 'CREW' }, { to: 'promethee', kind: 'CREW' }, { to: 'napoleon', kind: 'CREW' }, { to: 'hera', kind: 'CREW' }, { to: 'kingbaum', kind: 'CREW' }],
     abilities: ['Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-pudding',
@@ -1094,7 +1094,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of Memories', 'Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-flampee',
@@ -1103,7 +1103,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Lieutenant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-compote',
@@ -1112,7 +1112,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-monde',
@@ -1121,7 +1121,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-hachee',
@@ -1130,7 +1130,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-effilee',
@@ -1139,7 +1139,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-counter',
@@ -1148,7 +1148,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-cadenza',
@@ -1157,7 +1157,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-cabaletta',
@@ -1166,7 +1166,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-gala',
@@ -1175,7 +1175,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-angel',
@@ -1184,7 +1184,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-creme',
@@ -1193,7 +1193,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-zuccoto',
@@ -1202,7 +1202,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-broyee',
@@ -1211,7 +1211,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-nusstorte',
@@ -1220,7 +1220,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-basskarte',
@@ -1229,7 +1229,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-dosmarche',
@@ -1238,7 +1238,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-noisette',
@@ -1247,7 +1247,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-moscato',
@@ -1256,7 +1256,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-mash',
@@ -1265,7 +1265,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-corn-starch',
@@ -1274,7 +1274,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-compo',
@@ -1283,7 +1283,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-laurin',
@@ -1292,7 +1292,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-mozart',
@@ -1301,7 +1301,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-marnier',
@@ -1310,7 +1310,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-high-fat',
@@ -1319,7 +1319,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-tablet',
@@ -1328,7 +1328,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-citron',
@@ -1337,7 +1337,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-cannelle',
@@ -1346,7 +1346,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-saint-marc',
@@ -1355,7 +1355,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-basans',
@@ -1364,7 +1364,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-melisee',
@@ -1373,7 +1373,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-dacquoise',
@@ -1382,7 +1382,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-poire',
@@ -1391,7 +1391,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-bavarois',
@@ -1400,7 +1400,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-prim',
@@ -1409,7 +1409,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-kanten',
@@ -1418,7 +1418,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-kato',
@@ -1427,7 +1427,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-montb',
@@ -1436,7 +1436,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-chiboust',
@@ -1445,7 +1445,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-mobile',
@@ -1454,7 +1454,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-marble',
@@ -1463,7 +1463,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-mucre',
@@ -1472,7 +1472,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-mapple',
@@ -1481,7 +1481,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-brownie',
@@ -1490,7 +1490,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-joconde',
@@ -1499,7 +1499,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-raisin',
@@ -1508,7 +1508,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-panna',
@@ -1517,7 +1517,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-mascarpone',
@@ -1526,7 +1526,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-joscarpone',
@@ -1535,7 +1535,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-yu-yuan',
@@ -1544,7 +1544,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-newichi',
@@ -1553,7 +1553,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-newji',
@@ -1562,7 +1562,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-newsan',
@@ -1571,7 +1571,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-newshi',
@@ -1580,7 +1580,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of the Mix', 'Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-newgo',
@@ -1589,7 +1589,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-muscade',
@@ -1598,7 +1598,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-muscadia',
@@ -1607,7 +1607,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-muscadelle',
@@ -1616,7 +1616,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-muscadine',
@@ -1625,7 +1625,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-muscadette',
@@ -1634,7 +1634,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-nougat',
@@ -1643,7 +1643,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-anglais',
@@ -1652,7 +1652,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-wafers',
@@ -1661,7 +1661,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-wiro',
@@ -1670,7 +1670,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-de-chat',
@@ -1679,7 +1679,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-normande',
@@ -1688,7 +1688,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-dolce',
@@ -1697,7 +1697,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-dragee',
@@ -1706,7 +1706,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'charlotte-anana',
@@ -1715,7 +1715,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Officer'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'pekoms',
@@ -1724,7 +1724,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Turtle Fruit', 'Fighter', 'Homme-poisson'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'del-uf',
@@ -1733,7 +1733,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of the Egg', 'Fighter'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'boddin',
@@ -1742,7 +1742,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fighter'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'streusen',
@@ -1751,7 +1751,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Fruit of the Cook', 'Cook', 'Cuisinier'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'promethee',
@@ -1760,7 +1760,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Homie'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'napoleon',
@@ -1769,7 +1769,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Homie'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'hera',
@@ -1778,7 +1778,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Homie'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'kingbaum',
@@ -1787,7 +1787,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Big Mom\'s crew'],
     relations: [{ to: 'charlotte-linlin-big-mom', kind: 'CREW' }, { to: 'charlotte-dent-de-chien', kind: 'CREW' }, { to: 'charlotte-smoothie', kind: 'CREW' }, { to: 'charlotte-cracker', kind: 'CREW' }, { to: 'charlotte-slurp', kind: 'CREW' }, { to: 'charlotte-snack', kind: 'CREW' }],
     abilities: ['Homie'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'kaido',
@@ -1796,7 +1796,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew', 'Zoan Mythique'],
     relations: [{ to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }, { to: 'page-one', kind: 'CREW' }, { to: 'ulti', kind: 'CREW' }, { to: 'sheep-s-head', kind: 'CREW' }, { to: 'basil-hawkins', kind: 'CREW' }, { to: 'holdem', kind: 'CREW' }, { to: 'speed', kind: 'CREW' }, { to: 'trouduc', kind: 'CREW' }, { to: 'pouilleux', kind: 'CREW' }, { to: 'solitaire', kind: 'CREW' }, { to: 'bao-huang', kind: 'CREW' }, { to: 'ginrummy', kind: 'CREW' }, { to: 'plouf', kind: 'CREW' }, { to: 'briscola', kind: 'CREW' }, { to: 'fourtricks', kind: 'CREW' }, { to: 'hamlet', kind: 'CREW' }, { to: 'mizerka', kind: 'CREW' }, { to: 'poker', kind: 'CREW' }, { to: 'batman', kind: 'CREW' }, { to: 'gazelleman', kind: 'CREW' }, { to: 'mouseman', kind: 'CREW' }, { to: 'snakeman', kind: 'CREW' }, { to: 'rabitman', kind: 'CREW' }, { to: 'sarehebi', kind: 'CREW' }, { to: 'alpagaman', kind: 'CREW' }, { to: 'tatouman', kind: 'CREW' }, { to: 'dachoman', kind: 'CREW' }, { to: 'tenjo-sagari', kind: 'CREW' }, { to: 'caimanlady', kind: 'CREW' }, { to: 'nure-onna', kind: 'CREW' }, { to: 'wa-nyudo', kind: 'CREW' }, { to: 'inbi', kind: 'CREW' }, { to: 'fuga', kind: 'CREW' }, { to: 'zanki', kind: 'CREW' }, { to: 'jaki', kind: 'CREW' }, { to: 'goki', kind: 'CREW' }, { to: 'rokki', kind: 'CREW' }, { to: 'nangi', kind: 'CREW' }, { to: 'hacha', kind: 'CREW' }, { to: 'kunyun', kind: 'CREW' }, { to: 'juki', kind: 'CREW' }, { to: 'fukurokuju', kind: 'CREW' }, { to: 'daikoku', kind: 'CREW' }, { to: 'hanzo', kind: 'CREW' }, { to: 'sarutobi', kind: 'CREW' }, { to: 'kazekage', kind: 'CREW' }, { to: 'jigoku-benten', kind: 'CREW' }, { to: 'fujin', kind: 'CREW' }, { to: 'raijin', kind: 'CREW' }, { to: 'bishamon', kind: 'CREW' }, { to: 'tohome', kind: 'CREW' }, { to: 'yazaemon', kind: 'CREW' }, { to: 'hotei', kind: 'CREW' }, { to: 'scratchmen-apoo', kind: 'CREW' }],
     abilities: ['Fruit of the Fish, Azure Dragon version', 'Captain', 'Haki des Rois', 'Haki armement', 'Haki observation'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'king',
@@ -1805,7 +1805,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }, { to: 'page-one', kind: 'CREW' }, { to: 'ulti', kind: 'CREW' }, { to: 'sheep-s-head', kind: 'CREW' }, { to: 'basil-hawkins', kind: 'CREW' }, { to: 'holdem', kind: 'CREW' }, { to: 'speed', kind: 'CREW' }, { to: 'trouduc', kind: 'CREW' }, { to: 'pouilleux', kind: 'CREW' }, { to: 'solitaire', kind: 'CREW' }, { to: 'bao-huang', kind: 'CREW' }, { to: 'ginrummy', kind: 'CREW' }, { to: 'plouf', kind: 'CREW' }, { to: 'briscola', kind: 'CREW' }, { to: 'fourtricks', kind: 'CREW' }, { to: 'hamlet', kind: 'CREW' }, { to: 'mizerka', kind: 'CREW' }, { to: 'poker', kind: 'CREW' }, { to: 'batman', kind: 'CREW' }, { to: 'gazelleman', kind: 'CREW' }, { to: 'mouseman', kind: 'CREW' }, { to: 'snakeman', kind: 'CREW' }, { to: 'rabitman', kind: 'CREW' }, { to: 'sarehebi', kind: 'CREW' }, { to: 'alpagaman', kind: 'CREW' }, { to: 'tatouman', kind: 'CREW' }, { to: 'dachoman', kind: 'CREW' }, { to: 'tenjo-sagari', kind: 'CREW' }, { to: 'caimanlady', kind: 'CREW' }, { to: 'nure-onna', kind: 'CREW' }, { to: 'wa-nyudo', kind: 'CREW' }, { to: 'inbi', kind: 'CREW' }, { to: 'fuga', kind: 'CREW' }, { to: 'zanki', kind: 'CREW' }, { to: 'jaki', kind: 'CREW' }, { to: 'goki', kind: 'CREW' }, { to: 'rokki', kind: 'CREW' }, { to: 'nangi', kind: 'CREW' }, { to: 'hacha', kind: 'CREW' }, { to: 'kunyun', kind: 'CREW' }, { to: 'juki', kind: 'CREW' }, { to: 'fukurokuju', kind: 'CREW' }, { to: 'daikoku', kind: 'CREW' }, { to: 'hanzo', kind: 'CREW' }, { to: 'sarutobi', kind: 'CREW' }, { to: 'kazekage', kind: 'CREW' }, { to: 'jigoku-benten', kind: 'CREW' }, { to: 'fujin', kind: 'CREW' }, { to: 'raijin', kind: 'CREW' }, { to: 'bishamon', kind: 'CREW' }, { to: 'tohome', kind: 'CREW' }, { to: 'yazaemon', kind: 'CREW' }, { to: 'hotei', kind: 'CREW' }, { to: 'scratchmen-apoo', kind: 'CREW' }],
     abilities: ['Fruit of the Dinosaur, Pteranodon version', 'Superstar', 'Haki armement'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'queen',
@@ -1814,7 +1814,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }, { to: 'page-one', kind: 'CREW' }, { to: 'ulti', kind: 'CREW' }, { to: 'sheep-s-head', kind: 'CREW' }, { to: 'basil-hawkins', kind: 'CREW' }, { to: 'holdem', kind: 'CREW' }, { to: 'speed', kind: 'CREW' }, { to: 'trouduc', kind: 'CREW' }, { to: 'pouilleux', kind: 'CREW' }, { to: 'solitaire', kind: 'CREW' }, { to: 'bao-huang', kind: 'CREW' }, { to: 'ginrummy', kind: 'CREW' }, { to: 'plouf', kind: 'CREW' }, { to: 'briscola', kind: 'CREW' }, { to: 'fourtricks', kind: 'CREW' }, { to: 'hamlet', kind: 'CREW' }, { to: 'mizerka', kind: 'CREW' }, { to: 'poker', kind: 'CREW' }, { to: 'batman', kind: 'CREW' }, { to: 'gazelleman', kind: 'CREW' }, { to: 'mouseman', kind: 'CREW' }, { to: 'snakeman', kind: 'CREW' }, { to: 'rabitman', kind: 'CREW' }, { to: 'sarehebi', kind: 'CREW' }, { to: 'alpagaman', kind: 'CREW' }, { to: 'tatouman', kind: 'CREW' }, { to: 'dachoman', kind: 'CREW' }, { to: 'tenjo-sagari', kind: 'CREW' }, { to: 'caimanlady', kind: 'CREW' }, { to: 'nure-onna', kind: 'CREW' }, { to: 'wa-nyudo', kind: 'CREW' }, { to: 'inbi', kind: 'CREW' }, { to: 'fuga', kind: 'CREW' }, { to: 'zanki', kind: 'CREW' }, { to: 'jaki', kind: 'CREW' }, { to: 'goki', kind: 'CREW' }, { to: 'rokki', kind: 'CREW' }, { to: 'nangi', kind: 'CREW' }, { to: 'hacha', kind: 'CREW' }, { to: 'kunyun', kind: 'CREW' }, { to: 'juki', kind: 'CREW' }, { to: 'fukurokuju', kind: 'CREW' }, { to: 'daikoku', kind: 'CREW' }, { to: 'hanzo', kind: 'CREW' }, { to: 'sarutobi', kind: 'CREW' }, { to: 'kazekage', kind: 'CREW' }, { to: 'jigoku-benten', kind: 'CREW' }, { to: 'fujin', kind: 'CREW' }, { to: 'raijin', kind: 'CREW' }, { to: 'bishamon', kind: 'CREW' }, { to: 'tohome', kind: 'CREW' }, { to: 'yazaemon', kind: 'CREW' }, { to: 'hotei', kind: 'CREW' }, { to: 'scratchmen-apoo', kind: 'CREW' }],
     abilities: ['Fruit of the Dinosaur, Brachiosaurus version', 'Superstar', 'Haki armement'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'jack',
@@ -1823,7 +1823,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }, { to: 'page-one', kind: 'CREW' }, { to: 'ulti', kind: 'CREW' }, { to: 'sheep-s-head', kind: 'CREW' }, { to: 'basil-hawkins', kind: 'CREW' }, { to: 'holdem', kind: 'CREW' }, { to: 'speed', kind: 'CREW' }, { to: 'trouduc', kind: 'CREW' }, { to: 'pouilleux', kind: 'CREW' }, { to: 'solitaire', kind: 'CREW' }, { to: 'bao-huang', kind: 'CREW' }, { to: 'ginrummy', kind: 'CREW' }, { to: 'plouf', kind: 'CREW' }, { to: 'briscola', kind: 'CREW' }, { to: 'fourtricks', kind: 'CREW' }, { to: 'hamlet', kind: 'CREW' }, { to: 'mizerka', kind: 'CREW' }, { to: 'poker', kind: 'CREW' }, { to: 'batman', kind: 'CREW' }, { to: 'gazelleman', kind: 'CREW' }, { to: 'mouseman', kind: 'CREW' }, { to: 'snakeman', kind: 'CREW' }, { to: 'rabitman', kind: 'CREW' }, { to: 'sarehebi', kind: 'CREW' }, { to: 'alpagaman', kind: 'CREW' }, { to: 'tatouman', kind: 'CREW' }, { to: 'dachoman', kind: 'CREW' }, { to: 'tenjo-sagari', kind: 'CREW' }, { to: 'caimanlady', kind: 'CREW' }, { to: 'nure-onna', kind: 'CREW' }, { to: 'wa-nyudo', kind: 'CREW' }, { to: 'inbi', kind: 'CREW' }, { to: 'fuga', kind: 'CREW' }, { to: 'zanki', kind: 'CREW' }, { to: 'jaki', kind: 'CREW' }, { to: 'goki', kind: 'CREW' }, { to: 'rokki', kind: 'CREW' }, { to: 'nangi', kind: 'CREW' }, { to: 'hacha', kind: 'CREW' }, { to: 'kunyun', kind: 'CREW' }, { to: 'juki', kind: 'CREW' }, { to: 'fukurokuju', kind: 'CREW' }, { to: 'daikoku', kind: 'CREW' }, { to: 'hanzo', kind: 'CREW' }, { to: 'sarutobi', kind: 'CREW' }, { to: 'kazekage', kind: 'CREW' }, { to: 'jigoku-benten', kind: 'CREW' }, { to: 'fujin', kind: 'CREW' }, { to: 'raijin', kind: 'CREW' }, { to: 'bishamon', kind: 'CREW' }, { to: 'tohome', kind: 'CREW' }, { to: 'yazaemon', kind: 'CREW' }, { to: 'hotei', kind: 'CREW' }, { to: 'scratchmen-apoo', kind: 'CREW' }],
     abilities: ['Fruit of the Pachyderm, Mammoth version', 'Superstar', 'Haki armement'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'page-one',
@@ -1832,7 +1832,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Fruit of the Dinosaur, Spinosaurus version', 'Tobi Roppo'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'ulti',
@@ -1841,7 +1841,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Fruit of the Dinosaur, Pachycephalosaurus version', 'Tobi Roppo'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'who-s-who',
@@ -1850,7 +1850,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew', 'Zoan Mythique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }, { to: 'page-one', kind: 'CREW' }, { to: 'ulti', kind: 'CREW' }, { to: 'sheep-s-head', kind: 'CREW' }, { to: 'basil-hawkins', kind: 'CREW' }, { to: 'holdem', kind: 'CREW' }, { to: 'speed', kind: 'CREW' }, { to: 'trouduc', kind: 'CREW' }, { to: 'pouilleux', kind: 'CREW' }, { to: 'solitaire', kind: 'CREW' }, { to: 'bao-huang', kind: 'CREW' }, { to: 'ginrummy', kind: 'CREW' }, { to: 'plouf', kind: 'CREW' }, { to: 'briscola', kind: 'CREW' }, { to: 'fourtricks', kind: 'CREW' }, { to: 'hamlet', kind: 'CREW' }, { to: 'mizerka', kind: 'CREW' }, { to: 'poker', kind: 'CREW' }, { to: 'batman', kind: 'CREW' }, { to: 'gazelleman', kind: 'CREW' }, { to: 'mouseman', kind: 'CREW' }, { to: 'snakeman', kind: 'CREW' }, { to: 'rabitman', kind: 'CREW' }, { to: 'sarehebi', kind: 'CREW' }, { to: 'alpagaman', kind: 'CREW' }, { to: 'tatouman', kind: 'CREW' }, { to: 'dachoman', kind: 'CREW' }, { to: 'tenjo-sagari', kind: 'CREW' }, { to: 'caimanlady', kind: 'CREW' }, { to: 'nure-onna', kind: 'CREW' }, { to: 'wa-nyudo', kind: 'CREW' }, { to: 'inbi', kind: 'CREW' }, { to: 'fuga', kind: 'CREW' }, { to: 'zanki', kind: 'CREW' }, { to: 'jaki', kind: 'CREW' }, { to: 'goki', kind: 'CREW' }, { to: 'rokki', kind: 'CREW' }, { to: 'nangi', kind: 'CREW' }, { to: 'hacha', kind: 'CREW' }, { to: 'kunyun', kind: 'CREW' }, { to: 'juki', kind: 'CREW' }, { to: 'fukurokuju', kind: 'CREW' }, { to: 'daikoku', kind: 'CREW' }, { to: 'hanzo', kind: 'CREW' }, { to: 'sarutobi', kind: 'CREW' }, { to: 'kazekage', kind: 'CREW' }, { to: 'jigoku-benten', kind: 'CREW' }, { to: 'fujin', kind: 'CREW' }, { to: 'raijin', kind: 'CREW' }, { to: 'bishamon', kind: 'CREW' }, { to: 'tohome', kind: 'CREW' }, { to: 'yazaemon', kind: 'CREW' }, { to: 'hotei', kind: 'CREW' }, { to: 'scratchmen-apoo', kind: 'CREW' }],
     abilities: ['Fruit du Félin, saber-toothed tiger version', 'Tobi Roppo'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'black-maria',
@@ -1859,7 +1859,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'sasaki', kind: 'CREW' }, { to: 'page-one', kind: 'CREW' }, { to: 'ulti', kind: 'CREW' }, { to: 'sheep-s-head', kind: 'CREW' }, { to: 'basil-hawkins', kind: 'CREW' }, { to: 'holdem', kind: 'CREW' }, { to: 'speed', kind: 'CREW' }, { to: 'trouduc', kind: 'CREW' }, { to: 'pouilleux', kind: 'CREW' }, { to: 'solitaire', kind: 'CREW' }, { to: 'bao-huang', kind: 'CREW' }, { to: 'ginrummy', kind: 'CREW' }, { to: 'plouf', kind: 'CREW' }, { to: 'briscola', kind: 'CREW' }, { to: 'fourtricks', kind: 'CREW' }, { to: 'hamlet', kind: 'CREW' }, { to: 'mizerka', kind: 'CREW' }, { to: 'poker', kind: 'CREW' }, { to: 'batman', kind: 'CREW' }, { to: 'gazelleman', kind: 'CREW' }, { to: 'mouseman', kind: 'CREW' }, { to: 'snakeman', kind: 'CREW' }, { to: 'rabitman', kind: 'CREW' }, { to: 'sarehebi', kind: 'CREW' }, { to: 'alpagaman', kind: 'CREW' }, { to: 'tatouman', kind: 'CREW' }, { to: 'dachoman', kind: 'CREW' }, { to: 'tenjo-sagari', kind: 'CREW' }, { to: 'caimanlady', kind: 'CREW' }, { to: 'nure-onna', kind: 'CREW' }, { to: 'wa-nyudo', kind: 'CREW' }, { to: 'inbi', kind: 'CREW' }, { to: 'fuga', kind: 'CREW' }, { to: 'zanki', kind: 'CREW' }, { to: 'jaki', kind: 'CREW' }, { to: 'goki', kind: 'CREW' }, { to: 'rokki', kind: 'CREW' }, { to: 'nangi', kind: 'CREW' }, { to: 'hacha', kind: 'CREW' }, { to: 'kunyun', kind: 'CREW' }, { to: 'juki', kind: 'CREW' }, { to: 'fukurokuju', kind: 'CREW' }, { to: 'daikoku', kind: 'CREW' }, { to: 'hanzo', kind: 'CREW' }, { to: 'sarutobi', kind: 'CREW' }, { to: 'kazekage', kind: 'CREW' }, { to: 'jigoku-benten', kind: 'CREW' }, { to: 'fujin', kind: 'CREW' }, { to: 'raijin', kind: 'CREW' }, { to: 'bishamon', kind: 'CREW' }, { to: 'tohome', kind: 'CREW' }, { to: 'yazaemon', kind: 'CREW' }, { to: 'hotei', kind: 'CREW' }, { to: 'scratchmen-apoo', kind: 'CREW' }],
     abilities: ['Spider fruit, Rosamygale grauvogeli version', 'Tobi Roppo'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'sasaki',
@@ -1868,7 +1868,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew', 'Zoan Antique'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Fruit of the Dinosaur, Triceratops version', 'Tobi Roppo'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'sheep-s-head',
@@ -1877,7 +1877,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Sheep SMILE', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'basil-hawkins',
@@ -1895,7 +1895,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Lion SMILE', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'speed',
@@ -1904,7 +1904,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Horse SMILE', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'trouduc',
@@ -1913,7 +1913,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE of the scorpion', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'pouilleux',
@@ -1922,7 +1922,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE of the elephant', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'solitaire',
@@ -1931,7 +1931,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Monkey SMILE', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'bao-huang',
@@ -1940,7 +1940,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Flying Squirrel SMILE', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'ginrummy',
@@ -1949,7 +1949,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'plouf',
@@ -1958,7 +1958,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Hippopotamus SMILE', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'briscola',
@@ -1967,7 +1967,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Gorilla SMILE', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'fourtricks',
@@ -1976,7 +1976,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE du coq', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'hamlet',
@@ -1985,7 +1985,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Giraffe SMILE', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'mizerka',
@@ -1994,7 +1994,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Gorilla SMILE', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'poker',
@@ -2003,7 +2003,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Rattlesnake SMILE', 'Vedette'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'batman',
@@ -2012,7 +2012,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Bat SMILE', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'gazelleman',
@@ -2021,7 +2021,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE de gazelle', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'mouseman',
@@ -2030,7 +2030,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Mouse SMILE', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'snakeman',
@@ -2039,7 +2039,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE of snake', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'rabitman',
@@ -2048,7 +2048,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Rabbit SMILE', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'sarehebi',
@@ -2057,7 +2057,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE of snake', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'alpagaman',
@@ -2066,7 +2066,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE from alpaca', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'tatouman',
@@ -2075,7 +2075,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Armadillo SMILE', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'dachoman',
@@ -2084,7 +2084,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Ostrich SMILE', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'tenjo-sagari',
@@ -2093,7 +2093,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE of the white snake', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'caimanlady',
@@ -2102,7 +2102,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Caiman SMILE', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'nure-onna',
@@ -2111,7 +2111,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['SMILE of the scorpion', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'wa-nyudo',
@@ -2120,7 +2120,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Pug SMILE', 'Gifters'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'inbi',
@@ -2129,7 +2129,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'fuga',
@@ -2138,7 +2138,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'zanki',
@@ -2147,7 +2147,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'jaki',
@@ -2156,7 +2156,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'goki',
@@ -2165,7 +2165,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'rokki',
@@ -2174,7 +2174,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'nangi',
@@ -2183,7 +2183,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'hacha',
@@ -2192,7 +2192,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'kunyun',
@@ -2201,7 +2201,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'juki',
@@ -2210,7 +2210,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Numbers'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'fukurokuju',
@@ -2219,7 +2219,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'daikoku',
@@ -2228,7 +2228,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Samurai'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'hanzo',
@@ -2237,7 +2237,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Samurai'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'sarutobi',
@@ -2246,7 +2246,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Samurai'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'kazekage',
@@ -2255,7 +2255,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Samurai'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'jigoku-benten',
@@ -2264,7 +2264,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Samurai'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'fujin',
@@ -2273,7 +2273,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Samurai'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'raijin',
@@ -2282,7 +2282,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Samurai'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'bishamon',
@@ -2291,7 +2291,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Samurai'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'tohome',
@@ -2300,7 +2300,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Samurai'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'yazaemon',
@@ -2309,7 +2309,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Samurai'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'hotei',
@@ -2318,7 +2318,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Hundred Beasts crew'],
     relations: [{ to: 'kaido', kind: 'CREW' }, { to: 'king', kind: 'CREW' }, { to: 'queen', kind: 'CREW' }, { to: 'jack', kind: 'CREW' }, { to: 'who-s-who', kind: 'CREW' }, { to: 'black-maria', kind: 'CREW' }],
     abilities: ['Samurai'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'scratchmen-apoo',
@@ -2336,7 +2336,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }, { to: 'shiliew', kind: 'CREW' }, { to: 'avalo-pizarro', kind: 'CREW' }, { to: 'catarina-devon', kind: 'CREW' }, { to: 'sanjuan-wolf', kind: 'CREW' }, { to: 'vasco-shot', kind: 'CREW' }, { to: 'stronger', kind: 'CREW' }],
     abilities: ['Fruit of Darkness', 'Pirate', 'Haki armement'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'jesus-burgess',
@@ -2345,7 +2345,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'shiliew', kind: 'CREW' }, { to: 'avalo-pizarro', kind: 'CREW' }, { to: 'catarina-devon', kind: 'CREW' }, { to: 'sanjuan-wolf', kind: 'CREW' }, { to: 'vasco-shot', kind: 'CREW' }, { to: 'stronger', kind: 'CREW' }],
     abilities: ['Fruit of strength', 'Admiral ship\'s captain'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'shiliew',
@@ -2354,7 +2354,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
     abilities: ['Fruit of Invisibility', 'Commander 2nd Ship', 'Épéiste'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'van-auger',
@@ -2363,7 +2363,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }, { to: 'shiliew', kind: 'CREW' }, { to: 'avalo-pizarro', kind: 'CREW' }, { to: 'catarina-devon', kind: 'CREW' }, { to: 'sanjuan-wolf', kind: 'CREW' }, { to: 'vasco-shot', kind: 'CREW' }, { to: 'stronger', kind: 'CREW' }],
     abilities: ['Fruit of teleportation', 'Commander 3rd Ship', 'Tireur'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'avalo-pizarro',
@@ -2372,7 +2372,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
     abilities: ['Island fruit', 'Commander 4th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'lafitte',
@@ -2381,7 +2381,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }, { to: 'shiliew', kind: 'CREW' }, { to: 'avalo-pizarro', kind: 'CREW' }, { to: 'catarina-devon', kind: 'CREW' }, { to: 'sanjuan-wolf', kind: 'CREW' }, { to: 'vasco-shot', kind: 'CREW' }, { to: 'stronger', kind: 'CREW' }],
     abilities: ['Commander 5th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'catarina-devon',
@@ -2390,7 +2390,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Blackbeard\'s crew', 'Zoan Mythique'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
     abilities: ['Fruit of the Canidae, Nine-tailed Fox version', 'Commander 6th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'sanjuan-wolf',
@@ -2399,7 +2399,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
     abilities: ['The fruit of gigantism', 'Commander 7th Ship', 'Géant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'vasco-shot',
@@ -2408,7 +2408,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
     abilities: ['Fruit of the Gobbledygook', 'Commander 8th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'doc-q',
@@ -2417,7 +2417,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }, { to: 'shiliew', kind: 'CREW' }, { to: 'avalo-pizarro', kind: 'CREW' }, { to: 'catarina-devon', kind: 'CREW' }, { to: 'sanjuan-wolf', kind: 'CREW' }, { to: 'vasco-shot', kind: 'CREW' }, { to: 'stronger', kind: 'CREW' }],
     abilities: ['Fruit of the disease', 'Commander 9th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'barbe-rose',
@@ -2426,7 +2426,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Blackbeard\'s crew'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }, { to: 'shiliew', kind: 'CREW' }, { to: 'avalo-pizarro', kind: 'CREW' }, { to: 'catarina-devon', kind: 'CREW' }, { to: 'sanjuan-wolf', kind: 'CREW' }, { to: 'vasco-shot', kind: 'CREW' }, { to: 'stronger', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'gol-d-roger',
@@ -2435,7 +2435,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }, { to: 'millet-pine', kind: 'CREW' }, { to: 'ganryu', kind: 'CREW' }, { to: 'cb-galant', kind: 'CREW' }, { to: 'donquino', kind: 'CREW' }, { to: 'mr-momora', kind: 'CREW' }, { to: 'moon-isaac-jr', kind: 'CREW' }, { to: 'yui', kind: 'CREW' }, { to: 'rangram', kind: 'CREW' }, { to: 'colonel-mugren', kind: 'CREW' }, { to: 'max-marks', kind: 'CREW' }, { to: 'spencer', kind: 'CREW' }, { to: 'bankro', kind: 'CREW' }, { to: 'blumarine', kind: 'CREW' }, { to: 'elio', kind: 'CREW' }, { to: 'rowing', kind: 'CREW' }, { to: 'jacsonbaner', kind: 'CREW' }, { to: 'yamon', kind: 'CREW' }],
     abilities: ['Captain', 'Haki des Rois', 'Haki armement', 'Haki observation'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'silvers-rayleigh',
@@ -2453,7 +2453,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }, { to: 'millet-pine', kind: 'CREW' }, { to: 'ganryu', kind: 'CREW' }, { to: 'cb-galant', kind: 'CREW' }, { to: 'donquino', kind: 'CREW' }, { to: 'mr-momora', kind: 'CREW' }, { to: 'moon-isaac-jr', kind: 'CREW' }, { to: 'yui', kind: 'CREW' }, { to: 'rangram', kind: 'CREW' }, { to: 'colonel-mugren', kind: 'CREW' }, { to: 'max-marks', kind: 'CREW' }, { to: 'spencer', kind: 'CREW' }, { to: 'bankro', kind: 'CREW' }, { to: 'blumarine', kind: 'CREW' }, { to: 'elio', kind: 'CREW' }, { to: 'rowing', kind: 'CREW' }, { to: 'jacsonbaner', kind: 'CREW' }, { to: 'yamon', kind: 'CREW' }],
     abilities: ['Carpenter'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'seagull-guns-nozdon',
@@ -2462,7 +2462,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }, { to: 'millet-pine', kind: 'CREW' }, { to: 'ganryu', kind: 'CREW' }, { to: 'cb-galant', kind: 'CREW' }, { to: 'donquino', kind: 'CREW' }, { to: 'mr-momora', kind: 'CREW' }, { to: 'moon-isaac-jr', kind: 'CREW' }, { to: 'yui', kind: 'CREW' }, { to: 'rangram', kind: 'CREW' }, { to: 'colonel-mugren', kind: 'CREW' }, { to: 'max-marks', kind: 'CREW' }, { to: 'spencer', kind: 'CREW' }, { to: 'bankro', kind: 'CREW' }, { to: 'blumarine', kind: 'CREW' }, { to: 'elio', kind: 'CREW' }, { to: 'rowing', kind: 'CREW' }, { to: 'jacsonbaner', kind: 'CREW' }, { to: 'yamon', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'taro',
@@ -2471,7 +2471,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }, { to: 'millet-pine', kind: 'CREW' }, { to: 'ganryu', kind: 'CREW' }, { to: 'cb-galant', kind: 'CREW' }, { to: 'donquino', kind: 'CREW' }, { to: 'mr-momora', kind: 'CREW' }, { to: 'moon-isaac-jr', kind: 'CREW' }, { to: 'yui', kind: 'CREW' }, { to: 'rangram', kind: 'CREW' }, { to: 'colonel-mugren', kind: 'CREW' }, { to: 'max-marks', kind: 'CREW' }, { to: 'spencer', kind: 'CREW' }, { to: 'bankro', kind: 'CREW' }, { to: 'blumarine', kind: 'CREW' }, { to: 'elio', kind: 'CREW' }, { to: 'rowing', kind: 'CREW' }, { to: 'jacsonbaner', kind: 'CREW' }, { to: 'yamon', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'dringo',
@@ -2480,7 +2480,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'sanjuan-wolf-2', kind: 'CREW' }, { to: 'millet-pine', kind: 'CREW' }, { to: 'ganryu', kind: 'CREW' }, { to: 'cb-galant', kind: 'CREW' }, { to: 'donquino', kind: 'CREW' }, { to: 'mr-momora', kind: 'CREW' }, { to: 'moon-isaac-jr', kind: 'CREW' }, { to: 'yui', kind: 'CREW' }, { to: 'rangram', kind: 'CREW' }, { to: 'colonel-mugren', kind: 'CREW' }, { to: 'max-marks', kind: 'CREW' }, { to: 'spencer', kind: 'CREW' }, { to: 'bankro', kind: 'CREW' }, { to: 'blumarine', kind: 'CREW' }, { to: 'elio', kind: 'CREW' }, { to: 'rowing', kind: 'CREW' }, { to: 'jacsonbaner', kind: 'CREW' }, { to: 'yamon', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'sanjuan-wolf-2',
@@ -2489,7 +2489,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'millet-pine',
@@ -2498,7 +2498,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'ganryu',
@@ -2507,7 +2507,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'cb-galant',
@@ -2516,7 +2516,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'donquino',
@@ -2525,7 +2525,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'mr-momora',
@@ -2534,7 +2534,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'moon-isaac-jr',
@@ -2543,7 +2543,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'yui',
@@ -2552,7 +2552,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'rangram',
@@ -2561,7 +2561,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'colonel-mugren',
@@ -2570,7 +2570,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'max-marks',
@@ -2579,7 +2579,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'spencer',
@@ -2588,7 +2588,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'bankro',
@@ -2597,7 +2597,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'blumarine',
@@ -2606,7 +2606,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'elio',
@@ -2615,7 +2615,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'rowing',
@@ -2624,7 +2624,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'jacsonbaner',
@@ -2633,7 +2633,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'yamon',
@@ -2642,7 +2642,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['The Pirates Roger crew'],
     relations: [{ to: 'gol-d-roger', kind: 'CREW' }, { to: 'silvers-rayleigh', kind: 'CREW' }, { to: 'scopper-gaban', kind: 'CREW' }, { to: 'seagull-guns-nozdon', kind: 'CREW' }, { to: 'taro', kind: 'CREW' }, { to: 'dringo', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'arlong',
@@ -2714,7 +2714,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }, { to: 'blamenco', kind: 'CREW' }, { to: 'rakuyo', kind: 'CREW' }, { to: 'blenheim', kind: 'CREW' }, { to: 'curiel', kind: 'CREW' }, { to: 'kingdew', kind: 'CREW' }, { to: 'haruta', kind: 'CREW' }, { to: 'atmos', kind: 'CREW' }, { to: 'speed-jill', kind: 'CREW' }, { to: 'fossa', kind: 'CREW' }, { to: 'izou', kind: 'CREW' }, { to: 'doma', kind: 'CREW' }, { to: 'freres-decalvan', kind: 'CREW' }, { to: 'whitey-bay', kind: 'CREW' }, { to: 'mc-guy', kind: 'CREW' }, { to: 'a-o', kind: 'CREW' }, { to: 'karma', kind: 'CREW' }, { to: 'elmy', kind: 'CREW' }, { to: 'ramba', kind: 'CREW' }, { to: 'delacuaji', kind: 'CREW' }, { to: 'zodia', kind: 'CREW' }, { to: 'palms', kind: 'CREW' }, { to: 'bizarre', kind: 'CREW' }, { to: 'pavlik', kind: 'CREW' }, { to: 'vitan', kind: 'CREW' }, { to: 'islewan', kind: 'CREW' }, { to: 'epoida', kind: 'CREW' }, { to: 'kechatch', kind: 'CREW' }, { to: 'choi', kind: 'CREW' }, { to: 'arhur', kind: 'CREW' }, { to: 'hangan', kind: 'CREW' }, { to: 'reforte', kind: 'CREW' }, { to: 'andre', kind: 'CREW' }, { to: 'ninth', kind: 'CREW' }, { to: 'blondie', kind: 'CREW' }, { to: 'nosgarl', kind: 'CREW' }, { to: 'amadob', kind: 'CREW' }, { to: 'baggaley', kind: 'CREW' }, { to: 'wakkem', kind: 'CREW' }, { to: 'brew', kind: 'CREW' }, { to: 'brocca', kind: 'CREW' }, { to: 'rush', kind: 'CREW' }, { to: 'great-micheal', kind: 'CREW' }, { to: 'zucca', kind: 'CREW' }, { to: 'cands', kind: 'CREW' }, { to: 'kinga', kind: 'CREW' }, { to: 'colscon', kind: 'CREW' }, { to: 'agsilly', kind: 'CREW' }, { to: 'julius', kind: 'CREW' }, { to: 'happygun', kind: 'CREW' }, { to: 'sleepy', kind: 'CREW' }, { to: 'forliewbs', kind: 'CREW' }],
     abilities: ['Fruit of Trembling', 'Captain', 'Haki des Rois', 'Haki armement', 'Haki observation'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'portgas-d-ace',
@@ -2723,7 +2723,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }, { to: 'blamenco', kind: 'CREW' }, { to: 'rakuyo', kind: 'CREW' }, { to: 'blenheim', kind: 'CREW' }, { to: 'curiel', kind: 'CREW' }, { to: 'kingdew', kind: 'CREW' }, { to: 'haruta', kind: 'CREW' }, { to: 'atmos', kind: 'CREW' }, { to: 'speed-jill', kind: 'CREW' }, { to: 'fossa', kind: 'CREW' }, { to: 'izou', kind: 'CREW' }, { to: 'doma', kind: 'CREW' }, { to: 'freres-decalvan', kind: 'CREW' }, { to: 'whitey-bay', kind: 'CREW' }, { to: 'mc-guy', kind: 'CREW' }, { to: 'a-o', kind: 'CREW' }, { to: 'karma', kind: 'CREW' }, { to: 'elmy', kind: 'CREW' }, { to: 'ramba', kind: 'CREW' }, { to: 'delacuaji', kind: 'CREW' }, { to: 'zodia', kind: 'CREW' }, { to: 'palms', kind: 'CREW' }, { to: 'bizarre', kind: 'CREW' }, { to: 'pavlik', kind: 'CREW' }, { to: 'vitan', kind: 'CREW' }, { to: 'islewan', kind: 'CREW' }, { to: 'epoida', kind: 'CREW' }, { to: 'kechatch', kind: 'CREW' }, { to: 'choi', kind: 'CREW' }, { to: 'arhur', kind: 'CREW' }, { to: 'hangan', kind: 'CREW' }, { to: 'reforte', kind: 'CREW' }, { to: 'andre', kind: 'CREW' }, { to: 'ninth', kind: 'CREW' }, { to: 'blondie', kind: 'CREW' }, { to: 'nosgarl', kind: 'CREW' }, { to: 'amadob', kind: 'CREW' }, { to: 'baggaley', kind: 'CREW' }, { to: 'wakkem', kind: 'CREW' }, { to: 'brew', kind: 'CREW' }, { to: 'brocca', kind: 'CREW' }, { to: 'rush', kind: 'CREW' }, { to: 'great-micheal', kind: 'CREW' }, { to: 'zucca', kind: 'CREW' }, { to: 'cands', kind: 'CREW' }, { to: 'kinga', kind: 'CREW' }, { to: 'colscon', kind: 'CREW' }, { to: 'agsilly', kind: 'CREW' }, { to: 'julius', kind: 'CREW' }, { to: 'happygun', kind: 'CREW' }, { to: 'sleepy', kind: 'CREW' }, { to: 'forliewbs', kind: 'CREW' }],
     abilities: ['Pyro-Fruit', 'Commander 2nd Ship', 'Haki armement'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'diamond-joz',
@@ -2732,7 +2732,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }, { to: 'blamenco', kind: 'CREW' }, { to: 'rakuyo', kind: 'CREW' }, { to: 'blenheim', kind: 'CREW' }, { to: 'curiel', kind: 'CREW' }, { to: 'kingdew', kind: 'CREW' }, { to: 'haruta', kind: 'CREW' }, { to: 'atmos', kind: 'CREW' }, { to: 'speed-jill', kind: 'CREW' }, { to: 'fossa', kind: 'CREW' }, { to: 'izou', kind: 'CREW' }, { to: 'doma', kind: 'CREW' }, { to: 'freres-decalvan', kind: 'CREW' }, { to: 'whitey-bay', kind: 'CREW' }, { to: 'mc-guy', kind: 'CREW' }, { to: 'a-o', kind: 'CREW' }, { to: 'karma', kind: 'CREW' }, { to: 'elmy', kind: 'CREW' }, { to: 'ramba', kind: 'CREW' }, { to: 'delacuaji', kind: 'CREW' }, { to: 'zodia', kind: 'CREW' }, { to: 'palms', kind: 'CREW' }, { to: 'bizarre', kind: 'CREW' }, { to: 'pavlik', kind: 'CREW' }, { to: 'vitan', kind: 'CREW' }, { to: 'islewan', kind: 'CREW' }, { to: 'epoida', kind: 'CREW' }, { to: 'kechatch', kind: 'CREW' }, { to: 'choi', kind: 'CREW' }, { to: 'arhur', kind: 'CREW' }, { to: 'hangan', kind: 'CREW' }, { to: 'reforte', kind: 'CREW' }, { to: 'andre', kind: 'CREW' }, { to: 'ninth', kind: 'CREW' }, { to: 'blondie', kind: 'CREW' }, { to: 'nosgarl', kind: 'CREW' }, { to: 'amadob', kind: 'CREW' }, { to: 'baggaley', kind: 'CREW' }, { to: 'wakkem', kind: 'CREW' }, { to: 'brew', kind: 'CREW' }, { to: 'brocca', kind: 'CREW' }, { to: 'rush', kind: 'CREW' }, { to: 'great-micheal', kind: 'CREW' }, { to: 'zucca', kind: 'CREW' }, { to: 'cands', kind: 'CREW' }, { to: 'kinga', kind: 'CREW' }, { to: 'colscon', kind: 'CREW' }, { to: 'agsilly', kind: 'CREW' }, { to: 'julius', kind: 'CREW' }, { to: 'happygun', kind: 'CREW' }, { to: 'sleepy', kind: 'CREW' }, { to: 'forliewbs', kind: 'CREW' }],
     abilities: ['Sparkling Fruit', 'Commander 3rd Ship', 'Haki armement'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'thatch',
@@ -2741,7 +2741,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }, { to: 'blamenco', kind: 'CREW' }, { to: 'rakuyo', kind: 'CREW' }, { to: 'blenheim', kind: 'CREW' }, { to: 'curiel', kind: 'CREW' }, { to: 'kingdew', kind: 'CREW' }, { to: 'haruta', kind: 'CREW' }, { to: 'atmos', kind: 'CREW' }, { to: 'speed-jill', kind: 'CREW' }, { to: 'fossa', kind: 'CREW' }, { to: 'izou', kind: 'CREW' }, { to: 'doma', kind: 'CREW' }, { to: 'freres-decalvan', kind: 'CREW' }, { to: 'whitey-bay', kind: 'CREW' }, { to: 'mc-guy', kind: 'CREW' }, { to: 'a-o', kind: 'CREW' }, { to: 'karma', kind: 'CREW' }, { to: 'elmy', kind: 'CREW' }, { to: 'ramba', kind: 'CREW' }, { to: 'delacuaji', kind: 'CREW' }, { to: 'zodia', kind: 'CREW' }, { to: 'palms', kind: 'CREW' }, { to: 'bizarre', kind: 'CREW' }, { to: 'pavlik', kind: 'CREW' }, { to: 'vitan', kind: 'CREW' }, { to: 'islewan', kind: 'CREW' }, { to: 'epoida', kind: 'CREW' }, { to: 'kechatch', kind: 'CREW' }, { to: 'choi', kind: 'CREW' }, { to: 'arhur', kind: 'CREW' }, { to: 'hangan', kind: 'CREW' }, { to: 'reforte', kind: 'CREW' }, { to: 'andre', kind: 'CREW' }, { to: 'ninth', kind: 'CREW' }, { to: 'blondie', kind: 'CREW' }, { to: 'nosgarl', kind: 'CREW' }, { to: 'amadob', kind: 'CREW' }, { to: 'baggaley', kind: 'CREW' }, { to: 'wakkem', kind: 'CREW' }, { to: 'brew', kind: 'CREW' }, { to: 'brocca', kind: 'CREW' }, { to: 'rush', kind: 'CREW' }, { to: 'great-micheal', kind: 'CREW' }, { to: 'zucca', kind: 'CREW' }, { to: 'cands', kind: 'CREW' }, { to: 'kinga', kind: 'CREW' }, { to: 'colscon', kind: 'CREW' }, { to: 'agsilly', kind: 'CREW' }, { to: 'julius', kind: 'CREW' }, { to: 'happygun', kind: 'CREW' }, { to: 'sleepy', kind: 'CREW' }, { to: 'forliewbs', kind: 'CREW' }],
     abilities: ['Commander 4th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'vista',
@@ -2750,7 +2750,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 5th Ship', 'Haki armement', 'Épéiste'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'blamenco',
@@ -2759,7 +2759,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Fruit de la Poche', 'Commander 6th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'rakuyo',
@@ -2768,7 +2768,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 7th Ship', 'Épéiste'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'blenheim',
@@ -2777,7 +2777,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 9th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'curiel',
@@ -2786,7 +2786,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 10th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'kingdew',
@@ -2795,7 +2795,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 11th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'haruta',
@@ -2804,7 +2804,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 12th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'atmos',
@@ -2813,7 +2813,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 13th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'speed-jill',
@@ -2822,7 +2822,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 14th Ship'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'fossa',
@@ -2831,7 +2831,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 15th Ship', 'Épéiste'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'izou',
@@ -2840,7 +2840,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Commander 16th Ship', 'Épéiste'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'doma',
@@ -2849,7 +2849,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'freres-decalvan',
@@ -2858,7 +2858,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'squardo',
@@ -2867,7 +2867,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }, { to: 'blamenco', kind: 'CREW' }, { to: 'rakuyo', kind: 'CREW' }, { to: 'blenheim', kind: 'CREW' }, { to: 'curiel', kind: 'CREW' }, { to: 'kingdew', kind: 'CREW' }, { to: 'haruta', kind: 'CREW' }, { to: 'atmos', kind: 'CREW' }, { to: 'speed-jill', kind: 'CREW' }, { to: 'fossa', kind: 'CREW' }, { to: 'izou', kind: 'CREW' }, { to: 'doma', kind: 'CREW' }, { to: 'freres-decalvan', kind: 'CREW' }, { to: 'whitey-bay', kind: 'CREW' }, { to: 'mc-guy', kind: 'CREW' }, { to: 'a-o', kind: 'CREW' }, { to: 'karma', kind: 'CREW' }, { to: 'elmy', kind: 'CREW' }, { to: 'ramba', kind: 'CREW' }, { to: 'delacuaji', kind: 'CREW' }, { to: 'zodia', kind: 'CREW' }, { to: 'palms', kind: 'CREW' }, { to: 'bizarre', kind: 'CREW' }, { to: 'pavlik', kind: 'CREW' }, { to: 'vitan', kind: 'CREW' }, { to: 'islewan', kind: 'CREW' }, { to: 'epoida', kind: 'CREW' }, { to: 'kechatch', kind: 'CREW' }, { to: 'choi', kind: 'CREW' }, { to: 'arhur', kind: 'CREW' }, { to: 'hangan', kind: 'CREW' }, { to: 'reforte', kind: 'CREW' }, { to: 'andre', kind: 'CREW' }, { to: 'ninth', kind: 'CREW' }, { to: 'blondie', kind: 'CREW' }, { to: 'nosgarl', kind: 'CREW' }, { to: 'amadob', kind: 'CREW' }, { to: 'baggaley', kind: 'CREW' }, { to: 'wakkem', kind: 'CREW' }, { to: 'brew', kind: 'CREW' }, { to: 'brocca', kind: 'CREW' }, { to: 'rush', kind: 'CREW' }, { to: 'great-micheal', kind: 'CREW' }, { to: 'zucca', kind: 'CREW' }, { to: 'cands', kind: 'CREW' }, { to: 'kinga', kind: 'CREW' }, { to: 'colscon', kind: 'CREW' }, { to: 'agsilly', kind: 'CREW' }, { to: 'julius', kind: 'CREW' }, { to: 'happygun', kind: 'CREW' }, { to: 'sleepy', kind: 'CREW' }, { to: 'forliewbs', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'whitey-bay',
@@ -2876,7 +2876,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'little-oz-junior',
@@ -2885,7 +2885,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }, { to: 'vista', kind: 'CREW' }, { to: 'blamenco', kind: 'CREW' }, { to: 'rakuyo', kind: 'CREW' }, { to: 'blenheim', kind: 'CREW' }, { to: 'curiel', kind: 'CREW' }, { to: 'kingdew', kind: 'CREW' }, { to: 'haruta', kind: 'CREW' }, { to: 'atmos', kind: 'CREW' }, { to: 'speed-jill', kind: 'CREW' }, { to: 'fossa', kind: 'CREW' }, { to: 'izou', kind: 'CREW' }, { to: 'doma', kind: 'CREW' }, { to: 'freres-decalvan', kind: 'CREW' }, { to: 'whitey-bay', kind: 'CREW' }, { to: 'mc-guy', kind: 'CREW' }, { to: 'a-o', kind: 'CREW' }, { to: 'karma', kind: 'CREW' }, { to: 'elmy', kind: 'CREW' }, { to: 'ramba', kind: 'CREW' }, { to: 'delacuaji', kind: 'CREW' }, { to: 'zodia', kind: 'CREW' }, { to: 'palms', kind: 'CREW' }, { to: 'bizarre', kind: 'CREW' }, { to: 'pavlik', kind: 'CREW' }, { to: 'vitan', kind: 'CREW' }, { to: 'islewan', kind: 'CREW' }, { to: 'epoida', kind: 'CREW' }, { to: 'kechatch', kind: 'CREW' }, { to: 'choi', kind: 'CREW' }, { to: 'arhur', kind: 'CREW' }, { to: 'hangan', kind: 'CREW' }, { to: 'reforte', kind: 'CREW' }, { to: 'andre', kind: 'CREW' }, { to: 'ninth', kind: 'CREW' }, { to: 'blondie', kind: 'CREW' }, { to: 'nosgarl', kind: 'CREW' }, { to: 'amadob', kind: 'CREW' }, { to: 'baggaley', kind: 'CREW' }, { to: 'wakkem', kind: 'CREW' }, { to: 'brew', kind: 'CREW' }, { to: 'brocca', kind: 'CREW' }, { to: 'rush', kind: 'CREW' }, { to: 'great-micheal', kind: 'CREW' }, { to: 'zucca', kind: 'CREW' }, { to: 'cands', kind: 'CREW' }, { to: 'kinga', kind: 'CREW' }, { to: 'colscon', kind: 'CREW' }, { to: 'agsilly', kind: 'CREW' }, { to: 'julius', kind: 'CREW' }, { to: 'happygun', kind: 'CREW' }, { to: 'sleepy', kind: 'CREW' }, { to: 'forliewbs', kind: 'CREW' }],
     abilities: ['Subordinate', 'Géant'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'mc-guy',
@@ -2894,7 +2894,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'a-o',
@@ -2903,7 +2903,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'karma',
@@ -2912,7 +2912,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'elmy',
@@ -2921,7 +2921,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'ramba',
@@ -2930,7 +2930,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'delacuaji',
@@ -2939,7 +2939,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'zodia',
@@ -2948,7 +2948,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'palms',
@@ -2957,7 +2957,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'bizarre',
@@ -2966,7 +2966,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'pavlik',
@@ -2975,7 +2975,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'vitan',
@@ -2984,7 +2984,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'islewan',
@@ -2993,7 +2993,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'epoida',
@@ -3002,7 +3002,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'kechatch',
@@ -3011,7 +3011,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'choi',
@@ -3020,7 +3020,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'arhur',
@@ -3029,7 +3029,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'hangan',
@@ -3038,7 +3038,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'reforte',
@@ -3047,7 +3047,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'andre',
@@ -3056,7 +3056,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'ninth',
@@ -3065,7 +3065,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'blondie',
@@ -3074,7 +3074,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'nosgarl',
@@ -3083,7 +3083,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'amadob',
@@ -3092,7 +3092,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'baggaley',
@@ -3101,7 +3101,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'wakkem',
@@ -3110,7 +3110,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'brew',
@@ -3119,7 +3119,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'brocca',
@@ -3128,7 +3128,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'rush',
@@ -3137,7 +3137,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'great-micheal',
@@ -3146,7 +3146,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'zucca',
@@ -3155,7 +3155,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'cands',
@@ -3164,7 +3164,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'kinga',
@@ -3173,7 +3173,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'colscon',
@@ -3182,7 +3182,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'agsilly',
@@ -3191,7 +3191,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'julius',
@@ -3200,7 +3200,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'happygun',
@@ -3209,7 +3209,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'sleepy',
@@ -3218,7 +3218,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'forliewbs',
@@ -3227,7 +3227,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Whitebeard\'s crew'],
     relations: [{ to: 'edward-newgate-barbe-blanche', kind: 'CREW' }, { to: 'portgas-d-ace', kind: 'CREW' }, { to: 'little-oz-junior', kind: 'CREW' }, { to: 'squardo', kind: 'CREW' }, { to: 'diamond-joz', kind: 'CREW' }, { to: 'thatch', kind: 'CREW' }],
     abilities: ['Subordinate'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'barbos-bruneriguez-barbe-brune',
@@ -3236,7 +3236,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: [],
     relations: [],
     abilities: ['Captain'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'bluejam',
@@ -3398,7 +3398,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }, { to: 'lao-g', kind: 'CREW' }, { to: 'vergo', kind: 'CREW' }, { to: 'sugar', kind: 'CREW' }, { to: 'jora', kind: 'CREW' }, { to: 'senor-pink', kind: 'CREW' }, { to: 'machvise', kind: 'CREW' }, { to: 'gladius', kind: 'CREW' }, { to: 'buffallo', kind: 'CREW' }, { to: 'monet', kind: 'CREW' }],
     abilities: ['Fruit du Fil', 'Captain', 'Haki des Rois', 'Haki armement'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'trebol',
@@ -3407,7 +3407,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }, { to: 'lao-g', kind: 'CREW' }, { to: 'vergo', kind: 'CREW' }, { to: 'sugar', kind: 'CREW' }, { to: 'jora', kind: 'CREW' }, { to: 'senor-pink', kind: 'CREW' }, { to: 'machvise', kind: 'CREW' }, { to: 'gladius', kind: 'CREW' }, { to: 'buffallo', kind: 'CREW' }, { to: 'monet', kind: 'CREW' }],
     abilities: ['Poisse-Poisse fruit', 'Lieutenant-Chef'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'diamante',
@@ -3416,7 +3416,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }, { to: 'lao-g', kind: 'CREW' }, { to: 'vergo', kind: 'CREW' }, { to: 'sugar', kind: 'CREW' }, { to: 'jora', kind: 'CREW' }, { to: 'senor-pink', kind: 'CREW' }, { to: 'machvise', kind: 'CREW' }, { to: 'gladius', kind: 'CREW' }, { to: 'buffallo', kind: 'CREW' }, { to: 'monet', kind: 'CREW' }],
     abilities: ['Fruit of the Wind Thief', 'Lieutenant-Chef'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'pica',
@@ -3425,7 +3425,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'lao-g', kind: 'CREW' }, { to: 'vergo', kind: 'CREW' }, { to: 'sugar', kind: 'CREW' }, { to: 'jora', kind: 'CREW' }, { to: 'senor-pink', kind: 'CREW' }, { to: 'machvise', kind: 'CREW' }, { to: 'gladius', kind: 'CREW' }, { to: 'buffallo', kind: 'CREW' }, { to: 'monet', kind: 'CREW' }],
     abilities: ['Fruit de la Caillasse', 'Lieutenant-Chef'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'vergo',
@@ -3461,7 +3461,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }],
     abilities: ['Lieutenant of the Army of Diamante'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'senor-pink',
@@ -3470,7 +3470,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }],
     abilities: ['Fruit of the Barbotage', 'Lieutenant of the Army of Diamante'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'machvise',
@@ -3488,7 +3488,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'bellamy', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }, { to: 'lao-g', kind: 'CREW' }, { to: 'vergo', kind: 'CREW' }, { to: 'sugar', kind: 'CREW' }, { to: 'jora', kind: 'CREW' }, { to: 'senor-pink', kind: 'CREW' }, { to: 'machvise', kind: 'CREW' }, { to: 'gladius', kind: 'CREW' }, { to: 'buffallo', kind: 'CREW' }, { to: 'monet', kind: 'CREW' }],
     abilities: ['Lieutenant of the Army of Diamante'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'gladius',
@@ -3524,7 +3524,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: [],
     relations: [],
     abilities: ['Captain', 'Haki des Rois'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'im-sama',
@@ -3533,7 +3533,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Gouvernement Mondial'],
     relations: [{ to: '1er-doyen', kind: 'CREW' }, { to: '2e-doyen', kind: 'CREW' }, { to: '3e-doyen', kind: 'CREW' }, { to: '4e-doyen', kind: 'CREW' }, { to: '5e-doyen', kind: 'CREW' }],
     abilities: ['Manager', 'Royauté'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: '1er-doyen',
@@ -3848,7 +3848,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }, { to: 'onigumo', kind: 'CREW' }, { to: 'doberman', kind: 'CREW' }, { to: 'strawberry', kind: 'CREW' }, { to: 'yamakaji', kind: 'CREW' }, { to: 'dalmatien', kind: 'CREW' }, { to: 'bastille', kind: 'CREW' }, { to: 'smoker', kind: 'CREW' }, { to: 'maynard', kind: 'CREW' }, { to: 'tokikake', kind: 'CREW' }, { to: 'hina', kind: 'CREW' }, { to: 't-bone', kind: 'CREW' }, { to: 'pudding', kind: 'CREW' }, { to: 'jenfetro', kind: 'CREW' }, { to: 'brandnew', kind: 'CREW' }, { to: 'verygood', kind: 'CREW' }, { to: 'shu', kind: 'CREW' }, { to: 'sharinguru', kind: 'CREW' }, { to: 'tashigi', kind: 'CREW' }, { to: 'kobby', kind: 'CREW' }, { to: 'nezumi', kind: 'CREW' }, { to: 'don-quijote-rosinante', kind: 'CREW' }, { to: 'hermep', kind: 'CREW' }, { to: 'fullbody', kind: 'CREW' }, { to: 'jango', kind: 'CREW' }, { to: 'sengoku', kind: 'CREW' }, { to: 'sentomaru', kind: 'CREW' }, { to: 'x-drake', kind: 'CREW' }, { to: 'kaiser-moustache', kind: 'CREW' }, { to: 'cancer', kind: 'CREW' }, { to: 'mozambia', kind: 'CREW' }, { to: 'lacroix', kind: 'CREW' }, { to: 'ronz', kind: 'CREW' }, { to: 'dohn-deynon', kind: 'CREW' }, { to: 'draw', kind: 'CREW' }, { to: 'sicily', kind: 'CREW' }, { to: 'akehende', kind: 'CREW' }, { to: 'catacombo', kind: 'CREW' }, { to: 'kadar', kind: 'CREW' }, { to: 'daigin', kind: 'CREW' }, { to: 'gorilla', kind: 'CREW' }, { to: 'pudding-pudding', kind: 'CREW' }],
     abilities: ['Fruit of Gravity', 'Admiral', 'Haki armement', 'Haki observation', 'Marine'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'aramaki-ryokugyu',
@@ -3866,7 +3866,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }, { to: 'momonga', kind: 'CREW' }, { to: 'onigumo', kind: 'CREW' }, { to: 'doberman', kind: 'CREW' }, { to: 'strawberry', kind: 'CREW' }, { to: 'yamakaji', kind: 'CREW' }, { to: 'dalmatien', kind: 'CREW' }, { to: 'bastille', kind: 'CREW' }, { to: 'smoker', kind: 'CREW' }, { to: 'maynard', kind: 'CREW' }, { to: 'tokikake', kind: 'CREW' }, { to: 'hina', kind: 'CREW' }, { to: 't-bone', kind: 'CREW' }, { to: 'pudding', kind: 'CREW' }, { to: 'jenfetro', kind: 'CREW' }, { to: 'brandnew', kind: 'CREW' }, { to: 'verygood', kind: 'CREW' }, { to: 'shu', kind: 'CREW' }, { to: 'sharinguru', kind: 'CREW' }, { to: 'tashigi', kind: 'CREW' }, { to: 'kobby', kind: 'CREW' }, { to: 'nezumi', kind: 'CREW' }, { to: 'don-quijote-rosinante', kind: 'CREW' }, { to: 'hermep', kind: 'CREW' }, { to: 'fullbody', kind: 'CREW' }, { to: 'jango', kind: 'CREW' }, { to: 'sengoku', kind: 'CREW' }, { to: 'sentomaru', kind: 'CREW' }, { to: 'x-drake', kind: 'CREW' }, { to: 'kaiser-moustache', kind: 'CREW' }, { to: 'cancer', kind: 'CREW' }, { to: 'mozambia', kind: 'CREW' }, { to: 'lacroix', kind: 'CREW' }, { to: 'ronz', kind: 'CREW' }, { to: 'dohn-deynon', kind: 'CREW' }, { to: 'draw', kind: 'CREW' }, { to: 'sicily', kind: 'CREW' }, { to: 'akehende', kind: 'CREW' }, { to: 'catacombo', kind: 'CREW' }, { to: 'kadar', kind: 'CREW' }, { to: 'daigin', kind: 'CREW' }, { to: 'gorilla', kind: 'CREW' }, { to: 'pudding-pudding', kind: 'CREW' }],
     abilities: ['Fruit of the Laundry', 'Vice-Admiral', 'Marine'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'john-giant',
@@ -3956,7 +3956,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Fruit Smoke', 'Vice-Admiral', 'Haki armement', 'Marine'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'maynard',
@@ -4055,7 +4055,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Marine'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Colonel', 'Épéiste', 'Marine'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'kobby',
@@ -4118,7 +4118,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Marine', 'Zoan Mythique'],
     relations: [{ to: 'borsalino-kizaru', kind: 'CREW' }, { to: 'issho-fujitora', kind: 'CREW' }, { to: 'aramaki-ryokugyu', kind: 'CREW' }, { to: 'tsuru', kind: 'CREW' }, { to: 'john-giant', kind: 'CREW' }, { to: 'comir', kind: 'CREW' }],
     abilities: ['Fruit of the Human, Buddha version', 'Observer', 'Haki armement', 'Marine'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'sentomaru',
@@ -4649,7 +4649,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Pays des fleurs'],
     relations: [{ to: 'ramen', kind: 'CREW' }],
     abilities: ['Haki des Rois'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'crocus',
@@ -4694,7 +4694,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Little Garden'],
     relations: [{ to: 'broggy', kind: 'CREW' }],
     abilities: ['Resident', 'Géant'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'broggy',
@@ -5036,7 +5036,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Archipel des Sabaody'],
     relations: [{ to: 'shakuyaku', kind: 'CREW' }, { to: 'disco', kind: 'CREW' }, { to: 'duval', kind: 'CREW' }],
     abilities: ['Resident'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'shakuyaku',
@@ -5081,7 +5081,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Erbaf'],
     relations: [{ to: 'jorl', kind: 'CREW' }, { to: 'jarl', kind: 'CREW' }, { to: 'oimo', kind: 'CREW' }, { to: 'kaashii', kind: 'CREW' }],
     abilities: ['Prince'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'jorl',
@@ -5108,7 +5108,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Erbaf'],
     relations: [{ to: 'loki', kind: 'CREW' }, { to: 'jorl', kind: 'CREW' }, { to: 'jarl', kind: 'CREW' }, { to: 'kaashii', kind: 'CREW' }],
     abilities: ['Resident', 'Géant'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'kaashii',
@@ -5135,7 +5135,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }, { to: 'kinemon', kind: 'CREW' }, { to: 'denjiro', kind: 'CREW' }, { to: 'kikunojo', kind: 'CREW' }, { to: 'raizo', kind: 'CREW' }, { to: 'ashura-doji', kind: 'CREW' }, { to: 'kawamatsu', kind: 'CREW' }, { to: 'shinobu', kind: 'CREW' }, { to: 'orochi-kurozumi', kind: 'CREW' }, { to: 'kanjuro-kurozumi', kind: 'CREW' }, { to: 'semimaru-kurozumi', kind: 'CREW' }, { to: 'higurashi-kurozumi', kind: 'CREW' }, { to: 'ryuma-shimotsuki', kind: 'CREW' }, { to: 'yasui-shimotsuki', kind: 'CREW' }, { to: 'toko', kind: 'CREW' }, { to: 'onimaru', kind: 'CREW' }, { to: 'hyogoro', kind: 'CREW' }, { to: 'omasa', kind: 'CREW' }, { to: 'tsunagoro', kind: 'CREW' }, { to: 'cho', kind: 'CREW' }, { to: 'yatappe', kind: 'CREW' }, { to: 'tama', kind: 'CREW' }, { to: 'tsurujo', kind: 'CREW' }, { to: 'komachiyo', kind: 'CREW' }, { to: 'baboumaru', kind: 'CREW' }, { to: 'bunbuku', kind: 'CREW' }, { to: 'yamato', kind: 'CREW' }, { to: 'tenguyama-hitetsu', kind: 'CREW' }],
     abilities: ['Lord of Kuri'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'toki-kozuki',
@@ -5171,7 +5171,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Fruit of the Garment', 'Red sheaths', 'Épéiste'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'denjiro',
@@ -5180,7 +5180,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Red sheaths', 'Épéiste'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'izo',
@@ -5189,7 +5189,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }, { to: 'kinemon', kind: 'CREW' }, { to: 'denjiro', kind: 'CREW' }, { to: 'kikunojo', kind: 'CREW' }, { to: 'raizo', kind: 'CREW' }, { to: 'ashura-doji', kind: 'CREW' }, { to: 'kawamatsu', kind: 'CREW' }, { to: 'shinobu', kind: 'CREW' }, { to: 'orochi-kurozumi', kind: 'CREW' }, { to: 'kanjuro-kurozumi', kind: 'CREW' }, { to: 'semimaru-kurozumi', kind: 'CREW' }, { to: 'higurashi-kurozumi', kind: 'CREW' }, { to: 'ryuma-shimotsuki', kind: 'CREW' }, { to: 'yasui-shimotsuki', kind: 'CREW' }, { to: 'toko', kind: 'CREW' }, { to: 'onimaru', kind: 'CREW' }, { to: 'hyogoro', kind: 'CREW' }, { to: 'omasa', kind: 'CREW' }, { to: 'tsunagoro', kind: 'CREW' }, { to: 'cho', kind: 'CREW' }, { to: 'yatappe', kind: 'CREW' }, { to: 'tama', kind: 'CREW' }, { to: 'tsurujo', kind: 'CREW' }, { to: 'komachiyo', kind: 'CREW' }, { to: 'baboumaru', kind: 'CREW' }, { to: 'bunbuku', kind: 'CREW' }, { to: 'yamato', kind: 'CREW' }, { to: 'tenguyama-hitetsu', kind: 'CREW' }],
     abilities: ['Red sheaths'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'kikunojo',
@@ -5198,7 +5198,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Red sheaths', 'Épéiste'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'raizo',
@@ -5207,7 +5207,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Red sheaths', 'Épéiste'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'ashura-doji',
@@ -5225,7 +5225,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Pays des Wa'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Red sheaths'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'shinobu',
@@ -5405,7 +5405,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Pays des Wa', 'Zoan Mythique'],
     relations: [{ to: 'izo', kind: 'CREW' }, { to: 'sukiyaki-kozuki', kind: 'CREW' }, { to: 'oden-kozuki', kind: 'CREW' }, { to: 'toki-kozuki', kind: 'CREW' }, { to: 'mononosuke-kozuki', kind: 'CREW' }, { to: 'hiyori-kozuki', kind: 'CREW' }],
     abilities: ['Fruit of the Canid, Divine Wolf version', 'Resident', 'Haki des Rois'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'rock',
@@ -5630,7 +5630,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Royaume de Mogalo'],
     relations: [{ to: 'bobby-funk', kind: 'CREW' }],
     abilities: ['Fruit de la Pelisse', 'Assassin'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'bobby-funk',
@@ -5702,7 +5702,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Zoan Mythique'],
     relations: [],
     abilities: ['Phoenix Fruit', 'Sphinx (doctor) / Command 1st Whitebeard Fleet', 'Haki armement'],
-    presenceExpectation: 'HIGH',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'gan-forr',
@@ -6053,7 +6053,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armée Révolutionnaire'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }, { to: 'koala', kind: 'CREW' }, { to: 'hack', kind: 'CREW' }, { to: 'karazu', kind: 'CREW' }],
     abilities: ['Commander of the "Septentrionale" troop'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'belo-betty',
@@ -6062,7 +6062,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armée Révolutionnaire'],
     relations: [{ to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }, { to: 'koala', kind: 'CREW' }, { to: 'hack', kind: 'CREW' }, { to: 'karazu', kind: 'CREW' }],
     abilities: ['Fruit of Exaltation', 'Commander of the "Oriental" troop', 'Révolutionnaire'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'morley',
@@ -6071,7 +6071,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armée Révolutionnaire'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }, { to: 'koala', kind: 'CREW' }, { to: 'hack', kind: 'CREW' }, { to: 'karazu', kind: 'CREW' }],
     abilities: ['Fruit of the Pousse-Pousse', 'Western" troop commander', 'Révolutionnaire'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'lindbergh',
@@ -6080,7 +6080,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armée Révolutionnaire'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'inazuma', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }, { to: 'koala', kind: 'CREW' }, { to: 'hack', kind: 'CREW' }, { to: 'karazu', kind: 'CREW' }],
     abilities: ['Commander of the "southern" troop', 'Révolutionnaire'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'inazuma',
@@ -6089,7 +6089,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Armée Révolutionnaire'],
     relations: [{ to: 'belo-betty', kind: 'CREW' }, { to: 'corbeau', kind: 'CREW' }, { to: 'lindbergh', kind: 'CREW' }, { to: 'morley', kind: 'CREW' }, { to: 'emporio-ivankov', kind: 'CREW' }, { to: 'canard', kind: 'CREW' }, { to: 'koala', kind: 'CREW' }, { to: 'hack', kind: 'CREW' }, { to: 'karazu', kind: 'CREW' }],
     abilities: ['Fruit of the Scissors', 'Sub-Commander of "G" Troop', 'Révolutionnaire'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'canard',
@@ -6260,7 +6260,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Anciens membres de la Marine'],
     relations: [{ to: 'morgan', kind: 'CREW' }],
     abilities: ['Frost Fruit', 'Admiral'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'MEDIUM',
   },
   {
     id: 'morgan',
@@ -6278,7 +6278,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Don Quixote\'s crew'],
     relations: [{ to: 'don-quijote-doflamingo', kind: 'CREW' }, { to: 'dellinger', kind: 'CREW' }, { to: 'trebol', kind: 'CREW' }, { to: 'diamante', kind: 'CREW' }, { to: 'pica', kind: 'CREW' }, { to: 'lao-g', kind: 'CREW' }, { to: 'vergo', kind: 'CREW' }, { to: 'sugar', kind: 'CREW' }, { to: 'jora', kind: 'CREW' }, { to: 'senor-pink', kind: 'CREW' }, { to: 'machvise', kind: 'CREW' }, { to: 'gladius', kind: 'CREW' }, { to: 'buffallo', kind: 'CREW' }, { to: 'monet', kind: 'CREW' }],
     abilities: ['Fruit of the Spring', 'Private'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'cesar-clown',
@@ -6287,7 +6287,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Punk Hazard'],
     relations: [{ to: 'rock', kind: 'CREW' }, { to: 'scotch', kind: 'CREW' }, { to: 'smiley', kind: 'CREW' }],
     abilities: ['Fruit of the Gas'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'morgans',
@@ -6341,7 +6341,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: [],
     relations: [],
     abilities: ['Captain'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'bear-king',
@@ -6449,7 +6449,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Gasparde\'s crew'],
     relations: [{ to: 'needless', kind: 'CREW' }, { to: 'biera', kind: 'CREW' }, { to: 'shuraiya-bascud', kind: 'CREW' }, { to: 'adelle-bascud', kind: 'CREW' }],
     abilities: ['Candy Fruit', 'Captain'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'needless',
@@ -6458,7 +6458,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Gasparde\'s crew'],
     relations: [{ to: 'general-gasparde', kind: 'CREW' }, { to: 'biera', kind: 'CREW' }, { to: 'shuraiya-bascud', kind: 'CREW' }, { to: 'adelle-bascud', kind: 'CREW' }],
     abilities: [],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'biera',
@@ -6854,7 +6854,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: [],
     relations: [],
     abilities: ['Admiral'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'macro',
@@ -6926,7 +6926,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: ['Blackbeard\'s crew', 'Zoan Mythique'],
     relations: [{ to: 'marchall-d-teach-barbe-noire', kind: 'CREW' }, { to: 'doc-q', kind: 'CREW' }, { to: 'van-auger', kind: 'CREW' }, { to: 'barbe-rose', kind: 'CREW' }, { to: 'lafitte', kind: 'CREW' }, { to: 'jesus-burgess', kind: 'CREW' }],
     abilities: ['Horse fruit, Pegasus model', 'Doc Q\'s horse'],
-    presenceExpectation: 'MEDIUM',
+    presenceExpectation: 'LOW',
   },
   {
     id: 'punk-01-shaka',
@@ -7088,7 +7088,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: [],
     relations: [],
     abilities: ['Leader of the Divine Knights'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'vegapunk-shaka',
@@ -7106,7 +7106,7 @@ const ALL_CHARACTERS: Character[] = [
     affiliations: [],
     relations: [],
     abilities: ['Scientist - Malice/Survival'],
-    presenceExpectation: 'LOW',
+    presenceExpectation: 'HIGH',
   },
   {
     id: 'vegapunk-edison',
