@@ -42,11 +42,32 @@ const ADSENSE_FRAMES = [
   'https://googleads.g.doubleclick.net',
 ];
 
+/**
+ * Domaines que la régie peut appeler.
+ *
+ * ⚠️ **Deuxième correction dictée par un navigateur, celle-ci en production.**
+ * La liste énumérée à la main omettait `fundingchoicesmessages.google.com` —
+ * c'est le service du **bandeau de consentement** de Google. La console
+ * répondait :
+ *
+ *     Connecting to 'https://fundingchoicesmessages.google.com/el/…' violates
+ *     the following Content Security Policy directive: "connect-src …".
+ *
+ * Un bandeau de consentement qui ne peut pas enregistrer la réponse du joueur
+ * n'est pas seulement une annonce en moins : c'est une obligation légale qui
+ * ne s'exécute pas, sur un site qui diffuse de la publicité en Europe.
+ *
+ * Deux fois de suite, une énumération manuelle des domaines de la régie s'est
+ * révélée incomplète. On s'aligne donc sur la même règle que pour les cadres :
+ * **tout domaine qui sert un script de la régie peut aussi la joindre.** La
+ * répartition appartient à Google et change sans préavis ; la deviner à la
+ * main coûte des annonces muettes, et rien ne les signale.
+ */
 const ADSENSE_CONNECT = [
-  'https://pagead2.googlesyndication.com',
-  'https://googleads.g.doubleclick.net',
+  ...ADSENSE_SCRIPTS,
   'https://ep1.adtrafficquality.google',
   'https://csi.gstatic.com',
+  'https://googleads.g.doubleclick.net',
 ];
 
 /**
