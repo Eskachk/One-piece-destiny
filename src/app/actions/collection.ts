@@ -295,7 +295,7 @@ export async function craftCharacterAction(
   const decision = evaluateCraft({
     rarity: character?.rarity ?? null,
     owned: owned.has(parsed.data),
-    shards: shards.get(parsed.data) ?? 0,
+    shards,
   });
 
   if (!decision.allowed) {

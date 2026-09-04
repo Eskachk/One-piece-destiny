@@ -40,7 +40,24 @@ export const RARITY_WEIGHTS: Record<Rarity, number> = {
   // poids constants, la chance annoncée d'en tirer un aurait été divisée par
   // cinq du jour au lendemain, sans que le joueur ait rien demandé.
   LEGENDARY: 45,
-  MYTHIC: 9,
+  /*
+   * Relevé de 9 à 18, et c'est le seul poids qui bouge.
+   *
+   * À 9, un Mythique sortait **0,37 % du temps** : un coffre sur deux cent
+   * soixante-dix. Un joueur gratuit, qui en ouvre un par semaine, avait 17 %
+   * de chances d'en voir un seul dans l'année — autrement dit, quatre joueurs
+   * sur cinq n'en croisaient jamais.
+   *
+   * Or les dix Mythiques sont l'équipage au complet : ce sont les personnages
+   * que tout le monde vient chercher. Les rendre statistiquement absents est
+   * le contraire de ce qu'une rareté doit faire — elle doit se mériter, pas
+   * disparaître.
+   *
+   * À 18, le taux passe à environ 0,75 % et un tiers des joueurs en voit un
+   * dans l'année. La voie sûre reste la fabrication (§29), désormais
+   * praticable.
+   */
+  MYTHIC: 18,
 };
 
 /**

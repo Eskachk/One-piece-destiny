@@ -29,7 +29,8 @@ interface Store {
   appearances: Map<string, ChapterAppearance[]>;
   results: Map<string, ChapterResultRow[]>;
   inventory: Map<string, Set<string>>;
-  shards: Map<string, Map<string, number>>;
+  /** Réserve de fragments, un total par joueur — voir la migration 0028. */
+  shards: Map<string, number>;
   progress: Map<string, PlayerProgress>;
   chestRequests: Set<string>;
   wallets: Map<string, Wallet>;
@@ -208,7 +209,7 @@ export const memoryRepository: Repository = {
 
 
   async getShards(playerId) {
-    return new Map(store().shards.get(playerId) ?? []);
+    return store().shards.get(playerId) ?? 0;
   },
 
   async getProgress(playerId) {
@@ -217,6 +218,7 @@ export const memoryRepository: Repository = {
         pityCounter: 0,
         starterChestOpened: false,
         unopenedChests: 0,
+        shards: 0,
       }
     );
   },
@@ -231,17 +233,11 @@ export const memoryRepository: Repository = {
     state.chestRequests.add(input.clientRequestId);
 
     const owned = state.inventory.get(input.playerId) ?? new Set<string>();
-    const shards = state.shards.get(input.playerId) ?? new Map<string, number>();
+    let shards = state.shards.get(input.playerId) ?? 0;
 
     for (const card of input.cards) {
-      if (card.duplicate) {
-        shards.set(
-          card.characterId,
-          (shards.get(card.characterId) ?? 0) + card.shards,
-        );
-      } else {
-        owned.add(card.characterId);
-      }
+      if (card.duplicate) shards += card.shards;
+      else owned.add(card.characterId);
     }
 
     state.inventory.set(input.playerId, owned);
@@ -253,6 +249,7 @@ export const memoryRepository: Repository = {
       starterChestOpened:
         previous?.starterChestOpened || input.kind === 'STARTER',
       unopenedChests: previous?.unopenedChests ?? 0,
+      shards,
     });
 
     return 'applied';
@@ -299,6 +296,7 @@ export const memoryRepository: Repository = {
       pityCounter: 0,
       starterChestOpened: false,
       unopenedChests: 0,
+      shards: 0,
     };
     state.progress.set(playerId, {
       ...progress,
@@ -320,15 +318,14 @@ export const memoryRepository: Repository = {
 
   async craftCharacter(playerId, characterId, cost) {
     const state = store();
-    const shards = state.shards.get(playerId) ?? new Map<string, number>();
+    const shards = state.shards.get(playerId) ?? 0;
     const owned = state.inventory.get(playerId) ?? new Set<string>();
 
     if (owned.has(characterId)) return false;
-    if ((shards.get(characterId) ?? 0) < cost) return false;
+    if (shards < cost) return false;
 
-    shards.set(characterId, (shards.get(characterId) ?? 0) - cost);
     owned.add(characterId);
-    state.shards.set(playerId, shards);
+    state.shards.set(playerId, shards - cost);
     state.inventory.set(playerId, owned);
     return true;
   },

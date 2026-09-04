@@ -551,18 +551,19 @@ export const postgresRepository: Repository = {
 
   async getShards(playerId) {
     const { data, error } = await db()
-      .from('character_shards')
-      .select('character_id, shards')
-      .eq('player_id', playerId);
+      .from('player_progress')
+      .select('shards')
+      .eq('player_id', playerId)
+      .maybeSingle();
 
-    if (error) throw new Error(`character_shards.select : ${error.message}`);
-    return new Map((data ?? []).map((row) => [row.character_id, row.shards]));
+    if (error) throw new Error(`player_progress.shards : ${error.message}`);
+    return data?.shards ?? 0;
   },
 
   async getProgress(playerId) {
     const { data, error } = await db()
       .from('player_progress')
-      .select('pity_counter, starter_chest_opened_at, unopened_chests')
+      .select('pity_counter, starter_chest_opened_at, unopened_chests, shards')
       .eq('player_id', playerId)
       .maybeSingle();
 
@@ -572,6 +573,7 @@ export const postgresRepository: Repository = {
       pityCounter: data?.pity_counter ?? 0,
       starterChestOpened: Boolean(data?.starter_chest_opened_at),
       unopenedChests: data?.unopened_chests ?? 0,
+      shards: data?.shards ?? 0,
     };
   },
 
@@ -651,24 +653,21 @@ export const postgresRepository: Repository = {
       }
     }
 
-    for (const card of input.cards.filter((c) => c.duplicate)) {
-      const { data: existing } = await db()
-        .from('character_shards')
-        .select('shards')
-        .eq('player_id', input.playerId)
-        .eq('character_id', card.characterId)
-        .maybeSingle();
-
-      const { error } = await db().from('character_shards').upsert(
-        {
-          player_id: input.playerId,
-          character_id: card.characterId,
-          shards: (existing?.shards ?? 0) + card.shards,
-        },
-        { onConflict: 'player_id,character_id' },
-      );
-      if (error) throw new Error(`character_shards.upsert : ${error.message}`);
-    }
+    /*
+     * Les fragments des doublons vont dans la **réserve unique** du joueur.
+     *
+     * Ils étaient rangés par personnage, et c'est ce qui rendait la
+     * fabrication impossible : on ne gagne des fragments d'un personnage qu'en
+     * le tirant en double, donc en le possédant, alors que le fabriquer exige
+     * de ne pas le posséder. Voir la migration 0028.
+     *
+     * Un seul total, une seule écriture — au lieu d'une lecture et d'une
+     * écriture **par carte en double**, soit jusqu'à dix allers-retours par
+     * coffre ouvert.
+     */
+    const fragments = input.cards
+      .filter((card) => card.duplicate)
+      .reduce((somme, card) => somme + card.shards, 0);
 
     const now = new Date().toISOString();
     const { error: progressError } = await db().from('player_progress').upsert(
@@ -682,6 +681,17 @@ export const postgresRepository: Repository = {
     );
     if (progressError) {
       throw new Error(`player_progress.upsert : ${progressError.message}`);
+    }
+
+    // Crédit **incrémental**, donc par fonction : un `upsert` écrit une valeur
+    // au lieu de l'ajouter, et deux coffres ouverts en même temps
+    // s'écraseraient — le joueur perdrait les fragments du premier.
+    if (fragments > 0) {
+      const { error: shardError } = await db().rpc('grant_shards', {
+        p_player: input.playerId,
+        p_amount: fragments,
+      });
+      if (shardError) throw new Error(`grant_shards : ${shardError.message}`);
     }
 
     return 'applied';
@@ -788,28 +798,20 @@ export const postgresRepository: Repository = {
   },
 
   async craftCharacter(playerId, characterId, cost) {
-    const { data: shardRow } = await db()
-      .from('character_shards')
-      .select('shards')
-      .eq('player_id', playerId)
-      .eq('character_id', characterId)
-      .maybeSingle();
-
-    const available = shardRow?.shards ?? 0;
-    if (available < cost) return false;
-
-    // Débit conditionné au solde lu : si une autre requête a dépensé entre
-    // temps, la condition ne matche plus et rien n'est débité.
-    const { data: debited } = await db()
-      .from('character_shards')
-      .update({ shards: available - cost })
-      .eq('player_id', playerId)
-      .eq('character_id', characterId)
-      .eq('shards', available)
-      .select('character_id')
-      .maybeSingle();
-
-    if (!debited) return false;
+    /*
+     * Débit **d'abord**, carte ensuite.
+     *
+     * `spend_shards` fait le contrôle de solde et la soustraction dans la même
+     * instruction : deux fabrications simultanées ne peuvent pas lire le même
+     * solde et dépenser chacune la totalité. Un `null` en retour signifie que
+     * la réserve était insuffisante — rien n'a bougé.
+     */
+    const { data: restant, error: debitError } = await db().rpc('spend_shards', {
+      p_player: playerId,
+      p_cost: cost,
+    });
+    if (debitError) throw new Error(`spend_shards : ${debitError.message}`);
+    if (restant === null || restant === undefined) return false;
 
     const { data: crafted, error } = await db()
       .from('inventory')

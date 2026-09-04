@@ -97,20 +97,64 @@ export const CATALOG: Record<ProductId, Product> = {
     id: 'royal_chest',
     category: 'CHEST',
     label: 'Coffre du Yonko',
-    priceCents: 1_499,
+    /*
+     * Ramené de 14,99 € à 9,99 €.
+     *
+     * Il coûtait **plus cher qu'un Mythique nommé** — 14,99 € pour un
+     * Légendaire ou mieux tiré au hasard, contre 12,99 € pour Luffy en
+     * personne. Un produit aléatoire vendu au-dessus du produit garanti dit au
+     * joueur que le prix ne suit aucune logique.
+     *
+     * Neuf euros quatre-vingt-dix-neuf, c'est ce que vaut la chance qu'il
+     * remplace : un Légendaire sort une fois sur 12,8 coffres, et douze
+     * coffres coûtent 9,99 €. On vend la certitude et la cérémonie au prix de
+     * l'espérance, ce qui est défendable ; au-dessus, on vendait moins pour
+     * plus cher.
+     */
+    priceCents: 999,
     currency: 'EUR',
     grants: { berries: 0, chests: 0, royalChests: 1 },
     description:
       '1 coffre royal : Légendaire ou mieux garanti, ouverture en cérémonie dédiée. La rareté est une valeur de collection, elle ne donne aucun point au classement.',
   },
+  /**
+   * Les deux produits en Berries, réévalués.
+   *
+   * ## Ce que la boutique disait sans le dire
+   *
+   * Rapporté au coffre — la seule chose que les Berries achètent — le
+   * catalogue était **inversé** :
+   *
+   *     Petite cale     2,99 €    3 coffres      1,00 € le coffre
+   *     Grande cale     9,99 €   12 coffres      0,83 € le coffre
+   *     Bourse          4,99 €    4 coffres      1,25 € le coffre   ← le pire
+   *     Cale pleine    19,99 €   20 coffres      1,00 € le coffre
+   *
+   * La bourse était le plus mauvais achat du magasin, et le produit le plus
+   * cher — vingt euros — revenait plus cher au coffre que celui à dix. C'est
+   * la forme classique du piège : celui qui dépense le plus paie le plus
+   * cher l'unité, et rien à l'écran ne le lui dit.
+   *
+   * ## La règle retenue
+   *
+   * **À palier égal, les Berries valent le même prix au coffre que les
+   * coffres.** Ils sont déjà plus souples — ils achètent aussi au Marché — et
+   * cette souplesse suffit à les distinguer ; la payer d'une surtaxe de 25 %
+   * invisible ne se défend pas.
+   *
+   *     Bourse          4,99 €    7 500 B  =  5 coffres    1,00 €
+   *     Cale pleine    19,99 €   36 000 B  = 24 coffres    0,83 €
+   *
+   * La courbe redevient monotone : plus on prend, moins l'unité coûte.
+   */
   berries_pouch: {
     id: 'berries_pouch',
     category: 'COINS',
     label: 'Bourse de Berries',
     priceCents: 499,
     currency: 'EUR',
-    grants: { berries: 6_000, chests: 0 },
-    description: '6 000 Berries. Les Berries n’achètent que de la collection, jamais un avantage de score.',
+    grants: { berries: 7_500, chests: 0 },
+    description: '7 500 Berries, soit 5 coffres à la boutique du jeu. Les Berries n’achètent que de la collection, jamais un avantage de score.',
   },
   berries_hold: {
     id: 'berries_hold',
@@ -118,9 +162,9 @@ export const CATALOG: Record<ProductId, Product> = {
     label: 'Cale pleine',
     priceCents: 1_999,
     currency: 'EUR',
-    grants: { berries: 30_000, chests: 0 },
+    grants: { berries: 36_000, chests: 0 },
     description:
-      '30 000 Berries, soit 20 coffres à la boutique du jeu. Les Berries n’achètent que de la collection.',
+      '36 000 Berries, soit 24 coffres à la boutique du jeu. Les Berries n’achètent que de la collection.',
   },
   /**
    * Rayon personnages.

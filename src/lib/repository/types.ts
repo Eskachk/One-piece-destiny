@@ -148,8 +148,15 @@ export interface Repository {
    */
   getCardIdentities(playerId: string): Promise<CardIdentity[]>;
 
-  /** Fragments par personnage (cahier §29). */
-  getShards(playerId: string): Promise<Map<string, number>>;
+  /**
+   * Réserve de fragments du joueur — **un seul nombre**.
+   *
+   * Elle était indexée par personnage, et c'est ce qui rendait la fabrication
+   * impossible : les fragments d'un personnage ne se gagnent qu'en le tirant
+   * en double, donc en le possédant, alors que fabriquer exige de ne pas le
+   * posséder. Voir la migration 0028.
+   */
+  getShards(playerId: string): Promise<number>;
 
   getProgress(playerId: string): Promise<PlayerProgress>;
 
@@ -261,6 +268,8 @@ export interface PlayerProgress {
   starterChestOpened: boolean;
   /** Coffres obtenus mais pas encore ouverts. */
   unopenedChests: number;
+  /** Fragments disponibles, toutes raretés confondues. */
+  shards: number;
 }
 
 export interface Wallet {

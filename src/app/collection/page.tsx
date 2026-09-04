@@ -144,19 +144,46 @@ export default async function CollectionPage() {
         </section>
       )}
 
-      {/* Fragments (§29) : un doublon n'est jamais perdu. */}
-      {shards.size > 0 && (
+      {/*
+        Fragments (§28, §29) : la réserve, et ce qu'elle ouvre.
+
+        Elle était détaillée personnage par personnage — « ✨ 240 sur Nami » —
+        ce qui décrivait exactement le défaut : ces fragments-là ne pouvaient
+        rien acheter, puisque fabriquer un personnage exige de ne pas le
+        posséder et qu'on ne gagne ses fragments qu'en le possédant. Un seul
+        total, et la liste de ce qu'il permet.
+      */}
+      {shards > 0 && (
         <section className="mt-8">
-          <h2 className="hb-legend">
-            Fragments
-          </h2>
-          <ul className="mt-3 space-y-1 text-sm">
-            {[...shards.entries()].map(([id, amount]) => (
-              <li key={id} className="flex justify-between">
-                <span>{CHARACTER_INDEX.get(id)?.name ?? id}</span>
-                <span className="hb-num">✨ {amount}</span>
-              </li>
-            ))}
+          <h2 className="hb-legend">Fragments</h2>
+          <p className="hb-card mt-3">
+            <span className="hb-num" style={{ fontSize: '1.8rem' }}>✨ {shards}</span>
+            <span className="hb-muted ml-2 text-xs">
+              fragments — gagnés sur chaque doublon, dépensables sur n’importe
+              quel personnage manquant.
+            </span>
+          </p>
+          <ul className="mt-3 grid grid-cols-2 gap-2 text-xs md:grid-cols-5">
+            {(['COMMON', 'RARE', 'EPIC', 'LEGENDARY', 'MYTHIC'] as const).map(
+              (rarity) => (
+                <li key={rarity} className="hb-tile">
+                  <span
+                    className="hb-legend block"
+                    style={{ color: RARITY_COLOR[rarity] }}
+                  >
+                    {RARITY_LABEL[rarity]}
+                  </span>
+                  <span className="hb-num mt-0.5 block">
+                    {CRAFT_COST[rarity]}
+                  </span>
+                  <span className="hb-muted block">
+                    {shards >= CRAFT_COST[rarity]
+                      ? 'à portée'
+                      : `il manque ${CRAFT_COST[rarity] - shards}`}
+                  </span>
+                </li>
+              ),
+            )}
           </ul>
         </section>
       )}
@@ -226,7 +253,7 @@ export default async function CollectionPage() {
                 </span>
                 <CraftButton
                   characterId={character.id}
-                  shards={shards.get(character.id) ?? 0}
+                  shards={shards}
                   cost={CRAFT_COST[character.rarity]}
                 />
               </li>

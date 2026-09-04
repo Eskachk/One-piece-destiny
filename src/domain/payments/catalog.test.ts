@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CATALOG, productOf, verifyClaim, withinDailyCap } from './catalog';
 import { CHARACTER_INDEX } from '../../data/characters';
+import { CHEST_PRICE_BERRIES } from '../collection/rewards';
 import { restrictionsForBirthDate } from '../compliance/age';
 
 const VALIDE = {
@@ -145,6 +146,66 @@ describe('rayon personnages', () => {
       expect(reel, `${id} est absent du référentiel jouable`).toBeDefined();
       expect(reel!.rarity, `${id} annoncé ${p.rarity}`).toBe(p.rarity);
     }
+  });
+
+  it('ne vend jamais l’unité plus cher à qui achète plus', () => {
+    /*
+     * ## Le défaut que ce test attrape
+     *
+     * Rapporté au coffre — la seule chose que les Berries achètent — le
+     * catalogue était **inversé** :
+     *
+     *     Petite cale     2,99 €   →  1,00 € le coffre
+     *     Grande cale     9,99 €   →  0,83 €
+     *     Bourse          4,99 €   →  1,25 €   ← le pire du magasin
+     *     Cale pleine    19,99 €   →  1,00 €   ← le produit le plus cher
+     *
+     * La forme classique du piège : celui qui dépense le plus paie l'unité
+     * le plus cher, et rien à l'écran ne le lui dit. Ce test impose la règle
+     * inverse — dépenser davantage ne doit jamais coûter plus cher l'unité.
+     */
+    const parCoffre = Object.values(CATALOG)
+      .map((p) => {
+        const coffres = p.grants.chests + p.grants.berries / CHEST_PRICE_BERRIES;
+        return coffres > 0
+          ? { id: p.id, prix: p.priceCents, unite: p.priceCents / coffres }
+          : null;
+      })
+      .filter((x): x is NonNullable<typeof x> => x !== null)
+      .sort((a, b) => a.prix - b.prix);
+
+    /*
+     * Un pour cent de tolérance, et c'est de l'arithmétique, pas de la
+     * complaisance : les prix se terminent tous en « ,99 » et les dotations
+     * sont rondes. 4,99 € pour 5 coffres font 99,80 centimes l'unité, 2,99 €
+     * pour 3 en font 99,67 — treize centièmes de centime d'écart, qu'aucun
+     * joueur ne peut ressentir et qu'on ne corrigerait qu'en donnant 7 600
+     * Berries au lieu de 7 500.
+     *
+     * Le piège qu'on traque était d'un tout autre ordre : vingt-cinq pour
+     * cent.
+     */
+    const TOLERANCE = 1.01;
+
+    for (let i = 1; i < parCoffre.length; i += 1) {
+      const petit = parCoffre[i - 1];
+      const grand = parCoffre[i];
+      expect(
+        grand.unite,
+        `${grand.id} (${(grand.unite / 100).toFixed(2)} €/coffre) coûte plus cher l'unité que ${petit.id} (${(petit.unite / 100).toFixed(2)} €)`,
+      ).toBeLessThanOrEqual(petit.unite * TOLERANCE);
+    }
+  });
+
+  it('ne fait pas payer le hasard plus cher que la certitude', () => {
+    // Le coffre royal — un Légendaire ou mieux **tiré au sort** — coûtait
+    // 14,99 €, contre 12,99 € pour Luffy en personne, garanti et Mythique. Un
+    // produit aléatoire vendu au-dessus du produit certain dit au joueur que
+    // le prix ne suit aucune logique.
+    const royal = CATALOG.royal_chest;
+    const mythique = Object.values(CATALOG).find((p) => p.rarity === 'MYTHIC')!;
+
+    expect(royal.priceCents).toBeLessThan(mythique.priceCents);
   });
 
   it('fait payer le Mythique plus cher que les Légendaires', () => {

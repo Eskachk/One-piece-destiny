@@ -32,10 +32,20 @@ export const CHEST_SLOTS: readonly Rarity[] = [
 ] as const;
 
 /**
- * Nombre de coffres sans légendaire au bout duquel le suivant en garantit un
+ * Nombre de coffres sans Légendaire au bout duquel le suivant en garantit un
  * (cahier §31). La règle doit être annoncée avant l'achat.
+ *
+ * **Ramené de vingt à douze, sur mesure.** Un Légendaire ou mieux sort une
+ * fois sur 12,8 coffres : la probabilité de n'en voir aucun en vingt
+ * ouvertures n'est que de **19,7 %**. La garantie ne se déclenchait donc que
+ * pour un joueur sur cinq, après vingt semaines de jeu gratuit — c'est une
+ * curiosité statistique, pas un filet.
+ *
+ * À douze, elle concerne 38 % des joueurs et pose une vraie borne : au pire,
+ * un Légendaire toutes les douze ouvertures. C'est ce qu'un compteur de pitié
+ * est censé promettre — que la malchance a une fin datée.
  */
-export const PITY_THRESHOLD = 20;
+export const PITY_THRESHOLD = 12;
 
 export interface ChestCard {
   characterId: string;

@@ -17,7 +17,7 @@
  */
 
 /** Socle accordé à quiconque a joué la semaine. */
-export const PARTICIPATION_BERRIES = 200;
+export const PARTICIPATION_BERRIES = 300;
 export const PARTICIPATION_CHESTS = 1;
 
 /**
@@ -71,7 +71,7 @@ export const RANK_TIERS: { maxRank: number; berries: number; label: string }[] =
   { maxRank: 3, berries: 2_000, label: '3e' },
   { maxRank: 10, berries: 1_000, label: 'Top 10' },
   { maxRank: 30, berries: 600, label: 'Top 30' },
-  { maxRank: 100, berries: 350, label: 'Top 100' },
+  { maxRank: 100, berries: 450, label: 'Top 100' },
 ];
 
 export interface WeeklyReward {
