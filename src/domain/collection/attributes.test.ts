@@ -84,6 +84,67 @@ describe('attributs de carte', () => {
     expect(muettes.length).toBeLessThanOrEqual(10);
   });
 
+  it('montre le grade de la Marine à côté du camp, pas à sa place', () => {
+    /*
+     * « Vice-Admiral » n'était attrapé que par la règle de camp : un
+     * vice-amiral affichait ⚓ et rien d'autre, exactement comme un matelot
+     * sans nom. C'est le plus gros groupe du référentiel — vingt-quatre
+     * vice-amiraux, sept amiraux, trente-deux lieutenants.
+     */
+    const grades: [string, string][] = [
+      ['Admiral', 'admiral'],
+      ['Vice-Admiral', 'vice-admiral'],
+      ['Rear Admiral', 'vice-admiral'],
+      ['Colonel', 'navy-officer'],
+      ['Lieutenant', 'navy-junior'],
+    ];
+
+    for (const [poste, attendu] of grades) {
+      const ids = attributesOf(
+        character({ abilities: [poste], affiliations: ['Marine'] }),
+      ).map((a) => a.id);
+      expect(ids, poste).toContain('marine');
+      expect(ids, poste).toContain(attendu);
+    }
+  });
+
+  it('n’appelle pas « lieutenant de Doflamingo » un grade de la Marine', () => {
+    // Les motifs de grade sont ancrés pour cette raison précise : le mot
+    // « lieutenant » désigne aussi un bras droit, qui n'est pas un officier.
+    const ids = attributesOf(
+      character({ abilities: ['Lieutenant of Doflamingo'] }),
+    ).map((a) => a.id);
+    expect(ids).not.toContain('navy-junior');
+  });
+
+  it('affiche l’équipage d’Empereur et la prime ensemble', () => {
+    // Deux faits distincts, et c'est pourquoi la famille en admet deux : être
+    // d'un équipage d'Empereur ne dit pas qu'on vaut un milliard.
+    const ids = attributesOf(
+      character({
+        abilities: ["Équipage d'Empereur", 'Prime au milliard'],
+      }),
+    ).map((a) => a.id);
+    expect(ids).toContain('emperor-crew');
+    expect(ids).toContain('bounty-billion');
+  });
+
+  it('ne fait pas d’un colosse une espèce', () => {
+    /*
+     * Cinq mètres ne font pas un géant : Kaido en mesure sept et n'en est pas
+     * un. « Colosse » ne doit donc jamais l'emporter sur une race écrite à la
+     * main, et ne paraître que lorsqu'on ne sait rien d'autre.
+     */
+    const seul = attributesOf(character({ abilities: ['Colosse'] }));
+    expect(seul.map((a) => a.id)).toContain('colossus');
+
+    const avecRace = attributesOf(
+      character({ abilities: ['Colosse', 'Homme-poisson'] }),
+    ).map((a) => a.id);
+    expect(avecRace).toContain('fishman');
+    expect(avecRace).not.toContain('colossus');
+  });
+
   it('rend des identifiants uniques : ils servent de clé de rendu', () => {
     const found = attributesOf(
       character({

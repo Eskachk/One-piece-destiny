@@ -56,6 +56,7 @@ export type Family =
   | 'fruit'
   | 'weapon'
   | 'crew'
+  | 'renown'
   | 'camp'
   | 'rank'
   | 'species'
@@ -66,6 +67,7 @@ const FAMILY_ORDER: readonly Family[] = [
   'fruit',
   'weapon',
   'crew',
+  'renown',
   'camp',
   'rank',
   'species',
@@ -80,7 +82,7 @@ const FAMILY_ORDER: readonly Family[] = [
  * second couteau. Partout ailleurs, un seul — deux grades ou deux métiers sur
  * la même carte n'apprennent rien de plus que le premier.
  */
-const PER_FAMILY: Partial<Record<Family, number>> = { haki: 3 };
+const PER_FAMILY: Partial<Record<Family, number>> = { haki: 3, renown: 2 };
 
 interface Rule {
   id: string;
@@ -127,6 +129,26 @@ const RULES: readonly Rule[] = [
   { id: 'club', symbol: '🏏', label: 'Masse', family: 'weapon', match: /kanabo|massue|\bclub\b|\bmace\b|gourdin/i },
   { id: 'fists', symbol: '🥊', label: 'Corps à corps', family: 'weapon', match: /fighter|combat|combattant|martial|karat|boxe|lutteur|wrestler|gladiat|jujutsu|taekwondo/i },
 
+  // --- Notoriété -----------------------------------------------------------
+  //
+  // Deux faits que l'import connaissait et jetait : l'appartenance à l'un des
+  // quatre équipages d'Empereur — `crew.is_yonko`, vrai pour 267 personnages —
+  // et le montant de la prime, renseigné sur 141. Le premier range un second
+  // couteau dans une puissance mondiale plutôt que dans une bande quelconque ;
+  // le second est le seul chiffre que l'œuvre elle-même met sur une affiche.
+  //
+  // Deux symboles autorisés dans cette famille : « d'un équipage d'Empereur »
+  // et « au milliard » ne disent pas la même chose, et les fondre en un seul
+  // effacerait justement la différence entre un Gifter et un Commandant.
+  //
+  // Motifs ancrés : ces libellés sont écrits par
+  // `scripts/enrich-from-api.mjs`, pas par la source. Un motif large
+  // attraperait « Empereur des mers » dans un nom d'équipage et poserait le
+  // symbole sur des gens qui n'en font pas partie.
+  { id: 'emperor-crew', symbol: '⚜️', label: 'Équipage d’Empereur', family: 'renown', match: /^.quipage d.empereur$/i },
+  { id: 'bounty-billion', symbol: '💰', label: 'Prime au milliard', family: 'renown', match: /^prime au milliard$/i },
+  { id: 'bounty-high', symbol: '💴', label: 'Prime importante', family: 'renown', match: /^prime importante$/i },
+
   // --- Camps ---------------------------------------------------------------
   { id: 'marine', symbol: '⚓', label: 'Marine', family: 'camp', match: /^marine$|\bmarine\b|admiral|amiral|colonel|lieutenant|commodore|ensign|private|rear.admiral|commander-in-chief/i },
   { id: 'cipher-pol', symbol: '🕶', label: 'Cipher Pol', family: 'camp', match: /cipher pol|special agent|\bcp\d|\bsword\b(?! ?(?:man|s))/i },
@@ -139,6 +161,25 @@ const RULES: readonly Rule[] = [
 
   // --- Grades --------------------------------------------------------------
   { id: 'royal', symbol: '🏰', label: 'Royauté', family: 'rank', match: /^(king|queen|prince|princess|sovereign|roi|reine|royaut.)$|royaut.|\bking\b|\bqueen\b|\bprince(ss)?\b|souverain|monarque/i },
+  // Les grades de la Marine, du plus élevé au plus bas.
+  //
+  // **Le défaut corrigé ici.** « Vice-Admiral », « Rear Admiral », « Colonel »
+  // et « Lieutenant » ne correspondaient à aucune règle de grade : ils
+  // n'étaient attrapés que par la règle de **camp**, qui pose ⚓. Un
+  // vice-amiral affichait donc exactement le même symbole qu'un matelot sans
+  // nom — et c'est le plus gros groupe du référentiel : vingt-quatre
+  // vice-amiraux, sept amiraux, trente-deux lieutenants, neuf colonels.
+  //
+  // Camp et grade étant deux familles distinctes, les deux symboles
+  // s'affichent maintenant côte à côte : ⚓ dit pour qui il se bat, le second
+  // dit à quelle hauteur.
+  //
+  // Motifs ancrés sur le grade seul : « Lieutenant of Doflamingo » n'est pas
+  // un grade de la Marine, et la règle d'officier ci-dessous s'en charge.
+  { id: 'admiral', symbol: '🏵️', label: 'Amiral', family: 'rank', match: /^(fleet )?admiral$|^amiral$|grand amiral|amiral en chef|commander-in-chief/i },
+  { id: 'vice-admiral', symbol: '🎗', label: 'Vice-amiral', family: 'rank', match: /vice.admiral|vice.amiral|sub.admiral|rear.admiral|contre.amiral/i },
+  { id: 'navy-officer', symbol: '📛', label: 'Officier de marine', family: 'rank', match: /^(colonel|commodore|capitaine de vaisseau)$/i },
+  { id: 'navy-junior', symbol: '🔰', label: 'Officier subalterne', family: 'rank', match: /^(lieutenant|ensign|enseigne|petty officer|chief petty officer|seaman|private)$/i },
   { id: 'captain', symbol: '🎖', label: 'Capitaine', family: 'rank', match: /^captain$|capitaine|co-captain|vice-captain|second-in-command|commander|chief|g.n.ral|general/i },
   { id: 'officer', symbol: '🏅', label: 'Officier', family: 'rank', match: /officer|officier|tobi roppo|all star|gifters|numbers|lieutenant of|advisor|manager|director|chairman/i },
   { id: 'star', symbol: '⭐', label: 'Vedette', family: 'rank', match: /vedette|superstar|star\b|idol/i },
@@ -149,6 +190,12 @@ const RULES: readonly Rule[] = [
   { id: 'mink', symbol: '🦁', label: 'Mink', family: 'species', match: /\bmink\b|fourrure|musketeer unit|\bzo\b/i },
   { id: 'skypiean', symbol: '☁️', label: 'Habitant du ciel', family: 'species', match: /skypiea|shandia|birka|ciel/i },
   { id: 'cyborg', symbol: '🤖', label: 'Corps modifié', family: 'species', match: /cyborg|pacifista|seraph|s.raphin|homie|clone|robot/i },
+  // Dernier de la famille, et c'est voulu : la taille ne dit pas l'espèce.
+  // Kaido mesure 710 cm sans être un géant, Gecko Moria 692 cm non plus. Une
+  // race écrite à la main l'emporte donc toujours ; « Colosse » n'apparaît que
+  // lorsqu'on ne sait rien d'autre, et il énonce alors un fait mesuré plutôt
+  // qu'une conclusion.
+  { id: 'colossus', symbol: '⛰', label: 'Colosse', family: 'species', match: /^colosse$/i },
 
   // --- Métiers et rôles civils ---------------------------------------------
   { id: 'doctor', symbol: '⚕️', label: 'Médecin', family: 'role', match: /doctor|m.decin|m.decine|medical|surgeon|chirurgien/i },

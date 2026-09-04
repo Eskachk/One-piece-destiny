@@ -22,6 +22,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { derivedAbilities } from './enrich-from-api.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 const SOURCE = 'https://api.api-onepiece.com/v2/characters/en';
@@ -146,12 +147,18 @@ function affiliationsOf(character, crewSizes) {
   return affiliations;
 }
 
-/** Capacités : le fruit et son type. Jamais de texte descriptif de l'œuvre. */
+/**
+ * Capacités : des faits de l'API. Jamais de texte descriptif de l'œuvre.
+ *
+ * L'extraction est **partagée** avec `enrich-from-api.mjs`, et c'est
+ * délibéré : les deux scripts écrivent dans le même champ, et deux règles
+ * différentes feraient dépendre le contenu d'une carte de la commande lancée
+ * en dernier. Cette fonction ne lisait que le fruit et le poste ; le poste
+ * était pris en bloc — « Resident / Shandia tribe (chief) » comptait pour une
+ * capacité — et `crew.is_yonko`, `bounty` et `size` étaient jetés.
+ */
 function abilitiesOf(character) {
-  const abilities = [];
-  if (character.fruit?.name) abilities.push(character.fruit.name);
-  if (character.job) abilities.push(character.job);
-  return abilities;
+  return derivedAbilities(character);
 }
 
 // ---------------------------------------------------------------------------
