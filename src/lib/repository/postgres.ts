@@ -40,6 +40,56 @@ interface ChapterRow {
   data_version: string;
 }
 
+/**
+ * Taille d'une tranche de pagination.
+ *
+ * **Le défaut corrigé ici, et pourquoi il ne se voit pas aujourd'hui.**
+ *
+ * PostgREST — la couche qui sert l'API de Supabase — plafonne le nombre de
+ * lignes d'une réponse (`max-rows`, mille par défaut sur un projet Supabase).
+ * Une requête sans borne ne renvoie donc pas « tout » : elle renvoie le
+ * début, **sans erreur, sans avertissement, et sans que rien dans le code ne
+ * puisse le distinguer d'un résultat complet.**
+ *
+ * Deux lectures du produit grandissent d'une ligne par joueur :
+ * `listTeams`, que la publication parcourt pour attribuer les points, et
+ * `getLeaderboard`, qui construit le classement. Au millier de joueurs, la
+ * première **cesse silencieusement de noter** les suivants — ils jouent leur
+ * semaine et ne reçoivent rien — et la seconde efface leur rang.
+ *
+ * C'est la pire forme de bogue d'échelle : invisible tant que le jeu est
+ * petit, et il se déclenche le jour où il marche.
+ */
+const PAGE = 1000;
+
+/**
+ * Lit une table par tranches, jusqu'à épuisement.
+ *
+ * `build(from, to)` doit renvoyer la requête bornée par `.range(from, to)`.
+ * On s'arrête sur une tranche incomplète — c'est la fin des données — ou sur
+ * `MAX_PAGES`, garde-fou contre une boucle infinie si le serveur renvoyait
+ * indéfiniment des tranches pleines.
+ */
+async function readAllPages<T>(
+  label: string,
+  build: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>,
+): Promise<T[]> {
+  const MAX_PAGES = 200; // 200 000 lignes : très au-delà de tout usage réel.
+  const rows: T[] = [];
+
+  for (let page = 0; page < MAX_PAGES; page += 1) {
+    const from = page * PAGE;
+    const { data, error } = await build(from, from + PAGE - 1);
+    if (error) throw new Error(`${label} : ${error.message}`);
+
+    const tranche = data ?? [];
+    rows.push(...tranche);
+    if (tranche.length < PAGE) return rows;
+  }
+
+  return rows;
+}
+
 function toChapter(row: ChapterRow): ChapterEvent {
   return {
     id: row.id,
@@ -200,12 +250,24 @@ export const postgresRepository: Repository = {
   },
 
   async listTeams(chapterId) {
-    const { data, error } = await db()
-      .from('teams')
-      .select('player_id, chapter_id, character_ids, updated_at')
-      .eq('chapter_id', chapterId);
-
-    if (error) throw new Error(`teams.list : ${error.message}`);
+    // Une ligne par joueur ayant verrouillé cette semaine, et c'est la lecture
+    // dont dépend l'attribution des points : ce qui n'est pas lu ici n'est
+    // jamais noté. Paginée pour cette raison, et pas pour la mémoire.
+    const data = await readAllPages<{
+      player_id: string;
+      chapter_id: string;
+      character_ids: string[];
+      updated_at: string;
+    }>('teams.list', (from, to) =>
+      db()
+        .from('teams')
+        .select('player_id, chapter_id, character_ids, updated_at')
+        .eq('chapter_id', chapterId)
+        // Ordre stable : sans `order`, deux tranches successives peuvent
+        // renvoyer la même ligne deux fois et en sauter une autre.
+        .order('player_id', { ascending: true })
+        .range(from, to),
+    );
 
     return (data ?? []).map(
       (row): LockedTeam => ({
@@ -233,27 +295,60 @@ export const postgresRepository: Repository = {
     );
   },
 
+  /**
+   * Apparitions des `chapters` derniers chapitres.
+   *
+   * **Le défaut corrigé ici.** La requête triait sur `chapter_id` — une
+   * **`uuid`**, tirée au hasard à la création du chapitre. « Les N derniers
+   * chapitres » désignait donc N chapitres arbitraires, et le comptage
+   * assisté proposait à l'administrateur des moyennes calculées sur un
+   * échantillon quelconque de l'historique. Rien ne signalait l'erreur : le
+   * tri fonctionnait, il ne classait simplement pas ce qu'on croyait.
+   *
+   * Le plafond était faux aussi : `chapters * 60` supposait soixante
+   * personnages par chapitre, alors qu'une validation peut en porter jusqu'à
+   * huit cents. Au-delà, les chapitres les plus anciens de la fenêtre étaient
+   * tronqués — en silence, encore.
+   *
+   * On choisit donc les chapitres d'abord, sur `chapter_number`, puis on lit
+   * leurs apparitions sans plafond deviné. C'est un aller-retour de plus, sur
+   * un chemin d'administration appelé une fois par semaine.
+   */
   async getAppearanceHistory(chapters) {
-    const { data, error } = await db()
-      .from('chapter_appearances')
-      .select('character_id, appearances, chapter_events!inner(chapter_number)')
-      .order('chapter_id', { ascending: false })
-      .limit(chapters * 60);
+    const recents = await db()
+      .from('chapter_events')
+      .select('id, chapter_number')
+      .order('chapter_number', { ascending: false })
+      .limit(chapters);
 
-    if (error) {
-      throw new Error(`chapter_appearances.history : ${error.message}`);
+    if (recents.error) {
+      throw new Error(`chapter_events.history : ${recents.error.message}`);
     }
 
-    return (data ?? []).map((row) => {
-      const chapter = row.chapter_events as unknown as {
-        chapter_number: number;
-      };
-      return {
-        chapterNumber: chapter.chapter_number,
-        characterId: row.character_id,
-        appearances: row.appearances,
-      };
-    });
+    const numeroParId = new Map(
+      (recents.data ?? []).map((row) => [row.id as string, row.chapter_number as number]),
+    );
+    if (numeroParId.size === 0) return [];
+
+    const data = await readAllPages<{
+      chapter_id: string;
+      character_id: string;
+      appearances: number;
+    }>('chapter_appearances.history', (from, to) =>
+      db()
+        .from('chapter_appearances')
+        .select('chapter_id, character_id, appearances')
+        .in('chapter_id', [...numeroParId.keys()])
+        .order('chapter_id', { ascending: true })
+        .order('character_id', { ascending: true })
+        .range(from, to),
+    );
+
+    return (data ?? []).map((row) => ({
+      chapterNumber: numeroParId.get(row.chapter_id) ?? 0,
+      characterId: row.character_id,
+      appearances: row.appearances,
+    }));
   },
 
   async setAppearances(chapterId, appearances) {
@@ -311,13 +406,23 @@ export const postgresRepository: Repository = {
   },
 
   async getLeaderboard(chapterId) {
-    const { data, error } = await db()
-      .from('team_scores')
-      .select('total, breakdown, teams!inner(player_id, players!inner(handle))')
-      .eq('chapter_id', chapterId)
-      .order('total', { ascending: false });
-
-    if (error) throw new Error(`team_scores.select : ${error.message}`);
+    const data = await readAllPages<{
+      total: number;
+      breakdown: unknown;
+      teams: unknown;
+    }>('team_scores.select', (from, to) =>
+      db()
+        .from('team_scores')
+        .select('total, breakdown, teams!inner(player_id, players!inner(handle))')
+        .eq('chapter_id', chapterId)
+        .order('total', { ascending: false })
+        // Départage stable. `total` seul ne suffit pas à paginer : les ex æquo
+        // sont nombreux — trois personnages, des scores entiers — et deux
+        // tranches consécutives se recouvriraient sur eux, dupliquant des
+        // joueurs et en perdant d'autres.
+        .order('team_id', { ascending: true })
+        .range(from, to),
+    );
 
     return (data ?? []).map((row): ChapterResultRow => {
       const team = row.teams as unknown as {
