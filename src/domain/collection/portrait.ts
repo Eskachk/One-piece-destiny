@@ -667,6 +667,18 @@ export interface SpriteTraits {
   effects: boolean;
   /** Le second anneau, réservé au Mythique. */
   doubleAura: boolean;
+  /**
+   * Le cran de finition, réservé au Légendaire et au Mythique.
+   *
+   * Depuis que l'Épique a la figurine, les trois derniers paliers dessinent la
+   * même chose et ne se séparaient plus que par un halo. C'est trop peu pour
+   * une échelle de rareté : le halo est autour du personnage, pas dedans.
+   *
+   * Ce trait ouvre ce qui se voit **sur** la figurine — le nez, la bouche, le
+   * creux des pommettes, l'iris, les plis de l'étoffe, les mains, et une
+   * lumière d'appoint colorée sur le bord. L'Épique garde la figurine à plat.
+   */
+  detail: boolean;
   /** Les traits viennent-ils d'une signature écrite, ou du repli ? */
   named: boolean;
 }
@@ -699,6 +711,7 @@ export function spriteTraits(subject: PortraitSubject): SpriteTraits {
       height: signature.height ?? 'normal',
       effects,
       doubleAura: subject.rarity === 'MYTHIC',
+      detail: effects,
       named: true,
     };
   }
@@ -777,6 +790,7 @@ export function spriteTraits(subject: PortraitSubject): SpriteTraits {
     height: pick<Height>(['normal', 'normal', 'normal', 'short', 'tall'], random()),
     effects,
     doubleAura: subject.rarity === 'MYTHIC',
+    detail: effects,
     named: false,
   };
 }

@@ -962,6 +962,10 @@ function Bras({ traits, shoulders }: { traits: SpriteTraits; shoulders: number }
 function Tete({ traits }: { traits: SpriteTraits }) {
   const { frame, skin } = traits;
 
+  // Le Homie n'a pas de tête : son visage est dans la masse, et c'est
+  // `CorpsHomie` qui la dessine.
+  if (frame === 'homie') return null;
+
   if (frame === 'reindeer') {
     return (
       <>
@@ -1005,6 +1009,12 @@ function Tete({ traits }: { traits: SpriteTraits }) {
         <circle cx="23" cy="10" r="4" fill={skin} />
         <circle cx="41" cy="10" r="4" fill={skin} />
         <ellipse cx="32" cy="18" rx="10" ry="10" fill={skin} />
+        {/* Le museau. Sans lui, la tête ronde à oreilles est un ourson en
+            peluche, pas un animal : c'est exactement ce qui manquait à Bepo,
+            Pekoms, Masira, Hamburg et Nezumi, dont les cinq descriptions le
+            citent. */}
+        <ellipse cx="32" cy="22.6" rx="5.6" ry="3.8" fill="#e8dcc8" />
+        <ellipse cx="32" cy="21.4" rx="1.9" ry="1.4" fill="#33261f" />
       </>
     );
   }
@@ -1026,6 +1036,119 @@ function Tete({ traits }: { traits: SpriteTraits }) {
     return <path d="M23 15q0-12 9-12t9 12q0 6-9 13t-9-13Z" fill={skin} />;
   }
   return <ellipse cx="32" cy="18" rx="9" ry="10" fill={skin} />;
+}
+
+/**
+ * Le corps d'un Homie.
+ *
+ * Zeus, Héra, Prométhée et Napoléon sont un nuage, un orage, une flamme et un
+ * bicorne. Leurs descriptions disent mot pour mot « aucune anatomie humaine ».
+ * Sur le patron humain, ils sortaient quatre petits bonshommes à jambes.
+ */
+function CorpsHomie({ traits }: { traits: SpriteTraits }) {
+  const c = traits.skin;
+  const eclat = traits.hair;
+
+  // Napoléon n'est pas une masse : sa forme **est** son identité. Un bicorne
+  // ne peut pas être un chapeau posé sur une tête, puisqu'il n'y a pas de tête.
+  if (traits.extras.includes('bicorn')) {
+    return (
+      <>
+        {/* La lame plantée au sommet, dessinée avant le chapeau pour passer
+            dessous. */}
+        <rect x="30.8" y="8" width="2.4" height="18" fill="#c9ced8" />
+        <path d="M32 3 34.6 9.5 29.4 9.5Z" fill="#dfe4ec" />
+        <path d="M8 52q2-28 24-28t24 28q-11-9-24-9t-24 9Z" fill={c} />
+        {/* Le galon clair du bord : sans lui, la forme est un aplat noir. */}
+        <path d="M8 52q11-9 24-9t24 9q-13 4-24 4t-24-4Z" fill={traits.accessory} opacity="0.9" />
+      </>
+    );
+  }
+
+  return (
+    <>
+      {/* Quatre lobes qui se chevauchent. Un cercle seul lit comme une balle ;
+          ce sont les lobes qui font le nuage et la flamme. */}
+      <ellipse cx="32" cy="47" rx="20" ry="14" fill={c} />
+      <ellipse cx="18" cy="41" rx="10" ry="9" fill={c} />
+      <ellipse cx="46" cy="40" rx="11" ry="10" fill={c} />
+      <ellipse cx="32" cy="31" rx="14" ry="12" fill={c} />
+      {/* Le liseré clair du dessus, du côté de la lumière. */}
+      <ellipse cx="27" cy="27" rx="9" ry="5" fill={eclat} opacity="0.5" />
+      {/* Les éclairs — ou les langues de flamme — autour du corps. Ils sont
+          cités dans les trois descriptions comme le signe dominant. */}
+      <g fill={eclat} opacity="0.95">
+        <path d="M4 34 10 25 7.2 33.4 12 32 3 45 6.4 36Z" />
+        <path d="M60 36 55 27 57.4 35.4 52.6 34 61 47 58 38Z" />
+      </g>
+    </>
+  );
+}
+
+/**
+ * Le bas du corps d'un centaure.
+ *
+ * Speed est décrite « humaine transformée en centaure » : un tronc de cheval,
+ * quatre sabots. Deux jambes ne le rendent pas, quelle que soit la couleur.
+ */
+function CorpsCentaure({ traits }: { traits: SpriteTraits }) {
+  const robe = traits.trousers;
+  return (
+    <>
+      {/* La queue part avant le tronc, pour passer derrière. */}
+      <path
+        d={`M49 51q7 5 6 15`}
+        fill="none"
+        stroke={traits.hair}
+        strokeWidth="3.2"
+        strokeLinecap="round"
+      />
+      <ellipse cx="34" cy="57" rx="17" ry="9" fill={robe} />
+      {/* Quatre membres : c'est leur nombre qui fait le centaure. Les deux
+          arrière sont plus longs, sinon l'animal s'assoit. */}
+      <g fill={robe}>
+        <rect x="19.5" y="59" width="4.6" height="13" rx="2" />
+        <rect x="25.5" y="60" width="4.6" height="12" rx="2" />
+        <rect x="38.5" y="60" width="4.6" height="12" rx="2" />
+        <rect x="44.5" y="59" width="4.6" height="13" rx="2" />
+      </g>
+      <g fill="#2b2118">
+        <rect x="19.1" y="69.6" width="5.4" height="3" rx="1" />
+        <rect x="25.1" y="69.6" width="5.4" height="3" rx="1" />
+        <rect x="38.1" y="69.6" width="5.4" height="3" rx="1" />
+        <rect x="44.1" y="69.6" width="5.4" height="3" rx="1" />
+      </g>
+    </>
+  );
+}
+
+/**
+ * Ce qui se voit **sur** un visage, et qui n'appartient qu'au Légendaire et au
+ * Mythique.
+ *
+ * Le nez, la bouche et le creux des pommettes : trois traits, et le galet
+ * devient une figure. En dessous de ce palier, la figurine reste à plat — c'est
+ * ce qui sépare désormais l'Épique des deux rangs au-dessus de lui.
+ */
+function VisageFin({ traits }: { traits: SpriteTraits }) {
+  if (!traits.detail) return null;
+  // Un crâne, un museau ou un masque ont déjà leur bouche : en poser une
+  // seconde donnerait deux bouches.
+  if (traits.frame !== 'human' && traits.frame !== 'oni' && traits.frame !== 'centaur') return null;
+  if (traits.head === 'mask' || traits.mark === 'skull') return null;
+
+  return (
+    <g fill="none" strokeLinecap="round" pointerEvents="none">
+      {/* Le nez : deux segments, jamais un trait plein — un trait plein fait
+          un masque de théâtre. */}
+      <path d="M31.5 20.2q-1 2.8.8 3.4" stroke="#00000030" strokeWidth="0.8" />
+      {/* La bouche, courte et fermée. */}
+      <path d="M29.6 26q2.4 1.5 4.8 0" stroke="#00000040" strokeWidth="0.9" />
+      {/* Le creux des pommettes. */}
+      <path d="M24.8 20.4q1.3 3.8 3.2 5.8" stroke="#00000022" strokeWidth="0.7" />
+      <path d="M39.2 20.4q-1.3 3.8-3.2 5.8" stroke="#00000022" strokeWidth="0.7" />
+    </g>
+  );
 }
 
 /** Figurine en pied — Légendaire et Mythique. */
@@ -1066,6 +1189,7 @@ function SpriteFigure({
   const masqueId = `sil-${uid}`;
   const lumiereId = `lux-${uid}`;
   const figureId = `fig-${uid}`;
+  const rebordId = `rim-${uid}`;
 
   /*
    * La taille.
@@ -1111,6 +1235,20 @@ function SpriteFigure({
           <stop offset="52%" stopColor="#ffffff" stopOpacity="0" />
           <stop offset="66%" stopColor="#000000" stopOpacity="0" />
           <stop offset="100%" stopColor="#000000" stopOpacity="0.3" />
+        </linearGradient>
+
+        {/*
+          La lumière d'appoint, réservée au Légendaire et au Mythique.
+
+          Elle vient du bord droit, à l'opposé de la lumière principale, dans
+          la couleur de la rareté. C'est le procédé le plus ancien de
+          l'illustration : un second éclairage détache le sujet du fond. Il
+          coûte un dégradé, et c'est ce qui fait qu'une figurine de haut rang
+          ne lit pas comme la même à plat.
+        */}
+        <linearGradient id={rebordId} x1="1" y1="0.25" x2="0.34" y2="0.9">
+          <stop offset="0%" stopColor={accent} stopOpacity="0.5" />
+          <stop offset="38%" stopColor={accent} stopOpacity="0" />
         </linearGradient>
 
         {/*
@@ -1160,90 +1298,139 @@ function SpriteFigure({
         id={figureId}
         transform={echelle === 1 ? undefined : `translate(32 70) scale(${echelle}) translate(-32 -70)`}
       >
-        <ExtrasArriere traits={traits} />
-
-        {/* Jambes. Elles étaient d'un gris unique, écrit en dur : tout le monde
-            portait le même pantalon, et c'est la moitié de la silhouette. */}
-        <rect x={32 - torso / 2 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill={traits.trousers} />
-        <rect x={32 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill={traits.trousers} />
-
-        {/* Bottes : elles débordent la jambe des deux côtés, sinon on lit une
-            chaussette. */}
-        {traits.extras.includes('boots') && (
-          <g fill="#1c1f26">
-            <rect x={32 - torso / 2} y="62" width={torso / 2} height="8" rx="1.6" />
-            <rect x={32} y="62" width={torso / 2} height="8" rx="1.6" />
-          </g>
-        )}
-
-        {/* Torse, puis manteau ouvert par-dessus. Le manteau tombe plus bas et
-            s'évase : une veste droite donnerait une boîte. */}
-        <path
-          d={`M${32 - shoulders / 2} 30 L${32 + shoulders / 2} 30 L${32 + shoulders / 2 + 3} 58 L${32 - shoulders / 2 - 3} 58 Z`}
-          fill={`url(#${clothId})`}
-        />
-        {traits.coat && (
+        {traits.frame === 'homie' ? (
           <>
+            {/* Le Homie n'a ni jambes, ni bras, ni tête : tout le patron humain
+                est remplacé. Le reste de la figurine — chevelure, couvre-chef,
+                arme — n'a rien à quoi s'accrocher. */}
+            <CorpsHomie traits={traits} />
+            {/* Le visage est dans la masse, pas au-dessus : on descend le
+                regard d'autant. */}
+            <g transform="translate(0 19)">
+              <Regard traits={traits} />
+              <Marque traits={traits} />
+            </g>
+          </>
+        ) : (
+          <>
+            <ExtrasArriere traits={traits} />
+
+            {/* Le bas du corps. Deux jambes, ou quatre : le centaure a un tronc de
+                cheval, et aucune couleur de pantalon ne le remplace. */}
+            {traits.frame === 'centaur' ? (
+              <CorpsCentaure traits={traits} />
+            ) : (
+              <>
+                {/* Jambes. Elles étaient d'un gris unique, écrit en dur : tout le
+                    monde portait le même pantalon, et c'est la moitié de la
+                    silhouette. */}
+                <rect x={32 - torso / 2 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill={traits.trousers} />
+                <rect x={32 + 1} y="54" width={torso / 2 - 2} height="16" rx="2" fill={traits.trousers} />
+
+                {/* Bottes : elles débordent la jambe des deux côtés, sinon on lit
+                    une chaussette. */}
+                {traits.extras.includes('boots') && (
+                  <g fill="#1c1f26">
+                    <rect x={32 - torso / 2} y="62" width={torso / 2} height="8" rx="1.6" />
+                    <rect x={32} y="62" width={torso / 2} height="8" rx="1.6" />
+                  </g>
+                )}
+              </>
+            )}
+
+            {/* Torse, puis manteau ouvert par-dessus. Le manteau tombe plus bas et
+                s'évase : une veste droite donnerait une boîte. */}
             <path
-              d={`M${32 - shoulders / 2} 30 L29 30 L28 58 L${32 - shoulders / 2 - 3} 58 Z`}
-              fill={traits.coat}
+              d={`M${32 - shoulders / 2} 30 L${32 + shoulders / 2} 30 L${32 + shoulders / 2 + 3} 58 L${32 - shoulders / 2 - 3} 58 Z`}
+              fill={`url(#${clothId})`}
             />
-            <path
-              d={`M35 30 L${32 + shoulders / 2} 30 L${32 + shoulders / 2 + 3} 58 L36 58 Z`}
-              fill={traits.coat}
-            />
+            {/* Les plis de l'étoffe — Légendaire et Mythique. Deux courbes, et le
+                trapèze cesse d'être une planche. */}
+            {traits.detail && (
+              <g fill="none" stroke="#00000024" strokeWidth="0.8" strokeLinecap="round">
+                <path d={`M${32 - torso / 4} 34q-1.4 11 .6 22`} />
+                <path d={`M${32 + torso / 4} 34q1.4 11 -.6 22`} />
+              </g>
+            )}
+            {traits.coat && (
+              <>
+                <path
+                  d={`M${32 - shoulders / 2} 30 L29 30 L28 58 L${32 - shoulders / 2 - 3} 58 Z`}
+                  fill={traits.coat}
+                />
+                <path
+                  d={`M35 30 L${32 + shoulders / 2} 30 L${32 + shoulders / 2 + 3} 58 L36 58 Z`}
+                  fill={traits.coat}
+                />
+              </>
+            )}
+
+            <Bras traits={traits} shoulders={shoulders} />
+            {/* Les mains — Légendaire et Mythique. Une manche qui s'arrête net se
+                lit comme un moignon dès qu'on regarde la figurine de près. Un
+                crochet et un avant-bras mécanique tiennent déjà ce rôle : on ne
+                leur en ajoute pas un second. */}
+            {traits.detail &&
+              traits.prop !== 'hook' &&
+              !traits.extras.includes('metal-arms') && (
+                <g fill={traits.skin}>
+                  {!traits.extras.includes('missing-arm') && !traits.extras.includes('metal-arm') && (
+                    <circle cx={32 - shoulders / 2 - 2} cy="52" r="2.3" />
+                  )}
+                  <circle cx={32 + shoulders / 2 + 2} cy="52" r="2.3" />
+                </g>
+              )}
+            <ExtrasTorse traits={traits} shoulders={shoulders} />
+
+            {/* Le crochet remplace la main gauche : c'est le seul accessoire qui
+                tient lieu de membre, il ne peut donc pas aller avec les autres. */}
+            {traits.prop === 'hook' && (
+              <path
+                d={`M${32 - shoulders / 2 - 2} 51q0 7 5 7t3-5`}
+                fill="none"
+                stroke="#c9ced8"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+              />
+            )}
+
+            <ArriereChevelure traits={traits} />
+
+            {/* Cou : un squelette n'en a d'autre qu'une vertèbre. */}
+            {traits.frame === 'skeleton' ? (
+              <rect x="31" y="24" width="2" height="6" fill={traits.skin} />
+            ) : (
+              <rect x="30" y="24" width="4" height="6" fill={traits.skin} />
+            )}
+
+            <Tete traits={traits} />
+
+            <Frange traits={traits} />
+            <ExtrasTete traits={traits} />
+            <Couvrechef traits={traits} accent={accent} />
+
+            {/* Ce qui décore le couvre-chef vient forcément **après** lui. */}
+            {traits.extras.includes('feather') && (
+              <path
+                d="M40 9q9-9 13-10-3 9-11 12Z"
+                fill={traits.head === 'brim' ? '#4a9ab0' : '#3a8ab0'}
+                opacity="0.9"
+              />
+            )}
+            {traits.extras.includes('striped-hat') && (
+              <g fill="#f0ece2">
+                <path d="M20 11.6h4l1 3.2h-5Z" />
+                <path d="M29 10.4h4l0.4 4.4h-4.4Z" />
+                <path d="M38 11.6h4l-1 3.2h-4Z" />
+              </g>
+            )}
+            <Regard traits={traits} />
+            <VisageFin traits={traits} />
+            <Marque traits={traits} />
+            <ExtrasEpaule traits={traits} shoulders={shoulders} />
+            <Arme traits={traits} accent={accent} />
           </>
         )}
-
-        <Bras traits={traits} shoulders={shoulders} />
-        <ExtrasTorse traits={traits} shoulders={shoulders} />
-
-        {/* Le crochet remplace la main gauche : c'est le seul accessoire qui
-            tient lieu de membre, il ne peut donc pas aller avec les autres. */}
-        {traits.prop === 'hook' && (
-          <path
-            d={`M${32 - shoulders / 2 - 2} 51q0 7 5 7t3-5`}
-            fill="none"
-            stroke="#c9ced8"
-            strokeWidth="2.2"
-            strokeLinecap="round"
-          />
-        )}
-
-        <ArriereChevelure traits={traits} />
-
-        {/* Cou : un squelette n'en a d'autre qu'une vertèbre. */}
-        {traits.frame === 'skeleton' ? (
-          <rect x="31" y="24" width="2" height="6" fill={traits.skin} />
-        ) : (
-          <rect x="30" y="24" width="4" height="6" fill={traits.skin} />
-        )}
-
-        <Tete traits={traits} />
-
-        <Frange traits={traits} />
-        <ExtrasTete traits={traits} />
-        <Couvrechef traits={traits} accent={accent} />
-
-        {/* Ce qui décore le couvre-chef vient forcément **après** lui. */}
-        {traits.extras.includes('feather') && (
-          <path
-            d="M40 9q9-9 13-10-3 9-11 12Z"
-            fill={traits.head === 'brim' ? '#4a9ab0' : '#3a8ab0'}
-            opacity="0.9"
-          />
-        )}
-        {traits.extras.includes('striped-hat') && (
-          <g fill="#f0ece2">
-            <path d="M20 11.6h4l1 3.2h-5Z" />
-            <path d="M29 10.4h4l0.4 4.4h-4.4Z" />
-            <path d="M38 11.6h4l-1 3.2h-4Z" />
-          </g>
-        )}
-        <Regard traits={traits} />
-        <Marque traits={traits} />
-        <ExtrasEpaule traits={traits} shoulders={shoulders} />
-        <Arme traits={traits} accent={accent} />
       </g>
 
       {/*
@@ -1261,6 +1448,39 @@ function SpriteFigure({
         mask={`url(#${masqueId})`}
         pointerEvents="none"
       />
+      {/*
+        Le trait de contour — Légendaire et Mythique.
+
+        La figurine est **redessinée** par-dessus elle-même, sans remplissage
+        et avec un cerne. Chaque pièce — la tête, le manteau, une jambe, une
+        lame — reçoit le sien, et le dessin passe de l'aplat au trait. C'est
+        le signal de qualité le plus fort qu'on puisse ajouter à une forme
+        plate, et il ne coûte qu'un `use` : la géométrie n'est pas répétée.
+
+        `fill="none"` n'efface rien : chaque pièce déclare son propre
+        remplissage, et une valeur posée sur le `use` ne l'emporte pas sur une
+        valeur déclarée. Seul le cerne, que personne ne déclare, descend.
+      */}
+      {traits.detail && (
+        <use
+          href={`#${figureId}`}
+          fill="none"
+          stroke="#1a1410"
+          strokeOpacity="0.5"
+          strokeWidth="0.85"
+          strokeLinejoin="round"
+          pointerEvents="none"
+        />
+      )}
+      {traits.detail && (
+        <rect
+          width="64"
+          height="80"
+          fill={`url(#${rebordId})`}
+          mask={`url(#${masqueId})`}
+          pointerEvents="none"
+        />
+      )}
     </svg>
   );
 }

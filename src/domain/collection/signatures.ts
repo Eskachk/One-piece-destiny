@@ -134,7 +134,20 @@ export type Height = 'short' | 'normal' | 'tall' | 'towering';
  * hommes bleus, alors que ce sont des hommes-poissons. Aucune couleur de
  * cheveux ne rattrape une silhouette fausse.
  */
-export type Frame = 'human' | 'reindeer' | 'skeleton' | 'fishman' | 'bear' | 'oni';
+export type Frame =
+  | 'human'
+  | 'reindeer'
+  | 'skeleton'
+  | 'fishman'
+  | 'bear'
+  | 'oni'
+  // Les Homies de Big Mom n'ont pas d'anatomie : ce sont un nuage, un orage,
+  // une flamme et un bicorne. Dessinés sur le patron humain, ils sortaient
+  // quatre petits bonshommes — le contresens le plus visible du jeu.
+  | 'homie'
+  // Le centaure a quatre membres et un tronc de cheval. Deux jambes ne le
+  // rendent pas, quelle que soit la couleur du pantalon.
+  | 'centaur';
 
 /**
  * Détails ajoutés au patron. Un personnage en porte zéro, un ou deux — jamais
@@ -208,7 +221,10 @@ export type Extra =
   | 'chin-tuft'
   | 'feather'
   | 'striped-hat'
-  | 'face-lines';
+  | 'face-lines'
+  // Cinquième série. Napoléon est un bicorne vivant : sa forme **est** son
+  // identité, elle ne peut pas être un chapeau posé sur une tête.
+  | 'bicorn';
 
 export interface Signature {
   /** Description physique en une phrase. Sert de source à tout le reste. */
@@ -1991,7 +2007,8 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'orange/jaune vif, flammes rouge-orangé et jaune. Visage : rond, ' +
       'souriant, yeux sombres. Particularités : aucune anatomie humaine ; ' +
       'masse de flammes mobile.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#f6b13c', cut: 'bald', skin: '#f2913a', outfit: '#f2913a',
+    frame: 'homie', extras: [],
     face: 'round',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
@@ -2002,7 +2019,9 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'intégrés, nez, moustache et bouche stylisés. Lame : grande lame ' +
       'argentée fixée au sommet. Particularité : peut changer de taille et de ' +
       'forme ; aucune anatomie humaine classique.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#242a4a', cut: 'bald', skin: '#2a3358', outfit: '#2a3358',
+    accessory: '#d9b25e',
+    frame: 'homie', extras: ['bicorn'],
     head: 'none', mark: 'moustache', prop: 'none', build: 'slim',
   },
   hera: {
@@ -2013,7 +2032,8 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'enfantine malgré l\'expression agressive. Particularités : petits ' +
       'éclairs jaune pâle et blancs autour du corps. Morphologie : aucune ' +
       'anatomie humaine conventionnelle ; volume nuageux variable.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#b7a6d6', cut: 'bald', skin: '#b09fd0', outfit: '#b09fd0',
+    frame: 'homie', extras: [],
     face: 'round',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
@@ -2063,7 +2083,8 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'transformations ou anomalies anatomiques. Non précisé = information ' +
       'qui n\'est pas solidement fixée par le canon ; la couleur ne doit pas ' +
       'être considérée comme officielle.',
-    hair: '#2a2a33', cut: 'short', skin: CLAIR, outfit: '#3a4250',
+    hair: '#cfd9e8', cut: 'bald', skin: '#c6d2e4', outfit: '#c6d2e4',
+    frame: 'homie', extras: [],
     face: 'round',
     head: 'none', mark: 'none', prop: 'none', build: 'slim',
   },
@@ -2122,7 +2143,9 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'jambes développés, quatre sabots. Couleurs : partie cheval dominée par ' +
       'brun clair/beige, crinière blonde, vêtements noirs, jaunes, blancs et ' +
       'rouges. Accessoire : chapeau de cavalière.',
-    hair: '#e2c978', cut: 'ponytail', skin: CLAIR, outfit: '#3a4250',
+    hair: '#e2c978', cut: 'ponytail', skin: CLAIR, outfit: '#c9243f',
+    trousers: '#c6a074',
+    frame: 'centaur',
     face: 'sharp',
     head: 'brim', mark: 'none', prop: 'none', build: 'slim',
   },
@@ -2584,7 +2607,8 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'arrière. Visage : museau de rat, nez pointu, longues moustaches fines. ' +
       'Yeux : petits et sombres. Morphologie : mince, taille moyenne. ' +
       'Vêtements : uniforme Marine blanc et bleu, manteau blanc.',
-    hair: '#8a8e96', cut: 'short', skin: CLAIR, outfit: '#253760', coat: '#f0ece2',
+    hair: '#8a8e96', cut: 'short', skin: '#8b7f70', outfit: '#253760', coat: '#f0ece2',
+    frame: 'bear',
     extras: ['coat-shoulders', 'epaulettes'],
     face: 'long',
     eyes: 'narrow',
@@ -2775,7 +2799,8 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'épaisses. Vêtements : très légers, dominés par brun, beige, rouge et ' +
       'blanc. Particularité : apparence d\'un grand ours/singe ' +
       'anthropomorphe.',
-    hair: '#4c321e', cut: 'short', skin: CLAIR, outfit: '#f0ece2',
+    hair: '#4c321e', cut: 'short', skin: '#5c3f28', outfit: '#f0ece2',
+    frame: 'bear', extras: ['bare-chest'],
     head: 'none', mark: 'none', prop: 'none', build: 'broad',
   },
   'montblanc-cricket': {
@@ -2796,7 +2821,8 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'ventre volumineux, bras longs et puissants. Vêtements : salopette ' +
       'principalement bleu clair, chemise sous-jacente et casquette ' +
       'rouge/brune. Particularité : apparence de grand singe anthropomorphe.',
-    hair: '#4c321e', cut: 'short', skin: CLAIR, outfit: '#4978c3',
+    hair: '#4c321e', cut: 'short', skin: '#5c3f28', outfit: '#4978c3',
+    frame: 'bear',
     extras: ['necktie'],
     head: 'cap', mark: 'none', prop: 'none', build: 'broad',
   },

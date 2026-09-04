@@ -106,6 +106,47 @@ describe('signatures physiques', () => {
     expect(pendantes).toEqual([]);
   });
 
+  it('ne dessine pas en humain ce que la description dit non humain', () => {
+    /*
+     * Neuf Épiques sur cent quarante-huit portaient un plan de corps déclaré.
+     * Les quatre Homies de Big Mom — dont les fiches disent mot pour mot
+     * « aucune anatomie humaine » — sortaient quatre petits bonshommes à
+     * jambes ; Speed, « transformée en centaure », en avait deux ; Masira,
+     * Hamburg et Nezumi, tous trois anthropomorphes, avaient un visage
+     * d'homme.
+     *
+     * Ce test relit les fiches. Toute signature dont la description annonce
+     * une race non humaine doit porter un `frame` qui n'est pas `human` — et
+     * la faute est facile à refaire, puisque le patron humain reste le repli
+     * de tout le monde.
+     */
+    const RACES = [
+      'homie',
+      'centaure',
+      'anthropomorphe',
+      'simiesque',
+      'homme-poisson',
+      'femme-poisson',
+      'squelette',
+      'renne',
+    ];
+    const sansAccent = (t: string) =>
+      t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
+    const fautifs: string[] = [];
+    for (const [id, signature] of Object.entries(SIGNATURES)) {
+      const note = sansAccent(signature.note);
+      // Seule la mention de la **race** compte : « col de fourrure » ou
+      // « manteau de fourrure » décrivent un vêtement, pas une espèce, et
+      // c'est ce qui avait fait prendre Katakuri et Whitey Bay pour des ours.
+      const race = note.slice(0, note.indexOf('. ') + 1 || note.length);
+      if (RACES.some((r) => race.includes(r)) && (signature.frame ?? 'human') === 'human') {
+        fautifs.push(id);
+      }
+    }
+    expect(fautifs).toEqual([]);
+  });
+
   it('marque les héros comme nommés, jamais comme repli', () => {
     for (const c of HEROS) {
       const t = spriteTraits({ id: c.id, rarity: c.rarity, attributes: [] });
