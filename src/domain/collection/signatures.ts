@@ -3102,7 +3102,8 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     note:
       'Race : Humain. Peau : claire. Cheveux : sombres, courts. Visage : ' +
       'étroit, traits sévères. Morphologie : mince. Vêtements : tenue claire ' +
-      'de Chevalier de Dieu, cape, col haut. Accessoire : lunettes.',
+      'de Chevalier de Dieu, cape, col haut. Accessoire : lunettes. Arme : ' +
+      'épée de famille.',
     hair: '#241f1c', cut: 'short', skin: CLAIR, outfit: '#dde2ea',
     accessory: '#c9a227',
     extras: ['cape', 'high-collar'],
@@ -3110,7 +3111,10 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     eyes: 'narrow',
     brow: 'fierce',
     height: 'tall',
-    head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
+    // L'épée `Gram`, celle de la famille Shepherd. Sa fiche disait « none » :
+    // il tenait la lame de ses ancêtres et la figurine l'avait les mains
+    // vides.
+    head: 'none', mark: 'glasses', prop: 'sword', build: 'slim',
   },
 
   'charlotte-perospero': {

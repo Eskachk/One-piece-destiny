@@ -83,11 +83,13 @@ export const MISSING_CHARACTERS: Character[] = [
     presenceExpectation: 'MEDIUM',
   },
   /*
-   * ⚠️ **Le seul nom de ce fichier dont la graphie complète mérite d'être
-   * confirmée sur la planche.** Le personnage existe et le poste est certain
-   * — Chevalier de Dieu en activité — mais le prénom d'usage se lit aussi
-   * « Sommers » seul selon les traductions. Le corriger ne coûte que ce
-   * champ : rien d'autre ne dépend du libellé, l'identifiant est stable.
+   * Le nom complet est **vérifié**, et il est bien « Shepherd Sommers ».
+   *
+   * Il avait été écrit sous réserve. Le contrôle donne mieux qu'une
+   * confirmation : Sommers appartient à la **famille Shepherd**, celle de
+   * Shepherd Ju Peter, doyen du Gouvernement Mondial — d'où le lien de famille
+   * ci-dessous — il porte un fruit Paramecia, et l'épée `Gram` de sa famille.
+   * Trois faits que sa fiche ignorait.
    *
    * Le commentaire est **au-dessus** de l'accolade, et pas dedans :
    * `enrich-abilities.mjs` découpe les fichiers sur le motif `\n  {\n    id:`,
@@ -100,8 +102,18 @@ export const MISSING_CHARACTERS: Character[] = [
     name: 'Shepherd Sommers',
     rarity: 'EPIC',
     affiliations: ['Chevaliers de Dieu', 'Gouvernement Mondial', 'Dragons Célestes'],
-    relations: [{ to: 'figarland-garling', kind: 'FACTION' }],
-    abilities: ['Chevalier de Dieu', 'Dragon Céleste', 'Fruit du démon', 'Haki armement'],
+    relations: [
+      { to: 'figarland-garling', kind: 'FACTION' },
+      { to: 'shepherd-ju-peter', kind: 'FAMILY' },
+    ],
+    abilities: [
+      'Chevalier de Dieu',
+      'Dragon Céleste',
+      'Fruit du démon',
+      'Paramecia',
+      'Épéiste',
+      'Haki armement',
+    ],
     presenceExpectation: 'MEDIUM',
   },
 
