@@ -179,7 +179,7 @@ export function paletteOf(subject: PortraitSubject, rarityColor: string): Portra
  * de lunettes n'avaient nulle part où aller, et c'est précisément ce qui
  * distingue un personnage d'un autre.
  */
-export const PIXEL_GRID = 64;
+export const PIXEL_GRID = 128;
 
 /**
  * Portrait en pixels — Épique.
@@ -302,6 +302,35 @@ export function pixelPortrait(traits: SpriteTraits): (string | null)[][] {
   // --- Le visage -----------------------------------------------------------
   for (let y = hautVisage; y <= basVisage; y += 1) bande(y, y, largeurAu(y), traits.skin);
 
+  /* --- Le modelé du visage ------------------------------------------------
+   *
+   * Réservé aux grandes grilles. Un visage en aplat reste une découpe, quelle
+   * que soit sa définition : ce sont les variations de valeur qui lui donnent
+   * un volume. La lumière posée par-dessus en SVG éclaire la silhouette
+   * entière — elle ne peut pas creuser une joue.
+   *
+   * Trois touches suffisent, et l'ordre compte : le front s'éclaire, les joues
+   * se creusent, la mâchoire s'ombre. Davantage, et le visage se salit.
+   */
+  if (u >= 4) {
+    const clair = '#ffffff22';
+    const creux = '#0000001a';
+
+    // Le front prend la lumière : c'est la surface la plus saillante.
+    for (let y = hautVisage + u; y <= hautVisage + 4 * u; y += 1) {
+      bande(y, y, Math.max(1, largeurAu(y) - 3 * u), clair);
+    }
+    // Les joues rentrent, juste sous la pommette.
+    for (let y = r(0.46); y <= r(0.55); y += 1) {
+      const l = largeurAu(y);
+      bande(y, y, l - u, creux, l - 3 * u);
+    }
+    // La mâchoire, sur les deux dernières rangées du visage.
+    for (let y = basVisage - 2 * u; y <= basVisage; y += 1) {
+      bande(y, y, largeurAu(y), creux, Math.max(0, largeurAu(y) - 2 * u));
+    }
+  }
+
   // Les oreilles : deux bosses à hauteur des yeux. Elles ne se remarquent pas,
   // et leur absence se remarque — une tête sans oreilles paraît rasée.
   const ligneOeil = traits.eyes === 'wide' ? r(0.4) : r(0.42);
@@ -332,6 +361,18 @@ export function pixelPortrait(traits: SpriteTraits): (string | null)[][] {
     // peigne posé sur la tête. À cette résolution, une masse franche est plus
     // juste qu'un faux détail : ce qui distingue une chevelure, c'est sa
     // silhouette et sa couleur, pas sa texture.
+
+    // Le reflet : une bande horizontale en travers de la masse. C'est toute
+    // la différence avec les mèches verticales essayées à soixante-quatre et
+    // retirées — un cheveu qui brille, pas un peigne dessiné sur la tête.
+    if (u >= 4) {
+      const reflet = '#ffffff26';
+      const y0 = Math.round(hautCrane + (frange - hautCrane) * 0.3);
+      for (let y = y0; y < y0 + Math.max(1, Math.round(u / 2)); y += 1) {
+        const l = y >= hautVisage ? largeurAu(y) : joue - u;
+        bande(y, y, l - u, reflet, Math.max(0, l - 4 * u));
+      }
+    }
 
     if (traits.cut === 'spiky') {
       for (const dx of [0, Math.round(joue * 0.55), joue - u]) {
@@ -380,6 +421,14 @@ export function pixelPortrait(traits: SpriteTraits): (string | null)[][] {
   }
   if (u >= 2) poser(colonne(irisDx + 1), irisY - u, '#ffffffcc'); // le reflet
 
+  // Le pli de la paupière : un trait au-dessus de l'œil. Sans lui, l'œil est
+  // un rectangle posé sur la peau.
+  if (u >= 4) {
+    bande(ligneOeil - 1, ligneOeil - 1,
+          dxOeil + Math.floor(largeurOeil / 2), '#00000022',
+          dxOeil - Math.floor(largeurOeil / 2));
+  }
+
   // --- Les sourcils --------------------------------------------------------
   if (traits.brow && traits.brow !== 'neutral') {
     const y = ligneOeil - 2 * u;
@@ -406,6 +455,15 @@ export function pixelPortrait(traits: SpriteTraits): (string | null)[][] {
   for (let y = ligneOeil + hauteurOeil; y <= basNez; y += 1) poser(colonne(0), y, ombre);
   if (u >= 2) {
     for (let dx = 0; dx <= u; dx += 1) poser(colonne(dx), basNez, ombre);
+  }
+
+  // Les narines, deux marques distinctes plutôt qu'une arête continue.
+  if (u >= 4) {
+    for (let dx = u; dx <= 2 * u; dx += 1) {
+      for (let dy = 0; dy < Math.max(1, Math.round(u / 2)); dy += 1) {
+        poser(colonne(dx), basNez + dy, '#00000033');
+      }
+    }
   }
 
   const ligneBouche = r(0.58);
@@ -504,6 +562,21 @@ export function pixelPortrait(traits: SpriteTraits): (string | null)[][] {
     bande(y, y, largeur, traits.coat ?? traits.outfit);
   }
   if (traits.coat) bande(hautEpaules + u, N - 1, largeurCou, traits.outfit);
+
+  // Le col : deux revers qui s'écartent depuis la base du cou. C'est le seul
+  // endroit où l'on voit que le personnage porte quelque chose plutôt que
+  // d'être peint d'une couleur.
+  if (u >= 4) {
+    const revers = traits.coat ? traits.outfit : '#00000026';
+    for (let i = 0; i < 4 * u; i += 1) {
+      const y = hautEpaules + i;
+      if (y >= N) break;
+      const dx = largeurCou + Math.round(i * 0.8);
+      for (let e = 0; e < Math.max(1, Math.round(u / 2)); e += 1) {
+        poser(colonne(dx + e), y, revers);
+      }
+    }
+  }
 
   return grid;
 }
