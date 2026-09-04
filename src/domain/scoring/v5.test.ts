@@ -53,7 +53,16 @@ describe('moteur v5 — risque et attributs pour tout le monde', () => {
   it('laisse à zéro un absent sans lien ni risque mesurable', () => {
     // L'ouverture n'est pas une distribution : un personnage attendu, banal et
     // sans rapport avec le chapitre ne gagne toujours presque rien.
-    const score = scoreDe('luffy', present('t-bone'));
+    //
+    // Le témoin était T-Bone, et il a cessé de convenir le jour où la table
+    // éditoriale a donné le Haki de l'armement à tous les officiers de la
+    // Marine : il partageait dès lors ce Haki avec Luffy, et la synergie
+    // valait un point. Le test disait donc « aucun lien » d'une paire qui en
+    // avait un — c'est la donnée qui avait raison, pas l'assertion.
+    //
+    // Kaya ne partage **rien** avec Luffy, et c'est vérifiable : ni Haki, ni
+    // fruit, ni équipage, ni camp, ni grade. C'est ce que ce test veut dire.
+    const score = scoreDe('luffy', present('kaya'));
     expect(score.base).toBe(0);
     expect(score.synergy).toBe(0);
   });

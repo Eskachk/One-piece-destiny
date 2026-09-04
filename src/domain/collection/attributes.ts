@@ -93,7 +93,14 @@ const FAMILY_ORDER: readonly Family[] = [
  * second couteau. Partout ailleurs, un seul — deux grades ou deux métiers sur
  * la même carte n'apprennent rien de plus que le premier.
  */
-const PER_FAMILY: Partial<Record<Family, number>> = { haki: 3, renown: 2 };
+const PER_FAMILY: Partial<Record<Family, number>> = {
+  haki: 3,
+  renown: 2,
+  // Un métier n'exclut pas l'autre : Marco est commandant **et** médecin,
+  // Brook musicien **et** bretteur. En n'en gardant qu'un, on effaçait
+  // toujours le second — et c'est souvent le plus caractéristique.
+  role: 2,
+};
 
 interface Rule {
   id: string;
@@ -313,8 +320,24 @@ const PROP_ATTRIBUTES: Record<string, Attribute> = {
   hook: { id: 'hook', symbol: '🪝', label: 'Crochet' },
 };
 
-/** Nombre de symboles affichés sur une carte. Au-delà, la carte devient une soupe. */
-export const MAX_ATTRIBUTES = 6;
+/**
+ * Il n'y a plus de plafond, et c'est une décision.
+ *
+ * **Ce que le plafond coûtait.** Six symboles au maximum, et la sélection
+ * s'arrêtait là. Un personnage riche — trois Haki, un fruit, une arme, un
+ * équipage, un camp, un grade — perdait donc tout ce qui venait après le
+ * sixième. Plus il avait à dire, moins sa carte en disait : exactement le
+ * défaut que le regroupement par familles avait été écrit pour corriger, et
+ * que le plafond réintroduisait un cran plus loin.
+ *
+ * La carte fait passer les symboles à la ligne (`flex-wrap`) : deux rangées de
+ * six coûtent une ligne de plus, pas une refonte.
+ *
+ * Ce qui **reste** limité, et pour une autre raison, c'est le nombre par
+ * famille — voir `PER_FAMILY`. Il n'empêche pas de montrer beaucoup ; il
+ * empêche de montrer deux fois la même chose.
+ */
+export const MAX_ATTRIBUTES = Number.POSITIVE_INFINITY;
 
 /**
  * Attributs d'un personnage, du plus signifiant au moins signifiant.
@@ -354,13 +377,32 @@ export function attributesOf(character: Character): Attribute[] {
   const crew = crewOf(character);
   if (crew) ajouter('crew', crew);
 
+  /*
+   * ⚠️ **Pourquoi 🏴 « Pirate » reste, alors qu'il double le pavillon.**
+   *
+   * Le symbole ne dit rien que l'équipage nommé ne dise mieux — ils le sont
+   * tous — et une première version le supprimait dès qu'un pavillon était
+   * reconnu. Deux tests du moteur de score l'ont refusée, et ils avaient
+   * raison.
+   *
+   * `scoring/shared-attributes.ts` ne pondère pas les attributs à la main : il
+   * mesure leur **fréquence dans le référentiel**. « Pirate », porté par 41 %
+   * des personnages, vaut zéro point — c'est exactement ce qu'on veut d'un
+   * trait que tout le monde partage. Le retirer de quatre cents fiches
+   * l'aurait rendu rare, donc **payant** : deux joueurs auraient touché un
+   * bonus de parenté pour s'être tous deux dits pirates.
+   *
+   * Ce qui se voit sur une carte et ce qui compte au score sortent de la même
+   * fonction. Un choix d'affichage n'est donc jamais seulement un choix
+   * d'affichage, et celui-ci aurait déplacé des points.
+   */
+
   // La sélection prend famille par famille, dans l'ordre d'affichage. C'est ce
   // qui garantit qu'un personnage à trois Haki montre quand même son camp et
   // son équipage — le défaut de la version plate.
   const found: Attribute[] = [];
   for (const family of FAMILY_ORDER) {
     for (const attribute of byFamily.get(family) ?? []) {
-      if (found.length >= MAX_ATTRIBUTES) return found;
       found.push(attribute);
     }
   }

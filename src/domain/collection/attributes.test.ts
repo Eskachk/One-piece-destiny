@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { attributesOf, MAX_ATTRIBUTES } from './attributes';
+import { attributesOf } from './attributes';
+
+/** L'ancien plafond, gardé comme repère : la carte doit le dépasser. */
+const MAX_ATTRIBUTES_ANCIEN = 6;
 import { CHARACTERS, CHARACTER_INDEX } from '../../data/characters';
 import type { Character } from '../types';
 
@@ -58,7 +61,22 @@ describe('attributs de carte', () => {
         affiliations: ['Marine', 'Logia'],
       }),
     );
-    expect(found.length).toBeLessThanOrEqual(MAX_ATTRIBUTES);
+    /*
+     * Il n'y a plus de plafond : ce personnage doit montrer **tout** ce qu'il
+     * a. Le plafond de six coupait la sélection famille par famille, donc un
+     * personnage riche perdait son camp, son grade ou son métier — plus il
+     * avait à dire, moins sa carte en disait.
+     */
+    const ids = found.map((a) => a.id);
+    expect(ids).toContain('conqueror');
+    expect(ids).toContain('armament');
+    expect(ids).toContain('observation');
+    expect(ids).toContain('logia');
+    expect(ids).toContain('marine');
+    expect(ids).toContain('captain');
+    expect(ids).toContain('doctor');
+    expect(ids).toContain('navigator');
+    expect(found.length).toBeGreaterThan(MAX_ATTRIBUTES_ANCIEN);
   });
 
   it('donne au moins un symbole aux personnages écrits à la main', () => {
@@ -143,6 +161,39 @@ describe('attributs de carte', () => {
     ).map((a) => a.id);
     expect(avecRace).toContain('fishman');
     expect(avecRace).not.toContain('colossus');
+  });
+
+  it('garde « Pirate » même quand l’équipage est nommé', () => {
+    /*
+     * Le symbole double le pavillon, et une version l'a supprimé pour cette
+     * raison. Deux tests du moteur de score l'ont refusée.
+     *
+     * `shared-attributes.ts` mesure la **fréquence** d'un attribut pour en
+     * fixer la valeur : « pirate », porté par 41 % du référentiel, vaut zéro.
+     * Le retirer de quatre cents fiches l'aurait rendu rare, donc payant — un
+     * bonus de parenté pour s'être tous deux dits pirates.
+     *
+     * Ce qui s'affiche et ce qui compte sortent de la même fonction. Ce test
+     * est là pour que la prochaine tentative de « nettoyer » la carte
+     * rencontre la raison avant la surprise.
+     */
+    const ids = attributesOf(
+      character({ affiliations: ['Mugiwara'], abilities: ['Pirate'] }),
+    ).map((a) => a.id);
+
+    expect(ids).toContain('crew-Chapeau de Paille');
+    expect(ids).toContain('pirate');
+  });
+
+  it('montre les deux métiers d’un personnage qui en a deux', () => {
+    // Marco est commandant et médecin, Brook musicien et bretteur. En n'en
+    // gardant qu'un, on effaçait toujours le second — souvent le plus
+    // caractéristique.
+    const ids = attributesOf(
+      character({ abilities: ['Doctor', 'Musicien'] }),
+    ).map((a) => a.id);
+    expect(ids).toContain('doctor');
+    expect(ids).toContain('musician');
   });
 
   it('rend des identifiants uniques : ils servent de clé de rendu', () => {

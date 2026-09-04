@@ -3113,6 +3113,21 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     head: 'none', mark: 'glasses', prop: 'none', build: 'slim',
   },
 
+  'charlotte-perospero': {
+    note:
+      'Race : Humain. Peau : claire. Cheveux : roses, en spirale de sucre ' +
+      'candi. Visage : long, langue démesurée. Morphologie : grande, mince. ' +
+      'Vêtements : manteau à rayures, col haut. Arme : canne de sucre.',
+    hair: '#e59ac2', cut: 'spiky', skin: CLAIR, outfit: '#f0d7e6',
+    coat: '#c2477a',
+    extras: ['high-collar', 'striped-suit'],
+    face: 'long',
+    eyes: 'narrow',
+    brow: 'arched',
+    height: 'tall',
+    head: 'none', mark: 'none', prop: 'cane', build: 'slim',
+  },
+
   hatchan: {
     note:
       'Race : Homme-poisson, poulpe. Peau : rose-violacé. Cheveux : sombres, ' +

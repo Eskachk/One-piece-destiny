@@ -45,7 +45,7 @@ export const MISSING_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Elbaf', 'Marine'],
     relations: [{ to: 'robin', kind: 'MENTOR' }],
-    abilities: ['Géant', 'Colosse', 'Vice-Admiral', 'Marine'],
+    abilities: ['Géant', 'Colosse', 'Vice-Admiral', 'Marine', 'Haki armement'],
     presenceExpectation: 'LOW',
   },
 
@@ -61,13 +61,7 @@ export const MISSING_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Chevaliers de Dieu', 'Gouvernement Mondial', 'Dragons Célestes'],
     relations: [{ to: 'figarland-shamrock', kind: 'FAMILY' }],
-    abilities: [
-      'Chevalier de Dieu',
-      'Dragon Céleste',
-      'Épéiste',
-      'Haki armement',
-      'Capitaine',
-    ],
+    abilities: ['Chevalier de Dieu', 'Dragon Céleste', 'Épéiste', 'Haki armement', 'Capitaine', 'Haki des Rois', 'Haki observation'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -76,7 +70,7 @@ export const MISSING_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Chevaliers de Dieu', 'Gouvernement Mondial', 'Dragons Célestes'],
     relations: [{ to: 'figarland-garling', kind: 'FACTION' }],
-    abilities: ['Chevalier de Dieu', 'Dragon Céleste', 'Fruit du démon', 'Tireur'],
+    abilities: ['Chevalier de Dieu', 'Dragon Céleste', 'Fruit du démon', 'Tireur', 'Haki armement'],
     presenceExpectation: 'MEDIUM',
   },
   {
@@ -85,24 +79,51 @@ export const MISSING_CHARACTERS: Character[] = [
     rarity: 'EPIC',
     affiliations: ['Chevaliers de Dieu', 'Gouvernement Mondial', 'Dragons Célestes'],
     relations: [{ to: 'figarland-garling', kind: 'FACTION' }],
-    abilities: ['Chevalier de Dieu', 'Dragon Céleste', 'Fruit du démon', 'Colosse'],
+    abilities: ['Chevalier de Dieu', 'Dragon Céleste', 'Fruit du démon', 'Colosse', 'Haki armement'],
     presenceExpectation: 'MEDIUM',
   },
+  /*
+   * ⚠️ **Le seul nom de ce fichier dont la graphie complète mérite d'être
+   * confirmée sur la planche.** Le personnage existe et le poste est certain
+   * — Chevalier de Dieu en activité — mais le prénom d'usage se lit aussi
+   * « Sommers » seul selon les traductions. Le corriger ne coûte que ce
+   * champ : rien d'autre ne dépend du libellé, l'identifiant est stable.
+   *
+   * Le commentaire est **au-dessus** de l'accolade, et pas dedans :
+   * `enrich-abilities.mjs` découpe les fichiers sur le motif `\n  {\n    id:`,
+   * et un commentaire glissé entre les deux rendait ce personnage invisible au
+   * script. Il était le seul des huit à ne pas recevoir son Haki, sans autre
+   * signe qu'une ligne « identifiant inconnu » au milieu des autres.
+   */
   {
-    /*
-     * ⚠️ **Le seul nom de ce fichier dont la graphie complète mérite d'être
-     * confirmée sur la planche.** Le personnage existe et le poste est certain
-     * — Chevalier de Dieu en activité — mais le prénom d'usage se lit aussi
-     * « Sommers » seul selon les traductions. Le corriger ne coûte que ce
-     * champ : rien d'autre ne dépend du libellé, l'identifiant est stable.
-     */
     id: 'shepherd-sommers',
     name: 'Shepherd Sommers',
     rarity: 'EPIC',
     affiliations: ['Chevaliers de Dieu', 'Gouvernement Mondial', 'Dragons Célestes'],
     relations: [{ to: 'figarland-garling', kind: 'FACTION' }],
-    abilities: ['Chevalier de Dieu', 'Dragon Céleste', 'Fruit du démon'],
+    abilities: ['Chevalier de Dieu', 'Dragon Céleste', 'Fruit du démon', 'Haki armement'],
     presenceExpectation: 'MEDIUM',
+  },
+
+  // --- Famille Charlotte ----------------------------------------------------
+  //
+  // Trente-sept Charlotte au référentiel, et l'aîné manquait — le seul des
+  // trois Généraux Sucrés à ne pas y figurer, alors que Katakuri, Cracker et
+  // Smoothie y sont.
+  {
+    id: 'charlotte-perospero',
+    name: 'Charlotte Perospero',
+    rarity: 'EPIC',
+    // Pas de type de fruit ici : un invariant du référentiel veut que
+    // `affiliations` ne porte que des camps, jamais une famille de fruit. Le
+    // type est déjà dans les capacités, où la carte le lit aussi bien.
+    affiliations: ['Big Mom Pirates'],
+    relations: [
+      { to: 'charlotte-linlin-big-mom', kind: 'FAMILY' },
+      { to: 'charlotte-dent-de-chien', kind: 'FAMILY' },
+    ],
+    abilities: ['Fruit du démon', 'Paramecia', 'Ministre des Bonbons', 'Officer', "Équipage d'Empereur", 'Prime importante', 'Haki armement', 'Haki observation'],
+    presenceExpectation: 'LOW',
   },
 
   // --- Équipage d'Arlong ----------------------------------------------------

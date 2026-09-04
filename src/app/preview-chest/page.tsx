@@ -7,6 +7,7 @@ import { ISLANDS, type IslandId } from '@/domain/islands';
 import { CharacterArt } from '@/components/CharacterArt';
 import { CHARACTERS } from '@/data/characters';
 import { signatureOf } from '@/domain/collection/signatures';
+import { attributesOf } from '@/domain/collection/attributes';
 import type { RevealedCard } from '@/app/actions/collection';
 
 /** Les cartes dessinées en figurine, dans l'ordre du référentiel. */
@@ -23,15 +24,31 @@ export const dynamic = 'force-dynamic';
 export default function PreviewChestPage() {
   if (process.env.NODE_ENV === 'production') notFound();
 
-  // Le nom est fourni ici comme il l'est par le serveur en vrai : la
-  // cérémonie ne cherche jamais dans le référentiel.
-  const legendary: RevealedCard[] = [
-    { characterId: 'shanks', name: 'Shanks', rarity: 'MYTHIC', duplicate: false, shards: 0, attributes: [{ id: 'conqueror', symbol: '👑', label: 'Haki des Rois' }, { id: 'pirate', symbol: '🏴', label: 'Pirate' }] },
-    { characterId: 'luffy', name: 'Monkey D. Luffy', rarity: 'LEGENDARY', duplicate: true, shards: 200, attributes: [{ id: 'conqueror', symbol: '👑', label: 'Haki des Rois' }, { id: 'fruit', symbol: '🍎', label: 'Fruit du démon' }] },
-    { characterId: 'koby', name: 'Koby', rarity: 'RARE', duplicate: false, shards: 0, attributes: [{ id: 'marine', symbol: '⚓', label: 'Marine' }] },
-    { characterId: 'nami', name: 'Nami', rarity: 'EPIC', duplicate: false, shards: 0, attributes: [{ id: 'navigator', symbol: '🧭', label: 'Navigation' }] },
-    { characterId: 'helmeppo', name: 'Helmeppo', rarity: 'COMMON', duplicate: false, shards: 0, attributes: [{ id: 'marine', symbol: '⚓', label: 'Marine' }] },
-  ];
+  /*
+   * Cartes tirées du **vrai** référentiel.
+   *
+   * Elles étaient écrites en dur, avec deux attributs chacune. La page servait
+   * donc à vérifier une mise en page que le produit ne rend nulle part : au
+   * moment où le plafond de six symboles est tombé, elle montrait toujours
+   * deux pastilles bien alignées, alors que Kaido en porte dix et passe à la
+   * ligne. Une page d'aperçu qui n'aperçoit pas ce qui va changer ne sert à
+   * rien.
+   *
+   * Le nom est joint ici comme le serveur le joint en vrai : la cérémonie, elle,
+   * ne cherche jamais dans le référentiel.
+   */
+  const echantillon = ['kaido', 'luffy', 'charlotte-dent-de-chien', 'koby', 'helmeppo']
+    .map((id) => CHARACTERS.find((c) => c.id === id))
+    .filter((c): c is NonNullable<typeof c> => Boolean(c));
+
+  const legendary: RevealedCard[] = echantillon.map((c, index) => ({
+    characterId: c.id,
+    name: c.name,
+    rarity: c.rarity,
+    duplicate: index === 1,
+    shards: index === 1 ? 200 : 0,
+    attributes: attributesOf(c),
+  }));
 
   return (
     <main className="mx-auto w-full max-w-[430px] px-5 py-10">
