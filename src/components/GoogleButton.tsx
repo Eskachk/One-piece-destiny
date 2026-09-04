@@ -10,13 +10,34 @@ import Link from 'next/link';
  *
  * Le logo est dessiné en SVG : aucune ressource externe à charger, donc rien
  * qui puisse être bloqué par la politique de sécurité de contenu.
+ *
+ * ## `prefetch={false}`, et ce n'est pas une optimisation
+ *
+ * Next précharge les liens internes dès qu'ils entrent dans le champ de
+ * vision. Appliqué à celui-ci, cela **exécutait la route OAuth** à chaque
+ * affichage de l'écran de connexion : un nouveau `state`, un nouveau
+ * vérificateur PKCE, et les deux cookies `httpOnly` écrasés — sans que
+ * personne ait cliqué.
+ *
+ * Deux conséquences, et la seconde est un vrai défaut :
+ *
+ *   - le préchargement suit la redirection vers `accounts.google.com` en
+ *     `fetch`, ce que la politique de sécurité bloque. La console affichait la
+ *     violation à chaque chargement de page ;
+ *   - surtout, **un préchargement qui arrive après le clic remplace l'état de
+ *     la poignée de main en cours**. Google renvoie alors un `state` qui ne
+ *     correspond plus au cookie, et la connexion échoue sur une erreur de
+ *     sécurité — pour un utilisateur qui n'a rien fait de mal.
+ *
+ * Précharger la destination n'avait de toute façon aucun intérêt : elle
+ * redirige immédiatement vers un autre domaine.
  */
 export function GoogleButton() {
   return (
     <>
       <p className="harbor__divider">ou</p>
 
-      <Link href="/api/auth/google" className="harbor__google">
+      <Link href="/api/auth/google" prefetch={false} className="harbor__google">
         <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
           <path
             fill="#4285F4"
