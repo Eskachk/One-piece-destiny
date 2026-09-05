@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react';
 import type { Rarity } from '@/domain/types';
 import type { Attribute } from '@/domain/collection/attributes';
+import {
+  decrireRecurrence,
+  type Recurrence,
+} from '@/domain/chapter/recurrence';
 import { RARITY_COLOR, RARITY_LABEL } from '@/domain/collection/rarity';
 import { CharacterArt } from './CharacterArt';
 
@@ -32,6 +36,7 @@ export function RarityCard({
   name,
   rarity,
   attributes,
+  recurrence,
   serial,
   footer,
 }: {
@@ -40,6 +45,14 @@ export function RarityCard({
   name: string;
   rarity: Rarity;
   attributes: Attribute[];
+  /**
+   * Présence du personnage dans les derniers chapitres publiés.
+   *
+   * C'est la seule information de la carte qui serve à **décider** plutôt qu'à
+   * admirer : le jeu demande de prédire qui paraîtra, et jusqu'ici le joueur
+   * choisissait sans rien savoir de qui paraît d'habitude.
+   */
+  recurrence?: Recurrence;
   /** Identité de l'exemplaire, si la carte en possède une. */
   serial?: ReactNode;
   footer?: ReactNode;
@@ -72,6 +85,28 @@ export function RarityCard({
             </li>
           ))}
         </ul>
+      )}
+
+      {/*
+        La récurrence, en bas de carte.
+
+        Un rapport suffit à l'œil — « 7/10 » se lit sans phrase — mais il ne
+        dit rien à qui écoute la page. La phrase complète est donc présente
+        pour les lecteurs d'écran et en infobulle (§111).
+
+        On l'affiche **aussi quand elle vaut zéro** : « jamais vu sur les dix
+        derniers » est une information, et souvent la plus utile de la carte.
+      */}
+      {recurrence && recurrence.observes > 0 && (
+        <p
+          className={`hb-recurrence${recurrence.vus === 0 ? ' hb-recurrence--nulle' : ''}`}
+          title={decrireRecurrence(recurrence)}
+        >
+          <span aria-hidden="true">
+            📖 {recurrence.vus}/{recurrence.observes}
+          </span>
+          <span className="sr-only">{decrireRecurrence(recurrence)}</span>
+        </p>
       )}
 
       {serial}

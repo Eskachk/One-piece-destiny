@@ -87,69 +87,54 @@ export const CATALOG: Record<ProductId, Product> = {
     description: '12 coffres. Composition et probabilités identiques aux coffres gagnés en jeu.',
   },
   /**
-   * Coffre royal.
+   * Le coffre du Yonko — le produit phare, et il doit se comporter comme tel.
    *
-   * Mise en scène et apparence propres — coffre noir et or, cérémonie plus
-   * longue, éclairs qui ne redescendent jamais sous le Légendaire. C'est ce
-   * qu'on vend : un moment, pas un avantage.
+   * ## Ce qui n'allait pas
    *
-   * Le §25 tient toujours : un Légendaire est une carte de collection, il ne
-   * donne aucun point. On vend de la rareté, jamais de la victoire (§48).
+   * Il a d'abord coûté 14,99 € pour **une** carte garantie, soit plus cher
+   * qu'un Mythique nommé. Ramené à 9,99 €, il s'est retrouvé au même prix que
+   * le coffre de Nami — et là, mesuré, le verdict était sans appel :
+   *
+   *     Coffre de Nami   9,99 €   12 coffres     valeur 1 790   179 par euro
+   *     Coffre du Yonko  9,99 €    1 coffre royal  valeur  466    47 par euro
+   *
+   * Le produit haut de gamme donnait **3,8 fois moins** que son voisin, au
+   * centime près du même prix. Deux étiquettes identiques pour deux contenus
+   * incomparables : le joueur ne peut pas choisir, il peut seulement se
+   * tromper.
+   *
+   * ## La règle retenue
+   *
+   * Le coffre du Yonko est le **haut de l'étagère**, et il doit l'être sur les
+   * trois axes à la fois — sinon on remplace un piège par un autre :
+   *
+   *   1. le plus cher ;
+   *   2. celui qui donne le plus, en valeur absolue ;
+   *   3. **et le meilleur rapport à l'euro**. C'est le point qu'on oublie
+   *      toujours : un produit phare qui coûte plus cher l'unité est
+   *      exactement la forme de piège corrigée sur la Bourse de Berries.
+   *
+   * Dix coffres royaux le placent à 186 de valeur par euro, contre 179 pour le
+   * coffre de Nami et le Sac de Berries. Il gagne partout, et c'est ce qui
+   * rend son prix défendable.
+   *
+   * ## Ce qu'il reste
+   *
+   * Chaque coffre royal garantit un Légendaire ou mieux et n'admet aucune
+   * carte commune. Dix ouvertures, dix cérémonies. Le §25 tient toujours : un
+   * Légendaire est une carte de collection, il ne donne aucun point. On vend
+   * de la rareté et un moment, jamais de la victoire (§48).
    */
   royal_chest: {
     id: 'royal_chest',
     category: 'CHEST',
     label: 'Coffre du Yonko',
-    /*
-     * Ramené de 14,99 € à 9,99 €.
-     *
-     * Il coûtait **plus cher qu'un Mythique nommé** — 14,99 € pour un
-     * Légendaire ou mieux tiré au hasard, contre 12,99 € pour Luffy en
-     * personne. Un produit aléatoire vendu au-dessus du produit garanti dit au
-     * joueur que le prix ne suit aucune logique.
-     *
-     * Neuf euros quatre-vingt-dix-neuf, c'est ce que vaut la chance qu'il
-     * remplace : un Légendaire sort une fois sur 12,8 coffres, et douze
-     * coffres coûtent 9,99 €. On vend la certitude et la cérémonie au prix de
-     * l'espérance, ce qui est défendable ; au-dessus, on vendait moins pour
-     * plus cher.
-     */
-    priceCents: 999,
+    priceCents: 2_499,
     currency: 'EUR',
-    grants: { berries: 0, chests: 0, royalChests: 1 },
+    grants: { berries: 0, chests: 0, royalChests: 10 },
     description:
-      '1 coffre royal : Légendaire ou mieux garanti, ouverture en cérémonie dédiée. La rareté est une valeur de collection, elle ne donne aucun point au classement.',
+      '10 coffres royaux : Légendaire ou mieux garanti dans chacun, aucune carte commune, ouverture en cérémonie dédiée. La rareté est une valeur de collection, elle ne donne aucun point au classement.',
   },
-  /**
-   * Les deux produits en Berries, réévalués.
-   *
-   * ## Ce que la boutique disait sans le dire
-   *
-   * Rapporté au coffre — la seule chose que les Berries achètent — le
-   * catalogue était **inversé** :
-   *
-   *     Coffre de Gaimon    2,99 €    3 coffres      1,00 € le coffre
-   *     Coffre de Nami      9,99 €   12 coffres      0,83 € le coffre
-   *     Bourse de Berries   4,99 €    4 coffres      1,25 € le coffre  ← le pire
-   *     Sac de Berries     19,99 €   20 coffres      1,00 € le coffre
-   *
-   * La bourse était le plus mauvais achat du magasin, et le produit le plus
-   * cher — vingt euros — revenait plus cher au coffre que celui à dix. C'est
-   * la forme classique du piège : celui qui dépense le plus paie le plus
-   * cher l'unité, et rien à l'écran ne le lui dit.
-   *
-   * ## La règle retenue
-   *
-   * **À palier égal, les Berries valent le même prix au coffre que les
-   * coffres.** Ils sont déjà plus souples — ils achètent aussi au Marché — et
-   * cette souplesse suffit à les distinguer ; la payer d'une surtaxe de 25 %
-   * invisible ne se défend pas.
-   *
-   *     Bourse de Berries   4,99 €    7 500 B  =  5 coffres    1,00 €
-   *     Sac de Berries     19,99 €   36 000 B  = 24 coffres    0,83 €
-   *
-   * La courbe redevient monotone : plus on prend, moins l'unité coûte.
-   */
   berries_pouch: {
     id: 'berries_pouch',
     category: 'COINS',

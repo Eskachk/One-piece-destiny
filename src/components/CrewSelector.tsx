@@ -3,6 +3,10 @@
 import { RARITY_LABEL } from '@/domain/collection/rarity';
 import { CardFilters } from './CardFilters';
 import {
+  decrireRecurrence,
+  type Recurrence,
+} from '@/domain/chapter/recurrence';
+import {
   CRITERES_PAR_DEFAUT,
   comptesParAttribut,
   compterParRarete,
@@ -44,7 +48,17 @@ const RISK_STYLES: Record<RiskBand, { label: string; className: string }> = {
  * courts. Ils ne sont pas rangés dans `Character` : c'est un type de domaine,
  * et ceci est une commodité d'affichage.
  */
-export type PersonnagePossede = Character & { attributs?: readonly string[] };
+export type PersonnagePossede = Character & {
+  attributs?: readonly string[];
+  /**
+   * Présence dans les derniers chapitres publiés.
+   *
+   * C'est **l'information qui décide** sur cet écran. Le joueur y choisit trois
+   * personnages pour la semaine à venir ; sans savoir lesquels paraissent
+   * d'habitude, il tire au sort.
+   */
+  recurrence?: Recurrence;
+};
 
 export function CrewSelector({
   locked,
@@ -338,6 +352,22 @@ export function CrewSelector({
                     <span className="hb-legend mt-0.5 block">
                       {RARITY_LABEL[character.rarity]}
                     </span>
+                    {/* Le rapport se lit d'un coup d'œil et sert à comparer
+                        deux candidats ; la phrase complète reste pour qui
+                        écoute la page (§111). */}
+                    {character.recurrence && character.recurrence.observes > 0 && (
+                      <span
+                        className={`hb-recurrence${character.recurrence.vus === 0 ? ' hb-recurrence--nulle' : ''}`}
+                        title={decrireRecurrence(character.recurrence)}
+                      >
+                        <span aria-hidden="true">
+                          📖 {character.recurrence.vus}/{character.recurrence.observes}
+                        </span>
+                        <span className="sr-only">
+                          {decrireRecurrence(character.recurrence)}
+                        </span>
+                      </span>
+                    )}
                   </button>
                 </li>
               );

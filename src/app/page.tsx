@@ -15,7 +15,10 @@ import type { Character } from '@/domain/types';
 import { isTeamEditable, msUntilLock, spoilerState } from '@/domain/chapter/lock';
 import { redirect } from 'next/navigation';
 import { getAuthenticatedSession } from '@/lib/auth/session-store';
-import { getCachedCurrentChapter } from '@/lib/cache';
+import {
+  getCachedCurrentChapter,
+  getCachedRecurrences,
+} from '@/lib/cache';
 import { getRepository } from '@/lib/repository';
 import { AdBanner } from '@/components/AdBanner';
 
@@ -118,9 +121,12 @@ export default async function HomePage() {
    * cela n'est recalculé côté client : `attributesOf` tire la table des
    * signatures physiques.
    */
+  const recurrence = await getCachedRecurrences();
+
   const ownedCharacters = possedes.map((character) => ({
     ...character,
     attributs: attributesOf(character).map((attribut) => attribut.id),
+    recurrence: recurrence.get(character.id),
   }));
 
   const catalogue = catalogueAttributs(possedes);

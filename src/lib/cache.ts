@@ -2,6 +2,7 @@ import 'server-only';
 
 import { unstable_cache } from 'next/cache';
 import type { ChapterEvent } from '@/domain/types';
+import { recurrences, type Recurrence } from '@/domain/chapter/recurrence';
 import { getRepository } from '@/lib/repository';
 
 /**
@@ -88,13 +89,6 @@ export async function getCachedLatestPublishedChapter(): Promise<ChapterEvent | 
   return reviveChapter(await readLatestPublishedChapter());
 }
 
-/**
- * Classement d'un chapitre.
- *
- * Une fois publié, il ne bouge plus — sauf correction (§79), qui purge
- * l'étiquette. C'est la lecture la plus concurrente du produit : tout le monde
- * consulte le classement dans la même heure.
- */
 /**
  * Nombre de lignes de classement affichées sur la page.
  *
@@ -197,4 +191,37 @@ export async function getCachedRecentSales() {
   )();
 
   return rows.map((sale) => ({ ...sale, soldAt: new Date(sale.soldAt) }));
+}
+
+/**
+ * Fenêtre montrée au joueur.
+ *
+ * Dix chapitres, soit deux mois et demi : assez pour qu'une habitude se voie,
+ * assez court pour qu'un changement d'arc se lise. Au-delà, la méta a changé
+ * et la moyenne ment.
+ */
+export const RECURRENCE_WINDOW = 10;
+
+/**
+ * Récurrence des personnages sur les derniers chapitres publiés.
+ *
+ * Identique pour tout le monde — c'est un fait sur l'œuvre, pas sur le joueur
+ * — donc mise en cache partagée. Sans elle, chaque affichage de la Collection
+ * et de l'écran d'équipage relirait l'historique complet des apparitions.
+ *
+ * Étiquetée sur le chapitre courant : publier un chapitre ajoute une ligne à
+ * la fenêtre, et la purge est immédiate. La revalidation n'est qu'un filet.
+ *
+ * ⚠️ La lecture sous-jacente ne retient que les chapitres **publiés** : la
+ * récurrence est affichée à tous les joueurs, et le chapitre en cours n'a
+ * rien à y faire (§3).
+ */
+export async function getCachedRecurrences(): Promise<Map<string, Recurrence>> {
+  const history = await unstable_cache(
+    async () => getRepository().getAppearanceHistory(RECURRENCE_WINDOW),
+    ['appearance-history', String(RECURRENCE_WINDOW)],
+    { tags: [CURRENT_CHAPTER_TAG], revalidate: 300 },
+  )();
+
+  return recurrences(history);
 }

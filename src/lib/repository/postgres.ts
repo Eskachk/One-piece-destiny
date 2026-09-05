@@ -315,9 +315,23 @@ export const postgresRepository: Repository = {
    * un chemin d'administration appelé une fois par semaine.
    */
   async getAppearanceHistory(chapters) {
+    /*
+     * **Chapitres publiés seulement**, et c'est une règle d'anti-spoiler (§3),
+     * pas une commodité.
+     *
+     * Cette fenêtre alimente désormais deux usages : le comptage assisté de
+     * l'administrateur, et la récurrence affichée au joueur sur chaque carte.
+     * Le second rendrait le filtre indispensable même si le premier s'en
+     * passait — inclure le chapitre courant révélerait qui y figure dès la
+     * saisie des apparitions, donc **avant** la publication.
+     *
+     * Le comptage assisté y gagne aussi : proposer un chapitre à partir de ses
+     * propres apparitions déjà saisies serait circulaire.
+     */
     const recents = await db()
       .from('chapter_events')
       .select('id, chapter_number')
+      .eq('status', 'RESULTS_PUBLISHED')
       .order('chapter_number', { ascending: false })
       .limit(chapters);
 

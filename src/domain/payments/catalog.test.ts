@@ -2,6 +2,14 @@ import { describe, expect, it } from 'vitest';
 import { CATALOG, productOf, verifyClaim, withinDailyCap } from './catalog';
 import { CHARACTER_INDEX } from '../../data/characters';
 import { CHEST_PRICE_BERRIES } from '../collection/rewards';
+import { CHEST_SLOTS, ROYAL_CHEST_SLOTS } from '../collection/chest';
+import {
+  DUPLICATE_SHARDS,
+  RARITY_WEIGHTS,
+  isAtLeast,
+} from '../collection/rarity';
+import { CHARACTERS } from '../../data/characters';
+import type { Rarity } from '../types';
 import { restrictionsForBirthDate } from '../compliance/age';
 
 const VALIDE = {
@@ -197,15 +205,91 @@ describe('rayon personnages', () => {
     }
   });
 
+  it('place le produit phare en tête sur les trois axes à la fois', () => {
+    /*
+     * ## Le défaut que ce test attrape
+     *
+     * Le coffre du Yonko a partagé son prix avec le coffre de Nami — 9,99 €
+     * tous les deux — pour des contenus incomparables :
+     *
+     *     Coffre de Nami    12 coffres      valeur 1 790   179 par euro
+     *     Coffre du Yonko    1 coffre royal   valeur 466    47 par euro
+     *
+     * Le produit haut de gamme donnait **3,8 fois moins** que son voisin, au
+     * centime près du même prix.
+     *
+     * ## Les trois axes, et pourquoi il les faut tous
+     *
+     * Un produit phare doit être le plus cher, donner le plus, **et** offrir
+     * le meilleur rapport à l'euro. Les deux premiers sans le troisième
+     * recréent exactement le piège corrigé sur la Bourse de Berries : payer
+     * davantage pour une unité plus chère.
+     *
+     * ## La mesure
+     *
+     * La valeur d'une carte est estimée par ce que le jeu lui-même en dit :
+     * les fragments qu'elle rend en double. C'est un étalon interne, pas un
+     * prix de marché — il ne sert qu'à comparer deux produits entre eux, ce
+     * qui est précisément la question posée.
+     */
+    const valeurDe = (slots: readonly Rarity[]) => {
+      let total = 0;
+      for (const minimum of slots) {
+        const eligibles = CHARACTERS.filter((c) => isAtLeast(c.rarity, minimum));
+        const poids = eligibles.reduce((s, c) => s + RARITY_WEIGHTS[c.rarity], 0);
+        for (const c of eligibles) {
+          total += (RARITY_WEIGHTS[c.rarity] / poids) * DUPLICATE_SHARDS[c.rarity];
+        }
+      }
+      return total;
+    };
+
+    const parCoffreNormal = valeurDe(CHEST_SLOTS);
+    const parCoffreRoyal = valeurDe(ROYAL_CHEST_SLOTS);
+
+    const produits = Object.values(CATALOG)
+      .filter((p) => p.category !== 'CHARACTER')
+      .map((p) => {
+        const valeur =
+          (p.grants.chests + p.grants.berries / CHEST_PRICE_BERRIES) * parCoffreNormal +
+          (p.grants.royalChests ?? 0) * parCoffreRoyal;
+        return { id: p.id, cents: p.priceCents, valeur, parEuro: valeur / p.priceCents };
+      });
+
+    const phare = produits.find((p) => p.id === 'royal_chest')!;
+    const autres = produits.filter((p) => p.id !== 'royal_chest');
+
+    for (const autre of autres) {
+      expect(phare.cents, `${autre.id} coûte autant ou plus que le phare`).toBeGreaterThan(
+        autre.cents,
+      );
+      expect(phare.valeur, `${autre.id} donne autant ou plus que le phare`).toBeGreaterThan(
+        autre.valeur,
+      );
+      expect(
+        phare.parEuro,
+        `${autre.id} offre un meilleur rapport que le phare`,
+      ).toBeGreaterThanOrEqual(autre.parEuro);
+    }
+  });
+
   it('ne fait pas payer le hasard plus cher que la certitude', () => {
-    // Le coffre royal — un Légendaire ou mieux **tiré au sort** — coûtait
-    // 14,99 €, contre 12,99 € pour Luffy en personne, garanti et Mythique. Un
-    // produit aléatoire vendu au-dessus du produit certain dit au joueur que
-    // le prix ne suit aucune logique.
+    /*
+     * Le coffre royal — un Légendaire ou mieux **tiré au sort** — coûtait
+     * 14,99 € l'unité, contre 12,99 € pour Luffy en personne, garanti et
+     * Mythique. Un produit aléatoire vendu au-dessus du produit certain dit au
+     * joueur que le prix ne suit aucune logique.
+     *
+     * La comparaison se fait désormais **à l'unité** : le produit phare est un
+     * lot de dix coffres royaux, et opposer son prix total à celui d'une carte
+     * ne voudrait rien dire. C'est le prix d'un coffre qui doit rester sous
+     * celui d'un Mythique nommé.
+     */
     const royal = CATALOG.royal_chest;
+    const parCoffre = royal.priceCents / (royal.grants.royalChests ?? 1);
     const mythique = Object.values(CATALOG).find((p) => p.rarity === 'MYTHIC')!;
 
-    expect(royal.priceCents).toBeLessThan(mythique.priceCents);
+    expect(parCoffre).toBeLessThan(mythique.priceCents);
   });
 
   it('fait payer le Mythique plus cher que les Légendaires', () => {

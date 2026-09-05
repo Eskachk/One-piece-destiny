@@ -4384,6 +4384,25 @@ button[aria-busy='true']:not(.hb-btn)::before {
 }
 
 /* ---------------------------------------------------------------------------
+   Récurrence : dans combien des derniers chapitres publiés on a vu ce
+   personnage. C'est la seule donnée de la carte qui serve à décider.
+   --------------------------------------------------------------------------- */
+
+.hb-recurrence {
+  margin-top: 0.35rem;
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+  color: #4a5f7d;
+}
+
+/* Jamais vu : l'information vaut autant que l'inverse, et mérite d'être
+   distinguée au premier coup d'œil — sans reposer sur la seule couleur, d'où
+   l'opacité qui la met en retrait. */
+.hb-recurrence--nulle {
+  opacity: 0.55;
+}
+
+/* ---------------------------------------------------------------------------
    Filtre par attributs, cumulable.
 
    Replié par défaut : une collection complète en propose une quarantaine, et

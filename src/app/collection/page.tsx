@@ -11,6 +11,7 @@ import {
   attributesOf,
   catalogueAttributs,
 } from '@/domain/collection/attributes';
+import { getCachedRecurrences } from '@/lib/cache';
 import { CHARACTERS, CHARACTER_INDEX } from '@/data/characters';
 import { allSetsProgress, collectionSummary } from '@/domain/collection/sets';
 import { RARITY_COLOR, RARITY_LABEL, rarityRank } from '@/domain/collection/rarity';
@@ -64,6 +65,10 @@ export default async function CollectionPage() {
    * « 🕯 Décédé » à quelqu'un qui n'en possède aucun, c'est offrir un filtre
    * dont le seul résultat possible est une grille vide.
    */
+  // La récurrence est partagée par tous les joueurs — c'est un fait sur
+  // l'œuvre, pas sur le compte — donc lue une fois depuis le cache.
+  const recurrence = await getCachedRecurrences();
+
   const possedes = ownedIds.flatMap((id) => {
     const character = CHARACTER_INDEX.get(id);
     return character ? [character] : [];
@@ -143,6 +148,7 @@ export default async function CollectionPage() {
                       name={character.name}
                       rarity={character.rarity}
                       attributes={attributs}
+                      recurrence={recurrence.get(character.id)}
                       serial={
                         /* Identité de l'exemplaire : ce code suit la carte, y
                            compris lorsqu'elle change de propriétaire au Market. */
