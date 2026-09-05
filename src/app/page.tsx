@@ -7,6 +7,10 @@ import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
 import { Tutorial } from '@/components/Tutorial';
 import { CHARACTER_INDEX } from '@/data/characters';
+import {
+  attributesOf,
+  catalogueAttributs,
+} from '@/domain/collection/attributes';
 import type { Character } from '@/domain/types';
 import { isTeamEditable, msUntilLock, spoilerState } from '@/domain/chapter/lock';
 import { redirect } from 'next/navigation';
@@ -101,10 +105,25 @@ export default async function HomePage() {
   // Seuls les personnages possédés sont alignables. La liste est construite
   // ici, côté serveur : le client ne la déduit pas, et l'action
   // d'enregistrement revalide de toute façon la propriété (§99).
-  const ownedCharacters = ownedIds
+  const possedes = ownedIds
     .map((id) => CHARACTER_INDEX.get(id))
     .filter((character): character is Character => character !== undefined)
     .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
+
+  /*
+   * Les attributs voyagent en **identifiants**, pas en objets.
+   *
+   * Le libellé et le pictogramme partent une seule fois, dans le catalogue
+   * ci-dessous, au lieu d'être répétés sur chaque personnage. Et rien de tout
+   * cela n'est recalculé côté client : `attributesOf` tire la table des
+   * signatures physiques.
+   */
+  const ownedCharacters = possedes.map((character) => ({
+    ...character,
+    attributs: attributesOf(character).map((attribut) => attribut.id),
+  }));
+
+  const catalogue = catalogueAttributs(possedes);
 
   return (
     <HarborScene variant="page" island={islandOf('/')}>
@@ -157,6 +176,7 @@ export default async function HomePage() {
         authenticated
         chapterNumber={chapter.chapterNumber}
         owned={ownedCharacters}
+        attributs={catalogue}
       />
 
       {/* Visite guidée d'arrivée. Elle décide seule si elle doit s'afficher —

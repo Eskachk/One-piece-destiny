@@ -1,4 +1,5 @@
 import type { Character } from '../types';
+import type { GroupeAttributs } from './tri';
 import { signatureOf } from './signatures';
 
 /**
@@ -43,6 +44,16 @@ export interface Attribute {
   symbol: string;
   /** Nom lisible — le symbole seul ne suffit pas (lecteurs d'écran, §111). */
   label: string;
+  /**
+   * Famille d'appartenance.
+   *
+   * Elle était connue des règles et perdue à la sortie. Le filtre de
+   * collection en a besoin : regrouper quarante pastilles par famille — le
+   * Haki d'un côté, les camps de l'autre — est la seule façon de les rendre
+   * parcourables. Sans elle, le client devrait rouvrir `attributes.ts` pour
+   * la retrouver, ce qui lui enverrait la table des signatures physiques avec.
+   */
+  family: Family;
 }
 
 /**
@@ -62,6 +73,20 @@ export type Family =
   | 'rank'
   | 'species'
   | 'role';
+
+/** Intitulé de chaque famille, pour grouper les pastilles du filtre. */
+export const FAMILY_LABEL: Record<Family, string> = {
+  etat: 'État',
+  haki: 'Haki',
+  fruit: 'Fruit du démon',
+  weapon: 'Arme',
+  crew: 'Équipage',
+  renown: 'Renom',
+  camp: 'Camp',
+  rank: 'Grade',
+  species: 'Espèce',
+  role: 'Métier',
+};
 
 const FAMILY_ORDER: readonly Family[] = [
   /*
@@ -285,7 +310,12 @@ function crewOf(character: Character): Attribute | null {
   for (const entry of character.affiliations) {
     for (const crew of CREWS) {
       if (crew.match.test(entry)) {
-        return { id: `crew-${crew.label}`, symbol: crew.symbol, label: crew.label };
+        return {
+          id: `crew-${crew.label}`,
+          symbol: crew.symbol,
+          label: crew.label,
+          family: 'crew',
+        };
       }
     }
   }
@@ -296,7 +326,7 @@ function crewOf(character: Character): Attribute | null {
     if (!/crew|pirates?|équipage|equipage|armada|armarda|fleet|flotte/i.test(entry)) continue;
     const label = entry.replace(CREW_NOISE, '').trim();
     if (label.length > 1) {
-      return { id: `crew-${label}`, symbol: '🏴‍☠️', label };
+      return { id: `crew-${label}`, symbol: '🏴‍☠️', label, family: 'crew' };
     }
   }
 
@@ -308,16 +338,16 @@ function crewOf(character: Character): Attribute | null {
    --------------------------------------------------------------------------- */
 
 const PROP_ATTRIBUTES: Record<string, Attribute> = {
-  sword: { id: 'sword', symbol: '⚔️', label: 'Épéiste' },
-  katana3: { id: 'katana3', symbol: '⚔️', label: 'Trois sabres' },
-  greatsword: { id: 'greatsword', symbol: '🗡', label: 'Lame géante' },
-  staff: { id: 'staff', symbol: '🪄', label: 'Bâton' },
-  axe: { id: 'axe', symbol: '🪓', label: 'Hache' },
-  club: { id: 'club', symbol: '🏏', label: 'Masse' },
-  gun: { id: 'gun', symbol: '🔫', label: 'Armes à feu' },
-  knives: { id: 'knives', symbol: '🔪', label: 'Lames courtes' },
-  cane: { id: 'cane', symbol: '🦯', label: 'Canne-épée' },
-  hook: { id: 'hook', symbol: '🪝', label: 'Crochet' },
+  sword: { id: 'sword', symbol: '⚔️', label: 'Épéiste', family: 'weapon' },
+  katana3: { id: 'katana3', symbol: '⚔️', label: 'Trois sabres', family: 'weapon' },
+  greatsword: { id: 'greatsword', symbol: '🗡', label: 'Lame géante', family: 'weapon' },
+  staff: { id: 'staff', symbol: '🪄', label: 'Bâton', family: 'weapon' },
+  axe: { id: 'axe', symbol: '🪓', label: 'Hache', family: 'weapon' },
+  club: { id: 'club', symbol: '🏏', label: 'Masse', family: 'weapon' },
+  gun: { id: 'gun', symbol: '🔫', label: 'Armes à feu', family: 'weapon' },
+  knives: { id: 'knives', symbol: '🔪', label: 'Lames courtes', family: 'weapon' },
+  cane: { id: 'cane', symbol: '🦯', label: 'Canne-épée', family: 'weapon' },
+  hook: { id: 'hook', symbol: '🪝', label: 'Crochet', family: 'weapon' },
 };
 
 /**
@@ -362,7 +392,12 @@ export function attributesOf(character: Character): Attribute[] {
 
   for (const rule of RULES) {
     if (haystack.some((entry) => rule.match.test(entry))) {
-      ajouter(rule.family, { id: rule.id, symbol: rule.symbol, label: rule.label });
+      ajouter(rule.family, {
+        id: rule.id,
+        symbol: rule.symbol,
+        label: rule.label,
+        family: rule.family,
+      });
     }
   }
 
@@ -408,4 +443,43 @@ export function attributesOf(character: Character): Attribute[] {
   }
 
   return found;
+}
+
+/**
+ * Catalogue des pastilles de filtre, construit sur une liste de personnages.
+ *
+ * ## Pourquoi il se calcule sur la collection, et pas sur le référentiel
+ *
+ * On ne propose que les attributs **réellement présents** dans les cartes
+ * qu'on filtre. Offrir « 🕯 Décédé » à un joueur qui n'en possède aucun, c'est
+ * offrir un filtre dont le seul résultat possible est une grille vide — le
+ * même défaut que le compte par rareté écrit dans le `<select>` corrigeait
+ * déjà.
+ *
+ * ## Pourquoi il est groupé et ordonné ici
+ *
+ * Le client n'a aucun moyen de retrouver la famille d'un attribut sans
+ * importer ce module, ce qui lui enverrait la table des signatures physiques.
+ * Le serveur, lui, la connaît déjà : il rend le travail fait.
+ */
+export function catalogueAttributs(
+  personnages: readonly Character[],
+): GroupeAttributs[] {
+  const vus = new Map<string, Attribute>();
+  for (const personnage of personnages) {
+    for (const attribut of attributesOf(personnage)) {
+      if (!vus.has(attribut.id)) vus.set(attribut.id, attribut);
+    }
+  }
+
+  return FAMILY_ORDER.map((famille) => ({
+    famille,
+    titre: FAMILY_LABEL[famille],
+    attributs: [...vus.values()]
+      .filter((attribut) => attribut.family === famille)
+      .map(({ id, symbol, label }) => ({ id, symbol, label }))
+      // Alphabétique : dans une famille, aucun ordre n'est plus signifiant
+      // qu'un autre, et l'ordre des règles est un détail d'implémentation.
+      .sort((a, b) => a.label.localeCompare(b.label, 'fr')),
+  })).filter((groupe) => groupe.attributs.length > 0);
 }

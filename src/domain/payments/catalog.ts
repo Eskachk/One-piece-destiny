@@ -68,7 +68,9 @@ export const CATALOG: Record<ProductId, Product> = {
   chest_pack_small: {
     id: 'chest_pack_small',
     category: 'CHEST',
-    label: 'Petite cale',
+    // Gaimon vit dans un coffre sur une île de Grand Line, et n'en sort pas.
+    // Le plus petit coffre de la boutique porte son nom.
+    label: 'Coffre de Gaimon',
     priceCents: 299,
     currency: 'EUR',
     grants: { berries: 0, chests: 3 },
@@ -77,7 +79,8 @@ export const CATALOG: Record<ProductId, Product> = {
   chest_pack_large: {
     id: 'chest_pack_large',
     category: 'CHEST',
-    label: 'Grande cale',
+    // Nami tient la caisse de l'équipage : le gros lot lui revient.
+    label: 'Coffre de Nami',
     priceCents: 999,
     currency: 'EUR',
     grants: { berries: 0, chests: 12 },
@@ -125,10 +128,10 @@ export const CATALOG: Record<ProductId, Product> = {
    * Rapporté au coffre — la seule chose que les Berries achètent — le
    * catalogue était **inversé** :
    *
-   *     Petite cale     2,99 €    3 coffres      1,00 € le coffre
-   *     Grande cale     9,99 €   12 coffres      0,83 € le coffre
-   *     Bourse          4,99 €    4 coffres      1,25 € le coffre   ← le pire
-   *     Cale pleine    19,99 €   20 coffres      1,00 € le coffre
+   *     Coffre de Gaimon    2,99 €    3 coffres      1,00 € le coffre
+   *     Coffre de Nami      9,99 €   12 coffres      0,83 € le coffre
+   *     Bourse de Berries   4,99 €    4 coffres      1,25 € le coffre  ← le pire
+   *     Sac de Berries     19,99 €   20 coffres      1,00 € le coffre
    *
    * La bourse était le plus mauvais achat du magasin, et le produit le plus
    * cher — vingt euros — revenait plus cher au coffre que celui à dix. C'est
@@ -142,8 +145,8 @@ export const CATALOG: Record<ProductId, Product> = {
    * cette souplesse suffit à les distinguer ; la payer d'une surtaxe de 25 %
    * invisible ne se défend pas.
    *
-   *     Bourse          4,99 €    7 500 B  =  5 coffres    1,00 €
-   *     Cale pleine    19,99 €   36 000 B  = 24 coffres    0,83 €
+   *     Bourse de Berries   4,99 €    7 500 B  =  5 coffres    1,00 €
+   *     Sac de Berries     19,99 €   36 000 B  = 24 coffres    0,83 €
    *
    * La courbe redevient monotone : plus on prend, moins l'unité coûte.
    */
@@ -159,7 +162,7 @@ export const CATALOG: Record<ProductId, Product> = {
   berries_hold: {
     id: 'berries_hold',
     category: 'COINS',
-    label: 'Cale pleine',
+    label: 'Sac de Berries',
     priceCents: 1_999,
     currency: 'EUR',
     grants: { berries: 36_000, chests: 0 },

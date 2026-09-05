@@ -4,8 +4,10 @@ import { RARITY_LABEL } from '@/domain/collection/rarity';
 import { CardFilters } from './CardFilters';
 import {
   CRITERES_PAR_DEFAUT,
+  comptesParAttribut,
   compterParRarete,
   trier,
+  type GroupeAttributs,
 } from '@/domain/collection/tri';
 import { attempt } from './attempt';
 import Link from 'next/link';
@@ -35,12 +37,22 @@ const RISK_STYLES: Record<RiskBand, { label: string; className: string }> = {
   EXTREME: { label: 'EXTREME', className: 'hb-risk hb-risk--max' },
 };
 
+/**
+ * Un personnage possédé, augmenté de ses attributs.
+ *
+ * Les attributs sont calculés par le serveur et voyagent en identifiants
+ * courts. Ils ne sont pas rangés dans `Character` : c'est un type de domaine,
+ * et ceci est une commodité d'affichage.
+ */
+export type PersonnagePossede = Character & { attributs?: readonly string[] };
+
 export function CrewSelector({
   locked,
   savedCrewIds = [],
   authenticated = false,
   chapterNumber,
   owned,
+  attributs = [],
 }: {
   locked: boolean;
   /** Équipage déjà enregistré, rendu côté serveur. */
@@ -55,7 +67,16 @@ export function CrewSelector({
    * serveur revalide de toute façon la propriété à l'enregistrement — ce que
    * le navigateur affiche n'a jamais valeur d'autorisation (§99).
    */
-  owned: Character[];
+  owned: PersonnagePossede[];
+  /**
+   * Catalogue des pastilles de filtre, construit par le serveur.
+   *
+   * Il ne se déduit pas ici : `attributesOf` tire la table des signatures
+   * physiques, trois mille lignes qu'un composant client n'a aucune raison de
+   * recevoir — c'est le même piège que l'import de `CHARACTER_INDEX` corrigé
+   * plus haut.
+   */
+  attributs?: GroupeAttributs[];
 }) {
   // L'équipage enregistré est résolu depuis `owned`, pas depuis le
   // référentiel complet.
@@ -78,8 +99,15 @@ export function CrewSelector({
   const [pending, startTransition] = useTransition();
 
   const risk = useMemo(() => teamRisk(crew), [crew]);
-  const comptes = useMemo(() => compterParRarete(owned), [owned]);
+  const comptes = useMemo(
+    () => compterParRarete(owned, criteres),
+    [owned, criteres],
+  );
   const visibles = useMemo(() => trier(owned, criteres), [owned, criteres]);
+  const comptesAttributs = useMemo(
+    () => comptesParAttribut(owned, criteres),
+    [owned, criteres],
+  );
   const complete = crew.length === CREW_SIZE;
 
   const toggle = (character: Character) => {
@@ -279,13 +307,15 @@ export function CrewSelector({
               total={owned.length}
               affiches={visibles.length}
               nom="personnage"
+              attributs={attributs}
+              comptesAttributs={comptesAttributs}
             />
           )}
 
           {visibles.length === 0 && owned.length > 0 && (
             <p className="hb-card mt-3 text-sm">
-              Aucun personnage ne correspond. Essaie un autre nom, ou remets la
-              rareté sur « Toutes ».
+              Aucun personnage ne correspond. Retire un attribut, essaie un
+              autre nom, ou remets la rareté sur « Toutes ».
             </p>
           )}
 

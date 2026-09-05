@@ -2,11 +2,13 @@ import { describe, expect, it } from 'vitest';
 import {
   CRITERES_PAR_DEFAUT,
   comparable,
+  comptesParAttribut,
   compterParRarete,
   correspond,
   trier,
   type Carte,
 } from './tri';
+import { attributesOf, catalogueAttributs } from './attributes';
 import { CHARACTERS, CHARACTER_INDEX } from '../../data/characters';
 import { isCanon } from '../../data/non-canon';
 
@@ -194,3 +196,162 @@ describe('recherche et tri des cartes', () => {
     });
   });
 });
+
+describe('filtre par attributs, cumulable', () => {
+  /*
+   * Un jeu de cartes minimal, écrit à la main : on veut vérifier la règle du
+   * cumul, pas la table des attributs du référentiel.
+   */
+  const cartes: Carte[] = [
+    { id: 'a', name: 'Alpha', rarity: 'EPIC', attributs: ['sword', 'marine'] },
+    { id: 'b', name: 'Beta', rarity: 'EPIC', attributs: ['sword', 'conqueror'] },
+    { id: 'c', name: 'Gamma', rarity: 'RARE', attributs: ['marine'] },
+    { id: 'd', name: 'Delta', rarity: 'RARE', attributs: [] },
+  ];
+
+  const avec = (...attributs: string[]) => ({
+    ...CRITERES_PAR_DEFAUT,
+    attributs,
+  });
+
+  it('sans attribut demandé, ne retire personne', () => {
+    expect(trier(cartes, CRITERES_PAR_DEFAUT)).toHaveLength(4);
+  });
+
+  it('un attribut ne garde que ceux qui le portent', () => {
+    expect(trier(cartes, avec('sword')).map((c) => c.id).sort()).toEqual(['a', 'b']);
+  });
+
+  it('deux attributs se cumulent en ET, jamais en OU', () => {
+    /*
+     * C'est **la** règle de la fonctionnalité. En OU, cocher un second
+     * attribut élargirait la liste — l'inverse de ce qu'on attend d'un filtre,
+     * où chaque critère ajouté doit restreindre. Ici « épéiste » et « Marine »
+     * ensemble ne laissent qu'Alpha, pas Alpha, Beta et Gamma.
+     */
+    expect(trier(cartes, avec('sword', 'marine')).map((c) => c.id)).toEqual(['a']);
+  });
+
+  it('une combinaison sans porteur ne rend rien', () => {
+    expect(trier(cartes, avec('conqueror', 'marine'))).toHaveLength(0);
+  });
+
+  it('se combine avec la rareté et la recherche', () => {
+    const out = trier(cartes, {
+      ...CRITERES_PAR_DEFAUT,
+      attributs: ['sword'],
+      rarete: 'EPIC',
+      recherche: 'beta',
+    });
+    expect(out.map((c) => c.id)).toEqual(['b']);
+  });
+
+  it('une carte sans attribut est écartée dès qu’on en demande un', () => {
+    expect(trier(cartes, avec('sword')).some((c) => c.id === 'd')).toBe(false);
+  });
+});
+
+describe('comptes annoncés sur les pastilles', () => {
+  const cartes: Carte[] = [
+    { id: 'a', name: 'Alpha', rarity: 'EPIC', attributs: ['sword', 'marine'] },
+    { id: 'b', name: 'Beta', rarity: 'EPIC', attributs: ['sword', 'conqueror'] },
+    { id: 'c', name: 'Gamma', rarity: 'RARE', attributs: ['marine'] },
+  ];
+
+  it('annonce ce qu’un clic donnerait, pas un total figé', () => {
+    /*
+     * Le défaut qu'on évite : afficher le compte global. « ⚔️ Épéiste (2) »
+     * resterait à 2 après avoir coché « Haki des Rois », et le joueur
+     * cliquerait sur une combinaison vide en croyant l'inverse.
+     */
+    const comptes = comptesParAttribut(cartes, {
+      ...CRITERES_PAR_DEFAUT,
+      attributs: ['conqueror'],
+    });
+
+    // Avec « Haki des Rois » déjà coché, « épéiste » ne rendrait que Beta.
+    expect(comptes.get('sword')).toBe(1);
+    // Et « Marine » ne rendrait plus rien : la pastille doit s'éteindre.
+    expect(comptes.get('marine')).toBe(0);
+  });
+
+  it('compte un attribut déjà coché sur les critères sans lui', () => {
+    // Sa pastille annonce alors ce qu'on garderait en la laissant cochée,
+    // seule lecture utile d'un critère actif.
+    const comptes = comptesParAttribut(cartes, {
+      ...CRITERES_PAR_DEFAUT,
+      attributs: ['sword'],
+    });
+    expect(comptes.get('sword')).toBe(2);
+  });
+
+  it('ne propose aucun attribut que personne ne porte', () => {
+    const comptes = comptesParAttribut(cartes, CRITERES_PAR_DEFAUT);
+    expect(comptes.has('fruit')).toBe(false);
+  });
+});
+
+describe('catalogue des pastilles', () => {
+  it('groupe par famille et ne retient que ce qui est présent', () => {
+    const zoro = CHARACTER_INDEX.get('zoro')!;
+    const groupes = catalogueAttributs([zoro]);
+
+    const proposes = groupes.flatMap((g) => g.attributs.map((a) => a.id)).sort();
+    const reels = attributesOf(zoro).map((a) => a.id).sort();
+    expect(proposes).toEqual(reels);
+
+    // Chaque groupe porte un intitulé lisible et au moins une pastille : un
+    // titre de famille suivi du vide serait du bruit.
+    for (const groupe of groupes) {
+      expect(groupe.titre.length).toBeGreaterThan(0);
+      expect(groupe.attributs.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('ne répète jamais un attribut porté par plusieurs personnages', () => {
+    const groupes = catalogueAttributs(CHARACTERS.slice(0, 120));
+    const ids = groupes.flatMap((g) => g.attributs.map((a) => a.id));
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+
+describe('compte par rareté, contextuel', () => {
+  const cartes: Carte[] = [
+    { id: 'a', name: 'Alpha', rarity: 'EPIC', attributs: ['sword'] },
+    { id: 'b', name: 'Beta', rarity: 'EPIC', attributs: [] },
+    { id: 'c', name: 'Gamma', rarity: 'RARE', attributs: ['sword'] },
+  ];
+
+  it('sans critères, compte tout', () => {
+    const out = compterParRarete(cartes);
+    expect(out.EPIC).toBe(2);
+    expect(out.RARE).toBe(1);
+  });
+
+  it('avec un attribut coché, dit ce que la rareté donnerait', () => {
+    /*
+     * Les deux contrôles se contrediraient sinon. Les pastilles annoncent
+     * déjà ce qu'un clic donnerait ; laisser « Épique (2) » à côté d'un
+     * attribut qui n'en laisse qu'un produirait le défaut que le compte par
+     * rareté avait été écrit pour éviter — une grille plus vide qu'annoncé.
+     */
+    const out = compterParRarete(cartes, {
+      ...CRITERES_PAR_DEFAUT,
+      attributs: ['sword'],
+    });
+    expect(out.EPIC).toBe(1);
+    expect(out.RARE).toBe(1);
+  });
+
+  it('ignore la rareté déjà choisie : la liste est à choix unique', () => {
+    // Chaque option remplace la précédente ; compter « Épique » sous le
+    // filtre « Rare » donnerait zéro partout sauf sur l'option active.
+    const out = compterParRarete(cartes, {
+      ...CRITERES_PAR_DEFAUT,
+      rarete: 'RARE',
+    });
+    expect(out.EPIC).toBe(2);
+  });
+});
+
+

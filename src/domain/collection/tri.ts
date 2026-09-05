@@ -36,12 +36,25 @@ export type FiltreRarete = Rarity | 'TOUTES';
 export interface Criteres {
   recherche: string;
   rarete: FiltreRarete;
+  /**
+   * Attributs exigés, **tous ensemble**.
+   *
+   * Le cumul se fait en ET, jamais en OU, et c'est le point de la
+   * fonctionnalité : on cherche « un épéiste **qui a aussi** le Haki des
+   * Rois », pas « un épéiste ou un porteur du Haki des Rois ». La seconde
+   * lecture élargirait la liste à chaque clic — l'inverse de ce qu'on attend
+   * d'un filtre, où ajouter un critère doit réduire.
+   *
+   * Vide = aucune contrainte, comme `TOUTES` pour la rareté.
+   */
+  attributs: readonly string[];
   tri: Tri;
 }
 
 export const CRITERES_PAR_DEFAUT: Criteres = {
   recherche: '',
   rarete: 'TOUTES',
+  attributs: [],
   tri: 'RARETE_DESC',
 };
 
@@ -83,10 +96,43 @@ export function correspond(nom: string, recherche: string): boolean {
   return mots.every((mot) => cible.includes(mot));
 }
 
+/** Une pastille de filtre : ce qu'il faut pour l'afficher et la cocher. */
+export interface OptionAttribut {
+  id: string;
+  symbol: string;
+  label: string;
+}
+
+/**
+ * Les pastilles, groupées par famille et déjà ordonnées.
+ *
+ * Le regroupement est fait **par le serveur**, qui connaît l'ordre des
+ * familles. Le client se contente d'afficher : lui faire retrouver cet ordre
+ * l'obligerait à importer `attributes.ts`, et avec lui la table des signatures
+ * physiques.
+ */
+export interface GroupeAttributs {
+  famille: string;
+  titre: string;
+  attributs: OptionAttribut[];
+}
+
 export interface Carte {
   id: string;
   name: string;
   rarity: Rarity;
+  /**
+   * Identifiants des attributs de la carte, calculés **par le serveur**.
+   *
+   * Ils traversent sous forme de chaînes courtes — `conqueror`, `armament` —
+   * et non d'objets complets. Le libellé et le pictogramme voyagent une seule
+   * fois, dans le catalogue passé au filtre, plutôt qu'une fois par carte.
+   *
+   * Ils ne sont pas recalculés ici : `attributesOf` tire la table des
+   * signatures physiques, trois mille lignes qu'un composant client n'a aucune
+   * raison de recevoir.
+   */
+  attributs?: readonly string[];
 }
 
 /**
@@ -101,9 +147,15 @@ export interface Carte {
 export function trier<T extends Carte>(cartes: readonly T[], criteres: Criteres): T[] {
   const { recherche, rarete, tri } = criteres;
 
+  const exiges = criteres.attributs;
+
   const retenues = cartes.filter(
     (c) =>
-      (rarete === 'TOUTES' || c.rarity === rarete) && correspond(c.name, recherche),
+      (rarete === 'TOUTES' || c.rarity === rarete) &&
+      correspond(c.name, recherche) &&
+      // Tous les attributs demandés, pas au moins un : ajouter un critère
+      // doit réduire la liste.
+      exiges.every((attribut) => c.attributs?.includes(attribut)),
   );
 
   const parNom = (a: T, b: T) => a.name.localeCompare(b.name, 'fr');
@@ -118,14 +170,71 @@ export function trier<T extends Carte>(cartes: readonly T[], criteres: Criteres)
   });
 }
 
-/** Nombre de cartes par rareté, pour annoncer ce que chaque filtre contient. */
+/**
+ * Combien de cartes porteraient chaque attribut **si on l'ajoutait aux
+ * critères courants**.
+ *
+ * Pas un simple comptage global : le nombre affiché sur chaque pastille doit
+ * dire ce qu'un clic donnerait. Sinon « ⚔️ Épéiste (27) » resterait à 27 après
+ * avoir coché « Haki des Rois », et le joueur cliquerait sur une combinaison
+ * vide en croyant l'inverse.
+ *
+ * Un attribut déjà coché est compté sur les critères **sans lui** : sa
+ * pastille annonce alors ce qu'on perd en le décochant, ce qui est la seule
+ * lecture utile d'un critère déjà actif.
+ */
+export function comptesParAttribut<T extends Carte>(
+  cartes: readonly T[],
+  criteres: Criteres,
+): Map<string, number> {
+  const comptes = new Map<string, number>();
+
+  // L'ensemble des attributs présents, toutes cartes confondues : on ne
+  // propose jamais un filtre qui ne rendrait rien.
+  const connus = new Set<string>();
+  for (const carte of cartes) {
+    for (const attribut of carte.attributs ?? []) connus.add(attribut);
+  }
+
+  for (const attribut of connus) {
+    const autres = criteres.attributs.filter((a) => a !== attribut);
+    const base = trier(cartes, { ...criteres, attributs: autres });
+    comptes.set(
+      attribut,
+      base.filter((c) => c.attributs?.includes(attribut)).length,
+    );
+  }
+
+  return comptes;
+}
+
+/**
+ * Nombre de cartes par rareté, pour annoncer ce que chaque option contient.
+ *
+ * `criteres` est optionnel, et quand il est fourni le compte est **contextuel**
+ * : il dit ce que choisir cette rareté donnerait, les autres critères restant
+ * en place. La rareté elle-même est retirée du calcul — c'est une liste à
+ * choix unique, chaque option remplace la précédente.
+ *
+ * Sans cela, les deux contrôles se contrediraient. Les pastilles d'attributs
+ * annoncent déjà ce qu'un clic donnerait ; laisser « Épique (25) » à côté de
+ * deux attributs cochés qui ne laissent aucun Épique produirait exactement le
+ * défaut que le compte par rareté avait été écrit pour éviter — une grille
+ * vide qui ressemble à une panne.
+ */
 export function compterParRarete<T extends Carte>(
   cartes: readonly T[],
+  criteres?: Criteres,
 ): Record<Rarity, number> {
   const out = { COMMON: 0, RARE: 0, EPIC: 0, LEGENDARY: 0, MYTHIC: 0 } as Record<
     Rarity,
     number
   >;
-  for (const c of cartes) out[c.rarity] += 1;
+
+  const base = criteres
+    ? trier(cartes, { ...criteres, rarete: 'TOUTES' })
+    : cartes;
+
+  for (const c of base) out[c.rarity] += 1;
   return out;
 }

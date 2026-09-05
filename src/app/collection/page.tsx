@@ -7,7 +7,10 @@ import { chestOdds } from '@/domain/collection/odds';
 import { CraftButton } from '@/components/CraftButton';
 import { RarityCard } from '@/components/RarityCard';
 import { OwnedCollection } from '@/components/OwnedCollection';
-import { attributesOf } from '@/domain/collection/attributes';
+import {
+  attributesOf,
+  catalogueAttributs,
+} from '@/domain/collection/attributes';
 import { CHARACTERS, CHARACTER_INDEX } from '@/data/characters';
 import { allSetsProgress, collectionSummary } from '@/domain/collection/sets';
 import { RARITY_COLOR, RARITY_LABEL, rarityRank } from '@/domain/collection/rarity';
@@ -53,6 +56,18 @@ export default async function CollectionPage() {
 
   const ownedIds = cards.map((card) => card.characterId);
   const owned = new Set(ownedIds);
+
+  /*
+   * Les personnages possédés, pour le catalogue de filtres.
+   *
+   * Le catalogue ne se construit **que sur la collection du joueur** : offrir
+   * « 🕯 Décédé » à quelqu'un qui n'en possède aucun, c'est offrir un filtre
+   * dont le seul résultat possible est une grille vide.
+   */
+  const possedes = ownedIds.flatMap((id) => {
+    const character = CHARACTER_INDEX.get(id);
+    return character ? [character] : [];
+  });
   const identities = new Map(cards.map((card) => [card.characterId, card]));
 
   const summary = collectionSummary(CHARACTERS, owned);
@@ -108,21 +123,26 @@ export default async function CollectionPage() {
               fait. Seuls le nom et la rareté traversent — c'est tout ce dont
               le tri a besoin. */}
           <OwnedCollection
+            attributs={catalogueAttributs(possedes)}
             cartes={ownedIds.flatMap((id) => {
               const character = CHARACTER_INDEX.get(id);
               if (!character) return [];
               const identity = identities.get(id);
+              const attributs = attributesOf(character);
               return [
                 {
                   id: character.id,
                   name: character.name,
                   rarity: character.rarity,
+                  // Les identifiants seuls traversent : le libellé et le
+                  // pictogramme partent une fois, dans le catalogue.
+                  attributs: attributs.map((attribut) => attribut.id),
                   vue: (
                     <RarityCard
                       characterId={character.id}
                       name={character.name}
                       rarity={character.rarity}
-                      attributes={attributesOf(character)}
+                      attributes={attributs}
                       serial={
                         /* Identité de l'exemplaire : ce code suit la carte, y
                            compris lorsqu'elle change de propriétaire au Market. */

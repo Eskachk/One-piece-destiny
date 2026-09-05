@@ -4,9 +4,11 @@ import { useMemo, useState, type ReactNode } from 'react';
 import { CardFilters } from './CardFilters';
 import {
   CRITERES_PAR_DEFAUT,
+  comptesParAttribut,
   compterParRarete,
   trier,
   type Carte,
+  type GroupeAttributs,
 } from '@/domain/collection/tri';
 
 /**
@@ -33,11 +35,25 @@ export interface CarteRendue extends Carte {
   vue: ReactNode;
 }
 
-export function OwnedCollection({ cartes }: { cartes: CarteRendue[] }) {
+export function OwnedCollection({
+  cartes,
+  attributs = [],
+}: {
+  cartes: CarteRendue[];
+  /** Catalogue des pastilles, construit par le serveur. */
+  attributs?: GroupeAttributs[];
+}) {
   const [criteres, setCriteres] = useState(CRITERES_PAR_DEFAUT);
 
-  const comptes = useMemo(() => compterParRarete(cartes), [cartes]);
+  const comptes = useMemo(
+    () => compterParRarete(cartes, criteres),
+    [cartes, criteres],
+  );
   const visibles = useMemo(() => trier(cartes, criteres), [cartes, criteres]);
+  const comptesAttributs = useMemo(
+    () => comptesParAttribut(cartes, criteres),
+    [cartes, criteres],
+  );
 
   return (
     <>
@@ -47,12 +63,14 @@ export function OwnedCollection({ cartes }: { cartes: CarteRendue[] }) {
         comptes={comptes}
         total={cartes.length}
         affiches={visibles.length}
+        attributs={attributs}
+        comptesAttributs={comptesAttributs}
       />
 
       {visibles.length === 0 ? (
         <p className="hb-card mt-3 text-sm">
-          Aucune carte ne correspond. Essaie un autre nom, ou remets la rareté
-          sur « Toutes ».
+          Aucune carte ne correspond. Retire un attribut, essaie un autre nom,
+          ou remets la rareté sur « Toutes ».
         </p>
       ) : (
         <ul className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4">

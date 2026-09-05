@@ -6,6 +6,7 @@ import {
   TRI_LABEL,
   type Criteres,
   type FiltreRarete,
+  type GroupeAttributs,
   type Tri,
 } from '@/domain/collection/tri';
 import type { Rarity } from '@/domain/types';
@@ -39,6 +40,8 @@ export function CardFilters({
   affiches,
   /** Rappelle ce qu'on filtre : « cartes », « personnages »… */
   nom = 'carte',
+  attributs = [],
+  comptesAttributs,
 }: {
   criteres: Criteres;
   onChange: (criteres: Criteres) => void;
@@ -46,9 +49,33 @@ export function CardFilters({
   total: number;
   affiches: number;
   nom?: string;
+  /** Pastilles proposées, groupées et ordonnées par le serveur. */
+  attributs?: GroupeAttributs[];
+  /** Ce que donnerait chaque pastille si on la cochait maintenant. */
+  comptesAttributs?: Map<string, number>;
 }) {
   const id = useId();
-  const filtre = criteres.rarete !== 'TOUTES' || criteres.recherche.trim() !== '';
+  const filtre =
+    criteres.rarete !== 'TOUTES' ||
+    criteres.recherche.trim() !== '' ||
+    criteres.attributs.length > 0;
+
+  /**
+   * Cocher, décocher.
+   *
+   * On ne retire pas une pastille devenue vide de la liste : elle disparaîtrait
+   * sous le doigt au moment du clic suivant, et le joueur perdrait le moyen de
+   * revenir en arrière. Elle est simplement désactivée, en gardant sa place.
+   */
+  const basculer = (attribut: string) => {
+    const actifs = criteres.attributs;
+    onChange({
+      ...criteres,
+      attributs: actifs.includes(attribut)
+        ? actifs.filter((a) => a !== attribut)
+        : [...actifs, attribut],
+    });
+  };
 
   return (
     <div className="hb-filtres">
@@ -80,7 +107,18 @@ export function CardFilters({
             }
             className="hb-filtres__saisie"
           >
-            <option value="TOUTES">Toutes ({total})</option>
+            {/*
+              « Toutes » compte la **somme des options**, pas le total brut.
+
+              Les comptes par rareté sont contextuels depuis qu'un attribut
+              peut être coché : laisser « Toutes (60) » au-dessus de
+              « Épique (0), Rare (0), Commun (0) » ferait dire à la liste deux
+              choses incompatibles dans le même déroulé.
+            */}
+            <option value="TOUTES">
+              Toutes (
+              {RARITY_ORDER.reduce((somme, r) => somme + comptes[r], 0)})
+            </option>
             {/* Du plus rare au plus commun : c'est l'ordre dans lequel on
                 cherche une carte, pas l'ordre de la table interne. */}
             {[...RARITY_ORDER].reverse().map((r) => (
@@ -111,6 +149,63 @@ export function CardFilters({
       </div>
 
       {/*
+        Les attributs, repliés par défaut.
+
+        Une collection complète en compte une quarantaine : dépliés, ils
+        pousseraient la grille de cartes hors de l'écran sur téléphone, pour
+        un filtre dont on ne se sert pas à chaque visite. `<details>` est
+        l'élément natif pour cela — il se replie au clavier, s'annonce aux
+        lecteurs d'écran, et ne coûte pas une ligne d'état.
+
+        Le nombre de critères actifs est écrit dans le résumé : replié, le
+        panneau doit dire s'il filtre. Sinon on cherche pourquoi la grille est
+        vide sans penser à le rouvrir.
+      */}
+      {attributs.length > 0 && (
+        <details className="hb-filtres__attributs" open={criteres.attributs.length > 0}>
+          <summary className="hb-filtres__resume">
+            Attributs
+            {criteres.attributs.length > 0 && (
+              <span className="hb-filtres__badge">{criteres.attributs.length}</span>
+            )}
+          </summary>
+
+          <p className="hb-filtres__aide">
+            Cumulables : chaque attribut ajouté restreint la liste.
+          </p>
+
+          {attributs.map((groupe) => (
+            <div key={groupe.famille} className="hb-filtres__groupe">
+              <span className="hb-filtres__famille">{groupe.titre}</span>
+              <div className="hb-filtres__pastilles">
+                {groupe.attributs.map((attribut) => {
+                  const actif = criteres.attributs.includes(attribut.id);
+                  const compte = comptesAttributs?.get(attribut.id) ?? 0;
+                  return (
+                    <button
+                      key={attribut.id}
+                      type="button"
+                      onClick={() => basculer(attribut.id)}
+                      // Une pastille qui ne rendrait rien reste visible mais
+                      // ne se clique pas — sauf si elle est déjà cochée, pour
+                      // qu'on puisse toujours la décocher.
+                      disabled={compte === 0 && !actif}
+                      aria-pressed={actif}
+                      className={`hb-pastille${actif ? ' hb-pastille--on' : ''}`}
+                    >
+                      <span aria-hidden="true">{attribut.symbol}</span>
+                      <span>{attribut.label}</span>
+                      <span className="hb-pastille__n">{compte}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </details>
+      )}
+
+      {/*
         Le compte est annoncé aux lecteurs d'écran (`role="status"`) : sans
         cela, taper dans le champ ne produit aucun retour audible, et rien ne
         dit si la recherche a trouvé quelque chose.
@@ -123,7 +218,12 @@ export function CardFilters({
           <button
             type="button"
             onClick={() =>
-              onChange({ ...criteres, recherche: '', rarete: 'TOUTES' })
+              onChange({
+                ...criteres,
+                recherche: '',
+                rarete: 'TOUTES',
+                attributs: [],
+              })
             }
             className="hb-link ml-2 text-xs"
           >
