@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { AppearanceImportForm } from '@/components/AppearanceImportForm';
 import { ChapterCorrection } from '@/components/ChapterCorrection';
 import { ChapterSimulator } from '@/components/ChapterSimulator';
+import { QuestionEditor } from '@/components/QuestionEditor';
+import { questionsDe, reponsesDuChapitre } from '@/lib/chapter/questions';
 import { ChapterNumberControls } from '@/components/ChapterNumberControls';
 import { TeamLockControls } from '@/components/TeamLockControls';
 import { OpenChapterForm } from '@/components/OpenChapterForm';
@@ -142,6 +144,33 @@ export default async function AdminPage() {
   const now = new Date();
 
   const teams = await repository.listTeams(chapter.id);
+
+  /*
+   * Les pronostics du chapitre, avec le nombre de réponses reçues.
+   *
+   * Le compte sert à l'administrateur : une question à zéro réponse est une
+   * question qui n'a pas pris — mal formulée, ou publiée trop tard — et il vaut
+   * mieux le voir avant de trancher.
+   */
+  const [questionsDuChapitre, reponsesRecues] = await Promise.all([
+    questionsDe(chapter.id),
+    reponsesDuChapitre(chapter.id),
+  ]);
+
+  const comptesReponses = new Map<string, number>();
+  for (const liste of reponsesRecues.values()) {
+    for (const reponse of liste) {
+      comptesReponses.set(
+        reponse.questionId,
+        (comptesReponses.get(reponse.questionId) ?? 0) + 1,
+      );
+    }
+  }
+
+  const pronostics = questionsDuChapitre.map((question) => ({
+    ...question,
+    reponses: comptesReponses.get(question.id) ?? 0,
+  }));
   const inscrits = await playerCount();
   const appearances = await repository.getAppearances(chapter.id);
   const leaderboard = await repository.getLeaderboard(chapter.id);
@@ -317,6 +346,14 @@ export default async function AdminPage() {
             alreadyPublished={published}
           />
         </div>
+      </section>
+
+      {/* Pronostics secondaires (§73). Au-dessus du simulateur : ils se
+          préparent à l'ouverture du chapitre et se tranchent avant la
+          publication, donc dans le même mouvement que le reste de la
+          semaine. */}
+      <section className="mt-6 rounded-xl border border-turquoise/20 bg-navy/40 p-5">
+        <QuestionEditor questions={pronostics} />
       </section>
 
       {/* Chapter Simulator (cahier §80, §81) */}

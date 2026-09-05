@@ -28,6 +28,22 @@ import { dispatch } from '@/lib/notifications/dispatch';
 import { resultsReadyEmail, rewardReadyEmail } from '@/lib/email/templates';
 import { getRepository } from '@/lib/repository';
 import { CURRENT_SCORING_VERSION } from '@/domain/scoring';
+import {
+  MAX_OPTIONS,
+  MAX_QUESTIONS,
+  OPTION_MAX,
+  PROMPT_MAX,
+  bonusDe,
+  decrireRefusQuestion,
+  validerQuestion,
+} from '@/domain/chapter/pronostics';
+import {
+  ajouterQuestion,
+  questionsDe,
+  reponsesDuChapitre,
+  supprimerQuestion,
+  trancherQuestion,
+} from '@/lib/chapter/questions';
 import { setChapterAnchor } from '@/lib/settings/anchor';
 import { requireAdmin } from '@/lib/auth/guards';
 import { requiresReauthentication } from '@/lib/auth/session-store';
@@ -519,6 +535,21 @@ export async function publishResults(): Promise<AdminActionResult> {
     })),
   );
 
+  /*
+   * Bonus des pronostics secondaires, **fondu dans le versement hebdomadaire**.
+   *
+   * Un second versement demanderait sa propre idempotence (§92) et pourrait
+   * réussir quand le premier échoue, laissant un joueur payé à moitié. Une
+   * seule écriture, une seule garantie.
+   *
+   * Le bonus est en Berries et jamais en points (§25, §48, §72) : il n'entre
+   * donc ni dans `results`, ni dans `team_scores`, ni dans le classement.
+   */
+  const [questions, reponses] = await Promise.all([
+    questionsDe(chapter.id),
+    reponsesDuChapitre(chapter.id),
+  ]);
+
   // Récompenses hebdomadaires (§72). Tout participant reçoit un coffre ; le
   // classement ne module que les Berries, jamais un avantage de score (§48).
   const rewarded = await repository.grantWeeklyRewards(
@@ -526,9 +557,10 @@ export async function publishResults(): Promise<AdminActionResult> {
     results.map((result, index) => {
       const percentile = percentileFromRank(index + 1, results.length);
       const reward = weeklyReward({ participated: true, rank: index + 1 });
+      const bonus = bonusDe(reponses.get(result.playerId) ?? [], questions);
       return {
         playerId: result.playerId,
-        berries: reward.berries,
+        berries: reward.berries + bonus,
         chests: reward.chests,
         percentile,
       };
@@ -700,4 +732,99 @@ export async function previewAppearances(
       ),
     })),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Pronostics secondaires (§73)
+// ---------------------------------------------------------------------------
+
+/**
+ * Ajoute une question au chapitre **ouvert**.
+ *
+ * Jamais à un chapitre publié : la bonne réponse y serait déjà connue, et la
+ * question ne serait plus un pronostic mais un cadeau.
+ */
+export async function addQuestionAction(
+  prompt: unknown,
+  options: unknown,
+): Promise<AdminActionResult> {
+  await assertSameOrigin();
+  await requireAdmin();
+
+  const parsed = z
+    .object({
+      prompt: z.string().max(PROMPT_MAX * 4),
+      options: z.array(z.string().max(OPTION_MAX * 4)).max(MAX_OPTIONS),
+    })
+    .safeParse({ prompt, options });
+
+  if (!parsed.success) return { ok: false, error: 'Question invalide.' };
+
+  const verdict = validerQuestion(parsed.data.prompt, parsed.data.options);
+  if (!verdict.valide) {
+    return { ok: false, error: decrireRefusQuestion(verdict.raison) };
+  }
+
+  const chapter = await getRepository().getCurrentChapter();
+  if (!chapter) return { ok: false, error: 'Aucun chapitre ouvert.' };
+
+  const issue = await ajouterQuestion(chapter.id, verdict.prompt, verdict.options);
+  if (issue === 'COMPLET') {
+    return {
+      ok: false,
+      error: `Ce chapitre porte déjà ${MAX_QUESTIONS} pronostics.`,
+    };
+  }
+
+  revalidatePath('/admin');
+  revalidatePath('/');
+  return { ok: true, message: 'Pronostic ajouté.' };
+}
+
+export async function removeQuestionAction(
+  questionId: unknown,
+): Promise<AdminActionResult> {
+  await assertSameOrigin();
+  await requireAdmin();
+
+  const parsed = z.string().uuid().safeParse(questionId);
+  if (!parsed.success) return { ok: false, error: 'Pronostic introuvable.' };
+
+  const chapter = await getRepository().getCurrentChapter();
+  if (!chapter) return { ok: false, error: 'Aucun chapitre ouvert.' };
+
+  await supprimerQuestion(chapter.id, parsed.data);
+
+  revalidatePath('/admin');
+  revalidatePath('/');
+  return { ok: true, message: 'Pronostic retiré.' };
+}
+
+/**
+ * Fixe la bonne réponse d'un pronostic.
+ *
+ * À faire **avant** de publier : le bonus est calculé pendant la publication,
+ * et une question laissée sans réponse ne rapporte rien à personne. Elle
+ * n'enlève rien non plus — ce n'est pas au joueur de payer un oubli.
+ */
+export async function answerQuestionAdminAction(
+  questionId: unknown,
+  answer: unknown,
+): Promise<AdminActionResult> {
+  await assertSameOrigin();
+  await requireAdmin();
+
+  const parsedId = z.string().uuid().safeParse(questionId);
+  const parsedAnswer = z.number().int().min(0).max(MAX_OPTIONS - 1).safeParse(answer);
+  if (!parsedId.success || !parsedAnswer.success) {
+    return { ok: false, error: 'Réponse invalide.' };
+  }
+
+  const chapter = await getRepository().getCurrentChapter();
+  if (!chapter) return { ok: false, error: 'Aucun chapitre ouvert.' };
+
+  await trancherQuestion(chapter.id, parsedId.data, parsedAnswer.data);
+
+  revalidatePath('/admin');
+  return { ok: true, message: 'Bonne réponse enregistrée.' };
 }

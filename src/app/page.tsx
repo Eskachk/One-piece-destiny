@@ -19,6 +19,9 @@ import {
   getCachedCurrentChapter,
   getCachedRecurrences,
 } from '@/lib/cache';
+import { PronosticPanel } from '@/components/PronosticPanel';
+import { sansReponse } from '@/domain/chapter/pronostics';
+import { questionsDe, reponsesDe } from '@/lib/chapter/questions';
 import { getRepository } from '@/lib/repository';
 import { AdBanner } from '@/components/AdBanner';
 
@@ -123,6 +126,26 @@ export default async function HomePage() {
    */
   const recurrence = await getCachedRecurrences();
 
+  /*
+   * Les pronostics de la semaine, **sans la bonne réponse**.
+   *
+   * `sansReponse` retire la colonne avant l'envoi ; elle n'est pas seulement
+   * omise de l'affichage. Ce qui part dans la charge d'une page rendue par le
+   * serveur est lisible par quiconque ouvre les outils de développement, et
+   * une réponse connue d'avance est un spoiler du chapitre (§3).
+   */
+  const [questions, mesReponses] = await Promise.all([
+    questionsDe(chapter.id),
+    reponsesDe(chapter.id, session.playerId),
+  ]);
+
+  const pronostics = sansReponse(questions).map((question) => ({
+    id: question.id,
+    prompt: question.prompt,
+    options: question.options,
+    choix: mesReponses.get(question.id) ?? null,
+  }));
+
   const ownedCharacters = possedes.map((character) => ({
     ...character,
     attributs: attributesOf(character).map((attribut) => attribut.id),
@@ -175,6 +198,15 @@ export default async function HomePage() {
 
       <AdBanner />
       <Nav />
+
+      {/*
+        Les pronostics, sous l'équipage.
+
+        C'est la seconde décision de la semaine et elle obéit à la même
+        échéance : les mettre ailleurs qu'à côté de la première obligerait à
+        aller les chercher.
+      */}
+      <PronosticPanel questions={pronostics} ouvert={editable} />
 
       <CrewSelector
         locked={!editable}
