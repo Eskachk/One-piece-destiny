@@ -142,7 +142,9 @@ const CODE_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 const CODE_LENGTH = 8;
 
 /**
- * Code lisible : ni voyelles ni caractères ambigus (0/O, 1/I).
+ * Code lisible : sans les caractères qui se confondent — `I` avec `1`, `O`
+ * avec `0`. Les voyelles restent, contrairement à ce que ce commentaire a
+ * longtemps affirmé : l'alphabet ci-dessus contient A, E, U et Y.
  *
  * Utilise l'API Web Crypto plutôt que `node:crypto` : ce module est importé
  * par un composant client pour ses constantes, et une dépendance Node y

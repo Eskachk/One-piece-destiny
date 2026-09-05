@@ -25,6 +25,9 @@ import type { CharacterScore } from '@/domain/scoring';
 import { getAuthenticatedSession } from '@/lib/auth/session-store';
 import { getRepository } from '@/lib/repository';
 import { AdBanner } from '@/components/AdBanner';
+import { LeaguePanel, type LigueVue } from '@/components/LeaguePanel';
+import { classer } from '@/domain/league/league';
+import { classementLigue, liguesDe } from '@/lib/league/repository';
 
 export const dynamic = 'force-dynamic';
 
@@ -119,6 +122,19 @@ export default async function LeaderboardPage() {
       : Promise.resolve(null),
   ]);
   const analysis = rawAnalysis as ChapterAnalysis | null;
+
+  /*
+   * Les ligues du visiteur, et leur classement pour ce chapitre.
+   *
+   * Lecture **personnelle** : elle ne passe pas par le cache partagé, où elle
+   * serait servie à un autre joueur. Elle ne part pas non plus dans le
+   * `Promise.all` ci-dessus : elle a besoin de la session, et un visiteur
+   * anonyme n'a pas de ligue à charger.
+   *
+   * Un aller-retour par ligue, cinq au plus — c'est le plafond de
+   * `MAX_LIGUES_PAR_JOUEUR`, et c'est pour cela qu'il existe.
+   */
+  const ligues = session ? await chargerLigues(session.playerId, chapter.id) : null;
 
   const percentile = mine ? percentileFromRank(mine.rank, total) : null;
 
@@ -292,6 +308,25 @@ export default async function LeaderboardPage() {
 
       </SpoilerVeil>
 
+      {/*
+        Les ligues, **hors du voile anti-spoiler**.
+
+        Le voile masque ce que le chapitre a révélé — qui est apparu, combien de
+        points. Un rang entre amis n'en dit rien : on peut savoir qu'on est
+        deuxième sur cinq sans rien apprendre du contenu du chapitre. Les
+        ranger derrière le voile obligerait à se spoiler pour voir sa ligue.
+
+        La section n'apparaît qu'aux joueurs connectés : une ligue est
+        attachée à un compte.
+      */}
+      {ligues !== null && (
+        <LeaguePanel
+          ligues={ligues}
+          moi={session?.playerId ?? null}
+          chapitre={chapter.chapterNumber}
+        />
+      )}
+
       <Link href="/" className="hb-link mt-6 block text-center text-sm">
         Retour à l&apos;équipage
       </Link>
@@ -303,5 +338,29 @@ export default async function LeaderboardPage() {
       <AdBanner />
       <Nav />
     </HarborScene>
+  );
+}
+
+/**
+ * Assemble les ligues du joueur et leur classement.
+ *
+ * Le rang est calculé **ici, côté serveur** : le client reçoit une liste déjà
+ * ordonnée. Décider qui a gagné n'est jamais le travail du navigateur.
+ */
+async function chargerLigues(
+  playerId: string,
+  chapterId: string,
+): Promise<LigueVue[]> {
+  const mesLigues = await liguesDe(playerId);
+
+  return Promise.all(
+    mesLigues.map(async (ligue) => {
+      const classement = await classementLigue(playerId, ligue.id, chapterId);
+      return {
+        ...ligue,
+        classement: classement ? classer(classement.joues) : [],
+        absents: classement?.absents ?? [],
+      };
+    }),
   );
 }

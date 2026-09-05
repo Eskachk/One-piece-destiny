@@ -74,6 +74,16 @@ export const QUOTAS = {
 
   /* Fabrication d'une carte à partir d'éclats. */
   fabrication: { limite: 20, fenetreSecondes: 60 },
+
+  /*
+   * Créer ou rejoindre une ligue.
+   *
+   * Dix par heure : de quoi monter sa ligue, se tromper de code deux fois et
+   * recommencer. Une ligue ne rapporte rien — elle filtre un classement déjà
+   * calculé — donc il n'y a rien à farmer ; le frein n'est là que pour
+   * empêcher un script de remplir la table.
+   */
+  ligue: { limite: 10, fenetreSecondes: 3600 },
 } as const satisfies Record<string, Quota>;
 
 export type QuotaName = keyof typeof QUOTAS;
