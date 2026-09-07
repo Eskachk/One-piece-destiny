@@ -96,9 +96,22 @@ Les trois « oui » en gras sont ceux qu'on est tenté d'éviter :
   s'achète. La règle exige de le déclarer **et** d'afficher les probabilités
   avant l'achat — c'est fait, elles sont au rayon Coffres de la boutique.
 - **Interaction et contenu généré** : marché entre joueurs, ligues,
-  commentaires de chapitre, pseudonymes visibles au classement. Google en
-  déduira l'obligation d'un moyen de signalement — tu as déjà
-  `comment_reports`.
+  commentaires de chapitre, pseudonymes visibles au classement.
+
+  ⚠️ **Conséquence à connaître avant de répondre.** Déclarer du contenu
+  généré par les utilisateurs engage la règle de Google sur ce contenu : elle
+  exige un **moyen de signalement dans l'application** et une possibilité de
+  **bloquer un autre utilisateur**.
+
+  La table `comment_reports` existe bien en base — elle a été créée par la
+  migration — mais **aucun code de l'application ne l'utilise** : ni bouton de
+  signalement côté joueur, ni écran de modération côté administrateur.
+  Vérifié : `grep comment_reports src/` ne renvoie rien.
+
+  Répondre « non » pour éviter la contrainte serait une fausse déclaration,
+  et les commentaires sont visibles dans l'application. La voie honnête est
+  donc de répondre « oui » et de brancher le signalement avant de passer en
+  production. C'est un risque de refus réel, pas théorique.
 
 ## 5. Cible et contenu (« Target audience »)
 
