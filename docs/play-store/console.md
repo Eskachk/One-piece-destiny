@@ -248,27 +248,68 @@ près et qu'il n'accepte pas pour un public mineur.
 
 ## 5. Cible et contenu (« Target audience »)
 
-Tranche d'âge à cocher : **18 ans et plus**, uniquement.
+**Cocher uniquement « 18 ans et plus ».**
 
-Trois raisons, et la première est bloquante :
+### La contrainte dure : jamais une tranche sous 13 ans
 
-1. **Une TWA est incompatible avec une application ciblant les moins de
-   13 ans.** L'outil de Google l'a signalé pendant la construction du paquet.
-2. Ton propre code réserve les achats aux comptes majeurs.
-3. Cocher une tranche mineure déclenche les règles « Play pour les familles » :
-   examen renforcé, restrictions publicitaires, et interdiction pratique des
-   coffres aléatoires payants.
+« 5 ans et moins », « 6-8 » et « 9-12 » sont exclues, et ce n'est pas une
+question de prudence. L'outil de Google l'a annoncé pendant la construction du
+paquet :
 
-Question suivante : **« Votre application attire-t-elle involontairement les
-enfants ? »** → **Non**, puis coche que tu n'utilises ni personnage animé
-enfantin ni thème enfantin comme argument principal.
+    WARNING: Trusted Web Activities are currently incompatible with
+    applications targeting children under the age of 13.
 
-> **Un point à trancher, et il t'appartient.** Ta page de confidentialité
-> annonce un âge minimum de 13 ans avec accord parental en dessous. Cibler
-> 18+ sur le Play Store est cohérent avec les achats, mais divergent du site.
-> Soit tu alignes le site sur 18 ans, soit tu assumes que l'application
-> Android est réservée aux majeurs alors que le site accepte 13 ans. La
-> seconde option est tenable, la première est plus propre.
+S'y ajoutent les règles « Play pour les familles », qui interdisent en pratique
+l'économie de ce jeu — coffres aléatoires payants et échange entre joueurs avec
+une monnaie achetable.
+
+### Pourquoi pas 13-15 ni 16-17
+
+Cocher une tranche mineure **à côté** de 18+ fait de l'application un « public
+mixte ». Google exige alors un **écran d'âge neutre au premier lancement**,
+avant toute collecte et tout affichage d'annonce.
+
+Le jeu n'en a pas. Vérifié : la date de naissance n'est **pas** demandée à
+l'inscription — elle se renseigne plus tard depuis le profil, une seule fois
+(`.is('birth_date', null)` empêche la réécriture). Un joueur qui vient de
+s'inscrire est dans la tranche `UNKNOWN`.
+
+Déclarer un public mixte engagerait donc à construire cette porte d'entrée, et
+Google la vérifie.
+
+### Ce que ce choix coûte, honnêtement
+
+La console le prévient : « des restrictions de disponibilité supplémentaires ».
+Concrètement, l'application n'apparaît pas aux comptes Google déclarés mineurs,
+et certains pays imposent une vérification d'âge renforcée.
+
+C'est un vrai coût : le lectorat de One Piece est largement adolescent. Et le
+jeu est **déjà conçu pour eux** — la tranche `TEEN` peut jouer et utiliser le
+marché, mais ne peut ni acheter en euros ni recevoir de prospection ; sans date
+de naissance, les achats sont refusés par défaut. Le cloisonnement existe, il
+manque seulement l'écran d'âge à l'inscription pour pouvoir le déclarer.
+
+### Question suivante : « attire involontairement les enfants ? »
+
+Réponse : **Non**.
+
+⚠️ Attends-toi à ce que Google y regarde à deux fois. L'icône est un chapeau
+de dessin animé, les cartes sont des figurines colorées, et l'univers est un
+manga lu par des adolescents. Si l'examen conclut que la fiche attire les
+enfants, il faudra soit retravailler les visuels de la fiche, soit accepter les
+règles « familles » — incompatibles avec les coffres payants.
+
+### Incohérence à régler
+
+La page de confidentialité annonce un âge minimum de **13 ans**, et le code
+prévoit un accord parental sous 16 ans (`PARENTAL_CONSENT_AGE = 16`). Déclarer
+18+ sur le Play Store crée un écart entre ce que dit le site et ce que dit la
+fiche. Deux sorties : aligner le site sur 18 ans, ou assumer que
+**l'application Android** est réservée aux majeurs pendant que le site reste
+ouvert à 13 ans. La seconde est tenable — ce sont deux canaux distincts — mais
+elle doit être un choix, pas un oubli.
+
+---
 
 ## 6. Sécurité des données
 
