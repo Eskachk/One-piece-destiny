@@ -356,7 +356,32 @@ conseil médical, ni suivi de forme physique, ni contenu sur la santé mentale.
 - **Type d'application** : Jeu
 - **Catégorie** : Trivia — c'est un jeu de pronostics. « Occasionnels » est un
   repli acceptable ; évite « Cartes », qui désigne les jeux de cartes à jouer.
-- **Tags** : jeu de pronostics, collection, classement (3 maximum)
+### Tags
+
+Cinq au maximum, **choisis dans une liste fermée** de Google : on ne les écrit
+pas, on les sélectionne, et la liste proposée dépend de la catégorie retenue.
+Les libellés exacts appartiennent à Google ; ci-dessous, ce qu'il faut chercher,
+par ordre d'importance.
+
+| À chercher | Pourquoi ce jeu y correspond |
+| --- | --- |
+| **Trivia / Quiz** | Les questions de chapitre sont jouées par les joueurs — `questionsDe()` est appelé sur la page d'accueil. |
+| **Anime / Manga** | L'univers, et le premier critère de recherche d'un joueur potentiel. |
+| **Collection / Cartes à collectionner** | Coffres, raretés, numéros de série, fusion de doublons. |
+| **Compétitif / Classements** | Le classement hebdomadaire est le cœur de la boucle. |
+| **Occasionnel** | Une session par semaine suffit à jouer. |
+
+**Trois à éviter, même s'ils sont proposés :**
+
+- *Jeu de cartes* / *Card Battler* — il n'y a **aucun combat** de cartes. Le
+  joueur collectionne et échange, il ne joue pas de cartes contre un autre.
+- *Multijoueur* — rien n'est en temps réel. Le marché est asynchrone, et
+  l'étiquette promettrait une partie à plusieurs qui n'existe pas.
+- *Ligues* / *Clans*, si le tag existe — `LIGUES_ACTIVES = false` : la
+  fonctionnalité est coupée.
+
+Un tag qui décrit mal le jeu ne coûte pas qu'un refus : il place l'application
+devant un public qui cherche autre chose, et ce public note mal.
 
 Coordonnées, affichées publiquement sur la fiche :
 

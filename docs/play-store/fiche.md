@@ -47,6 +47,14 @@ Devine qui apparaîtra dans le prochain chapitre. Classement chaque semaine.
 
 ## Description complète (4 000 caractères max)
 
+⚠️ **Ne pas y remettre les ligues privées.** Une première version de ce texte
+les annonçait. Elles sont **coupées** dans le produit —
+`LIGUES_ACTIVES = false` dans `src/domain/league/league.ts`, et les deux
+actions serveur répondent « arriveront dans une prochaine mise à jour ».
+Décrire sur le Play Store une fonctionnalité qui ne fonctionne pas est un
+motif de refus, et la première source d'avis à une étoile. À réintégrer le
+jour où le drapeau passe à `true`.
+
 ```
 Le chapitre est le spectacle. Ta prédiction est le jeu.
 
@@ -61,9 +69,9 @@ risqué qui tombe juste rapporte gros. Tout le jeu tient dans cet arbitrage, et
 tu as une semaine pour en changer d'avis.
 
 AFFRONTE LE CLASSEMENT
-Classement hebdomadaire ouvert à tous, et ligues privées pour te mesurer aux
-gens que tu connais. Rien n'est révélé avant la sortie officielle du chapitre :
-aucun spoiler ne fuite par le jeu.
+Un classement hebdomadaire ouvert à tous, remis à zéro à chaque chapitre : une
+mauvaise semaine ne condamne pas la suivante. Rien n'est révélé avant la sortie
+officielle du chapitre — aucun spoiler ne fuite par le jeu.
 
 COLLECTIONNE LES PERSONNAGES
 Les coffres délivrent des cartes de raretés différentes, et les probabilités
