@@ -426,7 +426,71 @@ l'application devant un public qui cherche autre chose, et ce public note mal.
 
 ---
 
-# C. Ce qui reste après
+# C. Créer la release
+
+## Le fichier à déposer
+
+`android/app-release-bundle.aab` — **le `.aab`, pas l'`.apk`.** Le Play Store
+n'accepte que le bundle ; l'APK sert uniquement à installer à la main pour
+tester.
+
+Vérifié dans le fichier lui-même, pas dans une configuration :
+
+    jarsigner -verify  →  jar verified.
+    packageId          →  app.opquest.twa
+    versionName        →  1.0.0
+    versionCode        →  1
+
+## Nom de la version (50 caractères max)
+
+```
+1.0.0 (1) - premiere publication
+```
+
+Ce champ est **interne** : aucun joueur ne le voit. Google propose par défaut
+« 1 (1.0.0) », ce qui suffit. L'intérêt d'y ajouter un mot vient plus tard,
+quand la liste compte vingt lignes et qu'il faut retrouver laquelle contenait
+quoi.
+
+## Notes de version
+
+Elles s'affichent aux joueurs sous « Nouveautés ». 500 caractères maximum par
+langue, **balises comprises**.
+
+```
+<fr-FR>
+Première version de One Piece Quest.
+
+Choisis 3 personnages avant dimanche 23:59:59, puis découvre à la sortie du
+chapitre si tu avais vu juste. Classement hebdomadaire remis à zéro chaque
+semaine, coffres à cartes dont les probabilités sont affichées avant
+l'ouverture, et marché d'échange entre joueurs.
+</fr-FR>
+```
+
+Ne pas y décrire de fonctionnalité absente — les ligues privées notamment,
+coupées par `LIGUES_ACTIVES = false`.
+
+## Juste après l'envoi, une chose à ne pas oublier
+
+C'est à ce moment, et pas avant, que Google génère **sa** clé de signature.
+Va la chercher tout de suite :
+
+**Test et publication → Intégrité de l'application → Signature d'application
+→ SHA-256.**
+
+Sans elle, `assetlinks.json` ne porte que l'empreinte locale, et l'application
+distribuée par le Store affiche l'URL en haut de l'écran — alors que l'APK
+installé à la main ne l'affiche pas. Le symptôme est déroutant parce qu'il ne
+se produit **que** pour les joueurs venus de la boutique.
+
+    node scripts/assetlinks.mjs "<empreinte locale>" "<empreinte Play>"
+
+puis redéployer le site.
+
+---
+
+# D. Ce qui reste après
 
 1. Envoyer `android/app-release-bundle.aab` en **test interne**.
 2. Relever l'empreinte SHA-256 de la signature Play : **Test et publication →
