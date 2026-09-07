@@ -119,6 +119,7 @@ Réponses :
 | **Éléments numériques aléatoires payants (loot boxes)** | **Oui** |
 | **Les utilisateurs peuvent interagir entre eux** | **Oui** |
 | **Partage du contenu généré par les utilisateurs** | **Oui** |
+| **Thèmes liés au jeu d'argent, jeux d'argent simulés ou réels** | **Non** |
 | Partage de la position | Non |
 | Informations personnelles partagées avec des tiers | Oui (régie publicitaire) |
 
@@ -127,6 +128,37 @@ Les trois « oui » en gras sont ceux qu'on est tenté d'éviter :
 - **Loot boxes** : tes coffres tirent au hasard, et la monnaie qui les ouvre
   s'achète. La règle exige de le déclarer **et** d'afficher les probabilités
   avant l'achat — c'est fait, elles sont au rayon Coffres de la boutique.
+
+### « Thèmes liés au jeu d'argent » : **Non**, et il ne faut pas confondre
+
+C'est la question où l'on répond « oui » par prudence, et où c'est une erreur.
+Le questionnaire IARC traite les coffres aléatoires dans une question
+**séparée**, déjà cochée plus haut. Celle-ci porte sur le casino : machines à
+sous, roulette, bingo, poker, mise d'une monnaie sur un résultat incertain,
+ou simple imagerie de jeu d'argent.
+
+Vérifié dans le code, aucun de ces éléments n'existe :
+
+- aucune mécanique de casino — ni roulette, ni machine à sous, ni bingo, ni
+  blackjack ;
+- **aucune mise.** Le marché est à prix fixe (`§45 : pas d'enchères pour
+  l'instant`), et rien ne permet d'engager des Berries sur un résultat
+  incertain. Un pronostic ne coûte rien et ne peut rien faire perdre ;
+- **aucune sortie en argent réel.** Les Berries entrent, ne ressortent pas :
+  pas de retrait, pas de conversion. C'est la frontière qui sépare un jeu
+  d'un service de jeu d'argent.
+
+Deux occurrences peuvent inquiéter à la lecture du dépôt, aucune n'est une
+mécanique :
+
+- `jackpot` n'apparaît que dans le **simulateur de chapitre du Chapter HQ**,
+  derrière `requireAdmin` : c'est l'étiquette du personnage au meilleur score.
+- `poker` est un **nom de personnage** de One Piece — l'équipage de Kaido
+  compte King, Queen, Jack et Poker.
+
+Répondre « oui » ferait basculer la classification vers PEGI 18 / « contenu
+de jeu d'argent », restreindrait la diffusion dans plusieurs pays, et
+décrirait un jeu qui n'existe pas.
 - **Interaction et contenu généré** : marché entre joueurs, ligues,
   commentaires de chapitre, pseudonymes visibles au classement.
 
