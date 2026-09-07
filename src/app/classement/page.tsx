@@ -62,8 +62,35 @@ export default async function LeaderboardPage() {
   // chapitre qui vient d'être publié, puisqu'il n'est plus « courant ».
   // Les deux lectures sont partagées par tous les joueurs : elles passent par
   // le cache, purgé explicitement à la publication et à la correction.
-  const chapter =
-    (await getCachedLatestPublishedChapter()) ?? (await getCachedCurrentChapter());
+  const publie = await getCachedLatestPublishedChapter();
+  const chapter = publie ?? (await getCachedCurrentChapter());
+
+  /*
+   * Les ligues du visiteur, et leur classement pour le dernier chapitre publié.
+   *
+   * Lecture **personnelle** : elle ne passe pas par le cache partagé, où elle
+   * serait servie à un autre joueur. Un aller-retour par ligue, cinq au plus —
+   * c'est le plafond de `MAX_LIGUES_PAR_JOUEUR`, et c'est pour cela qu'il
+   * existe.
+   *
+   * Elle est faite **avant** les deux retours anticipés ci-dessous, et le
+   * panneau est rendu dans les trois branches. La première version ne le
+   * rendait que dans la dernière : tant qu'aucun chapitre n'était publié, la
+   * page sortait par le verrou anti-spoiler et les ligues privées étaient
+   * purement inaccessibles — c'est-à-dire exactement pendant la semaine où l'on
+   * en crée une. Le classement d'une ligue peut être vide ; la ligue, non.
+   */
+  const ligues = session
+    ? await chargerLigues(session.playerId, publie?.id ?? null)
+    : null;
+
+  const panneauLigues = ligues !== null && (
+    <LeaguePanel
+      ligues={ligues}
+      moi={session?.playerId ?? null}
+      chapitre={publie?.chapterNumber ?? null}
+    />
+  );
 
   if (!chapter) {
     return (
@@ -74,6 +101,7 @@ export default async function LeaderboardPage() {
         <p className="hb-card mt-5 text-sm">
           Aucun chapitre en cours.
         </p>
+        {panneauLigues}
         <AdBanner />
         <Nav />
       </HarborScene>
@@ -91,6 +119,7 @@ export default async function LeaderboardPage() {
           🔒 Les résultats du chapitre {chapter.chapterNumber} ne sont pas encore
           publiés. Rien n&apos;est révélé avant la sortie officielle.
         </p>
+        {panneauLigues}
         <AdBanner />
         <Nav />
       </HarborScene>
@@ -122,19 +151,6 @@ export default async function LeaderboardPage() {
       : Promise.resolve(null),
   ]);
   const analysis = rawAnalysis as ChapterAnalysis | null;
-
-  /*
-   * Les ligues du visiteur, et leur classement pour ce chapitre.
-   *
-   * Lecture **personnelle** : elle ne passe pas par le cache partagé, où elle
-   * serait servie à un autre joueur. Elle ne part pas non plus dans le
-   * `Promise.all` ci-dessus : elle a besoin de la session, et un visiteur
-   * anonyme n'a pas de ligue à charger.
-   *
-   * Un aller-retour par ligue, cinq au plus — c'est le plafond de
-   * `MAX_LIGUES_PAR_JOUEUR`, et c'est pour cela qu'il existe.
-   */
-  const ligues = session ? await chargerLigues(session.playerId, chapter.id) : null;
 
   const percentile = mine ? percentileFromRank(mine.rank, total) : null;
 
@@ -319,13 +335,7 @@ export default async function LeaderboardPage() {
         La section n'apparaît qu'aux joueurs connectés : une ligue est
         attachée à un compte.
       */}
-      {ligues !== null && (
-        <LeaguePanel
-          ligues={ligues}
-          moi={session?.playerId ?? null}
-          chapitre={chapter.chapterNumber}
-        />
-      )}
+      {panneauLigues}
 
       <Link href="/" className="hb-link mt-6 block text-center text-sm">
         Retour à l&apos;équipage
@@ -349,9 +359,16 @@ export default async function LeaderboardPage() {
  */
 async function chargerLigues(
   playerId: string,
-  chapterId: string,
+  /** Le dernier chapitre publié, ou `null` s'il n'y en a aucun. */
+  chapterId: string | null,
 ): Promise<LigueVue[]> {
   const mesLigues = await liguesDe(playerId);
+
+  // Sans chapitre publié, il n'y a rien à classer — mais les ligues existent
+  // déjà, et le joueur doit pouvoir les créer, les rejoindre et les quitter.
+  if (chapterId === null) {
+    return mesLigues.map((ligue) => ({ ...ligue, classement: [], absents: [] }));
+  }
 
   return Promise.all(
     mesLigues.map(async (ligue) => {
