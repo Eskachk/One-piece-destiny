@@ -4,8 +4,22 @@
     {
       "name": "grand-line-weekly",
       "runtimeExecutable": "C:/Program Files/nodejs/node.exe",
-      "runtimeArgs": ["node_modules/next/dist/bin/next", "dev"],
+      "runtimeArgs": [
+        "node_modules/next/dist/bin/next",
+        "dev"
+      ],
       "port": 3000
+    },
+    {
+      "name": "grand-line-verif-3100",
+      "runtimeExecutable": "C:/Program Files/nodejs/node.exe",
+      "runtimeArgs": [
+        "node_modules/next/dist/bin/next",
+        "dev",
+        "-p",
+        "3100"
+      ],
+      "port": 3100
     }
   ]
 }
