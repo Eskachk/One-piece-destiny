@@ -120,6 +120,7 @@ Réponses :
 | **Les utilisateurs peuvent interagir entre eux** | **Oui** |
 | **Partage du contenu généré par les utilisateurs** | **Oui** |
 | **Thèmes liés au jeu d'argent, jeux d'argent simulés ou réels** | **Non** |
+| **Achats numériques, récompenses convertibles ou NFT** | **Oui** — une seule case |
 | Partage de la position | Non |
 | Informations personnelles partagées avec des tiers | Oui (régie publicitaire) |
 
@@ -159,6 +160,46 @@ mécanique :
 Répondre « oui » ferait basculer la classification vers PEGI 18 / « contenu
 de jeu d'argent », restreindrait la diffusion dans plusieurs pays, et
 décrirait un jeu qui n'existe pas.
+
+### « Achats numériques, récompenses convertibles ou NFT » : **Oui**, une case sur trois
+
+Coche **« Achats de biens numériques »**, et **rien d'autre**.
+
+| Case | Réponse | Pourquoi |
+| --- | --- | --- |
+| Achats de biens numériques | **Cocher** | La boutique vend des coffres, des Berries et des personnages en argent réel, via Stripe. |
+| Récompenses convertibles en espèces | **Ne pas cocher** | Les Berries entrent et ne ressortent jamais. |
+| Émission de ressources transférables (NFT) | **Ne pas cocher** | Aucune blockchain, aucun jeton. |
+
+**Sur la deuxième case.** Le marché se règle **entre joueurs, en Berries** —
+le code refuse un achat sur « Berries insuffisantes » et prélève la taxe de
+10 % dans la même monnaie. Le vendeur reçoit des Berries, jamais de l'argent.
+Aucun retrait, aucune carte cadeau, aucune cryptomonnaie, et le bonus de
+parrainage est lui aussi versé en Berries. Il n'y a donc pas de
+« play-to-earn » : on gagne de la monnaie de jeu, ce qui est le contraire d'un
+revenu.
+
+**Sur la troisième case, qui est la piegeuse.** Les cartes du jeu **sont**
+échangeables entre joueurs, et on peut lire « ressources numériques
+transférables » au sens large. Ce n'est pas ce que la question vise : le mot
+« émission (par exemple la frappe) » et l'exemple « NFT » désignent
+l'émission d'un jeton sur une chaîne de blocs. Le lire autrement obligerait
+tout jeu à inventaire échangeable à se déclarer émetteur de NFT.
+
+Rien dans le dépôt ne touche à une chaîne de blocs : `grep -i
+"blockchain|crypto|nft|web3"` ne renvoie que `node:crypto` — le module
+standard de tirage aléatoire — et `wallet`, qui désigne le portefeuille de
+Berries. Les cartes sont des lignes de base de données, elles ne peuvent pas
+quitter le jeu.
+
+⚠️ `character_mint_counters` porte le mot « mint » et inquiète à la lecture.
+C'est un **compteur de numéros de série** : il attribue à chaque carte son
+rang de sortie, comme le tirage numéroté d'une carte à collectionner. Aucun
+rapport avec la frappe d'un jeton.
+
+**Ce qui changerait la réponse** : autoriser la revente de cartes contre de
+l'argent réel, ou le retrait des Berries. Tant que la monnaie ne ressort pas
+du jeu, une seule case.
 - **Interaction et contenu généré** : marché entre joueurs, ligues,
   commentaires de chapitre, pseudonymes visibles au classement.
 
