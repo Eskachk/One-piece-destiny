@@ -121,6 +121,7 @@ Réponses :
 | **Partage du contenu généré par les utilisateurs** | **Oui** |
 | **Thèmes liés au jeu d'argent, jeux d'argent simulés ou réels** | **Non** |
 | **Achats numériques, récompenses convertibles ou NFT** | **Oui** — une seule case |
+| **Échange d'articles entre joueurs avec une devise achetée en argent réel** | **Oui** |
 | Partage de la position | Non |
 | Informations personnelles partagées avec des tiers | Oui (régie publicitaire) |
 
@@ -200,6 +201,33 @@ rapport avec la frappe d'un jeton.
 **Ce qui changerait la réponse** : autoriser la revente de cartes contre de
 l'argent réel, ou le retrait des Berries. Tant que la monnaie ne ressort pas
 du jeu, une seule case.
+
+### « Échange d'articles entre joueurs » : **Oui**
+
+L'exemple donné par la question — « maison de vente aux enchères, bourse
+d'articles » — décrit littéralement le Marché de la Grand Line.
+
+La chaîne est complète, et chaque maillon est vérifiable dans le dépôt :
+
+1. la boutique vend des Berries **en euros** : « Bourse de Berries » à 4,99 €
+   pour 7 500 Berries, « Sac de Berries » à 19,99 € pour 36 000 ;
+2. le marché se règle **en Berries** entre joueurs ;
+3. donc un joueur peut acheter des Berries en argent réel et s'en servir pour
+   obtenir la carte d'un autre joueur.
+
+C'est exactement la formulation de la question : « une devise dans le jeu
+**achetée avec de l'argent réel** ».
+
+**Pourquoi on est tenté de répondre non**, et pourquoi ce serait faux : aucun
+argent ne circule *entre les joueurs* — le vendeur reçoit des Berries, pas
+des euros. Mais la question ne porte pas sur ce que reçoit le vendeur : elle
+porte sur l'existence d'un système d'échange alimenté par une monnaie
+achetable. Le fait que les Berries se gagnent **aussi** en jouant ne change
+rien : il suffit qu'elles puissent s'acheter.
+
+Cette réponse conforte le ciblage **18 ans et plus** (§5) : combinée aux
+coffres aléatoires payants, elle décrit une économie que Google examine de
+près et qu'il n'accepte pas pour un public mineur.
 - **Interaction et contenu généré** : marché entre joueurs, ligues,
   commentaires de chapitre, pseudonymes visibles au classement.
 
