@@ -4,6 +4,8 @@ import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
 import { ShopPanel } from '@/components/ShopPanel';
 import { CATALOG } from '@/domain/payments/catalog';
+import { CHARACTERS } from '@/data/characters';
+import { chestOdds } from '@/domain/collection/odds';
 import { RARITY_COLOR, RARITY_LABEL } from '@/domain/collection/rarity';
 import { requireSession } from '@/lib/auth/guards';
 import { paymentsState } from '@/lib/payments/provider';
@@ -77,6 +79,9 @@ export default async function ShopPage() {
 
       <ShopPanel
         products={products}
+        // Calculées à partir des mêmes constantes que le tirage du serveur :
+        // elles ne peuvent pas diverger de ce qu'il fait réellement.
+        chestOdds={chestOdds(CHARACTERS)}
         promotion={
           promo.active && promo.endsAt
             ? {

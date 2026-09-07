@@ -18,10 +18,11 @@ migrations et le code de ce dépôt. Relis-les quand même : c'est toi qui signe
 | `docs/play-store/bandeau-1024x500.png` | Image de bandeau (obligatoire) |
 | `public/icons/icon-512.png` | Icône de l'application, 512 × 512 |
 | `android/app-release-bundle.aab` | Le paquet à envoyer |
+| `docs/play-store/captures/*.png` | Captures d'écran (3 fournies) |
 
-Les **captures d'écran** manquent, et je ne peux pas les produire : elles
-demandent une session connectée avec une vraie progression. Voir la fin de ce
-document.
+Trois captures sont fournies ; **trois autres restent à prendre depuis ton
+téléphone**, parce qu'elles sont derrière la connexion. Voir la section
+Captures d'écran.
 
 ---
 
@@ -133,36 +134,52 @@ pas de drogue.
 2. **Éléments numériques aléatoires payants** (« loot boxes ») — **oui.** Les
    coffres délivrent des cartes tirées au hasard, et la monnaie qui les ouvre
    peut s'acheter. Google impose de le déclarer **et** d'afficher les
-   probabilités. Le jeu les affiche déjà avant l'ouverture ; il faut le cocher
-   quand même. Ne pas le faire est une infraction directe à la règle sur les
-   achats intégrés.
+   probabilités **avant l'achat**.
+
+   ⚠️ **C'était un vrai écart, il est corrigé.** La boutique vend des coffres,
+   mais les taux n'y figuraient pas : une phrase en bas de page renvoyait à
+   « la page Collection ». Une référence à un autre écran n'annonce rien — la
+   vente se conclut sur la boutique. Les probabilités y sont maintenant
+   affichées, au rayon Coffres, en un seul geste.
+
+   Il faut cocher la case quand même : l'affichage est la condition, la
+   déclaration reste obligatoire.
 3. **Interaction entre utilisateurs** — oui : marché entre joueurs, ligues,
    commentaires, pseudonymes visibles.
 4. **Partage de la position** — non.
 
 ---
 
-## Captures d'écran — à faire toi-même
+## Captures d'écran
 
-Google en exige **au moins 2**, en 16:9 ou 9:16, côté le plus court ≥ 320 px.
-Je ne peux pas les produire : les écrans qui valent la peine d'être montrés
-demandent un compte connecté avec une progression réelle, et je ne vais ni
-créer de compte ni utiliser le tien.
+Trois sont fournies dans `docs/play-store/captures/`, prises en émulation
+téléphone (390 × 844 en pixels CSS, densité 3) :
 
-La méthode la plus simple, depuis ton téléphone, application installée :
+| Fichier | Définition | Ce que ça montre |
+| --- | --- | --- |
+| `1-cartes.png` | 1050 × 1965 | Les cartes du vrai référentiel, raretés et attributs |
+| `2-coffre.png` | 1050 × 942 | La cérémonie d'ouverture en 3D |
+| `3-classement.png` | 1170 × 2532 | L'écran de classement, décor et navigation |
 
-1. ouvre l'application, connecte-toi ;
-2. capture d'écran sur ces quatre écrans, dans cet ordre d'intérêt :
-   - **l'écran de pronostic** avec 3 personnages choisis — c'est le jeu ;
-   - **le classement** une fois des résultats publiés ;
-   - **la collection**, qui montre les cartes et les raretés ;
-   - **le marché**, ou l'ouverture d'un coffre.
+Les deux premières viennent de `/preview-chest`, la page de vérification
+visuelle : les titres internes ont été recadrés, et ce qui reste est le
+composant que le joueur voit réellement en ouvrant un coffre.
 
-Une capture de téléphone moderne fait 1080 × 2400 : elle passe telle quelle.
+**Trois autres manquent, et je ne peux pas les produire** : l'écran de
+pronostic, la collection et le marché sont derrière la connexion. Les prendre
+supposerait de créer un compte ou d'utiliser le tien, et de contourner le
+contrôle de session — ce que je ne fais pas, même en local.
 
-**Ce qu'il faut éviter** : une capture de l'écran de connexion (Google la juge
-non représentative), et un classement où figurent les pseudonymes d'autres
-joueurs si tu ne veux pas les publier.
+Depuis ton téléphone, application installée et connectée, capture :
+
+1. **l'écran de pronostic** avec 3 personnages choisis — c'est le jeu, et
+   c'est la capture la plus importante des trois ;
+2. **la collection**, une fois quelques cartes obtenues ;
+3. **le marché**, avec des offres en cours.
+
+Une capture de téléphone moderne (1080 × 2400) passe telle quelle. Évite un
+classement où figurent les pseudonymes d'autres joueurs si tu ne veux pas les
+publier.
 
 ---
 

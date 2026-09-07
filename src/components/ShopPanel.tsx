@@ -9,6 +9,8 @@ import {
   IconPouch,
   IconRoyalChest,
 } from './ShopIcons';
+import { ChestOdds } from '@/components/ChestOdds';
+import type { RarityOdds } from '@/domain/collection/odds';
 
 /**
  * Boutique en argent réel (cahier §113, §114).
@@ -103,8 +105,19 @@ export function ShopPanel({
   enabled,
   disabledReason,
   promotion,
+  chestOdds,
 }: {
   products: ShopProduct[];
+  /**
+   * Probabilités des coffres, affichées **sur cette page**.
+   *
+   * Elles étaient auparavant renvoyées vers la page Collection par une
+   * phrase en bas d'écran. C'était insuffisant : la règle du Play Store sur
+   * les achats intégrés demande que les taux d'un objet aléatoire soient
+   * annoncés **avant l'achat**, et une référence à un autre écran n'annonce
+   * rien — c'est là que se conclut la vente.
+   */
+  chestOdds: RarityOdds[];
   /** Les paiements réels sont-ils ouverts ? */
   enabled: boolean;
   disabledReason: string;
@@ -173,6 +186,11 @@ export function ShopPanel({
           <section key={section.key} className="mt-7">
             <h2 className="hb-legend">{section.title}</h2>
             <p className="hb-muted mt-1 text-xs">{section.blurb}</p>
+
+            {/*
+              Les taux, là où l'achat se conclut. Voir la prop `chestOdds`.
+            */}
+            {section.key === 'CHEST' && <ChestOdds odds={chestOdds} />}
 
             <ul className="mt-3 space-y-3">
               {items.map((product) => (
@@ -251,8 +269,9 @@ export function ShopPanel({
         </p>
         <p className="hb-muted mt-2 text-xs">
           Les probabilités des coffres achetés sont exactement celles des
-          coffres gagnés en jeu, et restent consultables sur la page Collection.
-          Les achats sont réservés aux comptes majeurs et plafonnés par jour.
+          coffres gagnés en jeu — elles sont affichées ci-dessus, au rayon
+          Coffres, et aussi sur la page Collection. Les achats sont réservés
+          aux comptes majeurs et plafonnés par jour.
         </p>
       </div>
     </div>
