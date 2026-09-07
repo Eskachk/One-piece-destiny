@@ -356,67 +356,61 @@ conseil médical, ni suivi de forme physique, ni contenu sur la santé mentale.
 - **Type d'application** : **Jeu**, pas Application. Le questionnaire de
   classification a déjà été rempli en tant que jeu ; les deux doivent
   concorder.
-- **Catégorie** : **Occasionnels**.
+- **Catégorie** : **Grand public**.
 
-### Pourquoi Occasionnels, et pas Trivia
+### Pourquoi Grand public
 
-La catégorie doit refléter l'objet **principal** de l'application. Une première
-version de ce guide recommandait Trivia en s'appuyant sur les questions de
-chapitre. Le code lui-même les qualifie autrement :
+« Occasionnels » n'existe pas dans la liste de Google. Son équivalent français
+est **Grand public** — le mapping des tags le confirme : « Mini-jeux » et
+« Jeux très grand public » y renvoient tous les deux.
 
-    /** Nombre de questions par chapitre. Au-delà, ce n'est plus un à-côté. */
-    export const MAX_QUESTIONS = 3;
+Les dix-sept catégories disponibles sont : Action, Arcade, Aventure, Cartes,
+Casino, Course, Culture générale, Grand public, Jeux de lettres, Jeux de rôles,
+Jeux de société, Musique, Réflexion, Simulation, Sports, Stratégie, Éducatifs.
+Il n'existe **aucune catégorie « pronostics »** ; deux seulement sont
+plaidables.
 
-Trois questions par chapitre, récompensées en **Berries** et non en points de
-classement : c'est un à-côté assumé. Le jeu principal est le choix de trois
-personnages avant la sortie du chapitre — une prédiction, pas une question à
-réponse connue.
+| Catégorie | Pour | Contre |
+| --- | --- | --- |
+| **Grand public** | Décrit ce que le joueur fait : une session par semaine, un geste simple. Aucune contestation possible. | La catégorie la plus saturée du Store. |
+| **Culture générale** | Rayon bien plus petit, donc bien plus visible. Les questions de chapitre existent vraiment. | S'appuie sur trois questions par semaine que le code appelle lui-même un à-côté. |
 
-Occasionnels décrit ce que le joueur fait vraiment : une session par semaine,
-un geste simple, aucune maîtrise requise.
+**À écarter absolument :** *Cartes* désigne les jeux où l'on **joue** des cartes
+— ses tags sont Solitaire, Rami, Jeux de plis, Jeux de combats de cartes — or
+ici on les collectionne. *Casino* contredirait frontalement le « Non » donné à
+la question sur les jeux d'argent.
 
-**Trivia reste défendable** si tu préfères un rayon moins encombré —
-Occasionnels est la catégorie la plus saturée du Play Store, Trivia l'une des
-plus petites, et la visibilité n'est pas la même. Mais l'argument s'appuierait
-sur trois questions par semaine.
+**La catégorie se change à tout moment**, sans renvoyer d'AAB : commencer par
+Grand public et basculer plus tard n'engage rien.
 
-**À éviter :** *Cartes*, qui désigne les jeux où l'on **joue** des cartes
-(solitaire, poker) — ici on les collectionne ; *Sport* et *Casino*, hors sujet.
-
-**Bonne nouvelle :** la catégorie est un réglage de la fiche. Elle se change
-à tout moment, **sans renvoyer d'AAB** — contrairement au nom du paquet.
 ### Tags
 
-Cinq au maximum, **choisis dans une liste fermée** de Google : on ne les écrit
-pas, on les sélectionne, et la liste proposée dépend de la catégorie retenue.
-Les libellés exacts appartiennent à Google ; ci-dessous, ce qu'il faut chercher,
-par ordre d'importance.
+Chaque tag appartient à une ou plusieurs catégories, et la console ne propose
+que ceux de la catégorie retenue. Avec **Grand public**, le vivier est mince —
+c'est ainsi.
 
-| À chercher | Pourquoi ce jeu y correspond |
+| Tag | Prendre ? |
 | --- | --- |
-| **Trivia / Quiz** | Les questions de chapitre sont jouées par les joueurs — `questionsDe()` est appelé sur la page d'accueil. |
-| **Anime / Manga** | L'univers, et le premier critère de recherche d'un joueur potentiel. |
-| **Collection / Cartes à collectionner** | Coffres, raretés, numéros de série, fusion de doublons. |
-| **Compétitif / Classements** | Le classement hebdomadaire est le cœur de la boucle. |
-| **Occasionnel** | Une session par semaine suffit à jouer. |
+| **Grand public** | **Oui.** Le seul qui décrit honnêtement le jeu. |
+| Mini-jeux | Non : annonce un recueil de petits jeux indépendants. |
+| Jeux très grand public | Non : désigne l'hyper-casual, un jeu à un doigt sans progression. |
 
-**Trois à éviter, même s'ils sont proposés :**
+Si la console autorise un tag hors catégorie, **Culture générale** est le seul
+autre à être vrai : les questions de chapitre en sont.
 
-- *Jeu de cartes* / *Card Battler* — il n'y a **aucun combat** de cartes. Le
-  joueur collectionne et échange, il ne joue pas de cartes contre un autre.
-- *Multijoueur* — rien n'est en temps réel. Le marché est asynchrone, et
-  l'étiquette promettrait une partie à plusieurs qui n'existe pas.
-- *Ligues* / *Clans*, si le tag existe — `LIGUES_ACTIVES = false` : la
-  fonctionnalité est coupée.
+**Ceux qu'il ne faut jamais prendre, et pourquoi :**
 
-Un tag qui décrit mal le jeu ne coûte pas qu'un refus : il place l'application
-devant un public qui cherche autre chose, et ce public note mal.
+- **Casino, Poker, Machine à sous, Bingo, Black jack, Jeux de casino hybrides**
+  — ils contrediraient le « Non » déjà donné à la question sur les thèmes de
+  jeu d'argent. Une contradiction interne au questionnaire déclenche un examen
+  manuel, au mieux.
+- **Jeux de combats de cartes, Solitaire, Rami, Jeux de plis** — il n'y a aucun
+  jeu **de** cartes ici : on en collectionne et on en échange.
+- **Sports, Management sportif** — le pronostic porte sur un manga, pas sur une
+  compétition sportive.
 
-Coordonnées, affichées publiquement sur la fiche :
-
-- **E-mail** : `skytheforz2@gmail.com` (obligatoire)
-- **Site Web** : `https://one-piece-quest.vercel.app`
-- **Téléphone** : facultatif — laisse vide, il serait public
+Un tag qui décrit mal le jeu ne coûte pas qu'un risque de refus : il place
+l'application devant un public qui cherche autre chose, et ce public note mal.
 
 ## 11. Fiche Play Store
 
