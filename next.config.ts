@@ -207,6 +207,44 @@ export default function config(phase: string): NextConfig {
           source: '/:path*',
           headers: securityHeaders(phase === PHASE_DEVELOPMENT_SERVER),
         },
+        /*
+         * L'agent de service ne doit jamais être servi depuis le cache HTTP.
+         *
+         * Le navigateur va rechercher `/sw.js` pour décider s'il y a une mise
+         * à jour. Si un intermédiaire lui rend l'ancienne copie, l'ancien
+         * agent reste actif — et comme c'est *lui* qui décide quels fichiers
+         * sont servis depuis le cache, un correctif publié n'atteint jamais
+         * l'appareil. La panne est silencieuse et peut durer des jours.
+         *
+         * `Service-Worker-Allowed` autorise l'agent à couvrir tout le site :
+         * sans cet en-tête, sa portée serait limitée au dossier d'où il est
+         * servi. Il est ici à la racine, mais l'en-tête protège d'un
+         * déplacement futur du fichier.
+         */
+        {
+          source: '/sw.js',
+          headers: [
+            { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' },
+            { key: 'Service-Worker-Allowed', value: '/' },
+          ],
+        },
+        /*
+         * Vérification Digital Asset Links (application Android).
+         *
+         * Android va lire ce fichier pour vérifier que l'application signée
+         * par notre clé a bien le droit d'afficher ce domaine **sans barre
+         * d'adresse**. S'il est absent, mal typé ou mis en cache dans un état
+         * périmé, l'application se lance avec l'URL affichée en haut de
+         * l'écran — c'est le symptôme numéro un d'une TWA, et il ne produit
+         * aucune erreur ailleurs.
+         */
+        {
+          source: '/.well-known/assetlinks.json',
+          headers: [
+            { key: 'Content-Type', value: 'application/json' },
+            { key: 'Cache-Control', value: 'public, max-age=300' },
+          ],
+        },
       ];
     },
   };

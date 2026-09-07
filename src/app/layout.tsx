@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Anton, Caveat } from 'next/font/google';
 import Script from 'next/script';
 import { AppShell } from '@/components/AppShell';
+import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
 import { baseUrl } from '@/lib/email/templates';
 import { readDisplaySettings } from '@/lib/settings/store';
 import './globals.css';
@@ -36,6 +37,18 @@ export const metadata: Metadata = {
     description: 'Devine qui apparaîtra dans le prochain chapitre.',
   },
   applicationName: 'One Piece Quest',
+  /*
+   * iOS ignore `display: 'standalone'` du manifeste — Safari ne lit toujours
+   * pas ce champ. Sans ces trois lignes, un raccourci ajouté depuis un iPhone
+   * rouvre le jeu dans Safari, barre d'adresse comprise. Le manifeste reste
+   * la source de vérité pour Android et pour le Play Store ; ceci n'est que
+   * le doublon qu'Apple exige.
+   */
+  appleWebApp: {
+    capable: true,
+    title: 'OP Quest',
+    statusBarStyle: 'black-translucent',
+  },
   other: {
     // Identifiant d'éditeur AdSense. Il est aussi porté par le script
     // ci-dessous ; la balise sert à la vérification du site par Google, qui
@@ -159,6 +172,13 @@ export default async function RootLayout({
         />
 
         <AppShell>{children}</AppShell>
+
+        {/*
+          Agent de service : il rend le site installable, et c'est lui qui
+          permet à Bubblewrap de produire le paquet Android. Voir
+          `docs/android-play-store.md`.
+        */}
+        <ServiceWorkerRegistration />
 
         {/*
           Script AdSense, pour tout le site.

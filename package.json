@@ -8,7 +8,11 @@
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "android:init": "cd android && npx --yes @bubblewrap/cli init --manifest https://one-piece-quest.vercel.app/manifest.webmanifest",
+    "android:build": "cd android && npx --yes @bubblewrap/cli build",
+    "android:update": "cd android && npx --yes @bubblewrap/cli update",
+    "android:fingerprint": "cd android && npx --yes @bubblewrap/cli fingerprint list"
   },
   "dependencies": {
     "@node-rs/argon2": "^2.1.0",

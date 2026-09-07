@@ -1,0 +1,65 @@
+{
+  "packageId": "app.opquest.twa",
+  "host": "one-piece-quest.vercel.app",
+  "name": "One Piece Quest",
+  "launcherName": "OP Quest",
+  "display": "standalone",
+  "orientation": "portrait",
+  "themeColor": "#071C2C",
+  "themeColorDark": "#071C2C",
+  "navigationColor": "#071C2C",
+  "navigationColorDark": "#071C2C",
+  "navigationDividerColor": "#071C2C",
+  "navigationDividerColorDark": "#071C2C",
+  "backgroundColor": "#071C2C",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://one-piece-quest.vercel.app/icons/icon-512.png",
+  "maskableIconUrl": "https://one-piece-quest.vercel.app/icons/icon-maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [
+    {
+      "name": "Mon équipage",
+      "short_name": "Équipage",
+      "url": "/",
+      "chosenIconUrl": "https://one-piece-quest.vercel.app/icons/icon-192.png"
+    },
+    {
+      "name": "Classement",
+      "short_name": "Classement",
+      "url": "/classement",
+      "chosenIconUrl": "https://one-piece-quest.vercel.app/icons/icon-192.png"
+    },
+    {
+      "name": "Ma collection",
+      "short_name": "Collection",
+      "url": "/collection",
+      "chosenIconUrl": "https://one-piece-quest.vercel.app/icons/icon-192.png"
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://one-piece-quest.vercel.app/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://one-piece-quest.vercel.app/",
+  "minSdkVersion": 23,
+  "appVersion": "1.0.0",
+  "serviceAccountJsonFile": null,
+  "protocolHandlers": [],
+  "fileHandlers": [],
+  "launchHandlerClientMode": "auto",
+  "additionalTrustedOrigins": [],
+  "retainedBundles": []
+}

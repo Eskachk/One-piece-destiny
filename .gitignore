@@ -25,3 +25,26 @@ next-env.d.ts
 # Seule exception : le gabarit. Il ne contient que des emplacements vides et
 # doit être versionné pour que quiconque clone le dépôt sache quoi renseigner.
 !.env.example
+
+# ---------------------------------------------------------------------------
+# Application Android (TWA, voir docs/android-play-store.md).
+#
+# `android/twa-manifest.json` est versionné — c'est la description du paquet,
+# et elle doit être la même pour tout le monde. Tout le reste du dossier est
+# **généré** par Bubblewrap à partir de ce fichier : le régénérer coûte une
+# minute, le versionner coûterait des milliers de fichiers Gradle dans chaque
+# différence.
+#
+# ⚠️ La clé de signature (`*.keystore`) est le point sensible. La perdre rend
+# **toute mise à jour de l'application impossible** — Google refuse un paquet
+# signé par une autre clé, et il n'existe aucun recours automatique. La
+# publier permettrait à quiconque de signer une contrefaçon acceptée par les
+# appareils déjà installés. Elle reste donc hors de git, et sauvegardée
+# ailleurs (gestionnaire de mots de passe, coffre chiffré).
+# ---------------------------------------------------------------------------
+android/*
+!android/twa-manifest.json
+*.keystore
+*.jks
+*.aab
+*.apk

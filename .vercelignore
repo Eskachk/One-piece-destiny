@@ -24,3 +24,8 @@ build
 scripts
 supabase
 docs
+
+# Projet Android : il est construit par Bubblewrap sur la machine du
+# développeur, jamais par Vercel. Le dossier contient aussi la clé de
+# signature — raison de plus pour qu'il ne quitte pas la machine.
+android
