@@ -1,10 +1,14 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
     "target": {
       "namespace": "android_app",
       "package_name": "app.opquest.twa",
-      "sha256_cert_fingerprints": []
+      "sha256_cert_fingerprints": [
+        "20:EA:7E:81:60:80:20:39:0A:13:56:72:E6:71:BA:C8:35:3C:6A:C6:FD:D5:5E:D4:EA:91:88:12:9B:03:31:11"
+      ]
     }
   }
 ]

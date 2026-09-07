@@ -4,13 +4,12 @@
   "name": "One Piece Quest",
   "launcherName": "OP Quest",
   "display": "standalone",
-  "orientation": "portrait",
   "themeColor": "#071C2C",
-  "themeColorDark": "#071C2C",
-  "navigationColor": "#071C2C",
-  "navigationColorDark": "#071C2C",
-  "navigationDividerColor": "#071C2C",
-  "navigationDividerColorDark": "#071C2C",
+  "themeColorDark": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
   "backgroundColor": "#071C2C",
   "enableNotifications": true,
   "startUrl": "/",
@@ -26,20 +25,20 @@
   "shortcuts": [
     {
       "name": "Mon équipage",
-      "short_name": "Équipage",
-      "url": "/",
+      "shortName": "Équipage",
+      "url": "https://one-piece-quest.vercel.app/",
       "chosenIconUrl": "https://one-piece-quest.vercel.app/icons/icon-192.png"
     },
     {
       "name": "Classement",
-      "short_name": "Classement",
-      "url": "/classement",
+      "shortName": "Classement",
+      "url": "https://one-piece-quest.vercel.app/classement",
       "chosenIconUrl": "https://one-piece-quest.vercel.app/icons/icon-192.png"
     },
     {
       "name": "Ma collection",
-      "short_name": "Collection",
-      "url": "/collection",
+      "shortName": "Collection",
+      "url": "https://one-piece-quest.vercel.app/collection",
       "chosenIconUrl": "https://one-piece-quest.vercel.app/icons/icon-192.png"
     }
   ],
@@ -54,12 +53,14 @@
   "isChromeOSOnly": false,
   "isMetaQuest": false,
   "fullScopeUrl": "https://one-piece-quest.vercel.app/",
-  "minSdkVersion": 23,
-  "appVersion": "1.0.0",
-  "serviceAccountJsonFile": null,
+  "minSdkVersion": 21,
+  "orientation": "portrait",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
   "protocolHandlers": [],
   "fileHandlers": [],
-  "launchHandlerClientMode": "auto",
-  "additionalTrustedOrigins": [],
-  "retainedBundles": []
+  "launchHandlerClientMode": "",
+  "displayOverride": [],
+  "appVersion": "2"
 }
