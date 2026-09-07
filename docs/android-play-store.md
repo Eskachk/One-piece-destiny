@@ -43,9 +43,11 @@ retoucher :
 | `public/sw.js` | Agent de service. Sans lui, Chrome ne déclare pas le site installable. |
 | `public/offline.html` | Écran affiché quand le réseau manque. |
 | `src/components/ServiceWorkerRegistration.tsx` | Enregistre l'agent, en production uniquement. |
-| `public/.well-known/assetlinks.json` | Preuve que l'application et le site sont au même propriétaire. **À remplir, voir §5.** |
+| `public/.well-known/assetlinks.json` | Preuve que l'application et le site sont au même propriétaire. Porte l'empreinte locale ; **il manque celle de Google, voir §5.** |
 | `android/twa-manifest.json` | Configuration Bubblewrap (nom du paquet, couleurs, raccourcis). |
 | `scripts/assetlinks.mjs` | Écrit `assetlinks.json` à partir des empreintes de clé. |
+| `scripts/android-build.mjs` | Compile et signe l'APK et l'AAB (voir §4). |
+| `scripts/sw-desinstallation.js` | Filet de secours : désinstalle l'agent de service partout. |
 
 ### Vérifier que le site est bien installable
 
@@ -60,56 +62,91 @@ de le refuser.
 
 ---
 
-## 3. Outils à installer une fois
+## 3. État actuel : l'application est déjà construite
 
-- **Node 18+** — déjà présent (le projet tourne dessus).
-- **JDK 17** — [Adoptium Temurin 17](https://adoptium.net/temurin/releases/?version=17).
-  Bubblewrap le télécharge tout seul s'il ne le trouve pas ; l'installer
-  d'avance évite un premier lancement de dix minutes.
-- **Android SDK** — Bubblewrap l'installe également à la demande.
+Les étapes 3 et 4 de ce guide **ont été exécutées**. Sur cette machine se
+trouvent déjà :
 
-Rien à installer à la main pour Bubblewrap : les scripts npm l'appellent via
-`npx`.
+| Fichier | Usage |
+| --- | --- |
+| `android/app-release-signed.apk` | À installer directement sur un téléphone (1,8 Mo) |
+| `android/app-release-bundle.aab` | À envoyer au Play Store (2,0 Mo) |
+| `android/android.keystore` | La clé de signature. **Irremplaçable.** |
+| `android/CLE-A-CONSERVER.txt` | Son mot de passe, à mettre à l'abri puis supprimer |
 
----
+Identité du paquet, lue dans l'APK lui-même :
 
-## 4. Créer le projet Android
-
-```bash
-npm run android:init
+```
+package: name='app.opquest.twa' versionCode='1' versionName='1.0.0'
+application-label: 'One Piece Quest'
+Verified using v1 scheme (JAR signing): true
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
 ```
 
-La commande pose une série de questions. Elle lit `android/twa-manifest.json`
-pour les réponses par défaut, donc **accepter les valeurs proposées** est
-correct, à trois exceptions près :
+Empreinte SHA-256 de la clé locale, déjà posée dans `assetlinks.json` :
 
-1. **Mot de passe de la clé de signature.** Il est demandé deux fois (clé et
-   trousseau). Le noter immédiatement dans un gestionnaire de mots de passe :
-   il n'est stocké nulle part, et sans lui on ne peut plus signer de mise à
-   jour.
-2. **Nom du paquet** (`app.opquest.twa`). Il est **définitif**. Une fois publié,
-   il ne peut plus changer : le modifier crée une autre application, et les
-   joueurs installés ne reçoivent jamais la mise à jour.
-3. **Domaine.** `one-piece-quest.vercel.app`. Si un nom de domaine propre est
-   acheté plus tard, il faudra republier l'application (voir §8).
+```
+20:EA:7E:81:60:80:20:39:0A:13:56:72:E6:71:BA:C8:35:3C:6A:C6:FD:D5:5E:D4:EA:91:88:12:9B:03:31:11
+```
 
-Puis :
+Pour reconstruire après un changement :
 
 ```bash
 npm run android:build
 ```
 
-Cela produit dans `android/` :
+---
 
-- `app-release-bundle.aab` — **le fichier à envoyer au Play Store** ;
-- `app-release-signed.apk` — pour installer directement sur un téléphone et
-  tester.
+## 4. Trois pièges de cette machine, et leurs correctifs
 
-### Tester sur un vrai téléphone avant de publier
+Ils sont documentés parce qu'aucun des trois ne dit ce qu'il est, et que les
+trois reviendront sur une machine neuve.
 
-Copier l'APK sur le téléphone et l'installer (il faudra autoriser les sources
-inconnues). À ce stade, **la barre d'adresse sera visible** : c'est normal,
-`assetlinks.json` n'est pas encore rempli. C'est l'étape suivante.
+### `bubblewrap build` ne fonctionne pas ici
+
+```
+ERROR Command failed: gradlew.bat assembleRelease --stacktrace
+'gradlew.bat' n'est pas reconnu en tant que commande interne
+```
+
+L'outil lance Gradle par un shell en concaténant les arguments sans les
+protéger. Le chemin du projet contient des espaces (« op quest-… »), la ligne
+est coupée au premier, et Windows cherche une commande inexistante. Rien dans
+le message ne parle d'espaces — on croit à un Gradle mal installé.
+
+`npm run android:build` appelle donc [`scripts/android-build.mjs`](../scripts/android-build.mjs),
+qui fait le même travail (Gradle, `zipalign`, `apksigner`, `jarsigner`) en
+passant les arguments **en tableau**, jamais en chaîne. Le script n'invoque
+aucun `.bat` : depuis Node 18, Windows refuse de lancer un `.bat` sans
+`shell: true` (`spawnSync … EINVAL`), et `shell: true` ramènerait le problème
+des espaces. Il appelle `java.exe` avec ce que ces `.bat` auraient passé.
+
+### Le JDK téléchargé par Bubblewrap est en 32 bits
+
+```
+Error occurred during initialization of VM
+Could not reserve enough space for 1572864KB object heap
+```
+
+Ce message est apparu avec **18 Go de mémoire libre**. Il ne parle pas de RAM
+mais de l'espace d'adressage du processus : le JDK 17 installé par Bubblewrap
+est un binaire 32 bits (`OpenJDK Client VM … emulated-client`), qui plafonne
+bien en dessous des 1536 Mo demandés par défaut. `android/gradle.properties`
+est donc réglé sur `-Xmx1024m`.
+
+### Les licences du SDK doivent être acceptées séparément
+
+Accepter la licence proposée par `bubblewrap init` ne suffit pas : les
+*Build-Tools* en demandent une autre au moment de la compilation, et un refus
+se traduit par un silencieux « Skipping following packages ». Une fois pour
+toutes :
+
+```bash
+"$ANDROID_HOME/tools/bin/sdkmanager.bat" --sdk_root="$ANDROID_HOME" --licenses
+```
+
+(`ANDROID_HOME` vaut `~/.bubblewrap/android_sdk`.)
 
 ---
 
@@ -122,8 +159,8 @@ Android télécharge `https://one-piece-quest.vercel.app/.well-known/assetlinks.
 et y cherche l'empreinte de la clé qui a signé l'application installée. Il faut
 donc **deux** empreintes, et c'est le piège :
 
-1. **La clé locale**, celle créée à l'étape 4. Elle signe les APK installés à
-   la main.
+1. **La clé locale** (§3). Elle signe les APK installés à la main, et elle est
+   **déjà en place** dans le fichier.
 
    ```bash
    npm run android:fingerprint

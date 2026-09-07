@@ -10,7 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "android:init": "cd android && npx --yes @bubblewrap/cli init --manifest https://one-piece-quest.vercel.app/manifest.webmanifest",
-    "android:build": "cd android && npx --yes @bubblewrap/cli build",
+    "android:build": "node scripts/android-build.mjs",
     "android:update": "cd android && npx --yes @bubblewrap/cli update",
     "android:fingerprint": "cd android && npx --yes @bubblewrap/cli fingerprint list"
   },
