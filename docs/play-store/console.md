@@ -353,9 +353,38 @@ conseil médical, ni suivi de forme physique, ni contenu sur la santé mentale.
 
 ## 10. Catégorie et coordonnées
 
-- **Type d'application** : Jeu
-- **Catégorie** : Trivia — c'est un jeu de pronostics. « Occasionnels » est un
-  repli acceptable ; évite « Cartes », qui désigne les jeux de cartes à jouer.
+- **Type d'application** : **Jeu**, pas Application. Le questionnaire de
+  classification a déjà été rempli en tant que jeu ; les deux doivent
+  concorder.
+- **Catégorie** : **Occasionnels**.
+
+### Pourquoi Occasionnels, et pas Trivia
+
+La catégorie doit refléter l'objet **principal** de l'application. Une première
+version de ce guide recommandait Trivia en s'appuyant sur les questions de
+chapitre. Le code lui-même les qualifie autrement :
+
+    /** Nombre de questions par chapitre. Au-delà, ce n'est plus un à-côté. */
+    export const MAX_QUESTIONS = 3;
+
+Trois questions par chapitre, récompensées en **Berries** et non en points de
+classement : c'est un à-côté assumé. Le jeu principal est le choix de trois
+personnages avant la sortie du chapitre — une prédiction, pas une question à
+réponse connue.
+
+Occasionnels décrit ce que le joueur fait vraiment : une session par semaine,
+un geste simple, aucune maîtrise requise.
+
+**Trivia reste défendable** si tu préfères un rayon moins encombré —
+Occasionnels est la catégorie la plus saturée du Play Store, Trivia l'une des
+plus petites, et la visibilité n'est pas la même. Mais l'argument s'appuierait
+sur trois questions par semaine.
+
+**À éviter :** *Cartes*, qui désigne les jeux où l'on **joue** des cartes
+(solitaire, poker) — ici on les collectionne ; *Sport* et *Casino*, hors sujet.
+
+**Bonne nouvelle :** la catégorie est un réglage de la fiche. Elle se change
+à tout moment, **sans renvoyer d'AAB** — contrairement au nom du paquet.
 ### Tags
 
 Cinq au maximum, **choisis dans une liste fermée** de Google : on ne les écrit

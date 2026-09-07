@@ -29,7 +29,7 @@ Captures d'écran.
 ## Coordonnées de l'application
 
 - **Nom de l'application** (30 caractères max) : `One Piece Quest`
-- **Catégorie** : Jeux → Trivia (ou Occasionnels)
+- **Catégorie** : Jeux → **Occasionnels** (voir `console.md` §10)
 - **Politique de confidentialité** :
   `https://one-piece-quest.vercel.app/confidentialite`
 
