@@ -45,16 +45,48 @@ Ce que tu dois faire :
    - **Nom des identifiants** : `Compte de démonstration`
    - **Nom d'utilisateur** : l'adresse e-mail du compte
    - **Mot de passe** : celui du compte
-   - **Toutes les autres instructions** :
+   - **Toute autre information requise pour accéder à votre appli** :
+     le texte ci-dessous, à coller tel quel.
 
-     ```
-     Connexion par e-mail et mot de passe depuis l'écran d'accueil.
-     Le bouton « Continuer avec Google » n'est pas nécessaire.
-     Le jeu nécessite une connexion internet.
-     Les équipages se verrouillent le dimanche à 23:59:59 ; hors de cette
-     fenêtre, l'écran de pronostic affiche l'équipage verrouillé plutôt que
-     la sélection.
-     ```
+Le champ « toute autre information » n'est pas décoratif. Il sert à éviter que
+l'examinateur conclue à une application vide ou cassée : le classement de ce
+jeu est **volontairement masqué** tant qu'un chapitre n'est pas publié, et rien
+à l'écran ne distingue « pas encore révélé » de « ne fonctionne pas » pour qui
+découvre le produit.
+
+```
+CONNEXION
+Connexion par e-mail et mot de passe, avec les identifiants fournis ci-dessus,
+depuis l'ecran d'accueil de l'application. Le bouton "Continuer avec Google"
+n'est pas necessaire.
+
+AUCUN OBSTACLE SUPPLEMENTAIRE
+Ce compte n'a pas de validation en deux etapes, pas de code QR, pas de
+restriction geographique, pas d'adhesion payante et pas de connexion
+biometrique. Le nom d'utilisateur et le mot de passe suffisent.
+
+CONNEXION INTERNET REQUISE
+L'application affiche un site web securise (Trusted Web Activity). Sans reseau,
+un ecran "Le Log Pose ne repond plus" s'affiche a la place du jeu : c'est le
+comportement prevu, pas une erreur.
+
+CE QUI PEUT RESSEMBLER A UN DEFAUT, ET N'EN EST PAS
+1. Le classement hebdomadaire affiche "Les resultats du chapitre ne sont pas
+   encore publies" tant que le chapitre en cours n'est pas sorti. C'est
+   volontaire : le jeu ne revele aucun resultat avant la publication officielle
+   du chapitre, pour ne pas divulguer son contenu.
+2. Les equipages se verrouillent chaque dimanche a 23:59:59 (heure de Paris).
+   Apres le verrouillage et jusqu'a la publication du chapitre, l'ecran
+   principal montre l'equipage verrouille au lieu de la selection des
+   personnages. Pour voir la selection en action, ouvrir l'application entre le
+   lundi et le dimanche soir.
+3. En Europe, un bandeau de consentement publicitaire de Google s'affiche au
+   premier lancement. Il faut y repondre pour atteindre le jeu.
+
+PARCOURS RECOMMANDE
+Accueil (choix de 3 personnages) > Classement > Collection (ouverture d'un
+coffre, probabilites affichees) > Marche > Boutique.
+```
 
 ⚠️ **Désactive la double authentification sur ce compte**, sinon l'examinateur
 reste bloqué au second facteur.
