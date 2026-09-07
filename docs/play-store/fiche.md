@@ -160,34 +160,51 @@ pas de drogue.
 
 ## Captures d'écran
 
-Trois sont fournies dans `docs/play-store/captures/`, prises en émulation
-téléphone (390 × 844 en pixels CSS, densité 3) :
+Quatre sont fournies dans `docs/play-store/captures/`, **toutes en
+1080 × 1920**.
 
-| Fichier | Définition | Ce que ça montre |
-| --- | --- | --- |
-| `1-cartes.png` | 1050 × 1965 | Les cartes du vrai référentiel, raretés et attributs |
-| `2-coffre.png` | 1050 × 942 | La cérémonie d'ouverture en 3D |
-| `3-classement.png` | 1170 × 2532 | L'écran de classement, décor et navigation |
+| Fichier | Ce que ça montre |
+| --- | --- |
+| `1-connexion.png` | L'entrée dans le jeu, la scène du port |
+| `2-classement.png` | Le classement hebdomadaire, décor et navigation |
+| `3-cartes.png` | Les cartes du vrai référentiel, raretés et attributs |
+| `4-inscription.png` | La création d'équipage |
 
-Les deux premières viennent de `/preview-chest`, la page de vérification
-visuelle : les titres internes ont été recadrés, et ce qui reste est le
-composant que le joueur voit réellement en ouvrant un coffre.
+### La règle qui fait refuser les captures de téléphone
 
-**Trois autres manquent, et je ne peux pas les produire** : l'écran de
-pronostic, la collection et le marché sont derrière la connexion. Les prendre
-supposerait de créer un compte ou d'utiliser le tien, et de contourner le
-contrôle de session — ce que je ne fais pas, même en local.
+Le formulaire exige **16:9 ou 9:16**, chaque côté entre 320 et 3 840 px.
 
-Depuis ton téléphone, application installée et connectée, capture :
+C'est le piège : une capture prise sur un téléphone moderne fait 1170 × 2532,
+soit un rapport de **0,462**. C'est du 19,5:9 — plus allongé que le 9:16
+(0,5625) — et elle est **refusée à l'import** alors qu'elle vient d'un vrai
+appareil. Une première série l'a été pour cette raison.
 
-1. **l'écran de pronostic** avec 3 personnages choisis — c'est le jeu, et
-   c'est la capture la plus importante des trois ;
-2. **la collection**, une fois quelques cartes obtenues ;
-3. **le marché**, avec des offres en cours.
+Les quatre fichiers ci-dessus font 1080 × 1920 : 9:16 au pixel près, et
+≥ 1080 px, ce qui est le seuil supplémentaire pour être éligible à la mise en
+avant (« au moins 4 captures, dont 3 en 16:9 ou 9:16, résolution minimale
+1 080 px »).
 
-Une capture de téléphone moderne (1080 × 2400) passe telle quelle. Évite un
-classement où figurent les pseudonymes d'autres joueurs si tu ne veux pas les
-publier.
+### Ce qui manque encore, et que je ne peux pas produire
+
+L'écran de pronostic, la collection et le marché sont derrière la connexion.
+Les obtenir supposerait de créer un compte ou de contourner le contrôle de
+session — ce qui n'est pas fait, même en local.
+
+**La cérémonie d'ouverture du coffre non plus.** C'est la plus belle image du
+jeu, mais elle dépend de WebGL : en navigateur sans affichage,
+`react-three-fiber` n'émet aucun `<canvas>` et la page rend son repli. Ni le
+retrait de `--disable-gpu` ni SwiftShader n'y ont changé quoi que ce soit.
+
+Depuis ton téléphone, application installée et connectée, capture ces quatre-là
+pour remplacer les miennes — elles vendront mieux le jeu :
+
+1. **l'écran de pronostic** avec 3 personnages choisis ;
+2. **l'ouverture d'un coffre** ;
+3. **la collection** avec des cartes obtenues ;
+4. **le marché**, avec des offres en cours.
+
+⚠️ Une capture de téléphone étant en 19,5:9, elle sera refusée telle quelle.
+Il faut la **recadrer en 9:16** — par exemple 1080 × 1920 — avant l'import.
 
 ---
 
