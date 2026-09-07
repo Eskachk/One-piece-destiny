@@ -113,12 +113,33 @@ Toei Animation. Une connexion internet est nécessaire.
 | Informations financières | Historique des achats | Oui | Non | Non | Gestion du compte |
 | Activité dans l'application | Actions dans l'application | Oui | Non | Oui | Fonctionnalités de l'application |
 | Activité dans l'application | Autres contenus générés | Oui | Non | Non | Fonctionnalités de l'application |
-| ID de l'appareil ou autres | ID publicitaire | Oui | **Oui** | Non | **Publicité** |
 
-**Le dernier point est celui qu'on oublie.** L'application affiche des annonces
-Google AdSense : la régie lit l'identifiant publicitaire de l'appareil, et
-c'est un **partage** avec un tiers. Ne pas le déclarer est le motif de retrait
-le plus fréquent chez les applications qui monétisent par la publicité.
+### ⚠️ L'identifiant publicitaire : **ne pas le déclarer**
+
+Une première version de ce document demandait de cocher « ID de l'appareil ou
+autres → ID publicitaire, collecté **et** partagé ». **C'était faux**, et
+l'erreur n'était pas neutre : c'est exactement ce qui déclenche le blocage
+« autorisation `com.google.android.gms.permission.AD_ID` manquante » au moment
+de publier la release.
+
+Le paquet a été inspecté :
+
+    uses-permission: android.permission.POST_NOTIFICATIONS
+    uses-permission: app.opquest.twa.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+    bibliothèques publicitaires embarquées : 0
+
+Il n'y a **aucun kit publicitaire** dans l'application, et aucun appel à
+l'identifiant publicitaire. La raison tient à la nature d'une TWA : les
+annonces sont rendues **par Chrome**, dans le contenu web, et une page web
+n'a pas accès à l'identifiant publicitaire Android. AdSense y travaille avec
+des cookies, pas avec cet identifiant.
+
+Déclarer une collecte qui n'existe pas obligerait à ajouter au manifeste une
+autorisation que l'application n'utilise pas — ce que Google décourage par
+ailleurs.
+
+**Le suivi publicitaire par cookies reste réel**, lui, et il est décrit là où
+il doit l'être : dans la politique de confidentialité, section Publicité.
 
 ### Ce qu'il ne faut PAS cocher
 

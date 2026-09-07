@@ -321,8 +321,14 @@ Tout le détail est dans `fiche.md`. Le résumé :
 
 Données à déclarer : adresse e-mail, ID utilisateur, autres informations
 personnelles (date de naissance), historique des achats, actions dans
-l'application, autres contenus générés, **et l'identifiant publicitaire —
-collecté ET partagé, à des fins de publicité.**
+l'application, autres contenus générés.
+
+⚠️ **Pas l'identifiant publicitaire.** Ce guide demandait l'inverse ; c'était
+faux. Le paquet ne contient aucun kit publicitaire et ne demande pas
+l'autorisation `AD_ID` — les annonces sont rendues par Chrome dans le contenu
+web, et une page web n'accède pas à l'identifiant publicitaire Android. Le
+déclarer provoque le blocage « autorisation AD_ID manquante » au moment de
+publier la release. Voir `fiche.md`.
 
 Ne coche **pas** : informations de paiement (elles vont chez Stripe, jamais
 chez toi), position géographique, contacts, photos, fichiers, micro, caméra.
@@ -470,6 +476,33 @@ l'ouverture, et marché d'échange entre joueurs.
 
 Ne pas y décrire de fonctionnalité absente — les ligues privées notamment,
 coupées par `LIGUES_ACTIVES = false`.
+
+## « Désactiver les erreurs de version » (autorisation AD_ID)
+
+**Case à cocher : oui**, et ce n'est pas un contournement.
+
+Depuis Android 13, une application qui utilise l'identifiant publicitaire doit
+déclarer `com.google.android.gms.permission.AD_ID`. Le Play Store bloque la
+release quand il croit détecter un usage sans l'autorisation.
+
+Ici, l'usage n'existe pas. Le paquet a été inspecté :
+
+    uses-permission: android.permission.POST_NOTIFICATIONS
+    uses-permission: app.opquest.twa.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+    targetSdkVersion: 36
+    bibliothèques publicitaires embarquées : 0
+
+Aucun kit publicitaire, aucun appel à l'identifiant. Les annonces sont rendues
+**par Chrome**, dans le contenu web, et une page web n'a pas accès à
+l'identifiant publicitaire Android — AdSense y travaille avec des cookies.
+
+Ajouter l'autorisation « pour être tranquille » serait le mauvais réflexe :
+elle annoncerait une capacité que l'application n'a pas, et Google décourage
+les autorisations inutilisées.
+
+**À vérifier d'abord :** si la section Sécurité des données déclare l'ID
+publicitaire, c'est **elle** qui provoque l'erreur, et il faut la corriger
+plutôt que masquer le message.
 
 ## Juste après l'envoi, une chose à ne pas oublier
 
