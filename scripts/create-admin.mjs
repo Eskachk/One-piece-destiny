@@ -2,7 +2,7 @@
 /**
  * Crée ou promeut le compte administrateur du Chapter HQ (cahier §86).
  *
- *   node scripts/create-admin.mjs <email> [mot-de-passe]
+ *   node scripts/create-admin.mjs <email> [mot-de-passe] [--conserver-les-autres]
  *
  * Sans mot de passe, un mot de passe fort est tiré au sort et affiché **une
  * seule fois** : il n'est stocké nulle part ailleurs que dans la tête de qui
@@ -15,6 +15,15 @@
  *   3. **retire le rôle `ADMIN` à toutes les autres.** C'est la demande
  *      explicite : un seul compte administre le jeu. Le laisser à d'anciens
  *      comptes reviendrait à garder des clés en circulation.
+ *
+ * `--conserver-les-autres` désactive la troisième étape, et **seulement**
+ * celle-là. Le cas réel : ouvrir un second accès sans se retirer le sien au
+ * passage. Sans cette option, promouvoir une deuxième adresse dégrade
+ * silencieusement la première — on croit avoir ajouté un administrateur, on
+ * vient d'en remplacer un, et on s'en aperçoit à la prochaine visite du HQ.
+ *
+ * Le rôle en base ne suffit pas : `ADMIN_EMAIL` reste un second verrou, et
+ * doit énumérer les adresses autorisées (séparées par des virgules).
  *
  * Les secrets Supabase sont lus dans .env.local et ne sont **jamais** affichés,
  * ni en clair ni tronqués, ni en cas d'erreur.
@@ -72,9 +81,9 @@ function generatePassword() {
 async function main() {
   loadEnv();
 
-  const email = (process.argv[2] ?? '').trim().toLowerCase();
+  const email = (process.argv.slice(2).find((a) => !a.startsWith('--')) ?? '').trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-    console.error('Usage : node scripts/create-admin.mjs <email> [mot-de-passe]');
+    console.error('Usage : node scripts/create-admin.mjs <email> [mot-de-passe] [--conserver-les-autres]');
     process.exit(1);
   }
 
@@ -86,8 +95,22 @@ async function main() {
     process.exit(1);
   }
 
-  const password = process.argv[3] ?? generatePassword();
-  const generated = process.argv[3] === undefined;
+  // Les drapeaux sont retirés avant de lire le mot de passe positionnel :
+  // sans cela, `create-admin.mjs <email> --conserver-les-autres` prendrait le
+  // drapeau **pour** le mot de passe, et l'écrirait sur le compte.
+  const drapeaux = process.argv.slice(2).filter((a) => a.startsWith('--'));
+  const positionnels = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+  const conserverLesAutres = drapeaux.includes('--conserver-les-autres');
+
+  const inconnu = drapeaux.find((d) => d !== '--conserver-les-autres');
+  if (inconnu) {
+    console.error(`Option inconnue : ${inconnu}`);
+    process.exit(1);
+  }
+
+  const motDePasseFourni = positionnels[1];
+  const password = motDePasseFourni ?? generatePassword();
+  const generated = motDePasseFourni === undefined;
 
   const db = createClient(url, key, { auth: { persistSession: false } });
 
@@ -110,7 +133,7 @@ async function main() {
     // HQ si Google venait à tomber.
     const update = { role: 'ADMIN', email_verified_at: new Date().toISOString() };
 
-    if (process.argv[3] || existing.data.password_hash === null) {
+    if (motDePasseFourni || existing.data.password_hash === null) {
       update.password_hash = await hash(password, ARGON2);
       passwordSet = true;
     }
@@ -153,23 +176,43 @@ async function main() {
   }
 
   // Toutes les autres administrations sont révoquées. C'est le cœur du script.
-  const demoted = await db
-    .from('user_accounts')
-    .update({ role: 'PLAYER' })
-    .eq('role', 'ADMIN')
-    .neq('id', accountId)
-    .select('email');
+  if (conserverLesAutres) {
+    console.log('Rôle ADMIN des autres comptes : conservé (--conserver-les-autres).');
+  } else {
+    const demoted = await db
+      .from('user_accounts')
+      .update({ role: 'PLAYER' })
+      .eq('role', 'ADMIN')
+      .neq('id', accountId)
+      .select('email');
 
-  if (demoted.error) throw new Error(`révocation : ${demoted.error.message}`);
+    if (demoted.error) throw new Error(`révocation : ${demoted.error.message}`);
 
-  console.log(`Rôle ADMIN retiré à ${demoted.data?.length ?? 0} autre(s) compte(s).`);
+    console.log(`Rôle ADMIN retiré à ${demoted.data?.length ?? 0} autre(s) compte(s).`);
+  }
   console.log('');
   console.log(`  Adresse      : ${email}`);
   if (passwordSet && generated) console.log(`  Mot de passe : ${password}`);
   else if (!passwordSet) console.log('  Mot de passe : inchangé (celui que tu utilises déjà)');
   console.log('');
   console.log('Ajoute maintenant cette variable à l’environnement de déploiement :');
-  console.log(`  ADMIN_EMAIL=${email}`);
+  if (conserverLesAutres) {
+    // Afficher `ADMIN_EMAIL=<cette adresse>` après avoir **conservé** les
+    // autres administrateurs serait une consigne contradictoire : la suivre
+    // à la lettre retirerait à tous les autres l'accès au HQ, par le second
+    // verrou cette fois, alors qu'on vient de leur garder le rôle.
+    const autres = await db
+      .from('user_accounts')
+      .select('email')
+      .eq('role', 'ADMIN');
+    const liste = (autres.data ?? []).map((c) => c.email).sort().join(',');
+    console.log(`  ADMIN_EMAIL=${liste || email}`);
+    console.log('');
+    console.log('  (toutes les adresses administratrices, séparées par des virgules :');
+    console.log('   n’en garder qu’une ici fermerait le HQ aux autres.)');
+  } else {
+    console.log(`  ADMIN_EMAIL=${email}`);
+  }
   console.log('');
   console.log(
     'Le Chapter HQ exige aussi la double authentification : la première\n' +
