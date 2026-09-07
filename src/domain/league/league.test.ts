@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  LIGUES_ACTIVES,
   MAX_MEMBRES,
   NOM_MAX,
   NOM_MIN,
@@ -118,5 +119,20 @@ describe('ligues privées', () => {
     // justement à échapper. C'est aussi ce qui garantit que leur classement
     // tient en une requête sans pagination.
     expect(MAX_MEMBRES).toBeLessThanOrEqual(50);
+  });
+});
+
+describe('mise en sommeil', () => {
+  it('garde la fonctionnalité fermée tant que l’interrupteur est baissé', () => {
+    /*
+     * Le test ne défend pas une valeur, il rend le changement **visible**.
+     * Rouvrir les ligues, c'est passer `LIGUES_ACTIVES` à `true` et venir ici
+     * dire pourquoi — pas découvrir après coup qu'un panneau est réapparu.
+     *
+     * Voir aussi le garde-fou d'accessibilité de la page du classement, qui
+     * vérifie que le panneau est rendu dans chacune de ses branches : les deux
+     * ensemble décrivent l'état voulu, fermé aujourd'hui, joignable demain.
+     */
+    expect(LIGUES_ACTIVES).toBe(false);
   });
 });

@@ -33,6 +33,20 @@
  * l'espace par deux pour se prémunir d'un mot malheureux que six caractères
  * tirés au hasard ne forment quasiment jamais.
  */
+/**
+ * Les ligues sont-elles ouvertes aux joueurs ?
+ *
+ * `false` : la fonctionnalité est **complète et testée**, mais gardée pour une
+ * mise à jour ultérieure. On la met en sommeil ici plutôt que de retirer le
+ * code : un module supprimé se réécrit, un interrupteur se rallume.
+ *
+ * L'interrupteur commande les deux côtés. L'interface ne rend plus le panneau,
+ * et les actions serveur refusent — parce qu'une action reste joignable même
+ * quand plus aucun bouton ne l'appelle, et qu'on ne veut pas de ligues créées
+ * entre-temps qui apparaîtraient à moitié peuplées le jour de l'ouverture.
+ */
+export const LIGUES_ACTIVES = false;
+
 const CODE_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 const CODE_LENGTH = 6;
 

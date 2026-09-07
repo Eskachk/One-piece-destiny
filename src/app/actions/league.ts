@@ -9,6 +9,7 @@ import {
   throttleMessage,
 } from '@/lib/auth/action-throttle';
 import {
+  LIGUES_ACTIVES,
   NOM_MAX,
   decrireRefusAdhesion,
   decrireRefusNom,
@@ -30,7 +31,20 @@ export type LeagueResult =
   | { ok: true; code?: string }
   | { ok: false; error: string };
 
+/**
+ * Le refus commun quand la fonctionnalité est en sommeil.
+ *
+ * En tête de chaque action, avant toute écriture : une action serveur reste
+ * joignable quand plus aucun bouton ne l'appelle.
+ */
+const INDISPONIBLE: LeagueResult = {
+  ok: false,
+  error: 'Les ligues privées arriveront dans une prochaine mise à jour.',
+};
+
 export async function createLeagueAction(nom: unknown): Promise<LeagueResult> {
+  if (!LIGUES_ACTIVES) return INDISPONIBLE;
+
   await assertSameOrigin();
   const session = await requireSession();
 
@@ -71,6 +85,8 @@ export async function createLeagueAction(nom: unknown): Promise<LeagueResult> {
 }
 
 export async function joinLeagueAction(code: unknown): Promise<LeagueResult> {
+  if (!LIGUES_ACTIVES) return INDISPONIBLE;
+
   await assertSameOrigin();
   const session = await requireSession();
 
@@ -90,6 +106,14 @@ export async function joinLeagueAction(code: unknown): Promise<LeagueResult> {
   return { ok: true };
 }
 
+/*
+ * Quitter reste ouvert, même en sommeil.
+ *
+ * Les deux autres actions créent de l'état ; celle-ci en retire. Un
+ * interrupteur qui empêche de sortir d'une ligue enferme le joueur qui en
+ * aurait rejoint une avant la mise en sommeil — un refus a toujours un coût,
+ * et ici il serait payé par la seule personne à qui l'on doit une porte.
+ */
 export async function leaveLeagueAction(
   leagueId: unknown,
 ): Promise<LeagueResult> {

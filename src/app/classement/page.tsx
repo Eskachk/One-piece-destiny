@@ -26,7 +26,7 @@ import { getAuthenticatedSession } from '@/lib/auth/session-store';
 import { getRepository } from '@/lib/repository';
 import { AdBanner } from '@/components/AdBanner';
 import { LeaguePanel, type LigueVue } from '@/components/LeaguePanel';
-import { classer } from '@/domain/league/league';
+import { LIGUES_ACTIVES, classer } from '@/domain/league/league';
 import { classementLigue, liguesDe } from '@/lib/league/repository';
 
 export const dynamic = 'force-dynamic';
@@ -73,6 +73,10 @@ export default async function LeaderboardPage() {
    * c'est le plafond de `MAX_LIGUES_PAR_JOUEUR`, et c'est pour cela qu'il
    * existe.
    *
+   * `LIGUES_ACTIVES` est à `false` : la fonctionnalité est complète mais
+   * gardée pour une mise à jour ultérieure, et rien n'est lu tant qu'elle
+   * dort. Tout ce qui suit décrit l'agencement voulu à la réouverture.
+   *
    * Elle est faite **avant** les deux retours anticipés ci-dessous, et le
    * panneau est rendu dans les trois branches. La première version ne le
    * rendait que dans la dernière : tant qu'aucun chapitre n'était publié, la
@@ -80,9 +84,10 @@ export default async function LeaderboardPage() {
    * purement inaccessibles — c'est-à-dire exactement pendant la semaine où l'on
    * en crée une. Le classement d'une ligue peut être vide ; la ligue, non.
    */
-  const ligues = session
-    ? await chargerLigues(session.playerId, publie?.id ?? null)
-    : null;
+  const ligues =
+    LIGUES_ACTIVES && session
+      ? await chargerLigues(session.playerId, publie?.id ?? null)
+      : null;
 
   const panneauLigues = ligues !== null && (
     <LeaguePanel

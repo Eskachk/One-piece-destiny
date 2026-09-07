@@ -76,10 +76,26 @@ export function PronosticPanel({
         publication. Ces questions ne rapportent aucun point au classement.
       </p>
 
+      {/*
+        `role="group"` plutôt qu'un `fieldset`/`legend`.
+
+        Un `legend` se pose **sur** la bordure du `fieldset` : l'intitulé
+        montait au-dessus du parchemin au lieu d'y être posé, et aucun réglage
+        de marge ne le redescendait proprement — c'est la place que le
+        navigateur lui donne, pas un décalage. Le groupe reste annoncé aux
+        lecteurs d'écran par `aria-labelledby`, qui pointe l'intitulé.
+      */}
       {questions.map((question) => (
-        <fieldset key={question.id} className="hb-card mt-3">
-          <legend className="text-sm font-semibold">{question.prompt}</legend>
-          <div className="mt-2 flex flex-wrap gap-2">
+        <div
+          key={question.id}
+          role="group"
+          aria-labelledby={`q-${question.id}`}
+          className="hb-card hb-pronostic mt-3"
+        >
+          <p id={`q-${question.id}`} className="hb-pronostic__intitule">
+            {question.prompt}
+          </p>
+          <div className="hb-pronostic__choix">
             {question.options.map((option, index) => {
               const choisi = reponses[question.id] === index;
               return (
@@ -89,14 +105,14 @@ export function PronosticPanel({
                   onClick={() => repondre(question.id, index)}
                   disabled={!ouvert || pending}
                   aria-pressed={choisi}
-                  className={`hb-pastille${choisi ? ' hb-pastille--on' : ''}`}
+                  className={`hb-onglet${choisi ? ' hb-onglet--on' : ''}`}
                 >
                   {option}
                 </button>
               );
             })}
           </div>
-        </fieldset>
+        </div>
       ))}
 
       <p role="status" className="hb-muted mt-2 text-xs">
