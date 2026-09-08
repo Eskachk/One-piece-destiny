@@ -84,6 +84,20 @@ export const QUOTAS = {
    * empêcher un script de remplir la table.
    */
   ligue: { limite: 10, fenetreSecondes: 3600 },
+
+  /*
+   * Ouverture d'une session de paiement.
+   *
+   * Chaque appel écrit une intention en base **et** ouvre une session chez le
+   * prestataire : c'est le seul geste du produit qui coûte quelque chose à un
+   * tiers, et le seul dont l'abus se facture. Un compte qui en ouvrirait mille
+   * remplirait `payment_intents` et userait notre quota chez le prestataire,
+   * sans jamais payer un centime.
+   *
+   * Douze par heure : un joueur qui hésite entre trois produits, abandonne,
+   * revient et se trompe de carte passe largement. Une boucle, non.
+   */
+  paiement: { limite: 12, fenetreSecondes: 3600 },
 } as const satisfies Record<string, Quota>;
 
 export type QuotaName = keyof typeof QUOTAS;

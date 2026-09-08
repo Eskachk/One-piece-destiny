@@ -1,6 +1,10 @@
 'use server';
 
 import { z } from 'zod';
+import {
+  consumeQuotaByPlayer,
+  throttleMessage,
+} from '@/lib/auth/action-throttle';
 import { productOf, withinDailyCap } from '@/domain/payments/catalog';
 import { effectivePriceCents } from '@/domain/payments/promotion';
 import { restrictionsForBirthDate } from '@/domain/compliance/age';
@@ -57,6 +61,17 @@ export async function startCheckoutAction(
 
   const product = productOf(parsed.data);
   if (!product) return { ok: false, error: 'Produit inconnu.' };
+
+  /*
+   * Le frein de cadence, après la validation du produit.
+   *
+   * Un identifiant inconnu est une erreur d'appel, pas une tentative : le
+   * consommer punirait un lien périmé. Ce qu'on limite, c'est l'ouverture
+   * réelle d'une session chez le prestataire — la seule chose que cette
+   * action fasse qui coûte à quelqu'un d'autre que nous.
+   */
+  const cadence = await consumeQuotaByPlayer('paiement', session.playerId);
+  if (!cadence.autorise) return { ok: false, error: throttleMessage(cadence) };
 
   // Prix effectif : le catalogue donne le prix courant, l'offre de lancement
   // peut le réduire. Il est calculé **une fois**, ici, et sert ensuite à la

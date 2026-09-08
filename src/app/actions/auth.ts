@@ -1,6 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
+import { PIEGE_CHAMP, estUnRobot } from '@/domain/auth/piege';
 import { z } from 'zod';
 import { login, register } from '@/lib/auth/service';
 import { destroySession } from '@/lib/auth/session-store';
@@ -74,6 +75,22 @@ export async function registerAction(
   formData: FormData,
 ): Promise<AuthFormState> {
   await assertSameOrigin();
+
+  /*
+   * Le piège, **avant** toute autre chose.
+   *
+   * Avant la validation et avant le quota : une rafale de robots qui
+   * consommerait les trois inscriptions horaires d'une adresse partagée
+   * bloquerait les vrais joueurs derrière cette adresse. Le piège doit
+   * refuser sans compter, sinon il devient l'outil du déni de service qu'il
+   * est censé arrêter.
+   *
+   * Le message est celui d'un formulaire invalide, et non « robot détecté » :
+   * dire à un robot pourquoi il a été refusé, c'est lui dire quoi corriger.
+   */
+  if (estUnRobot(formData.get(PIEGE_CHAMP))) {
+    return { error: 'Pseudo, adresse e-mail ou mot de passe invalide.' };
+  }
 
   const parsed = RegistrationSchema.safeParse({
     email: formData.get('email'),

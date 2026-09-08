@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { CHARACTER_INDEX } from '@/data/characters';
+import { lireChapitre, lireEquipage } from '@/domain/social/partage';
 import { teamRisk } from '@/domain/risk';
 import type { Character } from '@/domain/types';
 
@@ -34,11 +35,30 @@ export default async function ShareImage({
   // l'équipage doit donc voyager dans le chemin.
   const { chapter, crew } = await params;
 
-  const picked = decodeURIComponent(crew)
-    .split(',')
-    .map((id) => CHARACTER_INDEX.get(id.trim()))
-    .filter((c): c is Character => c !== undefined)
-    .slice(0, 3);
+  /*
+   * Le numéro est **validé**, pas seulement affiché.
+   *
+   * Il partait tel quel dans l'image, sous le nom du jeu et dans sa
+   * typographie. N'importe qui pouvait donc fabriquer une carte officielle
+   * disant ce qu'il voulait, et la partager : « Chapitre » suivi d'une phrase
+   * entière. Le titre de la page avait le même défaut.
+   *
+   * Un chapitre est un nombre. Tout le reste devient une carte sans numéro,
+   * ce qui reste une carte honnête.
+   */
+  const numero = lireChapitre(chapter);
+
+  /*
+   * Le découpage est **borné avant** d'être fait.
+   *
+   * `split(',')` puis `slice(0, 3)` allouait d'abord le tableau entier : une
+   * chaîne d'un mégaoctet de virgules produisait un million d'entrées pour
+   * n'en garder que trois, à chaque requête. Le chemin vient du réseau, et la
+   * génération d'image est déjà ce que le serveur fait de plus cher.
+   */
+  const picked = lireEquipage(crew)
+    .map((id) => CHARACTER_INDEX.get(id))
+    .filter((c): c is Character => c !== undefined);
 
   const risk = teamRisk(picked);
 
@@ -69,7 +89,7 @@ export default async function ShareImage({
             One Piece Quest
           </span>
           <span style={{ fontSize: 64, marginTop: 8 }}>
-            Chapitre {chapter}
+            {numero ? `Chapitre ${numero}` : 'Ma prédiction'}
           </span>
         </div>
 

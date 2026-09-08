@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useActionState, useState } from 'react';
 import type { AuthFormState } from '@/app/actions/auth';
 import { PASSWORD_MIN_LENGTH } from '@/domain/auth/password-policy';
+import { PIEGE_CHAMP } from '@/domain/auth/piege';
 import {
   HANDLE_MAX_LENGTH,
   HANDLE_MIN_LENGTH,
@@ -122,6 +123,34 @@ export function AuthForm({
             {handleError ??
               `Visible au classement et sur le Marché. ${HANDLE_MIN_LENGTH} à ${HANDLE_MAX_LENGTH} caractères, modifiable dans les paramètres.`}
           </p>
+        </div>
+      )}
+
+      {/*
+        Le piège à robots.
+
+        Hors du flux : `aria-hidden` et `tabIndex={-1}` le retirent aux
+        lecteurs d'écran comme à la navigation au clavier — un champ invisible
+        qu'un joueur non-voyant rencontrerait ferait de l'accessibilité un
+        moyen de se faire refuser l'inscription (§111).
+
+        `autoComplete="off"` : sans lui, un gestionnaire de mots de passe
+        pourrait y verser une valeur et condamner un humain.
+
+        Il n'existe qu'à l'inscription : c'est le seul formulaire qui **crée**
+        quelque chose.
+      */}
+      {isRegister && (
+        <div aria-hidden="true" className="hb-piege">
+          <label htmlFor={PIEGE_CHAMP}>Société</label>
+          <input
+            id={PIEGE_CHAMP}
+            name={PIEGE_CHAMP}
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            defaultValue=""
+          />
         </div>
       )}
 

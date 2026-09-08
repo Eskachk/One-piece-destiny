@@ -4909,3 +4909,16 @@ button[aria-busy='true']:not(.hb-btn)::before {
     transparent 70%
   );
 }
+
+/* Piège à robots du formulaire d'inscription.
+   `position: absolute` hors du cadre plutôt que `display: none` : certains
+   robots ignorent les champs non rendus, et c'est justement ceux-là qu'on
+   veut voir se trahir. Le champ existe donc, il est simplement introuvable
+   pour un œil comme pour un doigt. */
+.hb-piege {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}

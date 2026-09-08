@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { CHARACTER_INDEX } from '@/data/characters';
+import { lireChapitre, lireEquipage } from '@/domain/social/partage';
 import { teamRisk } from '@/domain/risk';
 import type { Character } from '@/domain/types';
 
@@ -20,10 +21,28 @@ export async function generateMetadata({
   params: Promise<{ chapter: string; crew: string }>;
 }): Promise<Metadata> {
   const { chapter } = await params;
+  const numero = lireChapitre(chapter);
+  const titre = numero
+    ? `Ma prédiction — Chapitre ${numero}`
+    : 'Ma prédiction';
+
   return {
-    title: `Ma prédiction — Chapitre ${chapter}`,
+    title: titre,
     description: 'Le chapitre est le spectacle. Ta prédiction est le jeu.',
-    openGraph: { title: `Ma prédiction — Chapitre ${chapter}` },
+    openGraph: { title: titre },
+    /*
+     * Hors index, et c'est une mesure de charge autant que de référencement.
+     *
+     * L'équipage voyage dans le chemin : l'espace d'adresses est infini, et
+     * chacune coûte la génération d'une image. Un moteur qui suit ces liens
+     * explore sans fond et fait payer chaque pas au serveur.
+     *
+     * `noindex` plutôt qu'un `Disallow` dans `robots.txt` : les robots des
+     * réseaux sociaux respectent le second et cesseraient d'aller chercher la
+     * carte, ce qui viderait le partage de son intérêt. La méta les laisse
+     * passer et retire seulement la page de l'index.
+     */
+    robots: { index: false, follow: false },
   };
 }
 
@@ -33,10 +52,12 @@ export default async function SharePage({
   params: Promise<{ chapter: string; crew: string }>;
 }) {
   const { chapter, crew } = await params;
+  // Même contrôle que dans la carte : le numéro est réaffiché, il doit être
+  // un numéro. Un chemin quelconque devenait le titre de la page.
+  const numero = lireChapitre(chapter);
 
-  const picked = decodeURIComponent(crew)
-    .split(',')
-    .map((id) => CHARACTER_INDEX.get(id.trim()))
+  const picked = lireEquipage(crew)
+    .map((id) => CHARACTER_INDEX.get(id))
     .filter((c): c is Character => c !== undefined)
     .slice(0, 3);
 
@@ -48,7 +69,7 @@ export default async function SharePage({
         One Piece Quest
       </p>
       <h1 className="mt-1 font-display text-3xl text-parchment">
-        Chapitre {chapter}
+        {numero ? `Chapitre ${numero}` : 'Ma prédiction'}
       </h1>
 
       <ul className="mt-6 space-y-2">
