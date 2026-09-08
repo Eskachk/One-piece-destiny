@@ -2,6 +2,7 @@ import 'server-only';
 
 import { createHash, randomBytes } from 'node:crypto';
 import { cache } from 'react';
+import { revalidateTag, unstable_cache } from 'next/cache';
 import { cookies } from 'next/headers';
 import {
   evaluateSession,
@@ -30,6 +31,60 @@ const COOKIE_OPTIONS = {
 
 function hashToken(token: string): string {
   return createHash('sha256').update(token).digest('hex');
+}
+
+/**
+ * Durée de vie du cache de session, en secondes.
+ *
+ * ## Pourquoi ce cache existe
+ *
+ * La lecture de session est **la** requête que fait toute page connectée, et
+ * la seule qu'aucune parallélisation ne peut supprimer : tout le reste en
+ * dépend. Depuis la plateforme, elle coûte de 70 à 145 ms. C'était le dernier
+ * aller-retour incompressible du produit.
+ *
+ * ## Pourquoi quinze secondes, et pas plus
+ *
+ * Un cache de session est un compromis avec la révocation : tant qu'une
+ * entrée vit, une session révoquée ailleurs continue d'être servie. Toutes les
+ * voies de révocation invalident explicitement l'entrée (voir plus bas), donc
+ * ce délai ne s'applique qu'à ce qu'on aurait oublié. Quinze secondes est la
+ * borne de cet oubli, et c'est court devant les deux heures de la fenêtre
+ * d'inactivité.
+ *
+ * ## Ce qui rend la déconnexion immédiate sans rien invalider
+ *
+ * `destroySession` **supprime le cookie**. La requête suivante n'a donc plus
+ * de jeton, ne calcule aucune clé de cache et ne lit rien du tout. Le cas le
+ * plus fréquent — se déconnecter soi-même — est instantané par construction.
+ */
+const SESSION_TTL = 15;
+
+/** L'étiquette d'une session, pour pouvoir la purger. */
+function etiquetteSession(tokenHash: string): string {
+  return `session:${tokenHash}`;
+}
+
+/**
+ * Purge l'entrée de cache d'une session.
+ *
+ * Appelée par **toutes** les voies qui rendent une session invalide ou qui
+ * changent ce qu'elle contient. Sans cela, un changement de mot de passe ne
+ * déconnecterait plus les autres appareils avant quinze secondes, et une
+ * promotion après second facteur laisserait le joueur bloqué sur l'écran de
+ * saisie.
+ *
+ * `revalidateTag` n'est utilisable que depuis une action serveur ou un
+ * gestionnaire de route. Toutes les révocations en viennent — mais l'échec est
+ * avalé plutôt que propagé : rater une purge doit dégrader la fraîcheur, pas
+ * faire échouer une déconnexion.
+ */
+function purgerSession(tokenHash: string): void {
+  try {
+    revalidateTag(etiquetteSession(tokenHash));
+  } catch {
+    // Hors contexte de requête : l'entrée expirera d'elle-même.
+  }
 }
 
 export interface AuthenticatedSession {
@@ -87,21 +142,43 @@ export async function createSession(
  * Une session expirée est révoquée en base au passage : on ne laisse pas
  * traîner des lignes utilisables.
  */
-async function readSession(): Promise<AuthenticatedSession | null> {
-  // Sans base, aucune session ne peut exister : on rend l'application
-  // utilisable en mode mémoire plutôt que de la faire planter.
-  if (!isDatabaseConfigured()) return null;
+/**
+ * Forme sérialisable d'une session.
+ *
+ * `unstable_cache` passe par JSON : les `Date` en ressortent en chaînes. On
+ * traverse donc le cache en ISO, et on réhydrate au sortir — plutôt que de
+ * laisser un `Date` de façade qui serait en réalité une chaîne, ce qui casse
+ * au premier `.getTime()` et très loin d'ici.
+ */
+interface SessionSerialisee {
+  userId: string;
+  playerId: string;
+  email: string;
+  role: 'PLAYER' | 'ADMIN';
+  mfaEnabled: boolean;
+  mfaPending: boolean;
+  createdAt: string;
+  lastSeenAt: string;
+  authenticatedAt: string;
+  revokedAt: string | null;
+}
 
-  const store = await cookies();
-  const token = store.get(COOKIE)?.value;
-  if (!token) return null;
-
+/**
+ * Lit la session en base, l'évalue, et révoque celle qui a expiré.
+ *
+ * Prend l'empreinte en argument plutôt que de lire le cookie : cette fonction
+ * passe par le cache, et une fonction mise en cache ne peut pas dépendre de
+ * quelque chose de propre à la requête.
+ */
+async function chargerSession(
+  tokenHash: string,
+): Promise<SessionSerialisee | null> {
   const { data, error } = await db()
     .from('sessions')
     .select(
       'token_hash, created_at, last_seen_at, authenticated_at, revoked_at, mfa_pending, user_accounts!inner(id, email, role, player_id, mfa_enabled)',
     )
-    .eq('token_hash', hashToken(token))
+    .eq('token_hash', tokenHash)
     .maybeSingle();
 
   if (error || !data) return null;
@@ -136,18 +213,15 @@ async function readSession(): Promise<AuthenticatedSession | null> {
   /*
    * Glissement de la fenêtre d'inactivité.
    *
-   * Écriture limitée à une fois par minute — sans quoi chaque page vue
-   * deviendrait une écriture — et surtout **non attendue**.
+   * Il vit **dans** la fonction mise en cache, donc il ne s'exécute qu'au
+   * moment où l'on va réellement en base — au plus une fois toutes les quinze
+   * secondes. Placé au-dessus du cache, il aurait tiré à chaque page vue en
+   * lisant une date figée, et se serait déclenché en boucle.
    *
-   * Elle l'était, et c'était un aller-retour complet ajouté au rendu : de cent
-   * à cent-quatre-vingts millisecondes, une fois par minute et par joueur, sur
-   * le chemin critique de toutes les pages. Or personne n'attend son résultat :
-   * la page se rend exactement pareil selon qu'elle a abouti ou non, et si elle
-   * échoue, la session gardera simplement son ancienne date — ce qui la fait
-   * expirer un peu plus tôt, jamais plus tard.
-   *
-   * L'échec est avalé volontairement. Une session valide ne doit pas devenir
-   * invalide parce que la mise à jour de son horodatage a échoué.
+   * Non attendu, et l'échec est avalé : personne n'attend son résultat, et une
+   * session valide ne doit pas devenir invalide parce que son horodatage n'a
+   * pas pu être rafraîchi. Un échec la fait expirer un peu plus tôt, jamais
+   * plus tard.
    */
   if (now.getTime() - state.lastSeenAt.getTime() > 60_000) {
     void db()
@@ -164,7 +238,60 @@ async function readSession(): Promise<AuthenticatedSession | null> {
     role: account.role,
     mfaEnabled: account.mfa_enabled,
     mfaPending: data.mfa_pending,
-    state,
+    createdAt: state.createdAt.toISOString(),
+    lastSeenAt: state.lastSeenAt.toISOString(),
+    authenticatedAt: state.authenticatedAt.toISOString(),
+    revokedAt: state.revokedAt ? state.revokedAt.toISOString() : null,
+  };
+}
+
+/**
+ * La même lecture, mise en cache quinze secondes et purgeable par étiquette.
+ *
+ * La clé et l'étiquette portent l'empreinte du jeton, jamais le jeton :
+ * l'empreinte est déjà ce que la base stocke, et c'est ce qui rend deux
+ * joueurs incapables de partager une entrée.
+ */
+function chargerSessionEnCache(
+  tokenHash: string,
+): Promise<SessionSerialisee | null> {
+  return unstable_cache(() => chargerSession(tokenHash), ['session', tokenHash], {
+    tags: [etiquetteSession(tokenHash)],
+    revalidate: SESSION_TTL,
+  })();
+}
+
+/**
+ * Lit la session courante, ou `null`.
+ *
+ * Une session expirée est révoquée en base au passage : on ne laisse pas
+ * traîner des lignes utilisables.
+ */
+async function readSession(): Promise<AuthenticatedSession | null> {
+  // Sans base, aucune session ne peut exister : on rend l'application
+  // utilisable en mode mémoire plutôt que de la faire planter.
+  if (!isDatabaseConfigured()) return null;
+
+  const store = await cookies();
+  const token = store.get(COOKIE)?.value;
+  if (!token) return null;
+
+  const brute = await chargerSessionEnCache(hashToken(token));
+  if (!brute) return null;
+
+  return {
+    userId: brute.userId,
+    playerId: brute.playerId,
+    email: brute.email,
+    role: brute.role,
+    mfaEnabled: brute.mfaEnabled,
+    mfaPending: brute.mfaPending,
+    state: {
+      createdAt: new Date(brute.createdAt),
+      lastSeenAt: new Date(brute.lastSeenAt),
+      authenticatedAt: new Date(brute.authenticatedAt),
+      revokedAt: brute.revokedAt ? new Date(brute.revokedAt) : null,
+    },
   };
 }
 
@@ -221,6 +348,11 @@ export async function completeMfaChallenge(tokenHash: string): Promise<void> {
     .eq('token_hash', tokenHash);
 
   if (error) throw new Error(`sessions.update : ${error.message}`);
+
+  // Sans cette purge, l'entrée en cache dirait encore « second facteur en
+  // attente » : le joueur validerait son code et retomberait sur l'écran de
+  // saisie, pendant quinze secondes, sans rien comprendre.
+  purgerSession(tokenHash);
 }
 
 /** Empreinte de la session courante, pour la promouvoir après le défi MFA. */
@@ -236,22 +368,47 @@ export async function destroySession(): Promise<void> {
   const token = store.get(COOKIE)?.value;
 
   if (token) {
+    const empreinte = hashToken(token);
     await db()
       .from('sessions')
       .update({ revoked_at: new Date().toISOString() })
-      .eq('token_hash', hashToken(token));
+      .eq('token_hash', empreinte);
+
+    // La suppression du cookie suffit déjà à rendre la déconnexion immédiate
+    // pour **cet** appareil. On purge quand même : l'entrée n'a plus aucune
+    // raison d'occuper le cache, et le jeton pourrait avoir été recopié.
+    purgerSession(empreinte);
   }
 
   store.delete(COOKIE);
 }
 
-/** Révoque toutes les sessions d'un compte (changement de mot de passe). */
+/**
+ * Révoque toutes les sessions d'un compte (changement de mot de passe).
+ *
+ * **Le cas qui rend la purge obligatoire.** Les autres appareils gardent leur
+ * cookie : sans invalidation, ils continueraient d'être servis depuis le cache
+ * pendant quinze secondes après un changement de mot de passe. C'est
+ * exactement le geste qu'on fait quand on croit son compte compromis, et
+ * exactement le moment où quinze secondes sont de trop.
+ *
+ * On relève donc les empreintes **avant** de révoquer, puis on purge chacune.
+ * Le coût est d'une lecture supplémentaire sur une opération rare.
+ */
 export async function revokeAllSessions(userId: string): Promise<void> {
+  const { data } = await db()
+    .from('sessions')
+    .select('token_hash')
+    .eq('user_id', userId)
+    .is('revoked_at', null);
+
   await db()
     .from('sessions')
     .update({ revoked_at: new Date().toISOString() })
     .eq('user_id', userId)
     .is('revoked_at', null);
+
+  for (const ligne of data ?? []) purgerSession(ligne.token_hash);
 }
 
 export function requiresReauthentication(
