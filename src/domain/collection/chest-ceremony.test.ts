@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  angleLevitation,
   bestRarity,
   ceremonyPlan,
   hakiColorAt,
@@ -174,5 +175,61 @@ describe('mise en scène du coffre royal', () => {
     expect(reducedMotionPlan([card('LEGENDARY')], { royal: true }).motion).toBe(
       'LEVITATE',
     );
+  });
+});
+
+describe('rotation du coffre royal', () => {
+  const plan = ceremonyPlan([card('LEGENDARY')], { royal: true });
+  const ouverture = plan.shakeSeconds + plan.suspenseSeconds;
+  const TOUR = Math.PI * 2;
+
+  it('tombe exactement de face à l’instant de l’ouverture', () => {
+    /*
+     * **Le garde-fou de tout ce mécanisme.**
+     *
+     * Le coffre doit être face au joueur pile quand le couvercle cède. La
+     * version précédente y arrivait en rattrapant l'angle pendant le silence,
+     * ce qui se voyait : la rotation freinait d'un coup pour tomber juste.
+     *
+     * Ici, l'angle à l'ouverture est un multiple **exact** de 2π. Pas
+     * « proche de » : exact, parce qu'il est choisi d'avance et non corrigé.
+     */
+    const tours = angleLevitation(plan, ouverture) / TOUR;
+    expect(tours).toBe(Math.round(tours));
+  });
+
+  it('ne bouge plus pendant que le couvercle s’ouvre', () => {
+    // Le coffre est posé, il ne dérive pas sous le jaillissement.
+    const a = angleLevitation(plan, ouverture);
+    const b = angleLevitation(plan, ouverture + plan.burstSeconds);
+    expect(b).toBe(a);
+  });
+
+  it('part et s’arrête sans à-coup', () => {
+    /*
+     * La vitesse est nulle aux deux bouts. C'est ce qui distingue une
+     * chorégraphie d'un freinage : mesurée sur un pas très court, la rotation
+     * doit être quasi nulle au démarrage comme à l'arrivée, et franche au
+     * milieu.
+     */
+    const pas = 0.01;
+    const vitesse = (t: number) =>
+      Math.abs(angleLevitation(plan, t + pas) - angleLevitation(plan, t)) / pas;
+
+    const milieu = vitesse(ouverture / 2);
+    expect(vitesse(0)).toBeLessThan(milieu / 50);
+    expect(vitesse(ouverture - pas)).toBeLessThan(milieu / 50);
+  });
+
+  it('tourne vite : plus d’un tour par seconde au plus fort', () => {
+    // « Vite » est une demande, donc une contrainte. Sans chiffre, elle se
+    // perdrait au premier réglage de durée de cérémonie.
+    const pas = 0.01;
+    const pointe =
+      Math.abs(
+        angleLevitation(plan, ouverture / 2 + pas) -
+          angleLevitation(plan, ouverture / 2),
+      ) / pas;
+    expect(pointe / TOUR).toBeGreaterThan(1);
   });
 });

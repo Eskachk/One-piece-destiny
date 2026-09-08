@@ -4,6 +4,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import {
+  angleLevitation,
   hakiColorAt,
   type CeremonyPlan,
 } from '@/domain/collection/chest-ceremony';
@@ -416,6 +417,17 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
     }
 
     if (group.current) {
+      /*
+       * La rotation du coffre royal ne dépend pas de la phase.
+       *
+       * Une seule loi couvre la charge **et** le silence, et s'arrête d'
+       * elle-même : à `u = 1`, `smootherstep` vaut exactement 1 et l'angle
+       * vaut un nombre entier de tours — le coffre est de face, à la
+       * milliseconde où le couvercle cède, sans que personne ne l'y ait
+       * ramené. Passé ce point, `u` reste borné à 1 et l'angle ne bouge plus.
+       */
+      if (leviting) group.current.rotation.y = angleLevitation(plan, t);
+
       if (phase === 'charge' && leviting) {
         /*
          * Le coffre royal ne se débat pas : il s'élève.
@@ -430,7 +442,6 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
          * savoir, sans lire une étiquette, qu'on n'a pas ouvert le même coffre.
          */
         group.current.position.y = (1 - (1 - progress) ** 2) * 0.42;
-        group.current.rotation.y = t * 0.55;
         group.current.rotation.z = Math.sin(t * 1.7) * 0.035;
         group.current.position.x = 0;
       } else if (phase === 'charge') {
@@ -453,21 +464,8 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
         // promesse : le silence doit être une suspension, pas un retour au sol.
         group.current.position.y += (0.42 - group.current.position.y) * 0.1;
         group.current.rotation.z *= 0.9;
-
-        /*
-         * Il se remet **de face** pendant le silence.
-         *
-         * La lévitation le fait tourner sans fin ; sans cette remise en place,
-         * il s'ouvrait à l'angle où le hasard l'avait laissé — parfois de
-         * trois quarts, parfois de dos. Ce qui jaillit doit venir vers le
-         * joueur, pas s'échapper de côté.
-         *
-         * On vise le tour complet le plus proche plutôt que zéro : de 350°,
-         * il finit son tour au lieu de rembobiner presque entièrement.
-         */
-        const tours = Math.PI * 2;
-        const cible = Math.round(group.current.rotation.y / tours) * tours;
-        group.current.rotation.y += (cible - group.current.rotation.y) * 0.09;
+        // La rotation, elle, est déjà réglée plus haut : elle finit sa course
+        // sur un tour entier au moment exact de l'ouverture.
       } else if (phase === 'hold') {
         // Immobilité franche. C'est le §61 : le silence avant la révélation.
         group.current.rotation.z *= 0.7;
@@ -492,19 +490,10 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
         group.current.position.y +=
           (assise - recul * 0.09 - group.current.position.y) * 0.18;
 
-        /*
-         * L'orientation est **tenue** pendant l'ouverture.
-         *
-         * Une version précédente laissait le coffre royal tourner doucement
-         * « pour se présenter ». Il présentait surtout son flanc au moment où
-         * le couvercle cédait. On termine la remise de face commencée au
-         * silence, et on n'y touche plus.
-         */
-        const tours = Math.PI * 2;
-        const cible = leviting
-          ? Math.round(group.current.rotation.y / tours) * tours
-          : 0;
-        group.current.rotation.y += (cible - group.current.rotation.y) * 0.2;
+        // Le coffre royal est déjà de face et immobile en rotation — la loi
+        // plus haut l'y a posé. Seul celui du port a un reste de tremblement
+        // à amortir.
+        if (!leviting) group.current.rotation.y *= 0.85;
       }
     }
 

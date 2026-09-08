@@ -274,3 +274,50 @@ export function reducedMotionPlan(
     totalSeconds: 0.2,
   };
 }
+
+/**
+ * Tours complets que fait le coffre royal avant de s'ouvrir.
+ *
+ * Six sur les six secondes de charge et de silence : la vitesse de pointe
+ * approche deux tours par seconde, ce qui se lit comme une toupie et non
+ * comme une plateforme tournante de vitrine.
+ */
+export const TOURS_LEVITATION = 6;
+
+/**
+ * Accélération et décélération douces, départ et arrivée à l'arrêt.
+ *
+ * `smootherstep` : sa dérivée est **nulle aux deux bouts**. Le coffre part
+ * immobile, monte en régime, puis s'arrête — sans à-coup ni à l'un ni à
+ * l'autre.
+ */
+function smootherstep(u: number): number {
+  const x = Math.min(1, Math.max(0, u));
+  return x * x * x * (x * (6 * x - 15) + 10);
+}
+
+/**
+ * Angle du coffre en lévitation, en radians, à un instant donné.
+ *
+ * ## Pourquoi une loi, et non une correction
+ *
+ * La version précédente faisait tourner le coffre à vitesse constante, puis
+ * **rattrapait** l'angle pendant le silence pour le remettre de face. Un
+ * rattrapage se voit toujours : la rotation avançait tranquillement, puis
+ * freinait d'un coup pour tomber juste. C'était brusque, et ça ne pouvait pas
+ * ne pas l'être — on demandait à une correction de faire le travail d'une
+ * chorégraphie.
+ *
+ * Ici l'angle total est choisi d'avance : un nombre **entier** de tours, sur
+ * la durée exacte qui sépare le début de l'ouverture. Le coffre ne se remet
+ * jamais de face, il n'a jamais cessé d'aller s'y poser. Rien à corriger,
+ * donc rien à voir.
+ *
+ * Au-delà de l'ouverture, l'angle ne bouge plus : `u` est borné, et le coffre
+ * reste exactement face au joueur pendant que le couvercle cède.
+ */
+export function angleLevitation(plan: CeremonyPlan, elapsed: number): number {
+  const jusquAOuverture = plan.shakeSeconds + plan.suspenseSeconds;
+  const u = jusquAOuverture > 0 ? elapsed / jusquAOuverture : 1;
+  return TOURS_LEVITATION * Math.PI * 2 * smootherstep(u);
+}
