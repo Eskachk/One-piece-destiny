@@ -30,7 +30,28 @@ import { INACTIVITY_TIMEOUT_MS } from '@/domain/auth/session';
 
 const COOKIE = 'opq_session';
 
+/**
+ * Pages de vérification visuelle, absentes en production.
+ *
+ * Elles se fermaient déjà par un `notFound()` en tête de composant — mais le
+ * rendu est **diffusé au fil de l'eau** : quand l'appel survient, l'enveloppe
+ * de la page est parfois déjà partie, et le statut ne peut plus changer. Le
+ * visiteur recevait donc la page « introuvable » avec un code 200.
+ *
+ * C'est un *soft 404* : pour un moteur de recherche, une page qui existe et
+ * dont le contenu dit le contraire. Google finit par l'indexer, puis par s'en
+ * méfier. Ici, la décision est prise avant tout rendu, et le 404 est vrai.
+ */
+const APERCUS = ['/preview-chest'];
+
 export function middleware(request: NextRequest) {
+  if (
+    process.env.NODE_ENV === 'production' &&
+    APERCUS.some((chemin) => request.nextUrl.pathname === chemin)
+  ) {
+    return new NextResponse(null, { status: 404 });
+  }
+
   const token = request.cookies.get(COOKIE)?.value;
   const response = NextResponse.next();
 
