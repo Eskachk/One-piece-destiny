@@ -458,3 +458,61 @@ export async function salesForMany(
   }
   return byCharacter;
 }
+
+/**
+ * Prix le plus bas de chaque personnage **surveillé par un joueur**.
+ *
+ * Voir la migration 0037. Le filtre sur la liste de surveillance est fait en
+ * base par un sous-select : la lecture ne dépend donc plus que de
+ * l'identifiant du joueur, et n'a plus à attendre la liste elle-même. C'est
+ * une vague d'allers-retours en moins sur la page du Marché.
+ *
+ * `min()` en base corrige aussi le défaut documenté sur `lowestAsks` : là où
+ * l'ancienne version rapatriait toutes les annonces triées par prix et
+ * risquait la troncature, celle-ci ne transporte qu'une ligne par personnage.
+ */
+export async function lowestAsksForWatchlist(
+  playerId: string,
+): Promise<Map<string, number>> {
+  const { data, error } = await db().rpc('lowest_asks_for_watchlist', {
+    p_player: playerId,
+  });
+
+  if (error) throw new Error(`lowest_asks_for_watchlist : ${error.message}`);
+
+  return new Map(
+    ((data ?? []) as { character_id: string; price: number }[]).map((row) => [
+      row.character_id,
+      row.price,
+    ]),
+  );
+}
+
+/**
+ * Ventes récentes des personnages surveillés par un joueur.
+ *
+ * Même raisonnement que ci-dessus. Le calcul des statistiques — moyenne,
+ * variation hebdomadaire — reste dans le domaine : cette fonction ne fait que
+ * rapporter des lignes.
+ */
+export async function salesForWatchlist(
+  playerId: string,
+): Promise<Map<string, Sale[]>> {
+  const { data, error } = await db().rpc('sales_for_watchlist', {
+    p_player: playerId,
+  });
+
+  if (error) throw new Error(`sales_for_watchlist : ${error.message}`);
+
+  const byCharacter = new Map<string, Sale[]>();
+  for (const row of (data ?? []) as {
+    character_id: string;
+    price: number;
+    sold_at: string;
+  }[]) {
+    const list = byCharacter.get(row.character_id) ?? [];
+    list.push({ price: row.price, soldAt: new Date(row.sold_at) });
+    byCharacter.set(row.character_id, list);
+  }
+  return byCharacter;
+}

@@ -38,7 +38,22 @@ export const metadata: Metadata = {
  * absents est la vraie source de motivation (§67).
  */
 export default async function CollectionPage() {
-  const session = await requireSession();
+  /*
+   * La récurrence part **avec** la session, pas après.
+   *
+   * C'est un fait sur l'œuvre — qui est apparu dans les dix derniers
+   * chapitres — donc il ne dépend ni du compte ni de rien d'autre. Il était
+   * pourtant lu dans une troisième vague, après la collection : un
+   * aller-retour complet, de cent millisecondes, ajouté à la page pour une
+   * donnée qu'on pouvait demander tout de suite.
+   *
+   * `requireSession` peut rediriger ; c'est sans importance ici, la lecture
+   * partie en parallèle est simplement abandonnée.
+   */
+  const [session, recurrence] = await Promise.all([
+    requireSession(),
+    getCachedRecurrences(),
+  ]);
   const repository = getRepository();
 
   // Quatre requêtes **en parallèle**. Enchaînées, elles cumulaient leurs
@@ -65,10 +80,6 @@ export default async function CollectionPage() {
    * « 🕯 Décédé » à quelqu'un qui n'en possède aucun, c'est offrir un filtre
    * dont le seul résultat possible est une grille vide.
    */
-  // La récurrence est partagée par tous les joueurs — c'est un fait sur
-  // l'œuvre, pas sur le compte — donc lue une fois depuis le cache.
-  const recurrence = await getCachedRecurrences();
-
   const possedes = ownedIds.flatMap((id) => {
     const character = CHARACTER_INDEX.get(id);
     return character ? [character] : [];

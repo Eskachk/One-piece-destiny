@@ -61,23 +61,33 @@ export default async function MarketPage() {
   }
 
   const repository = getRepository();
-  const [listings, wallet, ownedIds, watchedIds, sold] = await Promise.all([
-    market.listActiveListings(),
-    repository.getWallet(session.playerId),
-    repository.getOwnedCharacterIds(session.playerId),
-    market.getWatchlist(session.playerId),
-    getCachedRecentSales(),
-  ]);
+
+  /*
+   * ## Une seule vague, là où il y en avait deux
+   *
+   * Les statistiques de la liste de surveillance étaient lues **après** la
+   * liste, parce qu'elles filtraient sur ses identifiants. Un aller-retour de
+   * cent millisecondes ajouté à la page pour une raison purement mécanique.
+   *
+   * Le filtre est maintenant fait en base par un sous-select (migration
+   * 0037) : les deux lectures ne dépendent plus que de l'identifiant du
+   * joueur, connu depuis la vague précédente. Elles rejoignent donc celle-ci,
+   * et la troisième disparaît.
+   */
+  const [listings, wallet, ownedIds, watchedIds, sold, asks, sales, thresholds] =
+    await Promise.all([
+      market.listActiveListings(),
+      repository.getWallet(session.playerId),
+      repository.getOwnedCharacterIds(session.playerId),
+      market.getWatchlist(session.playerId),
+      getCachedRecentSales(),
+      market.lowestAsksForWatchlist(session.playerId),
+      market.salesForWatchlist(session.playerId),
+      market.getAlertThresholds(session.playerId),
+    ]);
 
   const owned = new Set(ownedIds);
   const watching = new Set(watchedIds);
-
-  // Statistiques de marché des personnages surveillés (§39, §41).
-  const [asks, sales, thresholds] = await Promise.all([
-    market.lowestAsks(watchedIds),
-    market.salesForMany(watchedIds),
-    market.getAlertThresholds(session.playerId),
-  ]);
 
   const now = new Date();
   const watched = watchedIds.map((characterId) => {

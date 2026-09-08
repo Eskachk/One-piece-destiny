@@ -59,7 +59,18 @@ const percent = (ratio: number) => `${Math.round(ratio * 100)}%`;
  *     la consultation (§75).
  */
 export default async function LeaderboardPage() {
-  const session = await getAuthenticatedSession();
+  /*
+   * Session et chapitre publié partent ensemble.
+   *
+   * Le second ne dépend pas de qui regarde : le classement porte sur le même
+   * chapitre pour tout le monde. Il était pourtant lu après la session, ce qui
+   * ajoutait un aller-retour — de 80 à 130 ms depuis la plateforme — sur la
+   * page que tout le jeu consulte le dimanche soir, en même temps.
+   */
+  const [session, publie] = await Promise.all([
+    getAuthenticatedSession(),
+    getCachedLatestPublishedChapter(),
+  ]);
 
   // Le classement porte sur le dernier chapitre **publié**. S'il n'y en a pas
   // encore, on retombe sur le chapitre en cours pour afficher l'état
@@ -67,7 +78,11 @@ export default async function LeaderboardPage() {
   // chapitre qui vient d'être publié, puisqu'il n'est plus « courant ».
   // Les deux lectures sont partagées par tous les joueurs : elles passent par
   // le cache, purgé explicitement à la publication et à la correction.
-  const publie = await getCachedLatestPublishedChapter();
+  /*
+   * Le chapitre courant n'est lu **que** faute de chapitre publié — le cas du
+   * tout début, ou entre deux publications. Le demander systématiquement
+   * ferait payer une lecture inutile à toutes les semaines ordinaires.
+   */
   const chapter = publie ?? (await getCachedCurrentChapter());
 
   /*
