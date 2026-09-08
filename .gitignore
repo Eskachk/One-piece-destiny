@@ -48,3 +48,6 @@ android/*
 *.jks
 *.aab
 *.apk
+
+# Rapports de couverture : artefacts de test, regeneres a chaque execution.
+/coverage
