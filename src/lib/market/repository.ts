@@ -399,7 +399,20 @@ export async function setWatch(
 }
 
 
-/** Prix demandé le plus bas actuellement, par personnage. */
+/**
+ * Prix demandé le plus bas actuellement, par personnage.
+ *
+ * **Non paginée, et c'est le bon choix ici.** Le tri par prix croissant fait
+ * que les annonces les moins chères arrivent en tête : si PostgREST tronque à
+ * mille, ce sont les mille moins chères qu'on garde, et le minimum de chaque
+ * personnage est parmi elles — sauf pour un personnage dont l'annonce la moins
+ * chère serait plus chère que mille annonces d'autres personnages, auquel cas
+ * il apparaît sans prix plutôt qu'avec un faux.
+ *
+ * Paginer coûterait de rapatrier le Marché entier pour n'en garder qu'un prix
+ * par personnage. La dégradation est bornée, silencieuse dans le bon sens
+ * (une absence, pas une erreur), et l'alternative est pire.
+ */
 export async function lowestAsks(
   characterIds: string[],
 ): Promise<Map<string, number>> {

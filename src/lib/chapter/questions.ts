@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { db } from '@/lib/supabase-admin';
+import { readAllPages } from '@/lib/repository/pagination';
 import {
   MAX_QUESTIONS,
   type Question,
@@ -86,15 +87,27 @@ export async function repondre(
 export async function reponsesDuChapitre(
   chapterId: string,
 ): Promise<Map<string, ReponseJoueur[]>> {
-  const { data, error } = await db()
-    .from('question_answers')
-    .select('player_id, question_id, choice, chapter_questions!inner(chapter_id)')
-    .eq('chapter_questions.chapter_id', chapterId);
-
-  if (error) throw new Error(`question_answers.chapter : ${error.message}`);
+  /*
+   * Paginée : jusqu'à trois lignes par joueur. Au tiers de millier de
+   * participants la lecture dépasse le plafond de PostgREST, et les bonus des
+   * joueurs suivants ne seraient jamais versés — sans erreur, sans trace.
+   */
+  const data = await readAllPages<{
+    player_id: string;
+    question_id: string;
+    choice: number;
+  }>('question_answers.chapter', (from, to) =>
+    db()
+      .from('question_answers')
+      .select('player_id, question_id, choice, chapter_questions!inner(chapter_id)')
+      .eq('chapter_questions.chapter_id', chapterId)
+      .order('player_id', { ascending: true })
+      .order('question_id', { ascending: true })
+      .range(from, to),
+  );
 
   const out = new Map<string, ReponseJoueur[]>();
-  for (const row of data ?? []) {
+  for (const row of data) {
     const liste = out.get(row.player_id) ?? [];
     liste.push({ questionId: row.question_id, choice: row.choice });
     out.set(row.player_id, liste);

@@ -158,6 +158,23 @@ const securityHeaders = (dev: boolean) => [
     key: 'Permissions-Policy',
     value: 'camera=(), microphone=(), geolocation=()',
   },
+  /*
+   * Isolation de la fenêtre.
+   *
+   * Sans cet en-tête, une page ouverte par une autre garde un lien vivant avec
+   * elle (`window.opener`) : celle d'en face peut réécrire l'URL de la nôtre —
+   * vers une fausse page de connexion, typiquement, dans un onglet que le
+   * joueur croit être le sien.
+   *
+   * `same-origin-allow-popups` et non `same-origin` : la variante stricte
+   * couperait aussi les fenêtres que **nous** ouvrons, et une régie
+   * publicitaire ouvre la sienne au clic. On se protège de ce qui vient de
+   * l'extérieur sans casser ce qui part d'ici.
+   *
+   * La connexion Google n'est pas concernée : elle est en redirection
+   * (`NextResponse.redirect`), pas en fenêtre surgissante.
+   */
+  { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
 ];
 
 /**

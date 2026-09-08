@@ -230,10 +230,32 @@ async function recordFailure(
   console.warn(`[email] EMAIL_FAILED id=${id} tentative=${step.attempt}`);
 }
 
-/** Compteurs pour le diagnostic administrateur (§82). */
+/**
+ * Compteurs pour le diagnostic administrateur (§82).
+ *
+ * On demande à Postgres de compter. La version précédente rapatriait le
+ * `status` de **chaque** courriel jamais envoyé pour les additionner en
+ * JavaScript : le tableau de bord devenait plus lourd à chaque envoi du
+ * produit, et il mentait passé mille lignes — PostgREST plafonne la réponse
+ * sans le dire, et les compteurs se seraient figés en dessous du vrai total.
+ *
+ * Quatre comptes en parallèle plutôt qu'un `group by` : PostgREST n'expose pas
+ * l'agrégat, et quatre requêtes `head` ne transportent aucune ligne.
+ */
 export async function outboxStats(): Promise<Record<string, number>> {
-  const { data } = await db().from('email_outbox').select('status');
-  const counts: Record<string, number> = { PENDING: 0, SENT: 0, DEAD: 0, FAILED: 0 };
-  for (const row of data ?? []) counts[row.status] = (counts[row.status] ?? 0) + 1;
-  return counts;
+  const statuts = ['PENDING', 'SENT', 'DEAD', 'FAILED'] as const;
+
+  const comptes = await Promise.all(
+    statuts.map(async (statut) => {
+      const { count, error } = await db()
+        .from('email_outbox')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', statut);
+
+      if (error) throw new Error(`email_outbox.count : ${error.message}`);
+      return [statut, count ?? 0] as const;
+    }),
+  );
+
+  return Object.fromEntries(comptes);
 }

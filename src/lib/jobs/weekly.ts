@@ -9,6 +9,7 @@ import { crewLockSoonEmail } from '@/lib/email/templates';
 import { dispatch } from '@/lib/notifications/dispatch';
 import { getRepository } from '@/lib/repository';
 import { db } from '@/lib/supabase-admin';
+import { readAllPages } from '@/lib/repository/pagination';
 
 /**
  * Rendez-vous hebdomadaire (cahier §108).
@@ -35,16 +36,31 @@ export interface WeeklyReport {
   emailsQueued: number;
 }
 
-/** Joueurs ayant verrouillé un équipage sur ce chapitre. */
+/**
+ * Joueurs ayant verrouillé un équipage sur ce chapitre.
+ *
+ * Paginée : une ligne par joueur et par chapitre. Sans borne, PostgREST en
+ * renvoie mille et s’arrête sans le dire — les joueurs suivants ne recevraient
+ * ni rappel ni notification de résultats, en silence.
+ */
 async function playersWithTeam(chapterId: string): Promise<string[]> {
-  const { data } = await db().from('teams').select('player_id').eq('chapter_id', chapterId);
-  return (data ?? []).map((row) => row.player_id);
+  const rows = await readAllPages<{ player_id: string }>('teams.notify', (from, to) =>
+    db()
+      .from('teams')
+      .select('player_id')
+      .eq('chapter_id', chapterId)
+      .order('player_id', { ascending: true })
+      .range(from, to),
+  );
+  return rows.map((row) => row.player_id);
 }
 
-/** Tous les joueurs, pour le rappel avant échéance. */
+/** Tous les joueurs, pour le rappel avant échéance. Paginée, même raison. */
 async function allPlayers(): Promise<string[]> {
-  const { data } = await db().from('players').select('id');
-  return (data ?? []).map((row) => row.id);
+  const rows = await readAllPages<{ id: string }>('players.notify', (from, to) =>
+    db().from('players').select('id').order('id', { ascending: true }).range(from, to),
+  );
+  return rows.map((row) => row.id);
 }
 
 /**

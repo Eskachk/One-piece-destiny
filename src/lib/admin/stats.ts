@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
+import { readAllPages } from '@/lib/repository/pagination';
 
 /**
  * Statistiques du Chapter HQ (cahier §82).
@@ -170,16 +171,26 @@ async function chapterStats(
 ): Promise<ChapterStats[]> {
   if (rows.length === 0) return [];
 
-  const scores = await db()
-    .from('team_scores')
-    .select('chapter_id, total')
-    .in(
-      'chapter_id',
-      rows.map((r) => r.id),
-    );
+  // Paginé : une ligne par joueur **et par chapitre**. C'est la lecture qui
+  // grossit le plus vite du produit, et un tableau de bord tronqué afficherait
+  // des moyennes fausses sans que rien ne le signale.
+  const scores = await readAllPages<{ chapter_id: string; total: number }>(
+    'team_scores.stats',
+    (from, to) =>
+      db()
+        .from('team_scores')
+        .select('chapter_id, total')
+        .in(
+          'chapter_id',
+          rows.map((r) => r.id),
+        )
+        .order('chapter_id', { ascending: true })
+        .order('total', { ascending: false })
+        .range(from, to),
+  );
 
   const byChapter = new Map<string, number[]>();
-  for (const row of (scores.data ?? []) as { chapter_id: string; total: number }[]) {
+  for (const row of scores) {
     const list = byChapter.get(row.chapter_id) ?? [];
     list.push(row.total);
     byChapter.set(row.chapter_id, list);

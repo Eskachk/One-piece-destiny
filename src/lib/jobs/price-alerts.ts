@@ -5,6 +5,7 @@ import { priceAlertEmail } from '@/lib/email/templates';
 import { queueEmail } from '@/lib/email/outbox';
 import { preferencesOf } from '@/lib/notifications/dispatch';
 import { db } from '@/lib/supabase-admin';
+import { readAllPages } from '@/lib/repository/pagination';
 
 /**
  * Alertes de prix (cahier §41).
@@ -38,13 +39,24 @@ export interface PriceAlertReport {
 export async function runPriceAlerts(): Promise<PriceAlertReport> {
   const report: PriceAlertReport = { watched: 0, triggered: 0, queued: 0 };
 
-  const { data: watches, error } = await db()
-    .from('market_watchlist')
-    .select('player_id, character_id, alert_below, alerted_at')
-    .not('alert_below', 'is', null);
+  // Paginée : plusieurs lignes par joueur. Tronquée, l'alerte de prix ne
+  // partirait qu'aux mille premiers, toujours les mêmes.
+  const watches = await readAllPages<{
+    player_id: string;
+    character_id: string;
+    alert_below: number;
+    alerted_at: string | null;
+  }>('market_watchlist.alerts', (from, to) =>
+    db()
+      .from('market_watchlist')
+      .select('player_id, character_id, alert_below, alerted_at')
+      .not('alert_below', 'is', null)
+      .order('player_id', { ascending: true })
+      .order('character_id', { ascending: true })
+      .range(from, to),
+  );
 
-  if (error) throw new Error(`market_watchlist.select : ${error.message}`);
-  if (!watches || watches.length === 0) return report;
+  if (watches.length === 0) return report;
 
   report.watched = watches.length;
 

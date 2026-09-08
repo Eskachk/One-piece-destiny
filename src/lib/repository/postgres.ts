@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { readAllPages } from './pagination';
+
 import { db } from '@/lib/supabase-admin';
 import { STARTER_CARD_LOCK_MS } from '@/domain/antiabuse/config';
 import { nextSundayLockInstant } from '@/domain/chapter/lock';
@@ -38,56 +40,6 @@ interface ChapterRow {
   results_published_at: string | null;
   scoring_version: string;
   data_version: string;
-}
-
-/**
- * Taille d'une tranche de pagination.
- *
- * **Le défaut corrigé ici, et pourquoi il ne se voit pas aujourd'hui.**
- *
- * PostgREST — la couche qui sert l'API de Supabase — plafonne le nombre de
- * lignes d'une réponse (`max-rows`, mille par défaut sur un projet Supabase).
- * Une requête sans borne ne renvoie donc pas « tout » : elle renvoie le
- * début, **sans erreur, sans avertissement, et sans que rien dans le code ne
- * puisse le distinguer d'un résultat complet.**
- *
- * Deux lectures du produit grandissent d'une ligne par joueur :
- * `listTeams`, que la publication parcourt pour attribuer les points, et
- * `getLeaderboard`, qui construit le classement. Au millier de joueurs, la
- * première **cesse silencieusement de noter** les suivants — ils jouent leur
- * semaine et ne reçoivent rien — et la seconde efface leur rang.
- *
- * C'est la pire forme de bogue d'échelle : invisible tant que le jeu est
- * petit, et il se déclenche le jour où il marche.
- */
-const PAGE = 1000;
-
-/**
- * Lit une table par tranches, jusqu'à épuisement.
- *
- * `build(from, to)` doit renvoyer la requête bornée par `.range(from, to)`.
- * On s'arrête sur une tranche incomplète — c'est la fin des données — ou sur
- * `MAX_PAGES`, garde-fou contre une boucle infinie si le serveur renvoyait
- * indéfiniment des tranches pleines.
- */
-async function readAllPages<T>(
-  label: string,
-  build: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>,
-): Promise<T[]> {
-  const MAX_PAGES = 200; // 200 000 lignes : très au-delà de tout usage réel.
-  const rows: T[] = [];
-
-  for (let page = 0; page < MAX_PAGES; page += 1) {
-    const from = page * PAGE;
-    const { data, error } = await build(from, from + PAGE - 1);
-    if (error) throw new Error(`${label} : ${error.message}`);
-
-    const tranche = data ?? [];
-    rows.push(...tranche);
-    if (tranche.length < PAGE) return rows;
-  }
-
-  return rows;
 }
 
 function toChapter(row: ChapterRow): ChapterEvent {
