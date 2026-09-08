@@ -49,6 +49,23 @@ export type ChestSkin = 'HARBOR' | 'ROYAL';
  */
 export type ChestMotion = 'SHAKE' | 'LEVITATE';
 
+/**
+ * Nature des éclairs qui entourent le coffre.
+ *
+ * `RARITY` — la rampe de couleurs des raretés. Ils montent pendant la charge
+ *   et **s'éteignent au silence** : c'est leur disparition qui rend le silence
+ *   audible, et c'est le ressort du §61.
+ *
+ * `CONQUEROR` — le Haki des Rois : un cœur noir bordé de rouge, présent de la
+ *   première image à la dernière. Il ne raconte pas une montée en tension mais
+ *   une nature — ce coffre-là est ainsi tout le temps, et n'a rien à prouver.
+ *
+ * Un seul champ pour la teinte **et** la persistance, parce que ce sont ici la
+ * même décision : des éclairs de Haki des Rois qui s'éteindraient au silence
+ * ne seraient pas une variante, ils seraient une erreur.
+ */
+export type BoltStyle = 'RARITY' | 'CONQUEROR';
+
 export interface CeremonyPlan {
   tier: CeremonyTier;
   /** Apparence du coffre à afficher. */
@@ -75,6 +92,8 @@ export interface CeremonyPlan {
   hakiColors: string[];
   /** Éclairs visibles simultanément au plus fort de la charge. */
   bolts: number;
+  /** Nature des éclairs. */
+  boltStyle: BoltStyle;
   /** Délai entre deux cartes révélées (cahier §61 : une par une). */
   cardIntervalSeconds: number;
   /** Instant où la première carte apparaît. */
@@ -147,7 +166,15 @@ const ROYAL = {
   suspenseSeconds: 2,
   burstSeconds: 1.1,
   particles: 320,
-  bolts: 18,
+  /*
+   * Onze, et non dix-huit.
+   *
+   * Les éclairs du coffre royal sont désormais des rubans épais présents du
+   * début à la fin, et non des traits fins limités à la charge. À dix-huit,
+   * ils se recouvraient au point de former un disque noir autour du coffre —
+   * on ne distinguait plus un seul éclair. Moins nombreux, chacun se voit.
+   */
+  bolts: 11,
   cardIntervalSeconds: 0.55,
   ramp: [
     RARITY_COLOR.EPIC,
@@ -191,6 +218,7 @@ export function ceremonyPlan(
      * avant de l'infliger, ce que le reste de ce fichier s'applique à éviter.
      */
     motion: royal ? 'LEVITATE' : 'SHAKE',
+    boltStyle: royal ? 'CONQUEROR' : 'RARITY',
     highlight,
     shakeSeconds: base.shakeSeconds,
     suspenseSeconds: base.suspenseSeconds,

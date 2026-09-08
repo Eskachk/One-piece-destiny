@@ -55,14 +55,90 @@ function useCeremonyClock(plan: CeremonyPlan) {
 /**
  * Éclairs de Haki.
  *
- * Chaque éclair est une ligne brisée qui part du coffre et se perd vers le
- * haut. Les sommets sont **retirés au sort à intervalle fixe**, pas à chaque
- * image : un éclair qui change soixante fois par seconde se lit comme du
- * bruit, alors qu'à douze fois par seconde on voit un crépitement.
+ * ## Deux natures, une seule géométrie
  *
- * La couleur vient du plan (`hakiColorAt`) et progresse avec la charge : le
- * dernier palier est la couleur de la meilleure carte du coffre.
+ * `RARITY` — des traits fins, colorés par la rampe des raretés, en fusion
+ * additive : ils s'ajoutent au fond et brillent. Ils montent pendant la charge
+ * et s'éteignent au silence (§61).
+ *
+ * `CONQUEROR` — le Haki des Rois du coffre royal : un **cœur noir bordé de
+ * rouge**, présent du premier au dernier instant.
+ *
+ * ## Pourquoi des rubans et non des lignes
+ *
+ * Un cœur noir est impossible à obtenir en `LineSegments` :
+ *
+ *   1. la fusion additive n'ajoute rien pour du noir — le fichier documentait
+ *      déjà ce piège, rencontré sur un violet trop sombre qui restait
+ *      parfaitement invisible ;
+ *   2. `linewidth` est **ignoré** par WebGL sur presque tous les navigateurs :
+ *      une ligne fait un pixel, quoi qu'on demande. Sans épaisseur, pas de
+ *      bordure possible.
+ *
+ * Chaque éclair est donc un **ruban** : deux sommets par point de la brisure,
+ * décalés de part et d'autre de la trajectoire. On en dessine deux superposés
+ * — un large rouge en fusion additive, un plus étroit en noir opaque par-dessus
+ * — et c'est ce débord rouge de chaque côté qui fait la bordure.
+ *
+ * ## Pourquoi les éclairs sont plats
+ *
+ * Ils vivent dans le plan de l'écran, pas autour du coffre. Une brisure en
+ * volume se lit de biais et perd sa forme ; à plat, face à la caméra, elle
+ * garde le dessin franc d'un éclair d'animation. La profondeur vient d'autre
+ * chose : un éclair sur deux passe **derrière** le coffre, qui l'occulte.
+ *
+ * ## Le rythme
+ *
+ * Les sommets sont retirés au sort à intervalle fixe, pas à chaque image : un
+ * éclair qui change soixante fois par seconde se lit comme du bruit, alors
+ * qu'à douze fois par seconde on voit un crépitement.
  */
+
+/** Points par éclair, extrémités comprises. */
+const POINTS = 9;
+
+/**
+ * Remplit les sommets d'un ruban le long d'une brisure.
+ *
+ * `points` est la brisure en (x, y) ; `out` reçoit deux sommets par point,
+ * décalés perpendiculairement à la trajectoire. La largeur s'amincit vers la
+ * pointe : un éclair est épais à sa source et se perd en fil.
+ */
+function ribbon(
+  points: Float32Array,
+  out: Float32Array,
+  offset: number,
+  width: number,
+  z: number,
+) {
+  for (let i = 0; i < POINTS; i += 1) {
+    const x = points[i * 2];
+    const y = points[i * 2 + 1];
+
+    // Tangente : le segment suivant, ou le précédent pour le dernier point.
+    const j = i === POINTS - 1 ? i - 1 : i + 1;
+    const dx = points[j * 2] - x;
+    const dy = points[j * 2 + 1] - y;
+    const longueur = Math.hypot(dx, dy) || 1;
+    const signe = i === POINTS - 1 ? -1 : 1;
+
+    // Perpendiculaire normalisée.
+    const nx = (-dy / longueur) * signe;
+    const ny = (dx / longueur) * signe;
+
+    // Effilement : pleine largeur à la source, un cinquième à la pointe.
+    const demi = (width * (1 - (i / (POINTS - 1)) * 0.8)) / 2;
+
+    const base = offset + i * 6;
+    out[base] = x + nx * demi;
+    out[base + 1] = y + ny * demi;
+    out[base + 2] = z;
+    out[base + 3] = x - nx * demi;
+    out[base + 4] = y - ny * demi;
+    out[base + 5] = z;
+  }
+}
+
 function HakiBolts({
   plan,
   elapsed,
@@ -72,87 +148,187 @@ function HakiBolts({
   elapsed: { current: number };
   active: boolean;
 }) {
-  const SEGMENTS = 7;
-  const lines = useRef<THREE.LineSegments>(null);
-  const material = useRef<THREE.LineBasicMaterial>(null);
-  const lastRedraw = useRef(0);
+  const count = plan.bolts;
+  const conquerant = plan.boltStyle === 'CONQUEROR';
 
-  // Deux sommets par segment : `LineSegments` dessine des tronçons
-  // indépendants, ce qui évite de relier la fin d'un éclair au début du
-  // suivant — un trait parasite qui traverserait toute la scène.
-  const positions = useMemo(
-    () => new Float32Array(plan.bolts * SEGMENTS * 2 * 3),
-    [plan.bolts],
-  );
+  const coeur = useRef<THREE.Mesh>(null);
+  const bord = useRef<THREE.Mesh>(null);
+  const matCoeur = useRef<THREE.MeshBasicMaterial>(null);
+  const matBord = useRef<THREE.MeshBasicMaterial>(null);
+  const lastRedraw = useRef(-1);
+
+  /*
+   * Tampons et indices, alloués une fois.
+   *
+   * Les indices ne changent jamais — c'est le même maillage de quadrilatères
+   * image après image, seuls les sommets bougent. Les recalculer à chaque
+   * redessin serait du travail pur perte, soixante fois par seconde.
+   */
+  const { coeurPos, bordPos, index, brisure } = useMemo(() => {
+    const sommets = count * POINTS * 2 * 3;
+    const index = new Uint16Array(count * (POINTS - 1) * 6);
+
+    for (let bolt = 0; bolt < count; bolt += 1) {
+      for (let seg = 0; seg < POINTS - 1; seg += 1) {
+        const v = (bolt * POINTS + seg) * 2;
+        const i = (bolt * (POINTS - 1) + seg) * 6;
+        index[i] = v;
+        index[i + 1] = v + 1;
+        index[i + 2] = v + 2;
+        index[i + 3] = v + 1;
+        index[i + 4] = v + 3;
+        index[i + 5] = v + 2;
+      }
+    }
+
+    return {
+      coeurPos: new Float32Array(sommets),
+      bordPos: new Float32Array(sommets),
+      index,
+      brisure: new Float32Array(POINTS * 2),
+    };
+  }, [count]);
 
   useFrame(() => {
-    if (!lines.current || !material.current) return;
+    if (!coeur.current || !bord.current) return;
+    if (!matCoeur.current || !matBord.current) return;
 
     const t = elapsed.current;
     const progress = plan.shakeSeconds > 0 ? t / plan.shakeSeconds : 1;
 
-    // Intensité : les éclairs naissent, montent, puis s'éteignent d'un coup
-    // au silence. Leur disparition est ce qui rend le silence audible.
-    material.current.opacity = active ? Math.min(1, progress * 1.6) : 0;
-    material.current.color.set(hakiColorAt(plan, progress));
+    /*
+     * Intensité.
+     *
+     * Le Haki des Rois ne s'éteint pas : il est là tout du long, à pleine
+     * force. Les éclairs de rareté, eux, naissent, montent, puis disparaissent
+     * au silence — leur disparition **est** l'effet.
+     */
+    const intensite = conquerant
+      ? 1
+      : active
+        ? Math.min(1, progress * 1.6)
+        : 0;
 
-    if (!active || t - lastRedraw.current < 0.08) return;
-    lastRedraw.current = t;
-
-    const attribute = lines.current.geometry.attributes.position;
-    const array = attribute.array as Float32Array;
-
-    for (let bolt = 0; bolt < plan.bolts; bolt += 1) {
-      const angle = (bolt / plan.bolts) * Math.PI * 2 + Math.random() * 0.5;
-      const reach = 1.2 + Math.random() * 1.4;
-
-      // Les éclairs naissent **au niveau du joint**, pas au centre de la
-      // caisse : partis d'en dessous, leurs premiers segments étaient à
-      // l'intérieur du coffre, donc masqués par le bois.
-      let x = Math.cos(angle) * 0.45;
-      let y = 0.18;
-      let z = Math.sin(angle) * 0.45;
-
-      for (let segment = 0; segment < SEGMENTS; segment += 1) {
-        const base = (bolt * SEGMENTS + segment) * 6;
-        const step = reach / SEGMENTS;
-
-        array[base] = x;
-        array[base + 1] = y;
-        array[base + 2] = z;
-
-        x += Math.cos(angle) * step * 0.6 + (Math.random() - 0.5) * 0.34;
-        y += step + (Math.random() - 0.5) * 0.2;
-        z += Math.sin(angle) * step * 0.6 + (Math.random() - 0.5) * 0.34;
-
-        array[base + 3] = x;
-        array[base + 4] = y;
-        array[base + 5] = z;
-      }
+    matCoeur.current.opacity = intensite;
+    matBord.current.opacity = intensite * (conquerant ? 0.95 : 1);
+    if (!conquerant) {
+      matCoeur.current.color.set(hakiColorAt(plan, Math.min(1, progress)));
+      matBord.current.color.set(hakiColorAt(plan, Math.min(1, progress)));
     }
 
-    attribute.needsUpdate = true;
+    if (intensite === 0 || t - lastRedraw.current < 0.08) return;
+    lastRedraw.current = t;
+
+    for (let bolt = 0; bolt < count; bolt += 1) {
+      /*
+       * Angle et portée fortement dispersés.
+       *
+       * Le premier jet répartissait les éclairs à intervalles réguliers, tous
+       * de même longueur : le résultat était un **soleil**, pas un orage. Il
+       * faut casser les deux régularités — l'écart entre deux rayons et leur
+       * portée — pour que l'œil cesse d'y lire une figure géométrique.
+       */
+      const angle =
+        (bolt / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.9;
+      const portee = 1.5 + Math.random() * 1.9;
+      const cos = Math.cos(angle);
+      const sin = Math.sin(angle);
+
+      /*
+       * L'écart latéral est une **marche aléatoire**, non un bruit.
+       *
+       * Un écart tiré indépendamment à chaque point donne une ligne floue,
+       * qui tremble autour de sa trajectoire. En cumulant les pas, la brisure
+       * part réellement de côté puis se reprend : c'est ce qui fait les angles
+       * francs d'un éclair au lieu d'un fil vibrant.
+       */
+      let ecart = 0;
+      for (let i = 0; i < POINTS; i += 1) {
+        const avancement = i / (POINTS - 1);
+        /*
+         * Le départ est à distance du coffre, et non collé dessus.
+         *
+         * À 0,42, les onze bases se rejoignaient au centre : leurs rubans se
+         * recouvraient en un disque noir qui masquait le coffre. L'éclair naît
+         * **au bord** de l'objet, il ne le traverse pas.
+         */
+        const long = 0.78 + portee * avancement;
+        ecart += (Math.random() - 0.5) * 0.34 * avancement;
+        brisure[i * 2] = cos * long - sin * ecart;
+        brisure[i * 2 + 1] = sin * long + cos * ecart + 0.15;
+      }
+
+      // Un éclair sur deux derrière le coffre : c'est ce qui donne du volume à
+      // une figure entièrement plate.
+      const z = bolt % 2 === 0 ? 0.95 : -0.95;
+      const decalage = bolt * POINTS * 6;
+
+      /*
+       * Fin, et non épais.
+       *
+       * Les premières largeurs (0,13 et 0,07) donnaient des bandes noires
+       * larges comme le poing du coffre : à cette échelle un éclair n'est plus
+       * un trait, c'est une tache. L'écart entre les deux rubans reste le
+       * même — c'est lui, et lui seul, qui fait l'épaisseur de la bordure
+       * rouge visible de chaque côté du cœur.
+       */
+      ribbon(brisure, bordPos, decalage, conquerant ? 0.082 : 0.05, z);
+      ribbon(brisure, coeurPos, decalage, conquerant ? 0.048 : 0.025, z);
+    }
+
+    coeur.current.geometry.attributes.position.needsUpdate = true;
+    bord.current.geometry.attributes.position.needsUpdate = true;
   });
 
-  if (plan.bolts === 0) return null;
+  if (count === 0) return null;
 
   return (
-    <lineSegments ref={lines}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-          count={positions.length / 3}
+    <>
+      {/* La bordure, dessous et plus large. En fusion additive, elle rayonne
+          sur le fond sombre — c'est elle qui rend le cœur noir visible. */}
+      <mesh ref={bord} renderOrder={1}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[bordPos, 3]}
+            count={bordPos.length / 3}
+          />
+          <bufferAttribute attach="index" args={[index, 1]} count={index.length} />
+        </bufferGeometry>
+        <meshBasicMaterial
+          ref={matBord}
+          color={conquerant ? '#ff2118' : '#ffffff'}
+          transparent
+          opacity={0}
+          side={THREE.DoubleSide}
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
         />
-      </bufferGeometry>
-      <lineBasicMaterial
-        ref={material}
-        transparent
-        opacity={0}
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-      />
-    </lineSegments>
+      </mesh>
+
+      {/* Le cœur, dessus et plus étroit. **Sans fusion additive** pour le Haki
+          des Rois : du noir additif n'ajoute rigoureusement rien, et l'éclair
+          entier disparaîtrait. */}
+      <mesh ref={coeur} renderOrder={2}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            args={[coeurPos, 3]}
+            count={coeurPos.length / 3}
+          />
+          <bufferAttribute attach="index" args={[index, 1]} count={index.length} />
+        </bufferGeometry>
+        <meshBasicMaterial
+          ref={matCoeur}
+          color={conquerant ? '#08060a' : '#ffffff'}
+          transparent
+          opacity={0}
+          side={THREE.DoubleSide}
+          depthWrite={false}
+          blending={conquerant ? THREE.NormalBlending : THREE.AdditiveBlending}
+        />
+      </mesh>
+    </>
   );
 }
 
@@ -276,8 +452,22 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
         // Il reste en l'air, presque immobile. Redescendre ici casserait la
         // promesse : le silence doit être une suspension, pas un retour au sol.
         group.current.position.y += (0.42 - group.current.position.y) * 0.1;
-        group.current.rotation.y += 0.004;
         group.current.rotation.z *= 0.9;
+
+        /*
+         * Il se remet **de face** pendant le silence.
+         *
+         * La lévitation le fait tourner sans fin ; sans cette remise en place,
+         * il s'ouvrait à l'angle où le hasard l'avait laissé — parfois de
+         * trois quarts, parfois de dos. Ce qui jaillit doit venir vers le
+         * joueur, pas s'échapper de côté.
+         *
+         * On vise le tour complet le plus proche plutôt que zéro : de 350°,
+         * il finit son tour au lieu de rembobiner presque entièrement.
+         */
+        const tours = Math.PI * 2;
+        const cible = Math.round(group.current.rotation.y / tours) * tours;
+        group.current.rotation.y += (cible - group.current.rotation.y) * 0.09;
       } else if (phase === 'hold') {
         // Immobilité franche. C'est le §61 : le silence avant la révélation.
         group.current.rotation.z *= 0.7;
@@ -302,10 +492,19 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
         group.current.position.y +=
           (assise - recul * 0.09 - group.current.position.y) * 0.18;
 
-        // Le coffre royal continue de tourner, plus lentement : il ne se
-        // repose pas, il se présente.
-        if (leviting) group.current.rotation.y += 0.0016;
-        else group.current.rotation.y *= 0.85;
+        /*
+         * L'orientation est **tenue** pendant l'ouverture.
+         *
+         * Une version précédente laissait le coffre royal tourner doucement
+         * « pour se présenter ». Il présentait surtout son flanc au moment où
+         * le couvercle cédait. On termine la remise de face commencée au
+         * silence, et on n'y touche plus.
+         */
+        const tours = Math.PI * 2;
+        const cible = leviting
+          ? Math.round(group.current.rotation.y / tours) * tours
+          : 0;
+        group.current.rotation.y += (cible - group.current.rotation.y) * 0.2;
       }
     }
 
@@ -437,6 +636,9 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
         distance={7}
       />
 
+      {/* `active` ne commande que les éclairs de rareté ; ceux du Haki des
+          Rois s'allument seuls, de bout en bout, et le composant le décide à
+          partir du plan. */}
       <HakiBolts plan={plan} elapsed={elapsed} active={phase === 'charge'} />
 
       {/* Rayon lumineux : légendaire et coffre royal (§56). Il manquait au

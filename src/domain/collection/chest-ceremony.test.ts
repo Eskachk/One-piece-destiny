@@ -147,6 +147,26 @@ describe('mise en scène du coffre royal', () => {
     expect(plan.skin).toBe('ROYAL');
   });
 
+  it('porte le Haki des Rois, et lui seul', () => {
+    expect(ceremonyPlan([card('LEGENDARY')], { royal: true }).boltStyle).toBe(
+      'CONQUEROR',
+    );
+    expect(ceremonyPlan([card('MYTHIC')]).boltStyle).toBe('RARITY');
+  });
+
+  it('n’en met pas assez pour former un disque', () => {
+    /*
+     * Les éclairs conquérants sont des rubans épais présents du début à la
+     * fin, là où ceux de rareté sont des traits fins limités à la charge. À
+     * dix-huit, ils se recouvraient au point de cacher le coffre : ce n'est
+     * pas un réglage esthétique mais une lisibilité, et rien d'autre ne
+     * l'empêche de remonter.
+     */
+    expect(
+      ceremonyPlan([card('LEGENDARY')], { royal: true }).bolts,
+    ).toBeLessThanOrEqual(12);
+  });
+
   it('garde sa chorégraphie dans le plan dégradé', () => {
     // `reducedMotionPlan` coupe les durées, pas l'identité du coffre : la
     // scène n'est de toute façon pas jouée, mais un plan qui mentirait sur
