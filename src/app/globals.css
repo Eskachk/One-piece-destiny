@@ -3257,7 +3257,18 @@ button[aria-busy='true']:not(.hb-btn)::before {
    et non dans celui de la `viewBox`, et le feuillage part de travers. */
 .elbaf-ramure {
   transform-box: view-box;
-  transform-origin: 450px 262px;
+  /* Le pivot est au **pied du tronc**, pas au centre de la ramure : c'est ce
+     qui fait qu'un balancement d'un demi-degré déplace la cime de plusieurs
+     pixels et laisse la base parfaitement immobile. */
+  transform-origin: 450px 268px;
+}
+
+/* L'étage haut est deux fois plus loin du pivot que l'étage bas : à rotation
+   égale il parcourt deux fois plus de chemin, et les deux se décalent d'eux-
+   mêmes. On lui donne en plus un rythme légèrement différent — au même, les
+   deux masses liraient comme un seul bloc articulé. */
+.elbaf-ramure--haute {
+  animation-duration: 11s;
 }
 
 .elbaf-arc {

@@ -171,57 +171,171 @@ function Elbaf() {
           et le seul dont l'absence d'ombre se voyait : il flottait au-dessus
           de la lande. L'ellipse est très allongée — un soleil haut mais pas au
           zénith. */}
-      <ellipse cx="330" cy="272" rx="210" ry="17" fill="#2c4a2e" opacity=".2" />
+      <ellipse cx="322" cy="274" rx="236" ry="18" fill="#2c4a2e" opacity=".22" />
 
-      {/* L'arbre d'Adam. Contreforts d'abord, tronc ensuite, ramure par-dessus
-          — l'ordre de tracé fait la profondeur. */}
-      <g opacity=".72">
-        <path
-          d="M404 262 q-46 -6 -78 14 M496 262 q46 -6 78 14"
-          stroke="#4a3320"
-          strokeWidth="20"
-          strokeLinecap="round"
-          fill="none"
-        />
-        <path d="M400 268 L420 104 L480 104 L500 268Z" fill="#5c422c" />
-        <path
-          d="M430 262 V112 M462 264 V110"
-          stroke="#3d2b1c"
-          strokeWidth="3"
-          opacity=".45"
-          fill="none"
-        />
-        {/* Deux maîtresses branches, qui partent chercher la ramure. */}
-        <path
-          d="M424 150 q-64 -14 -96 -46 M478 142 q66 -16 100 -50"
-          stroke="#5c422c"
-          strokeWidth="13"
-          strokeLinecap="round"
-          fill="none"
-        />
+      {/*
+        ## L'arbre d'Adam, à deux étages
+
+        La version précédente était un tronc droit surmonté de six ellipses
+        vertes. Elle disait « grand arbre » et rien de plus.
+
+        Ce qui fait celui-ci, et qu'aucune ellipse ne donne :
+
+          — **deux étages de ramure**, empilés et séparés par du vide. C'est
+            la silhouette entière : on voit à travers, entre les deux, et
+            c'est ce vide qui dit la hauteur ;
+          — **un bord supérieur festonné**. Une ellipse lisse est un nuage ;
+            une suite de lobes qui se chevauchent est du feuillage ;
+          — **des branches noueuses et horizontales**, qui partent du tronc
+            sous chaque étage et fourchent. Elles portent la ramure au lieu de
+            disparaître dedans ;
+          — **un tronc cannelé qui s'évase**, avec des contreforts au sol. Un
+            tronc à bords parallèles se lit comme un poteau.
+
+        L'ordre de tracé fait tout : contreforts, tronc, branches basses,
+        ramure basse, branches hautes, ramure haute. Chaque étage recouvre ce
+        qui le porte, exactement comme on le voit d'en dessous.
+      */}
+
+      {/* Contreforts : le pied s'étale bien plus large que le fût. */}
+      <g fill="#4a3320" opacity=".72">
+        <path d="M368 272 q26 -44 62 -52 l0 52Z" />
+        <path d="M532 272 q-26 -44 -62 -52 l0 52Z" />
+        <path d="M396 274 q18 -30 44 -36 l0 36Z" />
+        <path d="M504 274 q-18 -30 -44 -36 l0 36Z" />
       </g>
 
-      {/* Ramure : six masses qui se chevauchent. Une seule ellipse lirait comme
-          un nuage ; c'est le chevauchement qui fait le feuillage.
+      {/* Fût. Évasé en bas, resserré en haut, et il monte jusqu'au second
+          étage — il ne s'arrête pas sous le premier. */}
+      <path
+        d="M414 268 Q404 180 420 84 L482 84 Q498 180 488 268Z"
+        fill="#5c422c"
+        opacity=".78"
+      />
 
-          Elle se balance (`elbaf-ramure`), très peu — moins d'un degré — mais
-          autour du **pied du tronc**, si bien que le haut parcourt plusieurs
-          pixels quand la base ne bouge pas. C'est ce qu'on voit d'un arbre de
-          cette taille : la cime respire, le tronc non. */}
-      <g className="elbaf-ramure" opacity=".62">
-        <ellipse cx="450" cy="66" rx="236" ry="60" fill="#2f6b3c" />
-        <ellipse cx="450" cy="46" rx="168" ry="40" fill="#377a44" />
-        <ellipse cx="322" cy="92" rx="132" ry="44" fill="#356f3f" />
-        <ellipse cx="580" cy="88" rx="144" ry="46" fill="#3b8248" />
-        <ellipse cx="392" cy="118" rx="86" ry="30" fill="#2b6237" />
-        <ellipse cx="522" cy="120" rx="94" ry="30" fill="#2b6237" />
+      {/* Cannelures. Sept traits d'épaisseurs et de longueurs inégales : sept
+          traits identiques feraient un rideau, pas une écorce. */}
+      <g stroke="#3d2b1c" strokeLinecap="round" fill="none" opacity=".4">
+        <path d="M428 262 Q422 180 432 104" strokeWidth="3.5" />
+        <path d="M446 266 Q442 184 448 100" strokeWidth="2.5" />
+        <path d="M462 264 Q460 182 462 102" strokeWidth="3" />
+        <path d="M476 260 Q478 178 474 106" strokeWidth="2" />
+        <path d="M418 250 Q414 190 424 130" strokeWidth="2" />
+        <path d="M486 252 Q490 192 480 132" strokeWidth="2.5" />
+      </g>
 
-        {/* Le feuillage qui prend la lumière, en haut à droite. Deux masses
-            claires posées **par-dessus** les six autres : c'est ce qui donne
-            à la ramure un dessus et un dessous, là où six verts de valeur
-            voisine faisaient une masse plate. */}
-        <ellipse cx="524" cy="52" rx="118" ry="30" fill="#63a860" opacity=".55" />
-        <ellipse cx="470" cy="34" rx="88" ry="20" fill="#8cc36f" opacity=".4" />
+      {/* Côté éclairé du fût, à droite comme partout. */}
+      <path d="M470 268 Q480 180 474 84 L482 84 Q498 180 488 268Z" fill="#7a5a3c" opacity=".5" />
+
+      {/* --- Étage bas ------------------------------------------------------
+          Branches d'abord : elles sortent du tronc, fourchent, et vont
+          chercher les bords de la ramure. */}
+      <g stroke="#4a3320" fill="none" strokeLinecap="round" opacity=".7">
+        <path d="M418 178 q-52 -6 -84 12 q-26 12 -52 8" strokeWidth="11" />
+        <path d="M334 190 q-14 -20 -38 -24" strokeWidth="7" />
+        <path d="M484 176 q56 -8 92 10 q28 12 56 6" strokeWidth="11" />
+        <path d="M576 186 q16 -20 42 -24" strokeWidth="7" />
+      </g>
+
+      {/* Ramure basse : une masse, puis les lobes du bord haut.
+
+          Elle se balance autour du **pied du tronc** : le haut parcourt
+          plusieurs pixels quand la base ne bouge pas, ce qui est exactement ce
+          qu'on voit d'un arbre de cette taille — la cime respire, le tronc
+          non. */}
+      <g className="elbaf-ramure" opacity=".68">
+        <path d="M148 204 Q160 168 262 164 Q450 146 640 166 Q744 170 754 204 Q640 224 450 222 Q260 224 148 204Z" fill="#2f6b3c" />
+        {[
+          [188, 182, 27],
+          [246, 168, 33],
+          [316, 160, 36],
+          [396, 156, 37],
+          [478, 158, 36],
+          [558, 164, 34],
+          [634, 172, 30],
+          [700, 186, 25],
+        ].map(([cx, cy, r]) => (
+          <circle key={`b${cx}`} cx={cx} cy={cy} r={r} fill="#2f6b3c" />
+        ))}
+        {/* Lobes qui prennent le jour, côté droit. */}
+        {[
+          [478, 154, 26],
+          [558, 160, 24],
+          [634, 168, 20],
+        ].map(([cx, cy, r]) => (
+          <circle key={`bl${cx}`} cx={cx} cy={cy} r={r} fill="#4f9451" opacity=".55" />
+        ))}
+      </g>
+
+      {/* --- Étage haut ----------------------------------------------------- */}
+      <g stroke="#4a3320" fill="none" strokeLinecap="round" opacity=".7">
+        <path d="M424 96 q-46 -4 -74 8 q-22 8 -44 4" strokeWidth="9" />
+        <path d="M478 94 q48 -6 78 8 q24 8 48 2" strokeWidth="9" />
+      </g>
+
+      {/* L'étage haut se balance un peu plus : il est plus loin du pivot. */}
+      <g className="elbaf-ramure elbaf-ramure--haute" opacity=".7">
+        <path d="M182 78 Q194 40 288 34 Q450 14 616 36 Q712 42 722 78 Q616 98 450 96 Q288 98 182 78Z" fill="#377a44" />
+        {[
+          [222, 54, 28],
+          [284, 38, 35],
+          [356, 28, 39],
+          [434, 22, 41],
+          [514, 26, 39],
+          [590, 36, 35],
+          [664, 52, 28],
+        ].map(([cx, cy, r]) => (
+          <circle key={`h${cx}`} cx={cx} cy={cy} r={r} fill="#377a44" />
+        ))}
+        {/* Le feuillage qui prend la lumière : deux masses claires posées
+            par-dessus, en haut à droite. C'est ce qui donne à la ramure un
+            dessus et un dessous. */}
+        {[
+          [514, 20, 30],
+          [590, 30, 25],
+          [452, 14, 24],
+        ].map(([cx, cy, r]) => (
+          <circle key={`hl${cx}`} cx={cx} cy={cy} r={r} fill="#63a860" opacity=".5" />
+        ))}
+      </g>
+
+      {/*
+        ## Le hibou géant
+
+        Il est posé sur la branche maîtresse de gauche, à l'étage bas — la
+        seule qui soit assez dégagée pour qu'une silhouette s'y lise.
+
+        Sa taille est le sujet : il fait la hauteur d'une hutte de géants, qui
+        est elle-même bâtie pour des géants. C'est cette comparaison-là qui
+        donne l'échelle de l'arbre, mieux que n'importe quel détail ajouté au
+        tronc.
+
+        §122 : des formes géométriques. Un corps est un œuf, une aile un arc,
+        une aigrette un triangle, un œil deux disques.
+      */}
+      <g opacity=".82">
+        {/* Corps. */}
+        <ellipse cx="300" cy="150" rx="34" ry="42" fill="#6b5540" />
+        {/* Aile repliée, côté ombre. */}
+        <path d="M276 136 q-14 26 2 50 q12 -14 14 -46Z" fill="#54432f" />
+        {/* Poitrail plus clair, côté lumière. */}
+        <path d="M312 128 q18 24 8 52 q-14 8 -22 -4 q10 -22 14 -48Z" fill="#8d7458" opacity=".8" />
+        {/* Aigrettes. */}
+        <path d="M278 118 l8 -26 l14 20Z" fill="#6b5540" />
+        <path d="M322 118 l-8 -26 l-14 20Z" fill="#6b5540" />
+        {/* Face : le disque facial, puis les yeux, puis le bec. */}
+        <ellipse cx="300" cy="130" rx="26" ry="22" fill="#8d7458" opacity=".7" />
+        {[288, 312].map((cx) => (
+          <g key={cx}>
+            <circle cx={cx} cy="128" r="9" fill="#f2e6c8" />
+            <circle cx={cx} cy="128" r="4.5" fill="#1e1913" />
+          </g>
+        ))}
+        <path d="M300 136 l-5 9 h10Z" fill="#d8a13c" />
+        {/* Serres refermées sur la branche. */}
+        <g stroke="#d8a13c" strokeWidth="3" strokeLinecap="round" fill="none">
+          <path d="M290 190 v8 M300 191 v9 M310 190 v8" />
+        </g>
       </g>
 
       {/* Un vol qui traverse. Rien ne dit « vivant » comme quelque chose qui
@@ -676,11 +790,78 @@ function Wano() {
           lanternes, elle supporte l'or bien plus que le blanc. */}
       <AtmosphereDefs id="wan" lumiere="#ffd9a0" air="#d9dfe0" />
 
-      {/* Mont enneigé, au lointain. Il s'arrête à x=880 : dans la version
-          précédente il allait jusqu'à 410 dans un cadre large de 400, et le SVG
-          le tranchait net. */}
-      <path d="M556 300 L718 92 L880 300Z" fill="#b9c6d8" opacity=".5" />
-      <path d="M690 134 L718 92 L746 134 q-14 9 -28 0 q-14 -9 -28 0Z" fill="#ffffff" opacity=".65" />
+      {/*
+        Le volcan.
+
+        C'était un mont enneigé de deux cents pixels de haut, perdu dans le
+        coin droit. Il fait maintenant **toute la hauteur du cadre** et deux
+        tiers de sa largeur : c'est lui le sujet du décor, la pagode devient ce
+        qui donne l'échelle plutôt que l'inverse.
+
+        Un volcan ne se dessine pas comme une montagne à qui l'on aurait ajouté
+        de la fumée. Trois choses le distinguent, et il les faut toutes :
+
+          — **un sommet tronqué**, jamais pointu. C'est la caldeira, et c'est
+            le seul trait qui se lit à coup sûr, même en silhouette ;
+          — **des flancs concaves**. Une montagne monte droit ; un cône de
+            coulées successives se creuse en montant ;
+          — **des coulées**, qui descendent du cratère en s'élargissant.
+
+        Il reste dans `0 ≤ x ≤ 900` : la règle du cadre ne souffre pas
+        d'exception, c'est elle qui empêche le SVG de trancher une silhouette.
+      */}
+
+      {/* Masse principale. Les deux courbes de Bézier creusent les flancs. */}
+      <path
+        d="M232 300 Q436 176 512 46 L604 46 Q690 176 892 300Z"
+        fill="#8e93a6"
+        opacity=".62"
+      />
+
+      {/* Face éclairée, côté soleil — la droite, comme partout ailleurs. */}
+      <path
+        d="M558 300 L558 46 L604 46 Q690 176 892 300Z"
+        fill="#b6bccc"
+        opacity=".45"
+      />
+
+      {/* Caldeira : une ellipse sombre posée sur le tronc du cône. C'est elle
+          qui fait « volcan » plutôt que « montagne ». */}
+      <ellipse cx="558" cy="46" rx="46" ry="11" fill="#4a4152" opacity=".7" />
+      <ellipse cx="558" cy="44" rx="34" ry="7" fill="#8a3a22" opacity=".55" />
+
+      {/* Neige résiduelle sur les hauteurs, en plaques irrégulières : un
+          liseré régulier ferait un chapeau de dessin animé. */}
+      <path
+        d="M516 62 q22 12 42 4 q20 -8 40 4 l-8 26 q-30 -12 -60 0Z"
+        fill="#ffffff"
+        opacity=".5"
+      />
+
+      {/* Coulées : elles partent du cratère et s'élargissent en descendant.
+          Sombres et non rouges — une coulée incandescente sur toute la
+          hauteur ferait une éruption, alors qu'on veut un volcan qui fume. */}
+      <g fill="#5c4a4a" opacity=".3">
+        <path d="M540 52 q-26 92 -64 190 l34 6 q28 -104 46 -192Z" />
+        <path d="M582 52 q22 88 58 184 l-32 8 q-30 -100 -44 -190Z" />
+      </g>
+
+      {/* Le panache. Trois bouffées lentes, très hautes : c'est le mouvement
+          le plus lent du produit — vingt-deux secondes — parce qu'un panache
+          rapide se lit comme une cheminée d'usine. */}
+      <Fumee x={558} y={40} teinte="#cfc6c0" duree={22} />
+
+      {/* Lueur du cratère, retenue. Elle bat au rythme du panache et ne monte
+          jamais : c'est un rougeoiement au fond, pas une projection. */}
+      <ellipse
+        className="isl-astre__disque"
+        cx="558"
+        cy="44"
+        rx="26"
+        ry="5"
+        fill="#e07a3c"
+        opacity=".5"
+      />
 
       {/* Pagode : trois toits, du plus large en bas au plus étroit en haut, et
           des avant-toits retroussés. Droits, on lirait une tour. */}
@@ -872,6 +1053,43 @@ function Sabaody() {
         <path d="M346 140 q42 30 38 116" />
         <path d="M596 136 q-38 32 -32 118" />
         <path d="M884 158 q22 30 10 116" />
+      </g>
+
+      {/*
+        Le numéro du bosquet, gravé sur chaque tronc.
+
+        Sabaody se compte : ses bosquets portent un numéro, et c'est ainsi
+        qu'on s'y donne rendez-vous. Un seul chiffre par arbre, dans l'ordre
+        de gauche à droite — quarante à quarante-trois.
+
+        Ils sont **peints sur l'écorce**, pas posés devant : d'où l'inclinaison
+        légère, qui suit le galbe du tronc, et l'opacité basse. Un nombre net
+        et droit se lirait comme une étiquette collée sur le décor.
+
+        Le `paintOrder` met le contour derrière le remplissage : sans lui, le
+        trait sombre mordrait sur les chiffres et les rendrait illisibles à
+        cette taille.
+      */}
+      <g
+        fontFamily="var(--font-poster), system-ui, sans-serif"
+        fontSize="30"
+        textAnchor="middle"
+        fill="#e8dcc0"
+        stroke="#2f1f12"
+        strokeWidth="4"
+        paintOrder="stroke"
+        opacity=".5"
+      >
+        {[
+          { x: 47, y: 206, n: 40, inclinaison: -3 },
+          { x: 307, y: 192, n: 41, inclinaison: 2 },
+          { x: 633, y: 198, n: 42, inclinaison: -2 },
+          { x: 853, y: 214, n: 43, inclinaison: 3 },
+        ].map(({ x, y, n, inclinaison }) => (
+          <text key={n} x={x} y={y} transform={`rotate(${inclinaison} ${x} ${y})`}>
+            {n}
+          </text>
+        ))}
       </g>
 
       {/* Bulles de résine : grandes, rares, avec un reflet franc. Petites et

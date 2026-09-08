@@ -80,7 +80,28 @@ function Hud() {
 }
 
 export default async function HomePage() {
-  const session = await getAuthenticatedSession();
+  /*
+   * ## Trois vagues d'allers-retours devenaient deux
+   *
+   * La page enchaînait : session, **puis** chapitre, **puis** équipage et
+   * inventaire, **puis** récurrences, **puis** pronostics. Cinq attentes dont
+   * trois se suivaient sans avoir à se suivre.
+   *
+   * Un aller-retour vers Supabase coûte de cent à cent-quatre-vingts
+   * millisecondes depuis la plateforme — mesuré par la sonde de santé. Trois
+   * vagues, c'est un tiers de seconde d'attente que personne n'a demandée.
+   *
+   * Le chapitre courant et les récurrences ne dépendent **pas** de qui
+   * regarde : ils partent maintenant en même temps que la session. Les deux
+   * sont en cache partagé, mais un cache froid coûte le même aller-retour que
+   * le reste — et c'est précisément au premier visiteur après une purge qu'on
+   * doit la page la plus rapide possible.
+   */
+  const [session, chapter, recurrence] = await Promise.all([
+    getAuthenticatedSession(),
+    getCachedCurrentChapter(),
+    getCachedRecurrences(),
+  ]);
 
   // Visiteur non connecté : la connexion **est** la page d'accueil.
   //
@@ -93,9 +114,6 @@ export default async function HomePage() {
   if (!session) redirect('/login');
 
   const repository = getRepository();
-  // Le chapitre courant est identique pour tout le monde : il passe par le
-  // cache partagé plutôt que d'être relu à chaque affichage de l'accueil.
-  const chapter = await getCachedCurrentChapter();
 
   // Entre deux chapitres, la home ne raconte pas d'histoire : elle le dit.
   // Le reste du produit doit rester accessible — collection, profil et Market
@@ -120,11 +138,19 @@ export default async function HomePage() {
   const editable = isTeamEditable(chapter, now);
   const spoiler = spoilerState(chapter);
 
-  // Les deux requêtes sont indépendantes : les enchaîner doublait la latence
-  // de la page la plus visitée du produit.
-  const [team, ownedIds] = await Promise.all([
+  /*
+   * La seconde et dernière vague.
+   *
+   * Les quatre lectures ne dépendent que de `chapter.id` et de
+   * `session.playerId`, connus depuis la première vague. Les pronostics
+   * étaient lus **après** l'équipage alors que rien ne les en empêchait : une
+   * troisième attente pour une page qui n'en avait besoin que de deux.
+   */
+  const [team, ownedIds, questions, mesReponses] = await Promise.all([
     repository.getTeam(session.playerId, chapter.id),
     repository.getOwnedCharacterIds(session.playerId),
+    questionsDe(chapter.id),
+    reponsesDe(chapter.id, session.playerId),
   ]);
   const savedCrewIds = team?.characterIds ?? [];
 
@@ -144,8 +170,6 @@ export default async function HomePage() {
    * cela n'est recalculé côté client : `attributesOf` tire la table des
    * signatures physiques.
    */
-  const recurrence = await getCachedRecurrences();
-
   /*
    * Les pronostics de la semaine, **sans la bonne réponse**.
    *
@@ -154,11 +178,6 @@ export default async function HomePage() {
    * serveur est lisible par quiconque ouvre les outils de développement, et
    * une réponse connue d'avance est un spoiler du chapitre (§3).
    */
-  const [questions, mesReponses] = await Promise.all([
-    questionsDe(chapter.id),
-    reponsesDe(chapter.id, session.playerId),
-  ]);
-
   const pronostics = sansReponse(questions).map((question) => ({
     id: question.id,
     prompt: question.prompt,

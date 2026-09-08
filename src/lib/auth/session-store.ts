@@ -133,13 +133,28 @@ async function readSession(): Promise<AuthenticatedSession | null> {
     mfa_enabled: boolean;
   };
 
-  // Glissement de la fenêtre d'inactivité. Écriture limitée à une fois par
-  // minute pour ne pas transformer chaque page vue en écriture.
+  /*
+   * Glissement de la fenêtre d'inactivité.
+   *
+   * Écriture limitée à une fois par minute — sans quoi chaque page vue
+   * deviendrait une écriture — et surtout **non attendue**.
+   *
+   * Elle l'était, et c'était un aller-retour complet ajouté au rendu : de cent
+   * à cent-quatre-vingts millisecondes, une fois par minute et par joueur, sur
+   * le chemin critique de toutes les pages. Or personne n'attend son résultat :
+   * la page se rend exactement pareil selon qu'elle a abouti ou non, et si elle
+   * échoue, la session gardera simplement son ancienne date — ce qui la fait
+   * expirer un peu plus tôt, jamais plus tard.
+   *
+   * L'échec est avalé volontairement. Une session valide ne doit pas devenir
+   * invalide parce que la mise à jour de son horodatage a échoué.
+   */
   if (now.getTime() - state.lastSeenAt.getTime() > 60_000) {
-    await db()
+    void db()
       .from('sessions')
       .update({ last_seen_at: now.toISOString() })
-      .eq('token_hash', data.token_hash);
+      .eq('token_hash', data.token_hash)
+      .then(undefined, () => {});
   }
 
   return {
