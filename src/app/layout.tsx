@@ -49,6 +49,25 @@ export const metadata: Metadata = {
     title: 'OP Quest',
     statusBarStyle: 'black-translucent',
   },
+  /*
+   * Vérification de propriété du site auprès de Google.
+   *
+   * Le champ est déclaré ici plutôt que collé en HTML dans le `<head>` :
+   * celui-ci est **généré** par Next, et une balise écrite à la main dans le
+   * corps du layout n'y monterait pas. `verification.google` produit
+   * exactement la balise attendue, `<meta name="google-site-verification">`,
+   * sur toutes les pages — donc sur l'accueil, la seule que Google consulte
+   * pour ce contrôle.
+   *
+   * Le jeton n'est pas un secret : sa raison d'être est d'être lu par un
+   * robot dans une page publique. Il n'ouvre aucun accès à lui seul, et le
+   * mettre en variable d'environnement le rendrait seulement plus facile à
+   * perdre. Ne pas le retirer une fois la vérification passée : Google
+   * revérifie, et la propriété est révoquée si la balise a disparu.
+   */
+  verification: {
+    google: 'eNABtTIntlXFOysJTQTsNu5981puI81guebO5a3GVVU',
+  },
   other: {
     // Identifiant d'éditeur AdSense. Il est aussi porté par le script
     // ci-dessous ; la balise sert à la vérification du site par Google, qui
