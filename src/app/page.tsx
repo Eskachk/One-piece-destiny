@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { logoutAction } from '@/app/actions/auth';
 import { Countdown } from '@/components/Countdown';
@@ -39,6 +40,25 @@ import { AdBanner } from '@/components/AdBanner';
  * décision de verrouillage côté serveur (cahier §76).
  */
 export const dynamic = 'force-dynamic';
+
+/**
+ * La page la plus importante du site n'avait aucune métadonnée propre.
+ *
+ * Elle héritait du titre et de la description du gabarit racine, donc les
+ * mêmes que quatre autres pages. Elle est pourtant la seule en tête du
+ * sitemap, avec la priorité maximale.
+ */
+export const metadata: Metadata = {
+  title: {
+    absolute: 'One Piece Quest — le jeu de pronostics du chapitre hebdomadaire',
+  },
+  description:
+    'Choisis 3 personnages avant dimanche 23:59. Marque des points quand ils apparaissent dans le chapitre. Classement hebdomadaire, collection de cartes et Marché entre joueurs.',
+  // URL de référence. Sans elle, une même page atteinte avec un paramètre de
+  // campagne ou depuis un domaine d'aperçu compte comme plusieurs pages, et le
+  // signal se divise entre elles.
+  alternates: { canonical: '/' },
+};
 
 /**
  * HUD capitaine (cahier §54), présent quel que soit l'état du chapitre.

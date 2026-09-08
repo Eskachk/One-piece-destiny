@@ -270,6 +270,24 @@ export default async function RootLayout({
             src="/_vercel/insights/script.js"
           />
         )}
+
+        {/*
+          Core Web Vitals, mesurés sur les vrais appareils des joueurs.
+
+          Même raisonnement et même garde que l'audience ci-dessus : servi par
+          la plateforme, sous le domaine du site, absent partout ailleurs.
+          C'est le seul moyen de savoir que la page rame **sur un téléphone
+          d'entrée de gamme en 4G** — un chiffre qu'aucune mesure faite depuis
+          une machine de développement ne donnera jamais.
+        */}
+        {process.env.VERCEL === '1' && (
+          <Script
+            id="vercel-speed-insights"
+            defer
+            strategy="afterInteractive"
+            src="/_vercel/speed-insights/script.js"
+          />
+        )}
       </body>
     </html>
   );

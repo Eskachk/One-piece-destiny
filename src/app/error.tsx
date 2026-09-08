@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { signalerIncidentClientAction } from '@/app/actions/incidents';
 import { HarborScene } from '@/components/HarborScene';
 import { MainNav } from '@/components/MainNav';
 
@@ -41,6 +42,23 @@ export default function Error({
     // La console du navigateur, pas l'écran : de quoi diagnostiquer si l'on
     // est devant l'appareil, sans rien exposer sur la page.
     console.error('Erreur de rendu :', error);
+
+    /*
+     * Et la trace côté serveur, qui manquait entièrement.
+     *
+     * Cet écran est un composant client : quand il s'affiche, le serveur a
+     * rendu la main et sa trace est déjà perdue dans un journal d'une heure de
+     * rétention. Sans ce signalement, la moitié des pannes vécues par les
+     * joueurs n'existait nulle part.
+     *
+     * On n'envoie que le condensat et le chemin — jamais le message, qui vient
+     * du navigateur. L'échec est ignoré : un signalement qui échoue ne doit pas
+     * rendre l'écran d'erreur lui-même défaillant.
+     */
+    void signalerIncidentClientAction({
+      digest: error.digest,
+      chemin: window.location.pathname,
+    }).catch(() => {});
   }, [error]);
 
   return (

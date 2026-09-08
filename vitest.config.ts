@@ -22,4 +22,44 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+
+  /*
+   * Couverture.
+   *
+   * L'outil manquait entièrement : six cent dix-huit tests passaient sans que
+   * personne ne sache ce qu'ils touchaient. Un chiffre absent se lit
+   * facilement comme « c'est couvert ».
+   *
+   * ## Ce qui est mesuré, et pourquoi pas tout
+   *
+   * Seul `src/domain` entre dans le calcul. C'est le code de **décision** —
+   * score, raretés, économie, cérémonies, échéances — celui qu'un test peut
+   * exercer entièrement, sans base ni réseau, et celui dont une erreur coûte
+   * le plus cher.
+   *
+   * `src/lib` en est exclu : ces modules ne font qu'un aller-retour vers
+   * Supabase, et les tester sans base reviendrait à tester des simulacres —
+   * beaucoup de lignes vertes qui ne prouvent rien. Ils se vérifient par des
+   * sondes réelles contre la base, pas par de la couverture.
+   *
+   * ## Les seuils
+   *
+   * Ils sont posés **au niveau atteint aujourd'hui**, pas à un objectif rond.
+   * Un seuil qu'on n'atteint pas se désactive au premier échec ; un seuil
+   * calé sur l'existant transforme chaque régression en échec de build, ce
+   * qui est le seul usage utile d'un seuil.
+   */
+  test: {
+    coverage: {
+      provider: 'v8',
+      include: ['src/domain/**/*.ts'],
+      exclude: ['**/*.test.ts', 'src/domain/**/types.ts'],
+      reporter: ['text-summary', 'json-summary'],
+      thresholds: {
+        lines: 70,
+        functions: 70,
+        branches: 80,
+      },
+    },
+  },
 });

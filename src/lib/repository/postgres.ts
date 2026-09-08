@@ -544,123 +544,42 @@ export const postgresRepository: Repository = {
   },
 
   async applyChestOpening(input) {
-    // §92 : la clé d'idempotence est posée en premier. Si l'insertion
-    // échoue sur la contrainte d'unicité, le coffre a déjà été ouvert et
-    // rien d'autre ne doit être appliqué.
-    const claim = await db()
-      .from('chest_openings')
-      .insert({
-        player_id: input.playerId,
-        kind: input.kind,
-        cards: input.cards,
-        pity_triggered: input.pityTriggered,
-        client_request_id: input.clientRequestId,
-      })
-      .select('id')
-      .maybeSingle();
-
-    if (claim.error) {
-      // 23505 = violation d'unicité : double envoi du même formulaire.
-      if (claim.error.code === '23505') return 'already-applied';
-      throw new Error(`chest_openings.insert : ${claim.error.message}`);
-    }
-
-    const fresh = input.cards.filter((card) => !card.duplicate);
-    if (fresh.length > 0) {
-      // `ignoreDuplicates` protège d'une course : deux coffres simultanés
-      // ne doivent pas produire deux lignes pour le même personnage.
-      // Verrou des cartes d'inscription (§43, anti-abus).
-      //
-      // Les cartes du coffre offert à l'arrivée ne sont pas échangeables
-      // pendant une période fixée. C'est la protection la plus efficace du
-      // dispositif, et la seule qui ne se trompe sur personne : elle ne
-      // détecte rien, elle rend simplement immobile la valeur qu'une ferme de
-      // comptes chercherait à concentrer. Un joueur légitime, lui, n'a aucune
-      // raison de revendre sa dotation de départ dans l'heure.
-      const tradableFrom =
-        input.kind === 'STARTER'
-          ? new Date(Date.now() + STARTER_CARD_LOCK_MS).toISOString()
-          : null;
-
-      const { data: inserted, error } = await db()
-        .from('inventory')
-        .upsert(
-          fresh.map((card) => ({
-            player_id: input.playerId,
-            character_id: card.characterId,
-            obtained_from: input.kind === 'STARTER' ? 'Coffre d\'inscription' : 'Coffre',
-            source: input.kind === 'STARTER' ? 'STARTER_CHEST' : 'CHEST',
-            acquired_at: new Date().toISOString(),
-            tradable_from: tradableFrom,
-          })),
-          { onConflict: 'player_id,character_id', ignoreDuplicates: true },
-        )
-        .select('id, character_id');
-      if (error) throw new Error(`inventory.upsert : ${error.message}`);
-
-      // Frappe : chaque carte neuve reçoit son code unique et son numéro
-      // d'émission. Le tirage du code a lieu en base, jamais côté client (§97).
-      for (const row of inserted ?? []) {
-        const { data: serial } = await db().rpc('mint_card', {
-          p_inventory_id: row.id,
-        });
-
-        // Premier maillon de la chaîne de propriété. Il porte la **source**,
-        // ce qui rend traçable, des mois plus tard, qu'une carte trouvée sur
-        // le compte principal venait du coffre d'inscription d'un autre.
-        if (serial) {
-          await db().from('card_ownership').insert({
-            serial_code: serial,
-            character_id: row.character_id,
-            player_id: input.playerId,
-            source: input.kind === 'STARTER' ? 'STARTER_CHEST' : 'CHEST',
-          });
-        }
-      }
-    }
-
     /*
-     * Les fragments des doublons vont dans la **réserve unique** du joueur.
+     * **Un seul appel, une seule transaction.**
      *
-     * Ils étaient rangés par personnage, et c'est ce qui rendait la
-     * fabrication impossible : on ne gagne des fragments d'un personnage qu'en
-     * le tirant en double, donc en le possédant, alors que le fabriquer exige
-     * de ne pas le posséder. Voir la migration 0028.
+     * Cette fonction enchaînait jusqu'à quatorze allers-retours HTTP sans
+     * transaction : la clé d'idempotence, l'inventaire, une frappe et une
+     * ligne de propriété par carte, la progression, les fragments.
      *
-     * Un seul total, une seule écriture — au lieu d'une lecture et d'une
-     * écriture **par carte en double**, soit jusqu'à dix allers-retours par
-     * coffre ouvert.
+     * La clé était posée en premier et le coffre déjà décompté. Un échec en
+     * cours de route — délai, expiration de fonction, coupure — laissait le
+     * joueur sans cartes **et sans recours** : la clé existait, le rejeu
+     * répondait « déjà appliqué ». Rien ne permettait même de s'en apercevoir.
+     *
+     * Tout est passé dans `apply_chest_opening` (migration 0033) : Postgres
+     * l'exécute d'un bloc. Elle aboutit entièrement, ou ne laisse rien — et le
+     * rejeu redevient alors possible.
+     *
+     * L'erreur est **vérifiée**, ce qui n'était pas le cas de l'appel à
+     * `mint_card` : c'est ce silence qui avait laissé passer dix cartes sans
+     * frappe (migrations 0034 et 0035).
      */
-    const fragments = input.cards
-      .filter((card) => card.duplicate)
-      .reduce((somme, card) => somme + card.shards, 0);
+    const { data, error } = await db().rpc('apply_chest_opening', {
+      p_player: input.playerId,
+      p_kind: input.kind,
+      p_cards: input.cards,
+      p_pity_counter: input.pityCounter,
+      p_pity_triggered: input.pityTriggered,
+      p_client_request_id: input.clientRequestId,
+      // Verrou des cartes d'inscription (§43) : la durée vient du domaine, la
+      // date est calculée en base pour ne pas dépendre de l'horloge du serveur
+      // d'application.
+      p_tradable_lock_ms: input.kind === 'STARTER' ? STARTER_CARD_LOCK_MS : null,
+    });
 
-    const now = new Date().toISOString();
-    const { error: progressError } = await db().from('player_progress').upsert(
-      {
-        player_id: input.playerId,
-        pity_counter: input.pityCounter,
-        ...(input.kind === 'STARTER' ? { starter_chest_opened_at: now } : {}),
-        updated_at: now,
-      },
-      { onConflict: 'player_id' },
-    );
-    if (progressError) {
-      throw new Error(`player_progress.upsert : ${progressError.message}`);
-    }
+    if (error) throw new Error(`apply_chest_opening : ${error.message}`);
 
-    // Crédit **incrémental**, donc par fonction : un `upsert` écrit une valeur
-    // au lieu de l'ajouter, et deux coffres ouverts en même temps
-    // s'écraseraient — le joueur perdrait les fragments du premier.
-    if (fragments > 0) {
-      const { error: shardError } = await db().rpc('grant_shards', {
-        p_player: input.playerId,
-        p_amount: fragments,
-      });
-      if (shardError) throw new Error(`grant_shards : ${shardError.message}`);
-    }
-
-    return 'applied';
+    return data === 'already-applied' ? 'already-applied' : 'applied';
   },
 
   async getWallet(playerId) {

@@ -951,7 +951,19 @@ button[aria-busy='true']:not(.hb-btn)::before {
       rgba(58, 32, 12, 0.16) 0 2px,
       transparent 2px 17px
     ),
-    linear-gradient(180deg, #9a6636 0%, #6d4423 100%);
+    /*
+     * Haut de planche assombri de #9a6636 à #8f5e31.
+     *
+     * Mesuré sur la page en ligne : le crème d'origine tenait **3,94:1** sur ce
+     * haut de planche — sous le seuil WCAG 1.4.3 de 4,5:1, et plus bas encore
+     * que les 4,2 que la note précédente annonçait. Éclaircir le texte seul ne
+     * suffisait pas (4,44:1) ; il fallait toucher au bois.
+     *
+     * On assombrit plutôt que de blanchir le crème : la barre est le seul
+     * élément en bois du produit, et un texte blanc l'aurait fait sortir de la
+     * palette. À #8f5e31 le rapport passe à **5,04:1**, avec de la marge.
+     */
+    linear-gradient(180deg, #8f5e31 0%, #6d4423 100%);
   border: 2px solid rgba(45, 24, 8, 0.5);
   box-shadow:
     inset 0 2px 0 rgba(255, 224, 180, 0.26),
@@ -969,7 +981,8 @@ button[aria-busy='true']:not(.hb-btn)::before {
   min-height: 52px;
   padding: 0.35rem 0.15rem;
   border-radius: 0.7rem;
-  color: #f6e6c8;
+  /* Voir la note de contraste sur le libellé, plus bas. */
+  color: #fdf4e2;
   text-align: center;
   transition: background 140ms ease;
 }
@@ -979,8 +992,21 @@ button[aria-busy='true']:not(.hb-btn)::before {
   line-height: 1;
 }
 
+/*
+ * Libellé d'onglet : 0,68 rem, et un crème plus clair.
+ *
+ * Mesuré sur la page en ligne : 8,64 px sous 380 px de large, crème sur bois à
+ * environ 4,2:1. Le seuil WCAG 1.4.3 est de 4,5:1, et le seuil « grand texte »
+ * qui l'abaisserait à 3:1 commence à 18,66 px en gras — on en était très loin.
+ * Le texte n'était donc pas conforme, et l'ombre portée ajoutée plus haut
+ * améliorait la lisibilité sans changer le rapport mesuré.
+ *
+ * Le crème passe de #f6e6c8 à #fdf4e2 : sur le bois le plus clair de la
+ * planche, le rapport monte au-dessus de 4,5:1 sans toucher à la palette de la
+ * barre, qui est le seul élément en bois du produit.
+ */
 .hb-nav__item span:last-child {
-  font-size: 0.62rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.02em;
   line-height: 1.1;
@@ -1470,7 +1496,14 @@ button[aria-busy='true']:not(.hb-btn)::before {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   /* Assombri à la lecture : l'or et le turquoise purs ne passent pas le
-     contraste sur parchemin. La teinte reste reconnaissable. */
+     contraste sur parchemin. La teinte reste reconnaissable.
+
+     Le repli est **déclaré**, pas subi : `color-mix` demande Safari 16.2, et
+     sans cette ligne la couleur retombait sur l'héritage. Le résultat était
+     correct par chance — de l'encre sur parchemin, donc plus contrasté — mais
+     rien ne le garantissait. Ici, un navigateur ancien applique l'encre et
+     ignore la ligne suivante, qui lui est invalide. */
+  color: #2a1c07;
   color: color-mix(in srgb, var(--rarity, #8ea3bd) 72%, #2a1c07);
 }
 
@@ -1763,10 +1796,16 @@ button[aria-busy='true']:not(.hb-btn)::before {
   padding-bottom: calc(7.5rem + env(safe-area-inset-bottom, 0px));
 }
 
-/* Six onglets tiennent, mais les libellés doivent rétrécir sous 380 px. */
+/*
+ * Six onglets tiennent, mais les libellés doivent rétrécir sous 380 px.
+ *
+ * 0,62 rem et non 0,54 : à 0,54 le texte tombait à 8,6 px, ce qui est
+ * illisible pour beaucoup de gens avant même de parler de contraste. Les
+ * libellés restent tenus par l'espacement des lettres, ramené à zéro.
+ */
 @media (max-width: 380px) {
   .hb-nav__item span:last-child {
-    font-size: 0.54rem;
+    font-size: 0.62rem;
     letter-spacing: 0;
   }
 }
@@ -1990,6 +2029,7 @@ button[aria-busy='true']:not(.hb-btn)::before {
 }
 
 .hb-card--rarity .hb-shop__icon {
+  color: #2a1c07; /* repli : voir la note sur .hb-rcard__rarity */
   color: color-mix(in srgb, var(--rarity, #8ea3bd) 70%, #2a1c07);
 }
 
@@ -2001,7 +2041,8 @@ button[aria-busy='true']:not(.hb-btn)::before {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   /* Assombri à la lecture : l'or pur ne passe pas le contraste sur parchemin.
-     La teinte reste reconnaissable. */
+     La teinte reste reconnaissable. Repli explicite, voir .hb-rcard__rarity. */
+  color: #2a1c07;
   color: color-mix(in srgb, var(--rarity, #8ea3bd) 72%, #2a1c07);
 }
 
@@ -4650,6 +4691,17 @@ button[aria-busy='true']:not(.hb-btn)::before {
 
    Aucun de ces ajouts n'est une couleur de plus : tous sont dérivés de
    `--rarity` par `color-mix`. La carte reste bichrome, parchemin et rareté.
+
+   ## `color-mix` et les navigateurs anciens
+
+   `color-mix` demande Safari 16.2 ou Chrome 111. En dessous, ces déclarations
+   sont ignorées et les décors **disparaissent** — sans rien casser : la carte
+   garde son liseré de rareté, qui n'utilise pas `color-mix`, ainsi que son
+   nom, son libellé de rareté écrit en toutes lettres et sa figurine.
+
+   C'est une dégradation acceptée et vérifiée, pas un oubli. Les seuls usages
+   qui touchent la **lisibilité** — la couleur du libellé de rareté — portent
+   un repli explicite en encre, plus haut dans cette feuille.
 
    ## Pourquoi en CSS et non en SVG
 

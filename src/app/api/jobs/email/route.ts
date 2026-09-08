@@ -40,11 +40,18 @@ async function handle(request: Request) {
      * `allSettled` : une purge en échec ne doit pas faire répondre 500 sur un
      * envoi d'e-mails qui, lui, a réussi. Vercel réessaierait alors le lot.
      */
-    const [purge] = await Promise.allSettled([
+    const [purge, purgeIncidents] = await Promise.allSettled([
       db().rpc('purge_rate_limits'),
+      // Même raisonnement pour le journal d'incidents (migration 0036) :
+      // trente jours de rétention, une suppression sur index, greffée là
+      // plutôt que dans un cron de plus.
+      db().rpc('purge_error_log'),
     ]);
     if (purge.status === 'rejected') {
       console.error('[email] RATE_LIMIT_PURGE_FAILED', purge.reason);
+    }
+    if (purgeIncidents.status === 'rejected') {
+      console.error('[email] ERROR_LOG_PURGE_FAILED', purgeIncidents.reason);
     }
 
     return NextResponse.json(report);

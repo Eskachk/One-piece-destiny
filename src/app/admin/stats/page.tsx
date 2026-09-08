@@ -2,6 +2,10 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { requireAdmin } from '@/lib/auth/guards';
 import { adminStats } from '@/lib/admin/stats';
+import {
+  incidentsParOrigine,
+  incidentsRecents,
+} from '@/lib/observability/incidents';
 import { Nav } from '@/components/Nav';
 
 export const dynamic = 'force-dynamic';
@@ -54,6 +58,81 @@ function Tile({
  * Aucune donnée personnelle n'apparaît ici : ce sont des agrégats. Le détail
  * d'un compte se consulte dans le Fraud Center, qui est tracé.
  */
+/**
+ * Journal des incidents (migration 0036).
+ *
+ * C'est l'écran qui manquait le plus : les pannes n'existaient que dans les
+ * journaux de la plateforme, conservés une heure et sans recherche. Une
+ * défaillance du dimanche soir était invisible le lundi matin.
+ *
+ * On montre d'abord **les origines des dernières 24 h** — c'est ce qui dit
+ * s'il se passe quelque chose — puis le détail. Une liste brute de cinquante
+ * lignes ne répond pas à la seule question qu'on se pose en arrivant ici.
+ */
+async function JournalIncidents() {
+  const [origines, recents] = await Promise.all([
+    incidentsParOrigine(),
+    incidentsRecents(30),
+  ]);
+
+  return (
+    <section className="mt-8">
+      <h2 className="font-display text-lg text-parchment">Incidents</h2>
+
+      {origines.length === 0 ? (
+        <p className="mt-2 text-sm text-parchment/60">
+          Aucun incident sur les dernières 24 heures.
+        </p>
+      ) : (
+        <ul className="mt-3 flex flex-wrap gap-2">
+          {origines.map((o) => (
+            <li
+              key={o.scope}
+              className="rounded-lg border border-orange/40 bg-orange/10 px-3 py-1 text-xs text-parchment"
+            >
+              {o.scope} — <span className="font-mono">{o.n}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {recents.length > 0 && (
+        <div className="mt-4 overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="text-parchment/50">
+                <th className="pb-2">Quand</th>
+                <th className="pb-2">Origine</th>
+                <th className="pb-2">Message</th>
+                <th className="pb-2">Code</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recents.map((i) => (
+                <tr
+                  key={i.id}
+                  className="border-t border-turquoise/10 text-parchment/80"
+                >
+                  <td className="py-2 whitespace-nowrap font-mono">
+                    {new Date(i.at).toLocaleString('fr-FR')}
+                  </td>
+                  <td className="whitespace-nowrap">{i.scope}</td>
+                  <td className="max-w-[24rem] truncate" title={i.message}>
+                    {i.message}
+                  </td>
+                  <td className="font-mono text-parchment/50">
+                    {i.digest ?? '—'}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default async function AdminStatsPage() {
   await requireAdmin();
   const stats = await adminStats();
@@ -213,6 +292,9 @@ export default async function AdminStatsPage() {
           </div>
         )}
       </section>
+
+      <JournalIncidents />
+
       <Nav />
     </main>
   );

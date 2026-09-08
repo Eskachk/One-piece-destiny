@@ -32,6 +32,11 @@ import { classementLigue, liguesDe } from '@/lib/league/repository';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
+  // URL de référence. Sans elle, une même page atteinte avec un
+  // paramètre de campagne, une barre oblique finale ou depuis un
+  // domaine d'aperçu compte comme plusieurs pages, et le signal se
+  // divise entre elles.
+  alternates: { canonical: '/classement' },
   title: 'Classement hebdomadaire',
   description:
     'Le classement de la semaine : meilleures prédictions, plus beaux paris et percentile de chaque capitaine.',

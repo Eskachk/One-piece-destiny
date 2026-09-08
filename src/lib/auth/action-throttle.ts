@@ -98,6 +98,17 @@ export const QUOTAS = {
    * revient et se trompe de carte passe largement. Une boucle, non.
    */
   paiement: { limite: 12, fenetreSecondes: 3600 },
+
+  /*
+   * Remontée d'un incident depuis le navigateur.
+   *
+   * Généreux, parce qu'une page peut légitimement échouer plusieurs fois de
+   * suite pendant une panne — et c'est précisément le moment où l'on veut la
+   * trace. Borné quand même : une boucle de rendu en échec rappellerait
+   * l'action à chaque image, et un journal d'incidents ne doit pas devenir la
+   * panne suivante.
+   */
+  incident: { limite: 30, fenetreSecondes: 300 },
 } as const satisfies Record<string, Quota>;
 
 export type QuotaName = keyof typeof QUOTAS;
