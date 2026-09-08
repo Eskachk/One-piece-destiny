@@ -1,4 +1,13 @@
 import type { IslandId } from '@/domain/islands';
+import {
+  Astre,
+  AtmosphereDefs,
+  Brume,
+  Finition,
+  Fumee,
+  Oiseaux,
+  Reflets,
+} from './atmosphere';
 
 /**
  * Décor d'une île (cahier §50 à §54, §122).
@@ -63,6 +72,13 @@ const CADRE = {
 function Elbaf() {
   return (
     <svg className="isl isl--elbaf" {...CADRE} aria-hidden="true">
+      {/*
+        La lumière vient d'en haut à droite, comme partout ailleurs dans le
+        produit. Elbaf est la page la plus fréquentée : c'est ici que la
+        cohérence se remarque, et c'est ici qu'une incohérence se remarquerait.
+      */}
+      <AtmosphereDefs id="elb" lumiere="#fff0c4" air="#c7dbe4" />
+
       {/* Arc-en-ciel, tout au fond : six bandes concentriques centrées sur le
           bas du cadre, si bien qu'on n'en voit que la voûte. L'arbre passera
           devant et n'en laissera que les deux flancs — c'est voulu : un
@@ -83,6 +99,12 @@ function Elbaf() {
       {/* Reliefs du fond : la lande d'Elbaf, rase et froide. */}
       <path d="M0 236 L104 182 L196 236Z" fill="#7d94a0" opacity=".38" />
       <path d="M688 238 L792 174 L892 238Z" fill="#7d94a0" opacity=".34" />
+
+      {/* La brume passe **entre** la lande et les huttes : c'est sa place dans
+          l'ordre de dessin qui recule les reliefs, pas sa couleur. Sans elle,
+          un mont à l'horizon et une hutte à vingt mètres avaient la même
+          densité, et la lande semblait collée derrière les toits. */}
+      <Brume id="elb" y={168} hauteur={86} opacite={0.75} />
 
       {/* Huttes de géants. Le toit est démesurément haut par rapport à la
           largeur, et la porte fait les deux tiers du mur : c'est ce qui les
@@ -145,6 +167,12 @@ function Elbaf() {
         ))}
       </g>
 
+      {/* Ombre de l'arbre, vers la gauche. C'est le plus grand objet du décor
+          et le seul dont l'absence d'ombre se voyait : il flottait au-dessus
+          de la lande. L'ellipse est très allongée — un soleil haut mais pas au
+          zénith. */}
+      <ellipse cx="330" cy="272" rx="210" ry="17" fill="#2c4a2e" opacity=".2" />
+
       {/* L'arbre d'Adam. Contreforts d'abord, tronc ensuite, ramure par-dessus
           — l'ordre de tracé fait la profondeur. */}
       <g opacity=".72">
@@ -187,6 +215,13 @@ function Elbaf() {
         <ellipse cx="580" cy="88" rx="144" ry="46" fill="#3b8248" />
         <ellipse cx="392" cy="118" rx="86" ry="30" fill="#2b6237" />
         <ellipse cx="522" cy="120" rx="94" ry="30" fill="#2b6237" />
+
+        {/* Le feuillage qui prend la lumière, en haut à droite. Deux masses
+            claires posées **par-dessus** les six autres : c'est ce qui donne
+            à la ramure un dessus et un dessous, là où six verts de valeur
+            voisine faisaient une masse plate. */}
+        <ellipse cx="524" cy="52" rx="118" ry="30" fill="#63a860" opacity=".55" />
+        <ellipse cx="470" cy="34" rx="88" ry="20" fill="#8cc36f" opacity=".4" />
       </g>
 
       {/* Un vol qui traverse. Rien ne dit « vivant » comme quelque chose qui
@@ -208,9 +243,11 @@ function Elbaf() {
         ))}
       </g>
 
-      {/* Sol, en deux plans. */}
-      <path d="M0 258 Q170 240 340 254 T680 246 T900 258 V300 H0Z" fill="#4f7a4a" opacity=".5" />
-      <path d="M0 280 Q230 266 470 278 T900 272 V300 H0Z" fill="#3d6440" opacity=".5" />
+      {/* Sol, en deux plans, du plus clair au plus dense en approchant. */}
+      <path d="M0 258 Q170 240 340 254 T680 246 T900 258 V300 H0Z" fill="#5c8752" opacity=".55" />
+      <path d="M0 280 Q230 266 470 278 T900 272 V300 H0Z" fill="#33573a" opacity=".6" />
+
+      <Finition id="elb" />
     </svg>
   );
 }
@@ -219,29 +256,98 @@ function Elbaf() {
 function Alabasta() {
   return (
     <svg className="isl isl--alabasta" {...CADRE} aria-hidden="true">
-      {/* Dunes, en deux plans dont les crêtes se croisent. Parallèles, elles
-          liraient comme des rayures. */}
-      <path d="M0 214 Q180 176 360 208 T720 190 T900 206 V300 H0Z" fill="#e0b06a" opacity=".55" />
-      <path d="M0 252 Q240 216 480 248 T900 236 V300 H0Z" fill="#d29a52" opacity=".6" />
+      <AtmosphereDefs id="alb" lumiere="#ffe6ad" air="#f6e3bb" />
+
+      {/*
+        ## La lumière vient d'en haut à droite
+
+        Ce n'est pas un choix libre : `IslandSky` pose déjà le soleil
+        d'Alabasta à droite du cadre. Un second astre ici — la première
+        version en avait mis un à gauche — donnait deux sources et deux jeux
+        d'ombres contradictoires, ce qui est la façon la plus sûre d'aplatir un
+        paysage.
+
+        Toutes les ombres portées de ce décor tombent donc **vers la gauche**,
+        et les faces éclairées sont celles de droite.
+
+        ## La profondeur se fait par la valeur, pas par les formes
+
+        Les dunes étaient trois aplats de densité voisine : l'œil ne pouvait
+        pas les ranger dans l'espace. Elles vont maintenant du très pâle au
+        loin — c'est l'air chargé de sable qui les mange — au franchement
+        chaud au premier plan. C'est ce contraste, et lui seul, qui creuse le
+        désert.
+      */}
+
+      {/* Plan le plus lointain : à peine plus dense que le ciel. */}
+      <path d="M0 190 Q220 170 430 186 T900 176 V300 H0Z" fill="#f0d7a6" opacity=".5" />
+
+      {/* La brume mange le pied de cette dune-là seulement. */}
+      <Brume id="alb" y={172} hauteur={64} opacite={0.9} />
+
+      {/* Plan intermédiaire. */}
+      <path d="M0 214 Q180 176 360 208 T720 190 T900 206 V300 H0Z" fill="#e6b876" opacity=".7" />
+
+      {/* Ombre portée du palais, vers la gauche — à l'opposé du soleil du
+          ciel. Sans elle, le bâtiment flottait au-dessus du sable. */}
+      <path d="M330 252 l-96 30 H520 l4 -30Z" fill="#a9702f" opacity=".2" />
 
       {/* Le palais : un corps, deux ailes, deux tours à dôme, un obélisque.
           C'est cette silhouette qui nomme le lieu, donc elle est au centre du
-          cadre — la seule zone qu'un téléphone montre toujours. */}
-      <g opacity=".66" fill="#e8d5b0">
-        <rect x="330" y="188" width="46" height="64" />
-        <rect x="524" y="188" width="46" height="64" />
-        <rect x="372" y="152" width="156" height="100" />
+          cadre — la seule zone qu'un téléphone montre toujours.
+
+          Chaque volume porte désormais une face droite plus claire : c'est le
+          seul détail qui transforme une découpe en objet. */}
+      <g opacity=".82">
+        <g fill="#e3cba1">
+          <rect x="330" y="188" width="46" height="64" />
+          <rect x="524" y="188" width="46" height="64" />
+          <rect x="372" y="152" width="156" height="100" />
+        </g>
+
+        {/* Faces éclairées, côté soleil. */}
+        <g fill="#fbf0d6" opacity=".75">
+          <rect x="558" y="188" width="12" height="64" />
+          <rect x="510" y="152" width="18" height="100" />
+          <rect x="364" y="188" width="12" height="64" />
+        </g>
+
         <path d="M372 152 h156 l-16 -18 h-124Z" fill="#c98f52" />
+
         {[398, 502].map((x) => (
           <g key={x}>
-            <rect x={x - 18} y="112" width="36" height="44" />
+            <rect x={x - 18} y="112" width="36" height="44" fill="#e3cba1" />
+            <rect x={x + 10} y="112" width="8" height="44" fill="#fbf0d6" opacity=".7" />
             <path d={`M${x - 21} 112 a21 24 0 0 1 42 0Z`} fill="#c98f52" />
+            {/* Reflet sur le dôme : un croissant du côté du soleil. Deux
+                dômes parfaitement mats se lisaient comme des demi-cercles
+                découpés. */}
+            <path
+              d={`M${x + 3} 92 a15 17 0 0 1 15 18 a21 24 0 0 0 -15 -18Z`}
+              fill="#ffeec4"
+              opacity=".8"
+            />
             <rect x={x - 2} y="90" width="4" height="16" fill="#c98f52" />
           </g>
         ))}
-        <path d="M442 152 V96 h16 v56Z" />
+
+        <path d="M442 152 V96 h16 v56Z" fill="#e3cba1" />
+        <path d="M452 152 V96 h6 v56Z" fill="#fbf0d6" opacity=".7" />
         <path d="M442 96 l8 -18 l8 18Z" fill="#c98f52" />
       </g>
+
+      {/* Premier plan : la dune la plus chaude et la plus dense. C'est elle
+          qui donne l'échelle de tout le reste. */}
+      <path d="M0 252 Q240 216 480 248 T900 236 V300 H0Z" fill="#cf8f42" opacity=".72" />
+
+      {/* Crête éclairée du premier plan, un liseré au sommet de la dune. */}
+      <path
+        d="M0 252 Q240 216 480 248 T900 236"
+        fill="none"
+        stroke="#ffe1a8"
+        strokeWidth="3"
+        opacity=".45"
+      />
 
       {/* Palmiers. Trois, jamais alignés ni de même taille : trois copies
           identiques feraient un motif, pas une oasis. */}
@@ -253,10 +359,12 @@ function Alabasta() {
         const cx = x + 6 * sens * ech;
         const cy = 258 - 68 * ech;
         return (
-          <g key={x} opacity=".5">
+          <g key={x} opacity=".62">
+            {/* Ombre au sol, vers la gauche comme tout le reste. */}
+            <ellipse cx={x - 16 * ech} cy="260" rx={22 * ech} ry={4} fill="#a9702f" opacity=".3" />
             <path
               d={`M${x} 258 q${14 * sens} -34 ${6 * sens} -${62 * ech}`}
-              stroke="#8a6234"
+              stroke="#7d5527"
               strokeWidth={6 * ech}
               fill="none"
               strokeLinecap="round"
@@ -268,13 +376,22 @@ function Alabasta() {
                 cy={cy}
                 rx={26 * ech}
                 ry={6 * ech}
-                fill="#5f8f4a"
+                // Palmes du côté du soleil plus claires : la lumière traverse
+                // la fronde, elle ne s'arrête pas dessus.
+                fill={a > 0 ? '#7aad5f' : '#4f7a3c'}
                 transform={`rotate(${a} ${cx} ${cy + 2})`}
               />
             ))}
           </g>
         );
       })}
+
+      {/* Trois oiseaux très haut, minuscules : c'est l'échelle qui fait le
+          désert. Lents — quatre-vingts secondes pour traverser — parce qu'un
+          vol rapide donnerait une impression de fuite. */}
+      <Oiseaux y={54} teinte="#9a6b33" duree={80} echelle={0.9} />
+
+      <Finition id="alb" />
     </svg>
   );
 }
@@ -283,9 +400,18 @@ function Alabasta() {
 function Drum() {
   return (
     <svg className="isl isl--drum" {...CADRE} aria-hidden="true">
+      {/* Lumière **froide**, et c'est le seul décor dans ce cas. Un soleil
+          chaud sur de la neige donne une plage ; ce qu'on cherche ici est la
+          clarté sans chaleur d'un ciel couvert d'hiver. */}
+      <AtmosphereDefs id="drm" lumiere="#eaf4ff" air="#cfe0ee" />
+
       {/* Les Drum Rockies : des aiguilles, pas des collines. C'est leur
           verticalité qui les distingue de n'importe quelle montagne. */}
       <path d="M0 300 L128 116 L214 206 L308 92 L430 300Z" fill="#b8cadd" opacity=".6" />
+      {/* Brume de vallée : elle mange le pied des aiguilles. C'est ce qui les
+          éloigne — sans elle, un sommet à dix kilomètres était aussi net qu'un
+          sapin à vingt mètres. */}
+      <Brume id="drm" y={186} hauteur={78} opacite={0.8} />
       <path d="M330 300 L470 62 L558 178 L640 104 L790 300Z" fill="#a7bdd3" opacity=".55" />
       <path d="M716 300 L820 138 L900 262 V300Z" fill="#b8cadd" opacity=".45" />
 
@@ -338,8 +464,25 @@ function Drum() {
         </g>
       ))}
 
+      {/* Fumée du château. Dans un paysage de neige, c'est le seul signe
+          possible qu'on y vit : tout le reste est minéral et immobile. */}
+      <Fumee x={392} y={128} teinte="#dfe9f2" duree={11} />
+
       {/* Congère au premier plan : le blanc rejoint le bas du cadre. */}
-      <path d="M0 274 Q220 258 450 272 T900 266 V300 H0Z" fill="#eef5fb" opacity=".55" />
+      <path d="M0 274 Q220 258 450 272 T900 266 V300 H0Z" fill="#eef5fb" opacity=".62" />
+
+      {/* Crête éclairée de la congère. Sur la neige, c'est le seul relief
+          possible : tout y est de la même couleur, et seule l'arête attrape
+          la lumière. Sans elle, le premier plan était un aplat blanc. */}
+      <path
+        d="M0 274 Q220 258 450 272 T900 266"
+        fill="none"
+        stroke="#ffffff"
+        strokeWidth="3"
+        opacity=".7"
+      />
+
+      <Finition id="drm" />
     </svg>
   );
 }
@@ -348,8 +491,11 @@ function Drum() {
 function Dressrosa() {
   return (
     <svg className="isl isl--dressrosa" {...CADRE} aria-hidden="true">
+      <AtmosphereDefs id="drs" lumiere="#ffdfa6" air="#f0cfa8" />
+
       {/* Collines et moulins, au fond. */}
       <path d="M0 196 Q150 156 300 190 T620 178 T900 198 V300 H0Z" fill="#d9a86b" opacity=".5" />
+      <Brume id="drs" y={164} hauteur={72} opacite={0.7} />
       {[112, 764].map((x) => (
         <g key={x} opacity=".45" fill="#8a5a33">
           <rect x={x - 4} y="146" width="8" height="52" />
@@ -396,12 +542,19 @@ function Dressrosa() {
 
       {/* Champ de fleurs au premier plan : un rang de corolles posées sur une
           bande de terre, plutôt qu'un aplat rose. */}
-      <path d="M0 264 Q200 250 400 262 T900 256 V300 H0Z" fill="#c4593f" opacity=".4" />
-      <g fill="#d4607a" opacity=".45">
+      <path d="M0 264 Q200 250 400 262 T900 256 V300 H0Z" fill="#c4593f" opacity=".48" />
+      <g fill="#d4607a" opacity=".5">
         {[24, 92, 160, 228, 296, 364, 432, 500, 568, 636, 704, 772, 840].map((x, i) => (
           <circle key={x} cx={x} cy={274 + (i % 3) * 7} r={5 + (i % 2) * 2} />
         ))}
       </g>
+
+      {/* Un vol bas au-dessus des toits. Dressrosa est la seule île où l'on a
+          des tuiles et des places : ce qui la rend vivante, c'est ce qui
+          survole une ville, pas ce qui plane au-dessus d'un désert. */}
+      <Oiseaux y={72} teinte="#8a4632" duree={54} retard={-12} echelle={1.1} />
+
+      <Finition id="drs" />
     </svg>
   );
 }
@@ -410,6 +563,12 @@ function Dressrosa() {
 function Fishman() {
   return (
     <svg className="isl isl--fishman" {...CADRE} aria-hidden="true">
+      {/* Sous dix mille mètres d'eau, la lumière est turquoise et l'« air »
+          est l'eau elle-même : c'est elle qui mange les lointains, et bien
+          plus vite qu'une atmosphère. La brume de distance est donc plus
+          dense ici que partout ailleurs. */}
+      <AtmosphereDefs id="fis" lumiere="#c8f6ee" air="#6fb9bd" />
+
       {/* Les rais de lumière sont **dans le ciel**, pas ici.
 
           Ils partaient de y=0 et descendaient jusqu'en bas de ce cadre — mais
@@ -487,8 +646,24 @@ function Fishman() {
         ))}
       </g>
 
-      {/* Le fond de la fosse. */}
-      <path d="M0 282 Q220 268 450 280 T900 274 V300 H0Z" fill="#14555c" opacity=".3" />
+      {/* L'eau mange les lointains bien plus vite qu'une atmosphère : la
+          brume est posée haut et large. C'est ce qui fait « profondeur »
+          plutôt que « pièce turquoise ». */}
+      <Brume id="fis" y={150} hauteur={110} opacite={0.9} />
+
+      {/* Le fond de la fosse, plus sombre qu'avant : c'est le point le plus
+          profond du produit, il doit être le plus dense. */}
+      <path d="M0 282 Q220 268 450 280 T900 274 V300 H0Z" fill="#0e454c" opacity=".42" />
+
+      {/* Bulles qui sourdent du fond. `Fumee` fait exactement le bon geste —
+          monter en s'élargissant et en s'effaçant — et une bulle d'eau
+          profonde se comporte comme une bouffée d'air chaud. Trois points
+          d'émission, à des rythmes différents : au même rythme, on lirait
+          trois jets synchronisés, donc une machine. */}
+      <Fumee x={186} y={276} teinte="#a8ede6" duree={13} />
+      <Fumee x={612} y={282} teinte="#a8ede6" duree={17} />
+
+      <Finition id="fis" />
     </svg>
   );
 }
@@ -497,6 +672,10 @@ function Fishman() {
 function Wano() {
   return (
     <svg className="isl isl--wano" {...CADRE} aria-hidden="true">
+      {/* Lumière de fin de jour : Wano est l'île des laques rouges et des
+          lanternes, elle supporte l'or bien plus que le blanc. */}
+      <AtmosphereDefs id="wan" lumiere="#ffd9a0" air="#d9dfe0" />
+
       {/* Mont enneigé, au lointain. Il s'arrête à x=880 : dans la version
           précédente il allait jusqu'à 410 dans un cadre large de 400, et le SVG
           le tranchait net. */}
@@ -562,8 +741,19 @@ function Wano() {
         </g>
       ))}
 
+      {/* Brume de fond de vallée : elle sépare le mont des toits. Sans elle,
+          un sommet lointain et une pagode proche avaient la même densité. */}
+      <Brume id="wan" y={162} hauteur={88} opacite={0.72} />
+
       {/* Rizière en terrasses, au premier plan. */}
-      <path d="M0 272 Q230 258 460 270 T900 264 V300 H0Z" fill="#8a9a68" opacity=".4" />
+      <path d="M0 272 Q230 258 460 270 T900 264 V300 H0Z" fill="#7d9060" opacity=".5" />
+
+      {/* L'eau des rizières prend le ciel : c'est ce qui distingue une
+          terrasse inondée d'un champ. Les reflets s'allument et s'éteignent
+          sans se déplacer — un reflet ne dérive pas, il accroche. */}
+      <Reflets y={280} teinte="#fff2cf" n={7} />
+
+      <Finition id="wan" />
     </svg>
   );
 }
@@ -572,6 +762,10 @@ function Wano() {
 function Logue() {
   return (
     <svg className="isl isl--logue" {...CADRE} aria-hidden="true">
+      {/* Lumière d'orage : blafarde et froide. C'est la seule île où la clarté
+          ne vient pas du soleil mais de l'éclair, donc par à-coups. */}
+      <AtmosphereDefs id="log" lumiere="#e7f0ff" air="#9fb0c4" />
+
       {/* Éclair lointain : Logue Town s'achève sous la foudre. */}
       <path d="M694 26 l-20 62 h18 l-24 60 44 -70 h-18Z" fill="#fdf4c8" opacity=".5" />
 
@@ -625,6 +819,18 @@ function Logue() {
           <line key={x} x1={x} y1={24 + i * 12} x2={x - 12} y2={60 + i * 12} />
         ))}
       </g>
+
+      {/* Rideau de pluie au loin : sous l'orage, l'horizon disparaît avant
+          tout le reste. */}
+      <Brume id="log" y={140} hauteur={100} opacite={0.85} />
+
+      {/* Des mouettes, malgré la pluie. C'est un port : ce qui s'y voit
+          d'abord au-dessus de l'eau, ce sont les oiseaux qui attendent les
+          barques. Basses et rapides — trente secondes — parce qu'un vent
+          d'orage ne laisse pas planer. */}
+      <Oiseaux y={96} teinte="#41566b" duree={30} echelle={1.15} />
+
+      <Finition id="log" />
     </svg>
   );
 }
@@ -633,6 +839,11 @@ function Logue() {
 function Sabaody() {
   return (
     <svg className="isl isl--sabaody" {...CADRE} aria-hidden="true">
+      {/* Lumière verte, filtrée par la voûte. Sur Sabaody, aucun rayon
+          n'arrive direct : tout a traversé les feuilles des mangroves, et
+          c'est cette teinte-là qui nomme le lieu. */}
+      <AtmosphereDefs id="sab" lumiere="#dff3b8" air="#bcd6c0" />
+
       {/* Voûte de feuillage : la lumière arrive filtrée par le haut. */}
       <path d="M0 0 H900 V54 Q676 104 450 62 Q224 20 0 66Z" fill="#3f6b2c" opacity=".45" />
 
@@ -687,8 +898,20 @@ function Sabaody() {
         ))}
       </g>
 
-      {/* Sol de bosquet. */}
-      <path d="M0 278 Q220 266 450 276 T900 270 V300 H0Z" fill="#3f6b2c" opacity=".45" />
+      {/* Brume verte entre les troncs. Dans un bosquet, ce qui recule n'est
+          pas plus pâle : c'est plus **vert**, parce que la lumière y a
+          traversé plus de feuilles. */}
+      <Brume id="sab" y={158} hauteur={94} opacite={0.68} />
+
+      {/* Un vol court entre les mangroves. Haut et lent : sous une voûte, un
+          oiseau ne traverse pas le cadre, il passe d'un arbre à l'autre. */}
+      <Oiseaux y={104} teinte="#2c4a22" duree={62} echelle={0.85} />
+
+      {/* Sol de bosquet, plus dense qu'au fond : c'est le contraste de valeur
+          qui creuse le sous-bois. */}
+      <path d="M0 278 Q220 266 450 276 T900 270 V300 H0Z" fill="#355b25" opacity=".55" />
+
+      <Finition id="sab" />
     </svg>
   );
 }

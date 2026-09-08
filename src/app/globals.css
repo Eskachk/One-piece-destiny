@@ -4974,3 +4974,187 @@ button[aria-busy='true']:not(.hb-btn)::before {
   height: 1px;
   overflow: hidden;
 }
+
+/* ===========================================================================
+   Atmosphère des îles — lumière, profondeur, vie
+   ===========================================================================
+
+   Accompagne `components/islands/atmosphere.tsx`.
+
+   ## La règle qui gouverne tout ce bloc
+
+   Ces décors sont sur **toutes les pages du site**, derrière tout le contenu.
+   Chaque animation ici est donc payée par chaque joueur, à chaque page, en
+   permanence — y compris sur un téléphone d'entrée de gamme pendant qu'il lit
+   son classement.
+
+   Conséquence tenue sans exception : on n'anime que `transform` et `opacity`.
+   Ce sont les deux propriétés que le compositeur traite **sans repeindre**.
+   Animer un rayon, une position ou une couleur redessinerait le SVG à chaque
+   image, sur le fil principal, derrière l'interface.
+
+   Les durées sont longues — dix secondes au minimum, souvent quarante. Un
+   décor de fond ne doit pas attirer l'œil : il doit seulement empêcher
+   l'impression d'image collée. Ce qu'on cherche, c'est que le joueur ne
+   remarque **rien** et trouve la page vivante.
+
+   ## Mouvement réduit
+
+   Tout est enfermé dans `prefers-reduced-motion: no-preference`. Sans
+   préférence exprimée, rien ne bouge — et les décors restent entiers, parce
+   que la beauté vient de la lumière et de la profondeur, pas du mouvement
+   (§111).
+   =========================================================================== */
+
+/* --- L'astre --------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Respiration du disque : deux pour cent d'échelle, sur douze secondes.
+     C'est à la limite du perceptible, et c'est voulu — un soleil qui pulse
+     visiblement est un gyrophare. */
+  .isl-astre__disque {
+    animation: isl-respire 12s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* Les rais tournent très lentement. Un tour en trois minutes : on ne voit
+     pas le mouvement, on voit que la lumière n'est pas figée. */
+  .isl-rais {
+    animation: isl-tourne 180s linear infinite;
+  }
+}
+
+@keyframes isl-respire {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+}
+
+@keyframes isl-tourne {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Le vol d'oiseaux ------------------------------------------------------ */
+
+/*
+ * Deux animations superposées, et c'est ce qui fait que ça vit : le groupe
+ * traverse le cadre, chaque aile bat pour son compte. Une seule des deux
+ * donnerait soit des silhouettes qui glissent sans bouger, soit des oiseaux
+ * qui battent sur place.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .isl-vol {
+    animation: isl-traverse var(--duree, 46s) linear var(--retard, 0s) infinite;
+  }
+
+  .isl-aile {
+    animation: isl-bat 0.9s ease-in-out var(--retard, 0s) infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+}
+
+/* Sans animation, le vol reste dans le cadre plutôt que d'attendre hors champ
+   pour l'éternité : un décor amputé de ses oiseaux serait un décor appauvri,
+   et l'effet recherché est la présence, pas le déplacement. */
+@media (prefers-reduced-motion: reduce) {
+  .isl-vol {
+    transform: translateX(30%);
+  }
+}
+
+@keyframes isl-traverse {
+  from {
+    transform: translateX(-15%);
+  }
+  to {
+    transform: translateX(115%);
+  }
+}
+
+@keyframes isl-bat {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.45);
+  }
+}
+
+/* --- La fumée -------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .isl-bouffee {
+    animation: isl-monte var(--duree, 9s) ease-out var(--retard, 0s) infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+}
+
+/*
+ * Sans animation, une seule bouffée reste, à mi-course et à demi-effacée. Les
+ * trois superposées à l'arrêt feraient une tache opaque au-dessus de la
+ * cheminée, ce qui est pire que rien.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .isl-bouffee {
+    opacity: 0.18;
+    transform: translateY(-26px) scale(1.8);
+  }
+  .isl-bouffee:not(:first-child) {
+    opacity: 0;
+  }
+}
+
+@keyframes isl-monte {
+  0% {
+    transform: translateY(0) scale(0.6);
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.3;
+  }
+  100% {
+    /* Elle s'élargit en montant **et** dérive : une fumée qui monte droit se
+       lit comme un jet, pas comme de l'air chaud dans du vent. */
+    transform: translateY(-58px) translateX(16px) scale(3.2);
+    opacity: 0;
+  }
+}
+
+/* --- Les reflets sur l'eau ------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .isl-reflet {
+    animation: isl-scintille 5.5s ease-in-out var(--retard, 0s) infinite;
+  }
+}
+
+/* Sans animation, la moitié des reflets restent allumés : la mer garde son
+   scintillement, elle cesse seulement de clignoter. */
+@media (prefers-reduced-motion: reduce) {
+  .isl-reflet:nth-child(odd) {
+    opacity: 0.34;
+  }
+}
+
+@keyframes isl-scintille {
+  0%,
+  70%,
+  100% {
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.45;
+  }
+}
