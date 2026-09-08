@@ -4624,3 +4624,288 @@ button[aria-busy='true']:not(.hb-btn)::before {
     transition: none;
   }
 }
+
+/* ===========================================================================
+   Décors de rareté — Épique, Légendaire, Mythique
+   ===========================================================================
+
+   ## Le défaut corrigé ici
+
+   Les trois derniers paliers partageaient **exactement** le même décor : un
+   aplat teinté de la couleur de rareté, la même figurine, la même hauteur.
+   Seule la teinte changeait. Or une teinte ne fait pas une hiérarchie : mise
+   côte à côte, une carte Épique violette paraissait aussi précieuse qu'une
+   Légendaire dorée, et le joueur qui ouvrait un coffre ne *voyait* pas ce
+   qu'il avait obtenu — il devait lire le mot sous le nom.
+
+   ## Le principe
+
+   Chaque palier ajoute un élément que le précédent n'a pas, et garde tous les
+   précédents. On monte donc par accumulation, ce qui se lit d'un coup d'œil
+   même sans point de comparaison :
+
+     Épique      la lumière   — un projecteur derrière la figurine
+     Légendaire  + l'affiche  — des rayons et un socle
+     Mythique    + la relique — un balayage lumineux, rayons resserrés
+
+   Aucun de ces ajouts n'est une couleur de plus : tous sont dérivés de
+   `--rarity` par `color-mix`. La carte reste bichrome, parchemin et rareté.
+
+   ## Pourquoi en CSS et non en SVG
+
+   La collection affiche cinquante cartes. Chaque rayon ajouté au SVG serait
+   un nœud de plus **par carte** ; en fond CSS, c'est le compositeur qui
+   peint, sans un seul nœud supplémentaire. La seule animation est sur le
+   Mythique — le palier qu'on ne voit presque jamais deux fois à l'écran.
+   =========================================================================== */
+
+.hb-art--sprite {
+  position: relative;
+  /* Un aplat plus discret qu'avant : le décor ci-dessous porte désormais la
+     teinte, et les deux cumulés viraient au bonbon. */
+  background: color-mix(in srgb, var(--rarity, #8ea3bd) 8%, transparent);
+}
+
+/* La figurine passe au-dessus des décors, tous en pseudo-éléments. */
+.hb-art--sprite .hb-art__svg {
+  position: relative;
+  z-index: 1;
+}
+
+.hb-art--sprite::before,
+.hb-art--sprite::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* --- Épique : la lumière --------------------------------------------------
+   Un projecteur centré derrière la figurine, et une vignette qui referme les
+   angles. Sans eux, le sujet flottait sur un aplat uniforme : c'est ce
+   décollement qui fait qu'une figurine paraît posée quelque part. */
+.hb-art--sprite[data-rarete='EPIC']::before {
+  background: radial-gradient(
+    ellipse 60% 60% at 50% 42%,
+    color-mix(in srgb, var(--rarity) 48%, transparent) 0%,
+    color-mix(in srgb, var(--rarity) 16%, transparent) 44%,
+    transparent 76%
+  );
+}
+
+/*
+ * La vignette, et l'ombre portée que le projecteur implique.
+ *
+ * Le premier jet n'avait que la vignette, et l'Épique restait plus proche du
+ * Rare que du Légendaire : l'écart entre les deux premiers paliers était
+ * deux fois plus grand que celui entre les deux derniers, ce qui casse
+ * l'échelle qu'on cherche justement à construire.
+ *
+ * L'ombre est **sombre et neutre**, pas teintée : une ombre colorée se lirait
+ * comme un second halo, alors que c'est son contraire qui plante la figurine.
+ */
+.hb-art--sprite[data-rarete='EPIC']::after {
+  background:
+    radial-gradient(
+      ellipse 26% 5% at 50% 88%,
+      rgba(28, 20, 8, 0.3) 0%,
+      transparent 100%
+    ),
+    radial-gradient(
+      ellipse 92% 88% at 50% 50%,
+      transparent 48%,
+      rgba(28, 20, 8, 0.17) 100%
+    );
+}
+
+/* --- Légendaire : l'affiche ----------------------------------------------
+   Les rayons d'un avis de recherche, et un socle.
+
+   Le masque radial est ce qui les rend supportables : sans lui, les rayons
+   filent jusqu'aux coins et la carte devient une roue de loterie. Ils
+   s'éteignent avant le bord, et l'on ne voit qu'un rayonnement derrière la
+   tête. */
+.hb-art--sprite[data-rarete='LEGENDARY']::before,
+.hb-art--sprite[data-rarete='MYTHIC']::before {
+  background:
+    repeating-conic-gradient(
+      from 8deg at 50% 46%,
+      color-mix(in srgb, var(--rarity) 30%, transparent) 0deg 5deg,
+      transparent 5deg 13deg
+    ),
+    radial-gradient(
+      ellipse 64% 62% at 50% 44%,
+      color-mix(in srgb, var(--rarity) 38%, transparent) 0%,
+      color-mix(in srgb, var(--rarity) 12%, transparent) 46%,
+      transparent 76%
+    );
+  -webkit-mask-image: radial-gradient(
+    ellipse 74% 70% at 50% 44%,
+    #000 12%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(
+    ellipse 74% 70% at 50% 44%,
+    #000 12%,
+    transparent 78%
+  );
+}
+
+/* Le socle. Une bande basse et son arête claire : la figurine cesse d'être
+   dessinée « sur » un fond, elle est posée « sur » quelque chose. */
+.hb-art--sprite[data-rarete='LEGENDARY']::after,
+.hb-art--sprite[data-rarete='MYTHIC']::after {
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0 78%,
+      color-mix(in srgb, var(--rarity) 26%, transparent) 78% 80%,
+      color-mix(in srgb, var(--rarity) 15%, transparent) 80% 100%
+    ),
+    radial-gradient(
+      ellipse 92% 88% at 50% 50%,
+      transparent 50%,
+      rgba(28, 20, 8, 0.18) 100%
+    );
+}
+
+/* --- Mythique : la relique ------------------------------------------------
+   Tout le Légendaire, plus un balayage lumineux qui traverse lentement le
+   cadre. C'est le seul mouvement d'une carte au repos, et il est réservé au
+   palier qu'on tire moins d'une fois sur cent. */
+.hb-art--sprite[data-rarete='MYTHIC'] {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--rarity) 16%, transparent),
+    color-mix(in srgb, var(--rarity) 6%, transparent)
+  );
+}
+
+.hb-art--sprite[data-rarete='MYTHIC']::before {
+  /* Rayons plus serrés et plus francs que le Légendaire : le même geste, un
+     cran au-dessus. */
+  background:
+    repeating-conic-gradient(
+      from 5deg at 50% 46%,
+      color-mix(in srgb, var(--rarity) 40%, transparent) 0deg 4deg,
+      transparent 4deg 10deg
+    ),
+    radial-gradient(
+      ellipse 66% 64% at 50% 44%,
+      color-mix(in srgb, var(--rarity) 48%, transparent) 0%,
+      color-mix(in srgb, var(--rarity) 16%, transparent) 46%,
+      transparent 78%
+    );
+}
+
+/* Le balayage est un troisième calque : il lui faut son propre élément, les
+   deux pseudo-éléments étant pris. Le composant ne le pose que sur le
+   Mythique. */
+.hb-art__lueur {
+  position: absolute;
+  /* Posé hors cadre à gauche : le reflet n'est visible qu'en traversant, et
+     il entre par la gauche comme la lumière d'un reflet sur une vitre. */
+  top: 0;
+  bottom: 0;
+  left: -140%;
+  width: 60%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    104deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.46) 50%,
+    transparent 100%
+  );
+}
+
+/*
+ * L'animation porte sur `transform`, pas sur `background-position`.
+ *
+ * Les deux donnent le même mouvement à l'œil, mais la seconde **repeint** le
+ * calque à chaque image, sur le fil principal. `translateX` reste sur le
+ * compositeur : le navigateur déplace une texture déjà dessinée. La
+ * différence ne se voit pas sur une carte ; elle se voit sur une collection
+ * qu'on fait défiler.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .hb-art__lueur {
+    animation: art-lueur 4.6s ease-in-out infinite;
+    will-change: transform;
+  }
+}
+
+/*
+ * Sans mouvement, le reflet reste — figé en biais sur la figurine. C'est le
+ * principe déjà retenu pour les anneaux : ce qui distingue le Mythique est
+ * l'effet, pas l'animation. Un joueur qui coupe les animations doit voir la
+ * même hiérarchie, pas une carte appauvrie (§111).
+ */
+@media (prefers-reduced-motion: reduce) {
+  .hb-art__lueur {
+    /*
+     * 266 % de **sa propre largeur**, et non de celle du cadre : il fait 60 %
+     * du cadre et part de −140 %, il lui faut donc 160 % de cadre pour venir
+     * se centrer, soit 160/60 de lui-même. Le premier chiffre posé le laissait
+     * à cheval sur le bord gauche — le reflet coupé en deux, exactement ce
+     * qu'un joueur sans animation aurait vu en permanence.
+     */
+    transform: translateX(266%);
+    opacity: 0.6;
+  }
+}
+
+@keyframes art-lueur {
+  /* Deux tiers du cycle hors champ : le reflet passe, il ne clignote pas. */
+  0%,
+  62% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+/* --- Le cadre de la carte -------------------------------------------------
+   Le liseré coloré et le halo d'angle existaient déjà pour toutes les
+   raretés. Les deux derniers paliers gagnent ici ce que les autres n'ont
+   pas. */
+
+/* Légendaire : un filet doré à l'intérieur du cadre. Il double le liseré sans
+   l'épaissir, donc sans décaler la grille d'un pixel. */
+.hb-rcard[data-rarete='LEGENDARY'] {
+  box-shadow:
+    inset 0.34rem 0 0 var(--rarity, #8ea3bd),
+    inset 0 0 0 1px color-mix(in srgb, var(--rarity) 40%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 4px 14px rgba(12, 45, 80, 0.2);
+}
+
+/* Mythique : le filet, plus une lueur portée à l'extérieur. C'est le seul
+   endroit du produit où une carte déborde de son cadre — et c'est ce qui la
+   fait repérer dans une grille sans rien lire. */
+.hb-rcard[data-rarete='MYTHIC'] {
+  box-shadow:
+    inset 0.34rem 0 0 var(--rarity, #8ea3bd),
+    inset 0 0 0 1px color-mix(in srgb, var(--rarity) 55%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 0 0 1px color-mix(in srgb, var(--rarity) 30%, transparent),
+    0 4px 18px color-mix(in srgb, var(--rarity) 28%, transparent),
+    0 4px 14px rgba(12, 45, 80, 0.2);
+}
+
+/* Le halo d'angle grossit sur les deux derniers paliers. */
+.hb-rcard[data-rarete='LEGENDARY']::after {
+  width: 6.2rem;
+  height: 6.2rem;
+}
+
+.hb-rcard[data-rarete='MYTHIC']::after {
+  width: 7.4rem;
+  height: 7.4rem;
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--rarity, #8ea3bd) 70%, transparent) 0%,
+    transparent 70%
+  );
+}

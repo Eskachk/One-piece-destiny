@@ -1506,6 +1506,9 @@ export function CharacterArt({
   return (
     <div
       className={`hb-art hb-art--${level}${className ? ` ${className}` : ''}`}
+      // Même raison que sur la carte : le décor de fond monte avec le palier,
+      // et il se règle en CSS plutôt qu'en nœuds SVG répétés cinquante fois.
+      data-rarete={rarity}
       style={{ ['--rarity' as string]: RARITY_COLOR[rarity] }}
       // La description physique sert d'intitulé quand elle existe : un lecteur
       // d'écran annonce « cheveux verts, trois sabres » plutôt que rien.
@@ -1529,6 +1532,22 @@ export function CharacterArt({
           accent={RARITY_COLOR[rarity]}
           characterId={characterId}
         />
+      )}
+
+      {/*
+        Le balayage lumineux du Mythique.
+
+        Un élément à lui seul, et non un troisième pseudo-élément : `::before`
+        et `::after` portent déjà les rayons et le socle. Il n'existe que pour
+        ce palier — un `<span>` de plus sur les cinquante cartes d'une
+        collection serait payé par tout le monde pour un effet que presque
+        personne ne verrait.
+
+        `aria-hidden` : c'est un reflet, il n'a rien à annoncer. La rareté est
+        déjà écrite en toutes lettres sur la carte (§111).
+      */}
+      {rarity === 'MYTHIC' && (
+        <span className="hb-art__lueur" aria-hidden="true" />
       )}
     </div>
   );

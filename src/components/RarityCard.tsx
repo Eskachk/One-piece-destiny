@@ -60,6 +60,14 @@ export function RarityCard({
   return (
     <article
       className="hb-rcard"
+      /*
+       * La rareté est écrite dans le document, pas seulement dans la couleur.
+       * La feuille de style s'en sert pour monter le décor palier par palier ;
+       * `--rarity` ne porte qu'une teinte, et une teinte ne fait pas une
+       * hiérarchie — trois cartes qui ne diffèrent que par leur couleur se
+       * valent à l'œil.
+       */
+      data-rarete={rarity}
       style={{ ['--rarity' as string]: RARITY_COLOR[rarity] }}
     >
       <CharacterArt
