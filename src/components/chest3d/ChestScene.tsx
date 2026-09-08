@@ -156,17 +156,72 @@ function HakiBolts({
   );
 }
 
+/**
+ * Onde de choc, à l'instant où le couvercle cède.
+ *
+ * Un anneau posé à plat au pied du coffre, qui s'élargit et s'efface en une
+ * demi-seconde. C'est ce qui manquait le plus à l'ouverture : le couvercle
+ * partait en arrière sans que rien n'accuse le coup, et le moment le plus
+ * important de la cérémonie n'avait aucun impact — seulement un mouvement.
+ *
+ * L'anneau est **au sol** et non face caméra : posé à plat, il se lit comme
+ * une onde qui court sur le pont ; dressé, il se serait lu comme un cerceau.
+ */
+function Shockwave({ color, at }: { color: string; at: { current: number } }) {
+  const ring = useRef<THREE.Mesh>(null);
+  const DUREE = 0.55;
+
+  useFrame((state) => {
+    if (!ring.current) return;
+    const t = state.clock.elapsedTime - at.current;
+    const material = ring.current.material as THREE.MeshBasicMaterial;
+
+    if (t < 0 || t > DUREE) {
+      material.opacity = 0;
+      return;
+    }
+
+    const p = t / DUREE;
+    // Départ franc, fin molle : une onde perd sa vitesse en s'élargissant.
+    const echelle = 0.4 + (1 - (1 - p) ** 3) * 3.2;
+    ring.current.scale.set(echelle, echelle, echelle);
+    material.opacity = (1 - p) ** 1.6 * 0.75;
+  });
+
+  return (
+    <mesh ref={ring} position={[0, -0.78, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+      <ringGeometry args={[0.5, 0.62, 40]} />
+      <meshBasicMaterial
+        color={color}
+        transparent
+        opacity={0}
+        side={THREE.DoubleSide}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </mesh>
+  );
+}
+
 function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) {
   const group = useRef<THREE.Group>(null);
   const lid = useRef<THREE.Group>(null);
   const glow = useRef<THREE.PointLight>(null);
   const seam = useRef<THREE.Mesh>(null);
+  const cord = useRef<THREE.Group>(null);
   const { phase, elapsed } = useCeremonyClock(plan);
   const announced = useRef(false);
 
-  const premium = plan.tier === 'PREMIUM';
+  /** Vitesse angulaire du couvercle. C'est ce qui en fait un ressort. */
+  const lidSpeed = useRef(0);
+  /** Instant du claquement, pour déclencher l'onde. −1 tant qu'il n'a pas eu lieu. */
+  const burstAt = useRef(-1);
 
-  useFrame((state) => {
+  const premium = plan.tier === 'PREMIUM';
+  const royal = plan.tier === 'ROYAL';
+  const leviting = plan.motion === 'LEVITATE';
+
+  useFrame((state, delta) => {
     // La cérémonie ne doit commencer qu'une fois la scène réellement à
     // l'écran : sinon le minuteur court pendant le téléchargement de
     // Three.js et la révélation arrive avant le coffre.
@@ -178,8 +233,31 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
     const t = elapsed.current;
     const progress = plan.shakeSeconds > 0 ? Math.min(1, t / plan.shakeSeconds) : 1;
 
+    // L'instant exact du claquement, relevé une seule fois : l'onde de choc,
+    // le contrecoup et la rupture du cordage s'y accrochent tous les trois.
+    if (phase === 'burst' && burstAt.current < 0) {
+      burstAt.current = state.clock.elapsedTime;
+    }
+
     if (group.current) {
-      if (phase === 'charge') {
+      if (phase === 'charge' && leviting) {
+        /*
+         * Le coffre royal ne se débat pas : il s'élève.
+         *
+         * Rien ne le force de l'intérieur — il s'ouvre parce que c'est
+         * l'heure. La montée est lente et régulière, la rotation continue, et
+         * une respiration à peine perceptible évite l'objet parfaitement
+         * immobile, qui se lit comme une image figée plutôt que comme un
+         * volume.
+         *
+         * C'est la différence que le joueur paie : deux secondes suffisent à
+         * savoir, sans lire une étiquette, qu'on n'a pas ouvert le même coffre.
+         */
+        group.current.position.y = (1 - (1 - progress) ** 2) * 0.42;
+        group.current.rotation.y = t * 0.55;
+        group.current.rotation.z = Math.sin(t * 1.7) * 0.035;
+        group.current.position.x = 0;
+      } else if (phase === 'charge') {
         // Tremblement **croissant**, à l'inverse d'une version précédente qui
         // s'éteignait en avançant. Quelque chose qui pousse de l'intérieur
         // force de plus en plus fort ; l'amplitude doit monter jusqu'à la
@@ -194,6 +272,12 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
         // que quelque chose force pour sortir.
         const hop = Math.max(0, Math.sin(t * 8.5));
         group.current.position.y = hop ** 3 * (0.03 + 0.16 * progress);
+      } else if (phase === 'hold' && leviting) {
+        // Il reste en l'air, presque immobile. Redescendre ici casserait la
+        // promesse : le silence doit être une suspension, pas un retour au sol.
+        group.current.position.y += (0.42 - group.current.position.y) * 0.1;
+        group.current.rotation.y += 0.004;
+        group.current.rotation.z *= 0.9;
       } else if (phase === 'hold') {
         // Immobilité franche. C'est le §61 : le silence avant la révélation.
         group.current.rotation.z *= 0.7;
@@ -201,23 +285,85 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
         group.current.position.x *= 0.7;
         group.current.position.y *= 0.7;
       } else {
+        /*
+         * Contrecoup.
+         *
+         * Le coffre encaisse l'ouverture — il s'enfonce d'un cran, puis
+         * remonte. Sans lui, le couvercle partait sans que la caisse ne
+         * bouge : deux objets solidaires dont un seul réagit se lisent comme
+         * deux objets séparés.
+         */
+        const depuis = burstAt.current >= 0 ? state.clock.elapsedTime - burstAt.current : 0;
+        const recul = Math.max(0, 1 - depuis / 0.42);
+        const assise = leviting ? 0.42 : 0;
+
         group.current.rotation.z *= 0.85;
-        group.current.rotation.y *= 0.85;
         group.current.position.x *= 0.85;
-        group.current.position.y *= 0.85;
+        group.current.position.y +=
+          (assise - recul * 0.09 - group.current.position.y) * 0.18;
+
+        // Le coffre royal continue de tourner, plus lentement : il ne se
+        // repose pas, il se présente.
+        if (leviting) group.current.rotation.y += 0.0016;
+        else group.current.rotation.y *= 0.85;
       }
     }
 
     if (lid.current) {
-      if (phase === 'charge') {
+      if (phase === 'charge' && leviting) {
+        // Rien ne claque sur un coffre qui lévite. Le couvercle respire à
+        // peine — juste assez pour qu'on sache qu'il n'est pas soudé.
+        lid.current.rotation.x = -(Math.sin(t * 2.2) ** 2) * 0.012;
+      } else if (phase === 'charge') {
         // Le couvercle claque contre la serrure, de plus en plus fort, sans
         // jamais s'ouvrir. Il ne doit rien laisser voir : entrouvert, il
         // vendrait la mèche avant le silence.
         const rattle = Math.max(0, Math.sin(t * 13)) ** 2;
         lid.current.rotation.x = -rattle * 0.05 * progress;
+      } else if (phase === 'hold') {
+        lid.current.rotation.x += (0 - lid.current.rotation.x) * 0.14;
+        lidSpeed.current = 0;
       } else {
-        const target = phase === 'burst' ? -Math.PI * 0.7 : 0;
-        lid.current.rotation.x += (target - lid.current.rotation.x) * 0.14;
+        /*
+         * Ressort, et non interpolation.
+         *
+         * L'ancienne version approchait sa cible de 14 % par image : un
+         * mouvement qui ralentit en permanence et n'atteint jamais rien. Un
+         * couvercle qui cède part **vite**, dépasse, et revient — c'est le
+         * dépassement qui fait entendre le claquement qu'on ne joue pas.
+         *
+         * Raideur et amortissement sont réglés pour un seul rebond franc :
+         * plus mou, le couvercle flotte ; plus raide, il vibre comme un
+         * ressort de jouet.
+         */
+        const cible = -Math.PI * 0.72;
+        const raideur = royal ? 150 : 190;
+        const amorti = royal ? 15 : 17;
+        const dt = Math.min(delta, 1 / 30); // pas de bond après un gel d'image
+
+        lidSpeed.current +=
+          (cible - lid.current.rotation.x) * raideur * dt -
+          lidSpeed.current * amorti * dt;
+        lid.current.rotation.x += lidSpeed.current * dt;
+      }
+    }
+
+    /*
+     * Le cordage du coffre royal se rompt à l'ouverture.
+     *
+     * Il ne disparaît pas : il tombe et s'efface en même temps. Une corde qui
+     * s'évapore d'une image à l'autre se remarque comme un défaut d'affichage ;
+     * une corde qui cède donne une **cause** au couvercle qui s'ouvre.
+     */
+    if (cord.current) {
+      if (phase === 'burst') {
+        const depuis = burstAt.current >= 0 ? state.clock.elapsedTime - burstAt.current : 0;
+        cord.current.position.y -= delta * 1.9;
+        cord.current.rotation.z += delta * 1.4;
+        cord.current.visible = depuis < 0.9;
+      } else if (phase === 'hold') {
+        // Il se tend, juste avant de lâcher.
+        cord.current.scale.setScalar(1 + Math.sin(t * 9) * 0.012);
       }
     }
 
@@ -229,9 +375,11 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
           ? 1.2 + progress * 3.5
           : phase === 'hold'
             ? 0.2
-            : premium
-              ? 20
-              : 8;
+            : royal
+              ? 26
+              : premium
+                ? 20
+                : 8;
       glow.current.intensity += (target - glow.current.intensity) * 0.14;
     }
 
@@ -269,8 +417,15 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
         ref={group}
         lidRef={lid}
         seamRef={seam}
+        cordRef={cord}
         palette={plan.skin === 'ROYAL' ? ROYAL_PALETTE : HARBOR_PALETTE}
       />
+
+      {/* L'onde de choc reste montée en permanence : la créer au moment du
+          claquement ferait compiler son matériau pile à l'image où l'on a le
+          moins de temps à perdre, et le premier plan sauterait. Invisible
+          tant que `burstAt` n'a pas été relevé. */}
+      <Shockwave color={plan.hakiColors.at(-1) ?? '#f5c542'} at={burstAt} />
 
       {/* Lumière intérieure. Sa couleur est celle de la rareté obtenue : le
           coffre s'éclaire de ce qu'il contient. */}
@@ -284,8 +439,10 @@ function Chest({ plan, onReady }: { plan: CeremonyPlan; onReady?: () => void }) 
 
       <HakiBolts plan={plan} elapsed={elapsed} active={phase === 'charge'} />
 
-      {/* Rayon lumineux, uniquement pour un légendaire (§56) */}
-      {premium && phase === 'burst' && (
+      {/* Rayon lumineux : légendaire et coffre royal (§56). Il manquait au
+          royal, qui est pourtant le seul dont on soit sûr d'avance qu'il
+          mérite la colonne. */}
+      {(premium || royal) && phase === 'burst' && (
         <mesh position={[0, 1.7, 0]}>
           <cylinderGeometry args={[0.14, 0.8, 3.4, 24, 1, true]} />
           <meshBasicMaterial

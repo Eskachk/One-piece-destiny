@@ -44,10 +44,20 @@ const COOKIE = 'opq_session';
  */
 const APERCUS = ['/preview-chest'];
 
+/** Le chemin est-il une page d'aperçu, ou l'une de ses sous-pages ? */
+function estUnApercu(chemin: string): boolean {
+  // Préfixe et non égalité : `/preview-chest/coffres` est une page d'aperçu
+  // au même titre que sa racine, et une comparaison stricte l'aurait laissée
+  // publique en production — le genre d'oubli qu'on ne voit qu'en la cherchant.
+  return APERCUS.some(
+    (racine) => chemin === racine || chemin.startsWith(`${racine}/`),
+  );
+}
+
 export function middleware(request: NextRequest) {
   if (
     process.env.NODE_ENV === 'production' &&
-    APERCUS.some((chemin) => request.nextUrl.pathname === chemin)
+    estUnApercu(request.nextUrl.pathname)
   ) {
     return new NextResponse(null, { status: 404 });
   }

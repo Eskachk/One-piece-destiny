@@ -1,7 +1,14 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Component,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import type { RevealedCard } from '@/app/actions/collection';
 import {
   ceremonyPlan,
@@ -19,8 +26,10 @@ import { RarityCard } from '@/components/RarityCard';
  *
  * Trois raisons de sauter la 3D, toutes traitées : la préférence
  * « mouvement réduit » (§111), l'absence de WebGL, et l'échec de chargement du
- * module. Dans les trois cas le joueur voit quand même ses cartes — la
- * révélation lui est due.
+ * module — ce dernier par `SceneBoundary`, plus bas, sans lequel l'exception
+ * emportait la page entière. Dans les trois cas le joueur voit quand même ses
+ * cartes : le coffre est déjà consommé côté serveur, la révélation lui est
+ * due.
  *
  * Les cartes tombent **une par une** (§61), de la moins bonne à la meilleure.
  * Les afficher toutes d'un coup laissait l'œil se poser d'abord sur la
@@ -36,6 +45,49 @@ const ChestScene = dynamic(() => import('./ChestScene'), {
     </div>
   ),
 });
+
+/**
+ * Filet sous la scène 3D.
+ *
+ * **Le défaut corrigé ici, et il coûtait un coffre au joueur.**
+ *
+ * L'en-tête de ce fichier annonçait que l'échec de chargement du module était
+ * traité, au même titre que l'absence de WebGL. Il ne l'était pas. Un
+ * `next/dynamic` dont le morceau ne se charge pas **jette pendant le rendu** :
+ * l'exception remontait jusqu'à `app/error.tsx`, qui remplaçait la page
+ * entière par son message d'erreur. Le repli vers le mode dégradé n'avait
+ * jamais lieu — il est déclenché par un minuteur, dans un composant que la
+ * frontière d'erreur venait de démonter.
+ *
+ * Résultat pour le joueur : le coffre est consommé côté serveur, les cartes
+ * sont à lui, et il voit une page d'erreur. Le cas s'est produit ici, pour de
+ * vrai, sur un morceau resté introuvable après un rechargement à chaud.
+ *
+ * Une frontière **locale** est la seule réponse : elle arrête l'exception au
+ * niveau de la scène, laisse le reste de la page debout, et prévient
+ * l'appelant qu'il faut basculer en mode dégradé.
+ */
+class SceneBoundary extends Component<
+  { onFail: () => void; children: ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    // Journalisé, pas silencieux : un coffre qui bascule en mode dégradé pour
+    // tout le monde est un incident, et sans trace on ne le verrait jamais.
+    console.warn('[coffre] scène 3D indisponible, repli sur la révélation simple', error);
+    this.props.onFail();
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
 
 function prefersReducedMotion(): boolean {
   if (typeof window === 'undefined') return false;
@@ -168,7 +220,9 @@ export function ChestOpening({
           au moment précis où il fallait regarder. */}
       {mode === 'scene' && shown === 0 && (
         <div className="hb-chest-stage">
-          <ChestScene plan={plan} onReady={() => setSceneReady(true)} />
+          <SceneBoundary onFail={() => setMode('plain')}>
+            <ChestScene plan={plan} onReady={() => setSceneReady(true)} />
+          </SceneBoundary>
         </div>
       )}
 

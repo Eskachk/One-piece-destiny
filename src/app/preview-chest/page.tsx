@@ -53,8 +53,24 @@ export default function PreviewChestPage() {
   return (
     <main className="mx-auto w-full max-w-[430px] px-5 py-10">
       <h1 className="font-display text-2xl text-parchment">Aperçu coffre</h1>
-      <div className="mt-6 rounded-xl border border-turquoise/25 bg-navy/40 p-5">
+
+      {/*
+        Les deux coffres, l'un sous l'autre.
+
+        Le royal a sa propre apparence **et** sa propre chorégraphie — laque
+        noire contre bois peint, lévitation contre tremblement. Aucune des deux
+        différences ne se juge sur un seul coffre : il faut les voir se suivre
+        pour savoir si l'écart se lit, et c'est précisément ce que la cérémonie
+        interdit en jeu, où l'on n'en ouvre qu'un à la fois.
+      */}
+      <p className="hb-legend mt-6">Coffre du port</p>
+      <div className="mt-2 rounded-xl border border-turquoise/25 bg-navy/40 p-5">
         <ChestOpening cards={legendary} />
+      </div>
+
+      <p className="hb-legend mt-6">Coffre royal</p>
+      <div className="mt-2 rounded-xl border border-gold/30 bg-navy/40 p-5">
+        <ChestOpening cards={legendary} royal />
       </div>
 
       {/*

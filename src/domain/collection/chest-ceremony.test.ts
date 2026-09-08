@@ -124,3 +124,35 @@ describe('reducedMotionPlan (§111)', () => {
     expect(reducedMotionPlan(cards).totalSeconds).toBeLessThanOrEqual(0.25);
   });
 });
+
+describe('mise en scène du coffre royal', () => {
+  it('lévite au lieu de trembler', () => {
+    expect(ceremonyPlan([card('LEGENDARY')], { royal: true }).motion).toBe(
+      'LEVITATE',
+    );
+    expect(ceremonyPlan([card('LEGENDARY')]).motion).toBe('SHAKE');
+  });
+
+  it('lévite même quand le tirage déçoit', () => {
+    /*
+     * Le garde-fou.
+     *
+     * `motion` suit l'origine du coffre, jamais son contenu — comme `skin`.
+     * Lier la chorégraphie au tirage annoncerait la déception avant de
+     * l'infliger : le joueur verrait le coffre retomber au sol et saurait,
+     * avant l'ouverture, qu'il n'a rien eu.
+     */
+    const plan = ceremonyPlan([card('COMMON')], { royal: true });
+    expect(plan.motion).toBe('LEVITATE');
+    expect(plan.skin).toBe('ROYAL');
+  });
+
+  it('garde sa chorégraphie dans le plan dégradé', () => {
+    // `reducedMotionPlan` coupe les durées, pas l'identité du coffre : la
+    // scène n'est de toute façon pas jouée, mais un plan qui mentirait sur
+    // le coffre serait un piège pour la prochaine lecture.
+    expect(reducedMotionPlan([card('LEGENDARY')], { royal: true }).motion).toBe(
+      'LEVITATE',
+    );
+  });
+});

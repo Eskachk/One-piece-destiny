@@ -35,10 +35,26 @@ export type CeremonyTier = 'STANDARD' | 'PREMIUM' | 'ROYAL';
  */
 export type ChestSkin = 'HARBOR' | 'ROYAL';
 
+/**
+ * Comment le coffre se comporte pendant la charge.
+ *
+ * `SHAKE` — il tremble et sursaute : quelque chose force pour sortir.
+ * `LEVITATE` — il s'élève et tourne lentement : rien ne force, il s'ouvre
+ *   parce que c'est l'heure.
+ *
+ * Les deux racontent des choses différentes, et c'est le but. Un coffre acheté
+ * qui se débat comme un coffre ordinaire ne se distingue que par sa peinture ;
+ * celui qui lévite dit qu'il n'a rien à forcer. C'est aussi la seule manière
+ * d'être **certain** de ce qu'on a ouvert sans lire une étiquette (§111).
+ */
+export type ChestMotion = 'SHAKE' | 'LEVITATE';
+
 export interface CeremonyPlan {
   tier: CeremonyTier;
   /** Apparence du coffre à afficher. */
   skin: ChestSkin;
+  /** Comportement du coffre pendant la charge. */
+  motion: ChestMotion;
   /** Rareté la plus élevée du coffre, celle qui dicte la mise en scène. */
   highlight: Rarity;
   /** Secondes de tremblement et de montée en charge. */
@@ -168,6 +184,13 @@ export function ceremonyPlan(
   return {
     tier: royal ? 'ROYAL' : premium ? 'PREMIUM' : 'STANDARD',
     skin: royal ? 'ROYAL' : 'HARBOR',
+    /*
+     * La lévitation suit **l'origine du coffre**, comme l'apparence — jamais
+     * le tirage. Un coffre royal qui retomberait sur un Épique doit quand même
+     * léviter : lier la mise en scène au résultat annoncerait la déception
+     * avant de l'infliger, ce que le reste de ce fichier s'applique à éviter.
+     */
+    motion: royal ? 'LEVITATE' : 'SHAKE',
     highlight,
     shakeSeconds: base.shakeSeconds,
     suspenseSeconds: base.suspenseSeconds,
