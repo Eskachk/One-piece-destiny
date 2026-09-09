@@ -77,7 +77,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#071c2c',
+  // Le noir de l'icone, au pixel pres. Doit rester identique a `theme_color`
+  // du manifeste : les desaccorder donne une bande de couleur differente
+  // au-dessus de la page au lancement de l'application installee.
+  themeColor: '#0a090c',
   width: 'device-width',
   initialScale: 1,
 };

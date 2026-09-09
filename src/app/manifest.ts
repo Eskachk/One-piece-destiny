@@ -46,17 +46,23 @@ export default function manifest(): MetadataRoute.Manifest {
     lang: 'fr-FR',
     dir: 'ltr',
     categories: ['games', 'entertainment'],
-    // `theme_color` teinte la barre d'état d'Android et doit rester identique
-    // à `viewport.themeColor` du gabarit racine : une divergence entre les
-    // deux donne une bande de couleur différente au-dessus de la page, au
-    // lancement. Elle reste donc au bleu nuit du site, qui est bien ce que la
-    // barre surplombe.
-    theme_color: '#071c2c',
-    // `background_color` est autre chose : c'est le fond de l'écran de
-    // démarrage, derrière l'icône, avant que la page ait peint quoi que ce
-    // soit. Il prend donc le noir **de l'icône**, au pixel près, pour que
-    // celle-ci paraisse posée sur son propre fond plutôt que découpée sur un
-    // rectangle bleu.
+    /*
+     * Les deux surfaces que le système peint lui-même, et qui prennent
+     * désormais le noir de l'icône (#0a090c, relevé au pixel sur la source) :
+     *
+     *   — `theme_color` teinte la barre d'état d'Android, au-dessus de la
+     *     page. Elle **doit** rester identique à `viewport.themeColor` du
+     *     gabarit racine : les désaccorder donne une bande de couleur
+     *     différente au-dessus de la page, au lancement ;
+     *   — `background_color` est le fond de l'écran de démarrage, derrière
+     *     l'icône, avant que la page ait peint quoi que ce soit.
+     *
+     * Le contenu du jeu reste, lui, au bleu nuit du port. La barre d'état est
+     * donc un cran plus sombre que la page qu'elle surplombe — c'est un choix
+     * assumé : l'identité vue depuis le lanceur et l'écran de démarrage
+     * l'emporte ici sur la continuité avec le haut de la page.
+     */
+    theme_color: '#0a090c',
     background_color: '#0a090c',
     icons: [
       {
