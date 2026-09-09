@@ -5,12 +5,14 @@ import type { Product } from '@/domain/payments/catalog';
 /**
  * Abstraction du prestataire de paiement.
  *
- * ⚠️ **AUCUN PAIEMENT RÉEL N'EST ACTIVÉ.** L'architecture est en place pour
- * que le jour de l'activation soit un changement de configuration et non une
- * réécriture — mais l'activation reste suspendue à l'audit juridique du §122,
- * qui commande aussi les obligations du §114 sur les mineurs.
+ * **Les paiements réels sont ouverts en production.** Ce fichier a longtemps
+ * affirmé le contraire, et il a fini par mentir : la configuration a été posée
+ * sans que le commentaire suive. Un fichier qui décrit un système à l'arrêt
+ * alors qu'il encaisse est plus dangereux qu'un fichier sans commentaire — on
+ * y lit une garantie qui n'existe plus.
  *
- * Le verrou est explicite et à trois tours :
+ * L'activation reste conditionnée aux mêmes trois verrous, et ils sont tous
+ * franchis aujourd'hui :
  *
  *   1. `PAYMENTS_ENABLED` doit valoir `true` ;
  *   2. une clé prestataire doit être configurée ;

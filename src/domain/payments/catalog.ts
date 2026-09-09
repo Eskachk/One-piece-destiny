@@ -1,9 +1,9 @@
 /**
  * Catalogue des produits payants (cahier §113, §114).
  *
- * ⚠️ **Aucun paiement réel n'est activé.** Le module décrit ce qui pourrait
- * être vendu et sert de source de vérité aux montants ; l'activation reste
- * suspendue à l'audit juridique du §122. Voir `src/lib/payments/`.
+ * Ce module est la **source de vérité des montants**, et les paiements réels
+ * sont ouverts en production : ce qui est écrit ici est encaissé. Voir
+ * `src/lib/payments/provider.ts` pour l'état de l'activation.
  *
  * Règle structurante : **le prix ne circule jamais depuis le client.** Le
  * navigateur envoie un identifiant de produit, le serveur lit le montant ici.
