@@ -857,7 +857,134 @@ function Alabasta() {
   );
 }
 
-/** Drum — le royaume enneigé : aiguilles, château perché, sapins. */
+/**
+ * Une tour de roche de Drum, coiffée de neige.
+ *
+ * ## Ce qui fait la silhouette, et que des aiguilles ne donnaient pas
+ *
+ * La première version dessinait des pics triangulaires. C'est la forme qu'on
+ * met par défaut sous le mot « montagne », et c'est précisément ce qui rendait
+ * l'île interchangeable avec n'importe quel décor de neige.
+ *
+ * Drum se reconnaît à l'inverse d'un pic : des **cylindres**, à peine
+ * fuselés, au sommet plat et large. C'est une forme qu'on ne rencontre pas
+ * ailleurs, donc une forme qui nomme le lieu à elle seule.
+ *
+ * La calotte de neige est ce qui achève de les distinguer d'une cheminée
+ * d'usine : elle **déborde** du sommet et retombe en festons irréguliers sur
+ * les flancs. Un simple trait blanc sur le dessus se lirait comme un couvercle
+ * posé.
+ *
+ * §122 : un cylindre et des festons.
+ */
+function TourDeRoche({
+  cx,
+  largeur,
+  sommet,
+}: {
+  cx: number;
+  largeur: number;
+  sommet: number;
+}) {
+  const BASE = 262;
+  const bas = largeur / 2;
+  // Les tours se resserrent légèrement en montant. À bords parallèles, elles
+  // se liraient comme des tuyaux ; trop fuselées, comme des pics.
+  const haut = bas * 0.86;
+  const calotte = haut + 5;
+
+  // Festons de la calotte, de droite à gauche. Les profondeurs sont tirées
+  // d'une suite irrégulière : des gouttes égales feraient une frise.
+  const n = Math.max(4, Math.round((calotte * 2) / 12));
+  const pas = (calotte * 2) / n;
+  let festons = '';
+  for (let i = 0; i < n; i += 1) {
+    const profondeur = 6 + ((i * 5) % 11);
+    festons += ` q ${-pas / 2} ${profondeur} ${-pas} 0`;
+  }
+
+  return (
+    <g>
+      {/* Fût. */}
+      <path
+        d={`M${cx - bas} ${BASE} L${cx - haut} ${sommet} H${cx + haut} L${cx + bas} ${BASE}Z`}
+        fill="#9ab2cc"
+        opacity=".8"
+      />
+      {/* Strates horizontales — la roche de Drum est litée, et c'est ce qui
+          empêche le fût d'être un aplat. Resserrées vers le haut : c'est le
+          seul raccourci de perspective possible sur un cylindre vu de face. */}
+      <g stroke="#7f97b3" strokeWidth="1.4" fill="none" opacity=".22">
+        {Array.from({ length: 7 }, (_, i) => {
+          const t = (i + 1) / 8;
+          const y = sommet + (BASE - sommet) * (t * t);
+          const demi = haut + (bas - haut) * (t * t);
+          return <path key={i} d={`M${cx - demi + 2} ${y} H${cx + demi - 2}`} />;
+        })}
+      </g>
+      {/* Flanc éclairé, à droite. Sur un cylindre, c'est un dégradé — un aplat
+          suffit ici, à cette taille et derrière une brume. */}
+      <path
+        d={`M${cx + haut - 9} ${sommet} H${cx + haut} L${cx + bas} ${BASE} h-11Z`}
+        fill="#d3e2f0"
+        opacity=".4"
+      />
+
+      {/* Calotte : elle coiffe, déborde, et retombe. */}
+      <path
+        d={`M${cx - calotte} ${sommet + 5} Q${cx} ${sommet - 17} ${cx + calotte} ${sommet + 5}${festons}Z`}
+        fill="#ffffff"
+        opacity=".9"
+      />
+      {/* Un renflement plus clair sur le dessus : sans lui, la calotte est une
+          découpe blanche et non un tas de neige. */}
+      <path
+        d={`M${cx - calotte * 0.6} ${sommet - 2} Q${cx} ${sommet - 16} ${cx + calotte * 0.6} ${sommet - 2} Q${cx} ${sommet + 2} ${cx - calotte * 0.6} ${sommet - 2}Z`}
+        fill="#ffffff"
+      />
+    </g>
+  );
+}
+
+/**
+ * Drum — les tours de roche, le château perché, le pavillon noir.
+ *
+ * ## Ce que la version précédente ratait
+ *
+ * Trois triangles bleus et un petit bâtiment de quatre rectangles. Aucun des
+ * deux n'était faux ; aucun des deux ne nommait Drum. On pouvait échanger ce
+ * décor avec celui de n'importe quelle île froide sans que rien ne se perde,
+ * ce qui est la définition d'un décor raté sur un jeu qui en compte dix.
+ *
+ * Trois choses le nomment maintenant :
+ *
+ *   — **les tours cylindriques**, alignées en rideau derrière la crête. Voir
+ *     `TourDeRoche` : c'est leur sommet plat, pas leur hauteur, qui les rend
+ *     reconnaissables ;
+ *   — **le château**, assez grand pour montrer ce qui le caractérise — la
+ *     grande porte en ogive, les toits coniques verts, les créneaux, la neige
+ *     posée sur chaque saillie. Un château de quatre rectangles n'est qu'un
+ *     bâtiment ;
+ *   — **le pavillon noir**, qui flotte au sommet de la tour maîtresse.
+ *
+ * ## Le château est devant la tour maîtresse, pas dessus
+ *
+ * Le poser au sommet du cylindre central l'aurait réduit à une dizaine
+ * d'unités — la moitié de ce qu'il faut pour qu'une porte en ogive se lise.
+ * Il est donc bâti sur la crête, **devant** la tour, qui continue de monter
+ * derrière lui. La lecture est la même — on habite là-haut — et le bâtiment
+ * garde la taille qui permet de le reconnaître.
+ *
+ * ## La neige tombe déjà
+ *
+ * Elle est dans `.isl-fx`, par-dessus tout le décor, et pas ici : trois
+ * dégradés répétés qui défilent coûtent une fraction de ce que coûteraient
+ * deux cents flocons animés un par un.
+ *
+ * §122 : des cylindres, des cônes, des rectangles. Le pavillon est une tête de
+ * mort et deux os croisés — l'emblème de piraterie du domaine public, pas la
+ * marque d'un équipage.
+ */
 function Drum() {
   return (
     <svg className="isl isl--drum" {...CADRE} aria-hidden="true">
@@ -866,41 +993,198 @@ function Drum() {
           clarté sans chaleur d'un ciel couvert d'hiver. */}
       <AtmosphereDefs id="drm" lumiere="#eaf4ff" air="#cfe0ee" />
 
-      {/* Les Drum Rockies : des aiguilles, pas des collines. C'est leur
-          verticalité qui les distingue de n'importe quelle montagne. */}
-      <path d="M0 300 L128 116 L214 206 L308 92 L430 300Z" fill="#b8cadd" opacity=".6" />
-      {/* Brume de vallée : elle mange le pied des aiguilles. C'est ce qui les
-          éloigne — sans elle, un sommet à dix kilomètres était aussi net qu'un
-          sapin à vingt mètres. */}
-      <Brume id="drm" y={186} hauteur={78} opacite={0.8} />
-      <path d="M330 300 L470 62 L558 178 L640 104 L790 300Z" fill="#a7bdd3" opacity=".55" />
-      <path d="M716 300 L820 138 L900 262 V300Z" fill="#b8cadd" opacity=".45" />
+      {/* Reliefs lointains, à peine plus denses que le ciel. */}
+      <path
+        d="M0 236 L64 196 L118 224 L182 190 L248 226 L316 198 L392 230 L470 192 L548 228 L618 200 L692 232 L762 198 L836 226 L900 204 V300 H0Z"
+        fill="#c3d4e5"
+        opacity=".42"
+      />
 
-      {/* Neige des sommets : un triangle blanc qui déborde en festons sur les
-          flancs, sinon on lit un capuchon posé. */}
+      {/* --- Le rideau de tours ---------------------------------------------
+          Six, de hauteurs et de largeurs inégales, la maîtresse au centre du
+          cadre — la seule zone qu'un téléphone montre toujours. Six tours
+          identiques feraient une palissade. */}
+      {[
+        { cx: 128, largeur: 46, sommet: 156 },
+        { cx: 244, largeur: 58, sommet: 120 },
+        { cx: 430, largeur: 80, sommet: 62 },
+        { cx: 566, largeur: 52, sommet: 128 },
+        { cx: 668, largeur: 34, sommet: 170 },
+        { cx: 774, largeur: 50, sommet: 138 },
+      ].map((tour) => (
+        <TourDeRoche key={tour.cx} {...tour} />
+      ))}
+
+      {/* La brume mange le pied des tours. C'est elle qui les éloigne : sans
+          elle, un sommet à dix kilomètres était aussi net qu'un sapin à vingt
+          mètres. */}
+      <Brume id="drm" y={146} hauteur={64} opacite={0.42} />
+
+      {/* --- La crête ---------------------------------------------------------
+          Elle passe devant les tours et leur coupe les jambes, ce qui est la
+          seule façon de dire qu'elles sont derrière. Le replat du centre est
+          délibéré : c'est l'assise du château. */}
+      <path
+        d="M0 268 L54 214 L100 248 L152 192 L212 250 L266 204 L328 254 L384 208 L406 202 H494 L514 208 L568 252 L626 198 L686 250 L742 204 L804 252 L856 218 L900 256 V300 H0Z"
+        fill="#54769f"
+        opacity=".82"
+      />
+
+      {/* Neige sur les arêtes. Sur un relief blanc, seule l'arête attrape la
+          lumière : c'est le seul modelé possible. */}
       <g fill="#ffffff" opacity=".8">
-        <path d="M288 120 L308 92 L328 120 q-20 11 -40 0Z" />
-        <path d="M446 96 L470 62 L494 96 q-24 12 -48 0Z" />
-        <path d="M800 168 L820 138 L840 168 q-20 11 -40 0Z" />
+        {[
+          [152, 192, 26],
+          [266, 204, 22],
+          [384, 208, 22],
+          [626, 198, 25],
+          [742, 204, 22],
+          [856, 218, 17],
+        ].map(([x, y, w]) => (
+          <path key={x} d={`M${x - w} ${y + w * 0.8} L${x} ${y} L${x + w} ${y + w * 0.8} q-${w} 7 -${w * 2} 0Z`} />
+        ))}
       </g>
 
-      {/* Château perché sur la crête, au centre du cadre : donjon, deux tours
-          coiffées, corps de garde en contrebas. */}
-      <g opacity=".66" fill="#dbe6f0">
-        <rect x="448" y="98" width="46" height="58" />
-        <path d="M445 98 h52 l-9 -14 h-34Z" fill="#5d7b9c" />
-        {[440, 502].map((x) => (
-          <g key={x}>
-            <rect x={x - 10} y="110" width="20" height="46" />
-            <path d={`M${x - 13} 110 l13 -18 l13 18Z`} fill="#5d7b9c" />
+      {/* Contreforts, plus clairs que la crête et plus sombres que la neige.
+          Ils donnent la troisième marche de valeur : sans elle, on passait du
+          bleu sombre au blanc d'un seul coup et le premier plan se décollait. */}
+      <path
+        d="M0 282 L72 244 L128 268 L196 238 L262 272 L330 242 L404 274 L470 240 L540 272 L610 238 L682 270 L748 242 L818 272 L876 250 L900 268 V300 H0Z"
+        fill="#8aa6c2"
+        opacity=".55"
+      />
+
+      {/* --- Le château -------------------------------------------------------
+          Sur le replat, au centre. Base à y=214, faîte à y=96 : de quoi loger
+          une porte en ogive lisible, ce qu'aucune miniature posée au sommet
+          d'une tour n'aurait permis. */}
+
+      {/* Congère d'assise : le château est bâti dans la neige, pas posé
+          dessus. */}
+      <path d="M356 216 Q450 196 546 216 V222 H356Z" fill="#e6eff7" opacity=".75" />
+      <path d="M382 216 q-30 6 -46 8 H520 l6 -8Z" fill="#6e8bab" opacity=".2" />
+
+      <g opacity=".92">
+        {/* Tour maîtresse, en retrait à droite : c'est elle qui porte le
+            pavillon, et c'est son décalage qui empêche la façade d'être
+            parfaitement symétrique — donc plate. */}
+        <rect x="516" y="118" width="24" height="96" fill="#93aec9" />
+        <rect x="532" y="118" width="8" height="96" fill="#d9e6f1" opacity=".7" />
+        <path d="M510 120 L528 94 L546 120Z" fill="#317c74" />
+        <path d="M528 94 L546 120 L537 120Z" fill="#57a89d" />
+        <path d="M510 120 q18 -7 36 0 q-18 8 -36 0Z" fill="#ffffff" opacity=".85" />
+        <path d="M524 96 q4 -6 8 0 q-4 4 -8 0Z" fill="#ffffff" />
+
+        {/* Corps de logis. */}
+        <rect x="400" y="156" width="100" height="58" fill="#a3bbd4" />
+        <rect x="486" y="156" width="14" height="58" fill="#e8f1f8" opacity=".65" />
+
+        {/* Créneaux, de part et d'autre du pignon. */}
+        <Creneaux x={402} y={156} n={2} pas={9} largeur={5} hauteur={6} fill="#9db4cd" />
+        <Creneaux x={481} y={156} n={2} pas={9} largeur={5} hauteur={6} fill="#9db4cd" />
+
+        {/* Pignon aigu, et la neige qui s'accroche à ses deux pentes. */}
+        <path d="M418 158 L450 126 L482 158Z" fill="#93aec9" />
+        <path d="M450 126 L482 158 L470 158Z" fill="#e2edf6" opacity=".7" />
+        <path d="M450 126 L462 138 q-12 4 -24 0Z" fill="#ffffff" opacity=".9" />
+
+        {/* Les deux tours rondes de façade, coiffées de vert. */}
+        {[392, 508].map((cx) => (
+          <g key={cx}>
+            <rect x={cx - 13} y="150" width="26" height="64" fill="#9cb6d0" />
+            <rect x={cx + 6} y="150" width="7" height="64" fill="#e8f1f8" opacity=".6" />
+            <path d={`M${cx - 17} 152 L${cx} 124 L${cx + 17} 152Z`} fill="#317c74" />
+            <path d={`M${cx} 124 L${cx + 17} 152 L${cx + 8} 152Z`} fill="#57a89d" />
+            {/* Neige sur la base du cône et sur sa pointe. */}
+            <path d={`M${cx - 17} 152 q17 -7 34 0 q-17 8 -34 0Z`} fill="#ffffff" opacity=".85" />
+            <path d={`M${cx - 4} 126 q4 -6 8 0 q-4 4 -8 0Z`} fill="#ffffff" />
           </g>
         ))}
-        <rect x="424" y="156" width="94" height="26" />
-        <path d="M424 156 h94 l-8 -10 h-78Z" fill="#5d7b9c" />
+
+        {/* Fenêtres en ogive. Quatre, jamais alignées avec la porte : une
+            façade parfaitement régulière se lit comme une grille. */}
+        {[
+          [416, 170],
+          [432, 172],
+          [468, 172],
+          [484, 170],
+        ].map(([x, y]) => (
+          <path key={`${x}-${y}`} d={`M${x - 4} ${y + 14} V${y + 4} a4 4 0 0 1 8 0 V${y + 14}Z`} fill="#33506e" opacity=".88" />
+        ))}
+
+        {/* La grande porte : le seul bois du décor, et le seul point chaud.
+            C'est elle qui fait « on entre ici » plutôt que « c'est un mur ». */}
+        <path d="M434 214 V192 a16 17 0 0 1 32 0 V214Z" fill="#6f4523" />
+        <path d="M437 214 V193 a13 14 0 0 1 26 0 V214Z" fill="#8a5a2e" />
+        <path d="M450 214 V180" stroke="#5a3719" strokeWidth="1.6" />
+        <g stroke="#5a3719" strokeWidth="1.4" fill="none" opacity=".8">
+          <path d="M438 199 H462 M438 208 H462" />
+          <circle cx="444" cy="204" r="2.6" />
+          <circle cx="456" cy="204" r="2.6" />
+        </g>
+        {/* Linteau enneigé. */}
+        <path d="M437 179 q13 -8 26 0 q-13 5 -26 0Z" fill="#ffffff" opacity=".8" />
+
+        {/* Neige sur toutes les saillies horizontales. C'est ce détail répété,
+            plus que la couleur, qui dit le froid. */}
+        <g fill="#ffffff" opacity=".8">
+          <path d="M398 156 h104 q-52 8 -104 0Z" />
+          <path d="M514 118 h28 q-14 7 -28 0Z" />
+        </g>
+        <g stroke="#6b86a6" strokeWidth="1.2" fill="none" opacity=".55">
+          <path d="M401 163 H499" />
+          <path d="M517 125 H539" />
+          <path d="M379 157 H405 M495 157 H521" />
+        </g>
+
+        {/* Cheminée, à gauche du pignon. */}
+        <rect x="410" y="146" width="9" height="12" fill="#a6bcd2" />
+        <path d="M408 146 h13 q-6.5 5 -13 0Z" fill="#ffffff" opacity=".85" />
       </g>
 
+      {/* --- Le pavillon ------------------------------------------------------
+          Au sommet de la tour maîtresse. Il flotte autour de sa hampe, comme
+          celui d'Alabasta : même classe, même origine de transformation.
+
+          Une tête de mort et deux os croisés — l'emblème de piraterie, pas la
+          marque d'un équipage (§122). Les pétales sont trois taches roses : à
+          cette taille, c'est ce qui se lit, et c'est tout ce qu'on veut. */}
+      <line x1="528" y1="94" x2="528" y2="62" stroke="#7f97b3" strokeWidth="2.2" />
+      <g className="isl-drapeau">
+        <path d="M530 64 Q556 60 582 66 L582 92 Q556 98 530 92Z" fill="#1a1d22" opacity=".92" />
+        <g fill="#f7fbff">
+          {/* Les os d'abord : ils passent derrière le crâne. */}
+          <g stroke="#f7fbff" strokeWidth="3.4" strokeLinecap="round">
+            <path d="M541 70 L569 88 M569 70 L541 88" />
+          </g>
+          <circle cx="538" cy="69" r="2.4" />
+          <circle cx="572" cy="69" r="2.4" />
+          <circle cx="538" cy="89" r="2.4" />
+          <circle cx="572" cy="89" r="2.4" />
+          {/* Crâne : une calotte et une mâchoire. */}
+          <circle cx="555.5" cy="77" r="7.5" />
+          <path d="M549 83 h13 v6 a6.5 6.5 0 0 1 -13 0Z" />
+        </g>
+        <g fill="#1a1d22">
+          <circle cx="552.5" cy="76" r="2.5" />
+          <circle cx="558.5" cy="76" r="2.5" />
+          <path d="M553 85 v4 M556 85 v4 M559 85 v4" stroke="#1a1d22" strokeWidth="0.8" />
+        </g>
+        {/* Pétales. */}
+        <g fill="#e8517f">
+          <path d="M563 66 q5 -1 5 4 q-5 1 -5 -4Z" />
+          <path d="M576 78 q5 -1 5 4 q-5 1 -5 -4Z" />
+          <path d="M537 82 q5 -1 5 4 q-5 1 -5 -4Z" />
+        </g>
+      </g>
+
+      {/* Fumée de la cheminée. Dans un paysage de neige, c'est le seul signe
+          possible qu'on y vit : tout le reste est minéral et immobile. */}
+      <Fumee x={414} y={144} teinte="#dfe9f2" duree={11} />
+
       {/* Sapins alourdis de neige : trois étages, du plus large au plus étroit,
-          et un liseré clair sur chacun. */}
+          et un liseré clair sur chacun. Sur les bords seulement — du
+          secondaire, dont l'absence sur un écran étroit ne coûte rien. */}
       {[
         { x: 58, ech: 1 },
         { x: 116, ech: 0.82 },
@@ -924,10 +1208,6 @@ function Drum() {
           })}
         </g>
       ))}
-
-      {/* Fumée du château. Dans un paysage de neige, c'est le seul signe
-          possible qu'on y vit : tout le reste est minéral et immobile. */}
-      <Fumee x={392} y={128} teinte="#dfe9f2" duree={11} />
 
       {/* Congère au premier plan : le blanc rejoint le bas du cadre. */}
       <path d="M0 274 Q220 258 450 272 T900 266 V300 H0Z" fill="#eef5fb" opacity=".62" />
@@ -1056,6 +1336,8 @@ function PoissonRuban({
   echelle: number;
 }) {
   const ANNEAUX = 11;
+  /** De la tête au bout de la queue, avant mise à l'échelle. */
+  const LONGUEUR = (ANNEAUX - 1) * 23 + 20;
 
   return (
     <g
@@ -1063,7 +1345,25 @@ function PoissonRuban({
       style={{ ['--duree' as string]: `${duree}s`, ['--retard' as string]: `${retard}s` }}
       aria-hidden="true"
     >
-      <g transform={`translate(0 ${y}) scale(${echelle})`} opacity=".55">
+      {/*
+        Le corps est dessiné tête à gauche, puis **retourné**.
+
+        Sans ce retournement, il nageait à reculons, et c'était invisible à
+        l'arrêt : la tête est au plus petit x, or l'animation emmène le groupe
+        vers les x croissants — c'est donc la queue qui ouvrait la marche. Une
+        image figée ne montre rien du défaut ; il faut le mouvement pour le
+        voir, ce qui est exactement pourquoi il a survécu à la relecture.
+
+        Le grand poisson n'a pas ce problème : il est dessiné tête à gauche et
+        nage vers la gauche. C'est aussi pour ça que lui seul semblait juste.
+
+        Le `translate` avant la symétrie ramène le corps là où il était : sans
+        lui, `scale(-1 1)` l'enverrait tout entier dans les x négatifs.
+      */}
+      <g
+        transform={`translate(0 ${y}) scale(${echelle}) translate(${LONGUEUR} 0) scale(-1 1)`}
+        opacity=".55"
+      >
         {Array.from({ length: ANNEAUX }, (_, i) => {
           const x = i * 23;
           // Le corps s'affine vers la queue. Un ruban d'épaisseur constante se
