@@ -14,6 +14,7 @@ import { audit } from '@/lib/audit';
 import { paymentsState } from '@/lib/payments/provider';
 import { baseUrl } from '@/lib/email/templates';
 import { db } from '@/lib/supabase-admin';
+import { messageDe, signalerIncident } from '@/lib/observability/incidents';
 
 /**
  * Achat en argent réel (cahier §113, §114).
@@ -175,7 +176,20 @@ export async function startCheckoutAction(
       .update({ status: 'FAILED' })
       .eq('id', intent.id);
 
-    console.warn('[shop] CHECKOUT_FAILED', (caught as Error).message);
-    return { ok: false, error: 'Le prestataire de paiement est injoignable.' };
+    // Au journal des incidents, et pas seulement dans `console` : sur Vercel
+    // ces lignes vivent une heure. Une boutique en panne se découvrait donc
+    // par un joueur qui n'arrive pas à payer — c'est exactement ce qui s'est
+    // produit, et le message de Stripe avait déjà disparu.
+    await signalerIncident({
+      scope: 'shop:checkout',
+      message: messageDe(caught),
+      playerId: session.playerId,
+      metadata: { productId: product.id, intentId: intent.id },
+    });
+
+    return {
+      ok: false,
+      error: 'Le paiement n’a pas pu s’ouvrir. Réessaie dans un moment.',
+    };
   }
 }

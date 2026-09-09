@@ -112,6 +112,30 @@ export function paymentsState(): PaymentsState {
 }
 
 /**
+ * Les moyens de paiement à proposer, lus dans `PAYMENT_METHODS`.
+ *
+ * `card` par défaut, et seul : c'est le seul moyen qu'un compte Stripe possède
+ * toujours. Tout autre doit d'abord être activé dans le tableau de bord, sinon
+ * Stripe refuse la session entière.
+ *
+ * Le filtre sur l'alphabet n'est pas de la paranoïa : ces identifiants partent
+ * dans le corps d'une requête, et une valeur mal recopiée dans la
+ * configuration doit être écartée ici plutôt que produire un 400 obscur de
+ * plus.
+ */
+function moyensDePaiement(): string[] {
+  const brut = process.env.PAYMENT_METHODS;
+  if (!brut) return ['card'];
+
+  const lus = brut
+    .split(',')
+    .map((m) => m.trim().toLowerCase())
+    .filter((m) => /^[a-z_]{2,30}$/.test(m));
+
+  return lus.length > 0 ? lus : ['card'];
+}
+
+/**
  * Prestataire Stripe.
  *
  * Stripe est retenu parce qu'il est déjà envisagé dans l'outillage du projet
@@ -123,6 +147,8 @@ export function paymentsState(): PaymentsState {
  * qui n'est pas activé serait prématurée.
  */
 function stripeProvider(secretKey: string, webhookSecret: string): PaymentProvider {
+  const methodes = moyensDePaiement();
+
   return {
     name: 'stripe',
 
@@ -148,22 +174,29 @@ function stripeProvider(secretKey: string, webhookSecret: string): PaymentProvid
        *
        * PayPal est un **moyen de paiement de Stripe Checkout**, pas un second
        * prestataire : la page hébergée affiche le bouton, Stripe encaisse, et
-       * le même webhook signé remonte le résultat. Ajouter le SDK PayPal
-       * doublerait la chaîne de vérification — deux signatures, deux formats
-       * d'événement, deux façons de rembourser — pour le même résultat.
+       * le même webhook signé remonte le résultat.
        *
-       * Ils sont énumérés plutôt que laissés au réglage automatique du
-       * tableau de bord : ce qui est proposé au joueur doit se lire dans le
-       * code, pas dans une configuration distante qu'un tiers peut changer.
+       * ## Pourquoi ils ne sont plus écrits en dur
        *
-       * PayPal exige que la devise du compte corresponde ; en EUR sur un
-       * compte européen, c'est le cas. Il doit aussi être activé dans le
-       * tableau de bord Stripe — sinon Stripe refuse la session, ce que
-       * `createCheckout` remonte comme une erreur explicite plutôt que de
-       * masquer le moyen de paiement en silence.
+       * `paypal` l'était, et il a mis la boutique entière hors service. Un
+       * moyen de paiement doit être activé dans le tableau de bord Stripe ; en
+       * demander un qui ne l'est pas fait refuser **toute la session** par un
+       * HTTP 400. Le résultat n'était pas « PayPal manque » mais « aucun achat
+       * n'est possible », carte comprise.
+       *
+       * L'ancien commentaire affirmait que ce cas remonterait « une erreur
+       * explicite ». C'était faux : l'erreur jetée ne portait que le code HTTP,
+       * et le message de Stripe — qui nomme précisément le moyen fautif —
+       * était jeté avec le corps de la réponse.
+       *
+       * La liste reste lisible dans le code, avec `card` pour seul défaut :
+       * c'est le seul moyen qu'un compte Stripe possède toujours. PayPal
+       * s'ajoute par `PAYMENT_METHODS=card,paypal` **une fois activé** dans le
+       * tableau de bord, jamais avant.
        */
-      body.append('payment_method_types[0]', 'card');
-      body.append('payment_method_types[1]', 'paypal');
+      methodes.forEach((methode, i) => {
+        body.append(`payment_method_types[${i}]`, methode);
+      });
 
       const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
         method: 'POST',
@@ -175,7 +208,15 @@ function stripeProvider(secretKey: string, webhookSecret: string): PaymentProvid
       });
 
       if (!response.ok) {
-        throw new Error(`Stripe checkout : HTTP ${response.status}`);
+        // Le corps de Stripe dit *quoi* est refusé. Sans lui, on ne sait que
+        // « 400 », ce qui a coûté un diagnostic entier.
+        const detail = await response
+          .json()
+          .then((c: { error?: { message?: string } }) => c.error?.message ?? '')
+          .catch(() => '');
+        throw new Error(
+          `Stripe checkout : HTTP ${response.status}${detail ? ` — ${detail}` : ''}`,
+        );
       }
 
       const session = (await response.json()) as { id: string; url: string };
