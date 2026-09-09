@@ -1,6 +1,7 @@
 import 'server-only';
 
 import type { Product } from '@/domain/payments/catalog';
+import { messageDe, signalerIncident } from '@/lib/observability/incidents';
 
 /**
  * Abstraction du prestataire de paiement.
@@ -114,6 +115,63 @@ export function paymentsState(): PaymentsState {
 }
 
 /**
+ * Ouvre une session Stripe Checkout pour les moyens de paiement donnés.
+ *
+ * Extraite du prestataire parce qu'elle est appelée deux fois : une fois avec
+ * les moyens demandés, une fois avec la carte seule si les premiers sont
+ * refusés.
+ */
+async function ouvrirSession(
+  secretKey: string,
+  request: CheckoutRequest,
+  methodes: string[],
+): Promise<CheckoutSession> {
+  const body = new URLSearchParams({
+    mode: 'payment',
+    success_url: request.successUrl,
+    cancel_url: request.cancelUrl,
+    'line_items[0][price_data][currency]': request.product.currency.toLowerCase(),
+    'line_items[0][price_data][unit_amount]': String(request.amountCents),
+    'line_items[0][price_data][product_data][name]': request.product.label,
+    'line_items[0][quantity]': '1',
+    // Le joueur et l'intention voyagent en métadonnées : au retour du webhook,
+    // on sait qui créditer sans faire confiance au navigateur.
+    'metadata[player_id]': request.playerId,
+    'metadata[intent_id]': request.intentId,
+    'metadata[product_id]': request.product.id,
+    client_reference_id: request.intentId,
+  });
+
+  methodes.forEach((methode, i) => {
+    body.append(`payment_method_types[${i}]`, methode);
+  });
+
+  const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${secretKey}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body,
+  });
+
+  if (!response.ok) {
+    // Le corps de Stripe dit *quoi* est refusé. Sans lui, on ne sait que
+    // « 400 », ce qui a coûté un diagnostic entier.
+    const detail = await response
+      .json()
+      .then((c: { error?: { message?: string } }) => c.error?.message ?? '')
+      .catch(() => '');
+    throw new Error(
+      `Stripe checkout : HTTP ${response.status}${detail ? ` — ${detail}` : ''}`,
+    );
+  }
+
+  const session = (await response.json()) as { id: string; url: string };
+  return { url: session.url, reference: session.id };
+}
+
+/**
  * Les moyens de paiement à proposer, lus dans `PAYMENT_METHODS`.
  *
  * `card` par défaut, et seul : c'est le seul moyen qu'un compte Stripe possède
@@ -155,22 +213,6 @@ function stripeProvider(secretKey: string, webhookSecret: string): PaymentProvid
     name: 'stripe',
 
     async createCheckout(request) {
-      const body = new URLSearchParams({
-        mode: 'payment',
-        success_url: request.successUrl,
-        cancel_url: request.cancelUrl,
-        'line_items[0][price_data][currency]': request.product.currency.toLowerCase(),
-        'line_items[0][price_data][unit_amount]': String(request.amountCents),
-        'line_items[0][price_data][product_data][name]': request.product.label,
-        'line_items[0][quantity]': '1',
-        // Le joueur et l'intention voyagent en métadonnées : au retour du
-        // webhook, on sait qui créditer sans faire confiance au navigateur.
-        'metadata[player_id]': request.playerId,
-        'metadata[intent_id]': request.intentId,
-        'metadata[product_id]': request.product.id,
-        client_reference_id: request.intentId,
-      });
-
       /*
        * Moyens de paiement proposés.
        *
@@ -178,51 +220,38 @@ function stripeProvider(secretKey: string, webhookSecret: string): PaymentProvid
        * prestataire : la page hébergée affiche le bouton, Stripe encaisse, et
        * le même webhook signé remonte le résultat.
        *
-       * ## Pourquoi ils ne sont plus écrits en dur
+       * ## Pourquoi la liste est configurable, et pourquoi elle a un repli
        *
-       * `paypal` l'était, et il a mis la boutique entière hors service. Un
-       * moyen de paiement doit être activé dans le tableau de bord Stripe ; en
-       * demander un qui ne l'est pas fait refuser **toute la session** par un
-       * HTTP 400. Le résultat n'était pas « PayPal manque » mais « aucun achat
-       * n'est possible », carte comprise.
+       * `paypal` a été écrit en dur, et il a mis la boutique entière hors
+       * service pendant une semaine. Un moyen de paiement doit être activé
+       * dans le tableau de bord Stripe ; en demander un qui ne l'est pas fait
+       * refuser **toute la session** par un HTTP 400. Le résultat n'était pas
+       * « PayPal manque » mais « aucun achat n'est possible », carte comprise.
        *
-       * L'ancien commentaire affirmait que ce cas remonterait « une erreur
-       * explicite ». C'était faux : l'erreur jetée ne portait que le code HTTP,
-       * et le message de Stripe — qui nomme précisément le moyen fautif —
-       * était jeté avec le corps de la réponse.
+       * La configuration seule ne suffit pas à empêcher que cela recommence :
+       * il suffirait d'ajouter un moyen à `PAYMENT_METHODS` avant de l'activer
+       * chez Stripe. D'où le repli ci-dessous — une seconde tentative avec la
+       * carte seule. Un moyen optionnel indisponible dégrade le choix offert
+       * au joueur ; il ne doit jamais fermer la caisse.
        *
-       * La liste reste lisible dans le code, avec `card` pour seul défaut :
-       * c'est le seul moyen qu'un compte Stripe possède toujours. PayPal
-       * s'ajoute par `PAYMENT_METHODS=card,paypal` **une fois activé** dans le
-       * tableau de bord, jamais avant.
+       * Le repli est bruyant : il écrit au journal des incidents. Une
+       * dégradation silencieuse laisserait PayPal absent des mois sans que
+       * personne ne s'en aperçoive.
        */
-      methodes.forEach((methode, i) => {
-        body.append(`payment_method_types[${i}]`, methode);
-      });
+      try {
+        return await ouvrirSession(secretKey, request, methodes);
+      } catch (cause) {
+        const carteSeule = methodes.length === 1 && methodes[0] === 'card';
+        if (carteSeule) throw cause;
 
-      const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${secretKey}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body,
-      });
+        await signalerIncident({
+          scope: 'shop:moyens-de-paiement',
+          message: `${messageDe(cause)} — repli sur la carte seule`,
+          metadata: { demandes: methodes },
+        });
 
-      if (!response.ok) {
-        // Le corps de Stripe dit *quoi* est refusé. Sans lui, on ne sait que
-        // « 400 », ce qui a coûté un diagnostic entier.
-        const detail = await response
-          .json()
-          .then((c: { error?: { message?: string } }) => c.error?.message ?? '')
-          .catch(() => '');
-        throw new Error(
-          `Stripe checkout : HTTP ${response.status}${detail ? ` — ${detail}` : ''}`,
-        );
+        return ouvrirSession(secretKey, request, ['card']);
       }
-
-      const session = (await response.json()) as { id: string; url: string };
-      return { url: session.url, reference: session.id };
     },
 
     async verifyWebhook(rawBody, signature) {
