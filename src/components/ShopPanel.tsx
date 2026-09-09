@@ -39,6 +39,13 @@ export interface ShopProduct {
   category: string;
   label: string;
   price: string;
+  /**
+   * Quantité du lot et prix à l'unité, déjà mis en forme par le serveur.
+   *
+   * `null` pour les produits vendus à l'unité — un « prix unitaire » y
+   * répéterait le prix affiché juste à côté.
+   */
+  lot: string | null;
   description: string;
   /** Couleur de rareté du personnage vendu, résolue côté serveur. */
   rarityColor: string | null;
@@ -227,6 +234,16 @@ export function ShopPanel({
                           {product.price}
                         </span>
                       </div>
+
+                      {/* La quantité, juste sous le nom et au-dessus de tout le
+                          reste. C'est la ligne qui manquait : « Coffre du Yonko,
+                          24,99 € » se lit comme un seul coffre, et le magasin
+                          paraît alors incohérent à côté d'un Mythique à 12,99 €.
+                          Enterrée dans le paragraphe de description, l'information
+                          arrivait après la comparaison de prix — donc trop tard. */}
+                      {product.lot && (
+                        <p className="hb-shop__lot">{product.lot}</p>
+                      )}
 
                       {/* La rareté est écrite **et** colorée : la couleur seule
                           n'est pas lisible par un joueur daltonien, et c'est la

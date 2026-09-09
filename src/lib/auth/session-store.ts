@@ -11,6 +11,8 @@ import {
   type SessionState,
 } from '@/domain/auth/session';
 import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
+import { readAllPages } from '@/lib/repository/pagination';
+import { messageDe, signalerIncident } from '@/lib/observability/incidents';
 
 /**
  * Sessions serveur (cahier §85).
@@ -392,23 +394,59 @@ export async function destroySession(): Promise<void> {
  * exactement le geste qu'on fait quand on croit son compte compromis, et
  * exactement le moment où quinze secondes sont de trop.
  *
- * On relève donc les empreintes **avant** de révoquer, puis on purge chacune.
- * Le coût est d'une lecture supplémentaire sur une opération rare.
+ * ## Deux corrections sur la première version
+ *
+ * Elle relevait les empreintes **avant** de révoquer, par un `select` sans
+ * borne. Deux défauts, et le second annulait l'intention du premier :
+ *
+ *   — **la lecture précédait l'écriture.** Une lecture en échec laissait donc
+ *     le compte *non révoqué*, alors que la révocation est la seule chose ici
+ *     qui ne puisse pas attendre. L'ordre est inversé : on révoque d'abord,
+ *     on purge ensuite. La purge est un confort de quinze secondes ; la
+ *     révocation est la sécurité ;
+ *   — **elle n'était pas bornée.** PostgREST plafonne silencieusement à mille
+ *     lignes : au-delà, les sessions surnuméraires étaient bien révoquées en
+ *     base mais leur entrée de cache survivait — précisément le trou que cette
+ *     fonction existe pour fermer. `readAllPages` la rend exhaustive.
+ *
+ * Les sessions à purger se retrouvent par l'horodatage qu'on vient d'écrire :
+ * après la révocation, `revoked_at is null` ne renvoie plus rien, et cet
+ * instant précis ne désigne que les sessions coupées par cet appel.
  */
 export async function revokeAllSessions(userId: string): Promise<void> {
-  const { data } = await db()
-    .from('sessions')
-    .select('token_hash')
-    .eq('user_id', userId)
-    .is('revoked_at', null);
+  const revoqueesA = new Date().toISOString();
 
   await db()
     .from('sessions')
-    .update({ revoked_at: new Date().toISOString() })
+    .update({ revoked_at: revoqueesA })
     .eq('user_id', userId)
     .is('revoked_at', null);
 
-  for (const ligne of data ?? []) purgerSession(ligne.token_hash);
+  try {
+    const lignes = await readAllPages<{ token_hash: string }>(
+      'sessions à purger',
+      (from, to) =>
+        db()
+          .from('sessions')
+          .select('token_hash')
+          // `order` obligatoire : sans lui, deux tranches peuvent renvoyer la
+          // même ligne et en sauter une autre.
+          .order('token_hash')
+          .eq('user_id', userId)
+          .eq('revoked_at', revoqueesA)
+          .range(from, to),
+    );
+
+    for (const ligne of lignes) purgerSession(ligne.token_hash);
+  } catch (cause) {
+    // La base est déjà à jour : les sessions sont révoquées. Seul le cache
+    // survit, quinze secondes au plus. On le journalise plutôt que de faire
+    // échouer un changement de mot de passe qui, lui, a réussi.
+    void signalerIncident({
+      scope: 'auth:purge-sessions',
+      message: messageDe(cause),
+    });
+  }
 }
 
 export function requiresReauthentication(

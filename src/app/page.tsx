@@ -129,7 +129,7 @@ export default async function HomePage() {
         </p>
         <AdBanner />
         <Nav />
-        <Tutorial />
+        <Tutorial page="accueil" />
       </HarborScene>
     );
   }
@@ -259,7 +259,7 @@ export default async function HomePage() {
       {/* Visite guidée d'arrivée. Elle décide seule si elle doit s'afficher —
           une seule fois, à la première visite — et se saute dès le premier
           écran. */}
-      <Tutorial />
+      <Tutorial page="accueil" />
     </HarborScene>
   );
 }

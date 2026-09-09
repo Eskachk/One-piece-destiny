@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { HarborScene } from '@/components/HarborScene';
 import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
+import { Tutorial } from '@/components/Tutorial';
 import { collectionSummary } from '@/domain/collection/sets';
 import { CHARACTERS } from '@/data/characters';
 import { deriveStyle, MIN_WEEKS_FOR_STYLE, STYLE_DESCRIPTION, STYLE_LABEL } from '@/domain/player/style';
@@ -333,6 +334,7 @@ export default async function ProfilePage() {
 
       <HouseRules />
       <AdBanner />
+      <Tutorial page="profil" />
       <Nav />
     </HarborScene>
   );

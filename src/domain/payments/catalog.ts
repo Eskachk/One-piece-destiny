@@ -60,6 +60,29 @@ export interface Product {
    * pour trois couleurs.
    */
   rarity?: Rarity;
+  /**
+   * Ce que le lot contient, quand il en contient plus d'un.
+   *
+   * ## Pourquoi ce champ existe
+   *
+   * Le produit phare s'appelle « Coffre du Yonko » — **au singulier** — et
+   * coûte 24,99 €. Juste à côté, Luffy en personne coûte 12,99 €. Lu comme ça,
+   * le magasin n'a aucun sens : un coffre tiré au hasard vaudrait deux fois un
+   * Mythique garanti.
+   *
+   * Il en contient dix, soit 2,50 € l'unité, et c'était écrit — dans le
+   * paragraphe de description, **sous** le prix. Personne ne lit un paragraphe
+   * avant de comparer deux prix. Le propriétaire du jeu s'y est trompé
+   * lui-même, ce qui règle la question de savoir si un joueur s'y tromperait.
+   *
+   * La quantité remonte donc à côté du nom, avec le prix à l'unité calculé sur
+   * le prix **réellement payé** — remise de lancement comprise.
+   *
+   * Réservé aux coffres : un prix « à l'unité » pour un sac de Berries
+   * vaudrait 0,0003 € et n'apprendrait rien à personne.
+   */
+  lot?: { quantite: number; unite: string };
+
   /** Description affichée avant l'achat (§113). */
   description: string;
 }
@@ -74,7 +97,8 @@ export const CATALOG: Record<ProductId, Product> = {
     priceCents: 299,
     currency: 'EUR',
     grants: { berries: 0, chests: 3 },
-    description: '3 coffres. Composition et probabilités identiques aux coffres gagnés en jeu.',
+    lot: { quantite: 3, unite: 'coffres' },
+    description: 'Composition et probabilités identiques aux coffres gagnés en jeu.',
   },
   chest_pack_large: {
     id: 'chest_pack_large',
@@ -84,7 +108,8 @@ export const CATALOG: Record<ProductId, Product> = {
     priceCents: 999,
     currency: 'EUR',
     grants: { berries: 0, chests: 12 },
-    description: '12 coffres. Composition et probabilités identiques aux coffres gagnés en jeu.',
+    lot: { quantite: 12, unite: 'coffres' },
+    description: 'Composition et probabilités identiques aux coffres gagnés en jeu.',
   },
   /**
    * Le coffre du Yonko — le produit phare, et il doit se comporter comme tel.
@@ -132,8 +157,9 @@ export const CATALOG: Record<ProductId, Product> = {
     priceCents: 2_499,
     currency: 'EUR',
     grants: { berries: 0, chests: 0, royalChests: 10 },
+    lot: { quantite: 10, unite: 'coffres royaux' },
     description:
-      '10 coffres royaux : Légendaire ou mieux garanti dans chacun, aucune carte commune, ouverture en cérémonie dédiée. La rareté est une valeur de collection, elle ne donne aucun point au classement.',
+      'Légendaire ou mieux garanti dans chacun, aucune carte commune, ouverture en cérémonie dédiée. La rareté est une valeur de collection, elle ne donne aucun point au classement.',
   },
   berries_pouch: {
     id: 'berries_pouch',

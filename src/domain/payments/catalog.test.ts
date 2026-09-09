@@ -292,6 +292,34 @@ describe('rayon personnages', () => {
     expect(parCoffre).toBeLessThan(mythique.priceCents);
   });
 
+  it('annonce la quantité de tout lot qui en contient plusieurs', () => {
+    /*
+     * ## Le défaut que ce test attrape
+     *
+     * « Coffre du Yonko — 24,99 € », au singulier, juste à côté de « Monkey D.
+     * Luffy — 12,99 € ». Lu ainsi, le magasin est absurde : un coffre tiré au
+     * hasard vaudrait deux Mythiques garantis.
+     *
+     * Il en contient dix — 2,50 € pièce, moins cher que tout le reste du rayon
+     * — et ce n'était écrit que dans le paragraphe de description, sous le
+     * prix. Le propriétaire du jeu s'y est trompé lui-même en relisant sa
+     * boutique ; c'est la démonstration la plus courte qu'un joueur s'y
+     * tromperait aussi.
+     *
+     * Le prix était donc juste et la fiche fausse. Ce test tient la fiche :
+     * tout produit qui donne plus d'une unité doit le déclarer, et le nombre
+     * déclaré doit être celui qu'on accorde vraiment.
+     */
+    for (const p of Object.values(CATALOG)) {
+      const unites = p.grants.chests + (p.grants.royalChests ?? 0);
+      if (unites <= 1) continue;
+
+      expect(p.lot, `${p.id} donne ${unites} coffres sans l’annoncer`).toBeDefined();
+      expect(p.lot!.quantite, `${p.id} annonce une quantité fausse`).toBe(unites);
+      expect(p.lot!.unite.length).toBeGreaterThan(2);
+    }
+  });
+
   it('fait payer le Mythique plus cher que les Légendaires', () => {
     // Il est dix fois plus rare au coffre. Un même prix pour deux raretés
     // dirait au joueur que la rareté ne veut rien dire.

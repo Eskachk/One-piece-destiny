@@ -366,118 +366,470 @@ function Elbaf() {
   );
 }
 
-/** Alabasta — le royaume du désert : dunes, palais, palmiers. */
+/**
+ * Une ligne de créneaux.
+ *
+ * Trois murs en portent dans le palais d'Alabasta, à trois hauteurs
+ * différentes. Écrits trois fois à la main, ils auraient divergé au premier
+ * réglage.
+ */
+function Creneaux({
+  x,
+  y,
+  n,
+  pas = 13,
+  largeur = 7,
+  hauteur = 7,
+  fill,
+}: {
+  x: number;
+  y: number;
+  n: number;
+  pas?: number;
+  largeur?: number;
+  hauteur?: number;
+  fill: string;
+}) {
+  return (
+    <g fill={fill}>
+      {Array.from({ length: n }, (_, i) => (
+        <rect key={i} x={x + i * pas} y={y - hauteur} width={largeur} height={hauteur} />
+      ))}
+    </g>
+  );
+}
+
+/**
+ * Alabasta — le royaume du désert : plateau, palais à coupoles, grand escalier.
+ *
+ * ## Ce que la version précédente ne disait pas
+ *
+ * C'était un corps de bâtiment, deux ailes, deux dômes et un obélisque, posés
+ * à plat sur une dune. Ça se lisait « bâtiment clair dans le sable », jamais
+ * « capitale ». Trois choses manquaient :
+ *
+ *   — **la hauteur.** Le palais domine un plateau de roche, il n'est pas au
+ *     niveau du désert. C'est le plateau qui fait le royaume : sans lui, le
+ *     même bâtiment n'est qu'une grande maison ;
+ *   — **la ville.** Un palais isolé est un monument ; entouré d'un semis de
+ *     petites coupoles de couleurs différentes, il devient une capitale ;
+ *   — **le chemin.** Un grand escalier monte au centre, dans l'axe du palais.
+ *     C'est lui qui donne l'échelle de tout le reste — on mesure la taille du
+ *     bâtiment à ce qu'il faut gravir pour l'atteindre — et c'est lui qui dit
+ *     que le lieu est habité.
+ *
+ * Au sommet, un drapeau au soleil. Il flotte, et c'est le seul mouvement de
+ * l'île avec le vol d'oiseaux : sur un désert, le vent est la seule chose qui
+ * bouge.
+ *
+ * ## La lumière n'est pas discutable ici
+ *
+ * `IslandSky` pose déjà le soleil d'Alabasta à droite du cadre. Toutes les
+ * ombres portées tombent donc **vers la gauche**, toutes les faces claires
+ * regardent à droite. Un second astre ajouté dans le décor — la première
+ * version en avait mis un — donnait deux jeux d'ombres contradictoires, ce qui
+ * est la façon la plus sûre d'aplatir un paysage.
+ *
+ * ## La profondeur se fait par la valeur, pas par les formes
+ *
+ * Du très pâle au loin — c'est l'air chargé de sable qui mange les reliefs —
+ * au franchement chaud au premier plan. C'est ce seul écart qui creuse le
+ * désert ; des montagnes mieux dessinées mais de densité voisine resteraient
+ * un décor plat.
+ *
+ * §122 : des formes géométriques. Une coupole est un demi-disque, un soleil un
+ * disque et douze langues, un escalier une suite de segments.
+ */
 function Alabasta() {
   return (
     <svg className="isl isl--alabasta" {...CADRE} aria-hidden="true">
       <AtmosphereDefs id="alb" lumiere="#ffe6ad" air="#f6e3bb" />
 
-      {/*
-        ## La lumière vient d'en haut à droite
-
-        Ce n'est pas un choix libre : `IslandSky` pose déjà le soleil
-        d'Alabasta à droite du cadre. Un second astre ici — la première
-        version en avait mis un à gauche — donnait deux sources et deux jeux
-        d'ombres contradictoires, ce qui est la façon la plus sûre d'aplatir un
-        paysage.
-
-        Toutes les ombres portées de ce décor tombent donc **vers la gauche**,
-        et les faces éclairées sont celles de droite.
-
-        ## La profondeur se fait par la valeur, pas par les formes
-
-        Les dunes étaient trois aplats de densité voisine : l'œil ne pouvait
-        pas les ranger dans l'espace. Elles vont maintenant du très pâle au
-        loin — c'est l'air chargé de sable qui les mange — au franchement
-        chaud au premier plan. C'est ce contraste, et lui seul, qui creuse le
-        désert.
-      */}
-
-      {/* Plan le plus lointain : à peine plus dense que le ciel. */}
-      <path d="M0 190 Q220 170 430 186 T900 176 V300 H0Z" fill="#f0d7a6" opacity=".5" />
-
-      {/* La brume mange le pied de cette dune-là seulement. */}
-      <Brume id="alb" y={172} hauteur={64} opacite={0.9} />
-
-      {/* Plan intermédiaire. */}
-      <path d="M0 214 Q180 176 360 208 T720 190 T900 206 V300 H0Z" fill="#e6b876" opacity=".7" />
-
-      {/* Ombre portée du palais, vers la gauche — à l'opposé du soleil du
-          ciel. Sans elle, le bâtiment flottait au-dessus du sable. */}
-      <path d="M330 252 l-96 30 H520 l4 -30Z" fill="#a9702f" opacity=".2" />
-
-      {/* Le palais : un corps, deux ailes, deux tours à dôme, un obélisque.
-          C'est cette silhouette qui nomme le lieu, donc elle est au centre du
-          cadre — la seule zone qu'un téléphone montre toujours.
-
-          Chaque volume porte désormais une face droite plus claire : c'est le
-          seul détail qui transforme une découpe en objet. */}
-      <g opacity=".82">
-        <g fill="#e3cba1">
-          <rect x="330" y="188" width="46" height="64" />
-          <rect x="524" y="188" width="46" height="64" />
-          <rect x="372" y="152" width="156" height="100" />
-        </g>
-
-        {/* Faces éclairées, côté soleil. */}
-        <g fill="#fbf0d6" opacity=".75">
-          <rect x="558" y="188" width="12" height="64" />
-          <rect x="510" y="152" width="18" height="100" />
-          <rect x="364" y="188" width="12" height="64" />
-        </g>
-
-        <path d="M372 152 h156 l-16 -18 h-124Z" fill="#c98f52" />
-
-        {[398, 502].map((x) => (
-          <g key={x}>
-            <rect x={x - 18} y="112" width="36" height="44" fill="#e3cba1" />
-            <rect x={x + 10} y="112" width="8" height="44" fill="#fbf0d6" opacity=".7" />
-            <path d={`M${x - 21} 112 a21 24 0 0 1 42 0Z`} fill="#c98f52" />
-            {/* Reflet sur le dôme : un croissant du côté du soleil. Deux
-                dômes parfaitement mats se lisaient comme des demi-cercles
-                découpés. */}
-            <path
-              d={`M${x + 3} 92 a15 17 0 0 1 15 18 a21 24 0 0 0 -15 -18Z`}
-              fill="#ffeec4"
-              opacity=".8"
-            />
-            <rect x={x - 2} y="90" width="4" height="16" fill="#c98f52" />
-          </g>
-        ))}
-
-        <path d="M442 152 V96 h16 v56Z" fill="#e3cba1" />
-        <path d="M452 152 V96 h6 v56Z" fill="#fbf0d6" opacity=".7" />
-        <path d="M442 96 l8 -18 l8 18Z" fill="#c98f52" />
-      </g>
-
-      {/* Premier plan : la dune la plus chaude et la plus dense. C'est elle
-          qui donne l'échelle de tout le reste. */}
-      <path d="M0 252 Q240 216 480 248 T900 236 V300 H0Z" fill="#cf8f42" opacity=".72" />
-
-      {/* Crête éclairée du premier plan, un liseré au sommet de la dune. */}
+      {/* Chaîne lointaine, à peine plus dense que le ciel. */}
       <path
-        d="M0 252 Q240 216 480 248 T900 236"
+        d="M0 196 L74 138 L132 170 L198 124 L268 168 L330 140 L404 182 L470 132 L548 176 L618 128 L698 170 L764 136 L838 174 L900 146 V300 H0Z"
+        fill="#dba97f"
+        opacity=".34"
+      />
+
+      {/* La brume mange le pied de cette chaîne-là seulement : posée plus bas,
+          elle voilerait aussi le palais, qui doit rester net. */}
+      <Brume id="alb" y={138} hauteur={80} opacite={0.92} />
+
+      {/* Oiseaux très haut et minuscules — c'est l'échelle qui fait le désert.
+          Dessinés **avant** le palais : ils passent derrière le minaret, ce qui
+          est la seule position juste pour des oiseaux lointains. Lents, quatre-
+          vingts secondes pour traverser : un vol rapide donnerait une fuite. */}
+      <Oiseaux y={62} teinte="#9a6b33" duree={80} echelle={0.9} />
+
+      {/* Chaîne plus proche, plus chaude, et sur les côtés seulement : au
+          centre, c'est le palais qui doit occuper le regard. */}
+      <path d="M0 208 L58 154 L120 190 L186 148 L252 196 L316 206 H0Z" fill="#c07f57" opacity=".4" />
+      <path
+        d="M900 208 L842 152 L780 190 L714 146 L648 196 L584 206 H900Z"
+        fill="#c07f57"
+        opacity=".4"
+      />
+
+      {/* --- Le plateau ------------------------------------------------------
+          Bord supérieur irrégulier : une falaise rectiligne se lit comme un
+          mur de soutènement, pas comme de la roche.
+
+          ## Pourquoi la falaise est nettement plus sombre que le sable
+
+          Au premier essai, roche et sable partageaient la même valeur : le
+          palais paraissait posé sur une dune, et les soixante-dix unités de
+          hauteur que je venais de lui donner ne se voyaient nulle part. Une
+          falaise ne se lit pas à sa forme — elle se lit à l'écart de valeur
+          avec ce qui est devant elle. D'où cette masse franchement plus dense,
+          et le sable repoussé tout en bas, en simple bande. */}
+      <path
+        d="M0 208 Q118 196 236 202 Q340 194 452 198 Q566 194 668 202 Q790 196 900 206 V300 H0Z"
+        fill="#ab7130"
+        opacity=".86"
+      />
+
+      {/* Le pied de la falaise, encore plus dense : c'est là que la roche
+          reçoit le moins de ciel. Sans cet assombrissement, le mur remontait
+          uniformément et se lisait comme un aplat. */}
+      <path
+        d="M0 244 Q220 236 452 242 Q680 236 900 244 V300 H0Z"
+        fill="#7f4f1e"
+        opacity=".3"
+      />
+
+      {/* Le dessus du plateau prend le jour : une bande claire le long de la
+          crête. Sans elle, la falaise et sa table ont la même valeur, et le
+          plateau redevient une découpe. */}
+      <path
+        d="M0 208 Q118 196 236 202 Q340 194 452 198 Q566 194 668 202 Q790 196 900 206 V218 Q790 208 668 214 Q566 206 452 210 Q340 206 236 214 Q118 208 0 220Z"
+        fill="#e8b96e"
+        opacity=".42"
+      />
+
+      {/* L'arête du plateau. C'est elle qui sépare la table de la paroi :
+          sans trait ici, les deux se confondaient et le palais flottait
+          au-dessus de sa propre falaise. Deux traits, pas un — un liseré clair
+          pour le dessus qui prend le jour, un trait sombre juste dessous pour
+          l'ombre que la corniche porte sur le vide. */}
+      <path
+        d="M0 208 Q118 196 236 202 Q340 194 452 198 Q566 194 668 202 Q790 196 900 206"
         fill="none"
         stroke="#ffe1a8"
         strokeWidth="3"
-        opacity=".45"
+        opacity=".5"
+      />
+      <path
+        d="M0 212 Q118 200 236 206 Q340 198 452 202 Q566 198 668 206 Q790 200 900 210"
+        fill="none"
+        stroke="#6d4318"
+        strokeWidth="2.5"
+        opacity=".22"
       />
 
-      {/* Palmiers. Trois, jamais alignés ni de même taille : trois copies
-          identiques feraient un motif, pas une oasis. */}
+      {/* Strates. Une roche sédimentaire se lit d'abord à ses couches
+          horizontales, avant ses fissures verticales — et deux bandes très
+          ténues suffisent à le dire. */}
+      <path
+        d="M0 226 Q220 220 452 226 Q680 220 900 228 V234 Q680 226 452 232 Q220 226 0 232Z"
+        fill="#7f4f1e"
+        opacity=".16"
+      />
+      <path
+        d="M0 250 Q220 244 452 250 Q680 244 900 252 V256 Q680 248 452 254 Q220 248 0 254Z"
+        fill="#7f4f1e"
+        opacity=".13"
+      />
+
+      {/* Ravines d'érosion.
+
+          ## Ce que le premier essai avait raté
+
+          C'étaient quatorze traits d'égale épaisseur, régulièrement espacés,
+          verticaux. Sur une paroi lisse, ça ne se lisait pas comme de la roche
+          fendue : ça se lisait comme une **rangée de poteaux** plantés devant
+          la falaise.
+
+          Trois corrections, et c'est le lot qui fonctionne, pas l'une d'elles :
+
+            — des **coins** plutôt que des traits. Une ravine est large en haut,
+              là où l'eau entre, et se perd en descendant ;
+            — un **fruit** : elles penchent toutes légèrement dans le même sens,
+              comme un ruissellement, au lieu de tomber à la verticale ;
+            — un **groupement** irrégulier. L'eau ne creuse pas à intervalles
+              réguliers : elle revient là où elle a déjà creusé. Elles vont donc
+              par deux ou trois, avec de larges pans intacts entre les groupes.
+
+          Aucune au centre : c'est là que passe l'escalier. */}
       {[
-        { x: 108, sens: 1, ech: 1 },
-        { x: 232, sens: -1, ech: 0.8 },
-        { x: 786, sens: -1, ech: 1.05 },
+        { x: 38, y: 212, h: 46, l: 9 },
+        { x: 56, y: 216, h: 30, l: 5 },
+        { x: 72, y: 214, h: 38, l: 6 },
+        { x: 140, y: 210, h: 50, l: 11 },
+        { x: 162, y: 218, h: 32, l: 6 },
+        { x: 246, y: 210, h: 52, l: 10 },
+        { x: 266, y: 216, h: 34, l: 5 },
+        { x: 284, y: 212, h: 42, l: 7 },
+        { x: 342, y: 214, h: 40, l: 8 },
+        { x: 558, y: 212, h: 44, l: 8 },
+        { x: 578, y: 218, h: 30, l: 5 },
+        { x: 646, y: 208, h: 54, l: 12 },
+        { x: 670, y: 216, h: 34, l: 6 },
+        { x: 688, y: 212, h: 44, l: 7 },
+        { x: 762, y: 210, h: 48, l: 10 },
+        { x: 784, y: 218, h: 30, l: 5 },
+        { x: 846, y: 212, h: 44, l: 9 },
+        { x: 866, y: 218, h: 32, l: 5 },
+      ].map(({ x, y, h, l }) => (
+        <path
+          key={x}
+          d={`M${x} ${y} l${l} 2 l${-l * 0.4} ${h} l${-l * 0.28} -1Z`}
+          fill="#6d4318"
+          opacity=".24"
+        />
+      ))}
+
+      {/* --- La ville basse --------------------------------------------------
+          Un semis de petites coupoles de part et d'autre du palais. Elles ne
+          sont pas décoratives : c'est leur présence qui transforme un monument
+          isolé en capitale, et leur petitesse qui donne sa taille au palais.
+          Couleurs volontairement variées — un quartier monochrome se lirait
+          comme une aile du bâtiment principal. */}
+      {[
+        { x: 150, l: 40, h: 34, dome: '#93ac93' },
+        { x: 200, l: 28, h: 24, dome: '#c2a05f' },
+        { x: 240, l: 46, h: 44, dome: '#9d86ac' },
+        { x: 296, l: 32, h: 28, dome: '#93ac93' },
+        { x: 336, l: 26, h: 20, dome: '#c2a05f' },
+        { x: 566, l: 26, h: 20, dome: '#9d86ac' },
+        { x: 604, l: 32, h: 28, dome: '#93ac93' },
+        { x: 646, l: 46, h: 42, dome: '#c2a05f' },
+        { x: 702, l: 28, h: 24, dome: '#9d86ac' },
+        { x: 742, l: 40, h: 32, dome: '#93ac93' },
+      ].map(({ x, l, h, dome }) => {
+        const sol = 202;
+        const haut = sol - h;
+        return (
+          <g key={x} opacity=".72">
+            {/* Ombre au sol, vers la gauche comme tout le reste de l'île. */}
+            <ellipse
+              cx={x - l * 0.35}
+              cy={sol + 1}
+              rx={l * 0.6}
+              ry={3}
+              fill="#a9702f"
+              opacity=".22"
+            />
+            <rect x={x - l / 2} y={haut} width={l} height={h} fill="#e3cba1" />
+            {/* Face éclairée, à droite. */}
+            <rect x={x + l / 2 - 5} y={haut} width="5" height={h} fill="#fbf0d6" opacity=".7" />
+            <path
+              d={`M${x - l / 2 - 2} ${haut} a${l / 2 + 2} ${l / 2 - 2} 0 0 1 ${l + 4} 0Z`}
+              fill={dome}
+            />
+            {/* Croissant de lumière sur la coupole : une coupole mate se lit
+                comme un demi-cercle découpé. */}
+            <path
+              d={`M${x + 2} ${haut - l / 2 + 3} a${l / 3} ${l / 3} 0 0 1 ${l / 2 - 2} ${l / 2 - 4} a${l / 2 + 2} ${l / 2 - 2} 0 0 0 -${l / 2 - 2} -${l / 2 - 4}Z`}
+              fill="#fbf0d6"
+              opacity=".4"
+            />
+            <rect x={x - 1} y={haut - l / 2 - 5} width="2" height="6" fill="#c98f52" />
+          </g>
+        );
+      })}
+
+      {/* --- Le palais -------------------------------------------------------
+          Au centre du cadre, entre x=330 et x=570 : la seule zone qu'un
+          téléphone montre toujours. */}
+
+      {/* Ombre portée sur la table du plateau, vers la gauche. Sans elle, tout
+          le bâtiment flotte au-dessus de sa propre falaise. */}
+      <path d="M330 198 l-70 12 H540 l6 -12Z" fill="#a9702f" opacity=".2" />
+
+      <g opacity=".86">
+        {/* Soubassement : le palais est bâti sur une terrasse, pas posé. */}
+        <rect x="326" y="186" width="248" height="14" fill="#c98f52" />
+        <rect x="326" y="186" width="248" height="4" fill="#fbf0d6" opacity=".5" />
+
+        {/* Ailes, puis corps central, puis bloc supérieur : du plus bas au plus
+            haut, chaque volume recouvrant celui qui le porte. */}
+        <g fill="#e3cba1">
+          <rect x="336" y="140" width="44" height="48" />
+          <rect x="520" y="140" width="44" height="48" />
+          <rect x="380" y="114" width="140" height="74" />
+          <rect x="404" y="92" width="92" height="24" />
+        </g>
+
+        {/* Faces éclairées, côté soleil. C'est le seul détail qui transforme
+            une découpe en volume. */}
+        <g fill="#fbf0d6" opacity=".72">
+          <rect x="552" y="140" width="12" height="48" />
+          <rect x="506" y="114" width="14" height="74" />
+          <rect x="482" y="92" width="14" height="24" />
+          <rect x="368" y="140" width="12" height="48" />
+        </g>
+
+        {/* Créneaux, aux trois hauteurs. Ceux du corps central s'arrêtent aux
+            épaules du bloc supérieur : les poser dessous les rendrait
+            invisibles, les poser dessus ferait un mur au milieu d'un toit. */}
+        <Creneaux x={338} y={140} n={3} pas={14} fill="#d8bd90" />
+        <Creneaux x={522} y={140} n={3} pas={14} fill="#d8bd90" />
+        <Creneaux x={382} y={114} n={2} pas={12} fill="#d8bd90" />
+        <Creneaux x={496} y={114} n={2} pas={12} fill="#d8bd90" />
+        <Creneaux x={406} y={92} n={7} pas={13} fill="#d8bd90" />
+
+        {/* Arcade du corps central : quatre arcs, tentures rouges au fond.
+            C'est le seul rouge du décor, et il tient là où l'œil arrive. */}
+        {[0, 1, 2, 3].map((i) => {
+          const x = 392 + i * 34;
+          return (
+            <g key={x}>
+              <path d={`M${x} 184 V150 a11 12 0 0 1 22 0 V184Z`} fill="#9c3a4c" opacity=".62" />
+              <path d={`M${x + 4} 184 V151 a7 8 0 0 1 14 0 V184Z`} fill="#c05468" opacity=".5" />
+            </g>
+          );
+        })}
+
+        {/* Un arc plus petit dans chaque aile. */}
+        {[350, 534].map((x) => (
+          <path key={x} d={`M${x} 186 V166 a8 9 0 0 1 16 0 V186Z`} fill="#9c3a4c" opacity=".55" />
+        ))}
+
+        {/* Les trois coupoles d'or. La centrale est plus haute et posée sur un
+            tambour : trois coupoles alignées à la même hauteur feraient une
+            rangée d'oignons, pas une couronne. */}
+        {[424, 476].map((cx) => (
+          <g key={cx}>
+            <path d={`M${cx - 15} 92 a15 15 0 0 1 30 0Z`} fill="#d9a93a" />
+            <path
+              d={`M${cx + 2} 79 a9 9 0 0 1 12 12 a15 15 0 0 0 -12 -12Z`}
+              fill="#f7dd8c"
+              opacity=".75"
+            />
+          </g>
+        ))}
+
+        <rect x="436" y="76" width="28" height="16" fill="#e3cba1" />
+        <rect x="456" y="76" width="8" height="16" fill="#fbf0d6" opacity=".7" />
+        <path d="M431 76 a19 19 0 0 1 38 0Z" fill="#d9a93a" />
+        <path d="M452 58 a12 12 0 0 1 15 16 a19 19 0 0 0 -15 -16Z" fill="#f7dd8c" opacity=".8" />
+
+        {/* Le minaret, au-dessus de tout. */}
+        <rect x="446" y="44" width="8" height="16" fill="#e3cba1" />
+        <rect x="451" y="44" width="3" height="16" fill="#fbf0d6" opacity=".7" />
+        <path d="M443 44 L450 30 L457 44Z" fill="#c98f52" />
+        <circle cx="450" cy="28" r="3" fill="#d9a93a" />
+      </g>
+
+      {/* --- Le drapeau au soleil -------------------------------------------
+          Hampe fine, drapeau à droite du mât, et le tout oscille lentement
+          autour du mât. `transform-box: fill-box` avec une origine à gauche :
+          c'est ce qui fait tourner le tissu **autour de sa hampe** et non
+          autour de son propre centre — seule différence entre un drapeau qui
+          flotte et un panneau qui pivote. */}
+      <line x1="450" y1="28" x2="450" y2="12" stroke="#c98f52" strokeWidth="2.5" />
+      <g className="isl-drapeau">
+        <path
+          d="M452 14 Q472 10 492 16 L492 34 Q472 40 452 34Z"
+          fill="#fdf6e6"
+          stroke="#d8c49a"
+          strokeWidth="1"
+          opacity=".95"
+        />
+        {/* Le soleil : un disque et douze langues. Les langues sont ce qui
+            distingue un soleil d'un point — un disque seul se lirait comme une
+            pastille de couleur. */}
+        <g fill="#e2842c">
+          {Array.from({ length: 12 }, (_, i) => (
+            <path
+              key={i}
+              d="M472 14 q3.4 4.6 0 9.2 q-3.4 -4.6 0 -9.2Z"
+              transform={`rotate(${i * 30} 472 25)`}
+            />
+          ))}
+          <circle cx="472" cy="25" r="6" />
+        </g>
+      </g>
+
+      {/* --- Le premier plan -------------------------------------------------
+          La dune la plus chaude et la plus dense, creusée au centre : c'est
+          dans ce vallon que l'escalier vient poser son pied. Une dune bombée
+          au milieu aurait enterré ses six dernières marches. */}
+      <path
+        d="M0 262 Q150 244 292 258 Q380 270 450 280 Q520 270 610 256 Q752 238 900 254 V300 H0Z"
+        fill="#cf8f42"
+        opacity=".72"
+      />
+      <path
+        d="M0 262 Q150 244 292 258 Q380 270 450 280 Q520 270 610 256 Q752 238 900 254"
+        fill="none"
+        stroke="#ffe1a8"
+        strokeWidth="2.5"
+        opacity=".3"
+      />
+
+      {/* --- Le grand escalier -----------------------------------------------
+          Dessiné après la dune, donc devant elle : c'est la seule façon de le
+          voir entier, et un escalier dont on ne voit pas le pied ne mène nulle
+          part. Un tablier de sable, à la fin, enterre ses dernières marches et
+          rattrape la profondeur. */}
+      <g opacity=".88">
+        <path d="M406 286 L432 200 H468 L494 286Z" fill="#e8ddc4" opacity=".7" />
+
+        {/* Marches. L'écart se resserre en montant : c'est ce raccourci, et lui
+            seul, qui donne la pente. Régulièrement espacées, elles feraient une
+            échelle vue à plat. */}
+        {Array.from({ length: 17 }, (_, i) => {
+          const t = i / 16;
+          const e = t * (2 - t);
+          const y = 286 - 86 * e;
+          const demi = 44 - 26 * e;
+          return (
+            <path
+              key={i}
+              d={`M${450 - demi} ${y} H${450 + demi}`}
+              stroke="#b09b71"
+              strokeWidth="1.5"
+              opacity=".5"
+            />
+          );
+        })}
+
+        {/* Rampes. Celle de droite est plus claire — même soleil que partout. */}
+        <path d="M406 286 L432 200 h-9 L397 286Z" fill="#cbbb98" opacity=".75" />
+        <path d="M494 286 L468 200 h9 L503 286Z" fill="#efe6cf" opacity=".8" />
+
+        {/* Les deux pylônes du bas. Ils gardent l'entrée et donnent, à eux
+            seuls, la hauteur de la falaise : on lit un plateau à ce qui le
+            dépasse. */}
+        {[388, 512].map((x) => (
+          <g key={x}>
+            <ellipse cx={x - 9} cy="288" rx="13" ry="3" fill="#a9702f" opacity=".25" />
+            <rect x={x - 7} y="228" width="14" height="60" fill="#dcd0b4" />
+            <rect x={x + 3} y="228" width="4" height="60" fill="#fbf0d6" opacity=".75" />
+            <path d={`M${x - 10} 228 h20 l-10 -13Z`} fill="#c98f52" />
+          </g>
+        ))}
+
+        <ellipse cx="450" cy="287" rx="70" ry="8" fill="#cf8f42" opacity=".6" />
+      </g>
+
+      {/* Palmiers, sur les bords : du secondaire, dont l'absence sur un écran
+          étroit ne change rien à ce qu'on reconnaît. Trois, jamais alignés ni
+          de même taille — trois copies identiques feraient un motif. */}
+      {[
+        { x: 96, sens: 1, ech: 0.74 },
+        { x: 202, sens: -1, ech: 0.6 },
+        { x: 812, sens: -1, ech: 0.8 },
       ].map(({ x, sens, ech }) => {
         const cx = x + 6 * sens * ech;
-        const cy = 258 - 68 * ech;
+        const cy = 290 - 68 * ech;
         return (
           <g key={x} opacity=".62">
-            {/* Ombre au sol, vers la gauche comme tout le reste. */}
-            <ellipse cx={x - 16 * ech} cy="260" rx={22 * ech} ry={4} fill="#a9702f" opacity=".3" />
+            <ellipse cx={x - 16 * ech} cy="292" rx={22 * ech} ry={4} fill="#a9702f" opacity=".3" />
             <path
-              d={`M${x} 258 q${14 * sens} -34 ${6 * sens} -${62 * ech}`}
+              d={`M${x} 290 q${14 * sens} -34 ${6 * sens} -${62 * ech}`}
               stroke="#7d5527"
               strokeWidth={6 * ech}
               fill="none"
@@ -499,11 +851,6 @@ function Alabasta() {
           </g>
         );
       })}
-
-      {/* Trois oiseaux très haut, minuscules : c'est l'échelle qui fait le
-          désert. Lents — quatre-vingts secondes pour traverser — parce qu'un
-          vol rapide donnerait une impression de fuite. */}
-      <Oiseaux y={54} teinte="#9a6b33" duree={80} echelle={0.9} />
 
       <Finition id="alb" />
     </svg>
@@ -673,6 +1020,185 @@ function Dressrosa() {
   );
 }
 
+/**
+ * Un poisson-ruban qui traverse la fosse.
+ *
+ * ## Comment on ondule sans repeindre
+ *
+ * Le corps n'est pas un tracé qu'on déforme : c'est une **file d'anneaux**,
+ * chacun animé pour son compte, chacun reprenant le mouvement du précédent
+ * avec un temps de retard. Ce décalage, et lui seul, fait remonter une vague
+ * le long du corps ; au même rythme, les treize anneaux monteraient et
+ * descendraient ensemble et on lirait un ruban secoué, pas un poisson.
+ *
+ * C'est aussi la seule écriture qui tienne le budget de la page. Déformer un
+ * `path` demanderait de recalculer sa géométrie à chaque image, sur le fil
+ * principal, derrière l'interface — sur toutes les pages du jeu. Ici, chaque
+ * anneau ne fait qu'un `translateY` : le compositeur s'en charge **sans
+ * repeindre**.
+ *
+ * Les anneaux se chevauchent largement. C'est ce qui interdit au corps de se
+ * fendre au milieu d'une ondulation : espacés de 26 pour un rayon de 17, deux
+ * voisins restent soudés même à l'écart maximal.
+ *
+ * §122 : des formes géométriques. Un anneau est une ellipse, une nageoire un
+ * triangle, un filament un arc.
+ */
+function PoissonRuban({
+  y,
+  duree,
+  retard,
+  echelle,
+}: {
+  y: number;
+  duree: number;
+  retard: number;
+  echelle: number;
+}) {
+  const ANNEAUX = 11;
+
+  return (
+    <g
+      className="isl-nage"
+      style={{ ['--duree' as string]: `${duree}s`, ['--retard' as string]: `${retard}s` }}
+      aria-hidden="true"
+    >
+      <g transform={`translate(0 ${y}) scale(${echelle})`} opacity=".55">
+        {Array.from({ length: ANNEAUX }, (_, i) => {
+          const x = i * 23;
+          // Le corps s'affine vers la queue. Un ruban d'épaisseur constante se
+          // lirait comme une écharpe.
+          const rx = 19 - i * 0.55;
+          const ry = 14 - i * 0.85;
+          return (
+            <g
+              key={i}
+              className="isl-ondule"
+              // Retard **négatif** : l'animation démarre déjà entamée, donc la
+              // vague est en place dès la première image plutôt que de se
+              // former pendant les trois premières secondes.
+              style={{ ['--phase' as string]: `${(-i * 0.19).toFixed(2)}s` }}
+            >
+              {/* La crête dorsale, avant le corps : une barre arrondie plus
+                  large que l'espacement des anneaux, donc chevauchant sa
+                  voisine. C'est ce chevauchement qui fait une **frange
+                  continue** — les triangles séparés du premier essai se
+                  lisaient comme une file de petites tentes. */}
+              <rect
+                x={x - rx * 0.9}
+                y={-ry - 4}
+                width={rx * 1.8}
+                height="5"
+                rx="2.5"
+                fill="#d4566a"
+                opacity=".7"
+              />
+              <ellipse cx={x} cy="0" rx={rx} ry={ry} fill="#c7dee0" />
+              {/* Barres sombres, un anneau sur trois. Sur tous, elles feraient
+                  une rayure de maillot ; le ventre clair que portait chaque
+                  anneau, lui, découpait le corps en perles et a sauté. */}
+              {i % 3 === 1 && (
+                <ellipse
+                  cx={x}
+                  cy={-ry * 0.15}
+                  rx={rx * 0.34}
+                  ry={ry * 0.6}
+                  fill="#2b5f6b"
+                  opacity=".5"
+                />
+              )}
+            </g>
+          );
+        })}
+
+        {/* La tête : l'œil, et le panache de filaments qui la coiffe. C'est ce
+            panache qui nomme la bête — sans lui, on lirait une anguille. */}
+        <g className="isl-ondule" style={{ ['--phase' as string]: '0s' }}>
+          <circle cx="-6" cy="-2" r="2.6" fill="#173f45" />
+          <g stroke="#d4566a" strokeWidth="2.2" strokeLinecap="round" fill="none" opacity=".8">
+            <path className="isl-filament" style={{ ['--phase' as string]: '0s' }} d="M2 -9 q-6 -18 -20 -24" />
+            <path className="isl-filament" style={{ ['--phase' as string]: '-0.5s' }} d="M6 -9 q-2 -20 -12 -28" />
+            <path className="isl-filament" style={{ ['--phase' as string]: '-1s' }} d="M10 -9 q2 -19 -3 -29" />
+            <path className="isl-filament" style={{ ['--phase' as string]: '-1.5s' }} d="M14 -9 q6 -16 4 -26" />
+          </g>
+        </g>
+      </g>
+    </g>
+  );
+}
+
+/**
+ * Le grand poisson tacheté, tête à gauche, qui traverse dans l'autre sens.
+ *
+ * ## Pourquoi il va à contresens du ruban
+ *
+ * Deux silhouettes qui dérivent dans le même sens, à la même profondeur, se
+ * lisent comme un banc — donc comme un seul objet. En sens contraires et à
+ * deux profondeurs, elles se croisent : c'est le croisement qui donne son
+ * volume à la fosse.
+ *
+ * Il n'ondule pas, et c'est délibéré. Une masse de cette taille se déplace
+ * d'un bloc ; seules les nageoires travaillent. Lui faire onduler le corps
+ * l'aurait rendu élastique, donc petit.
+ */
+function GrandPoisson({
+  y,
+  duree,
+  retard,
+  echelle,
+}: {
+  y: number;
+  duree: number;
+  retard: number;
+  echelle: number;
+}) {
+  return (
+    <g
+      className="isl-nage isl-nage--envers"
+      style={{ ['--duree' as string]: `${duree}s`, ['--retard' as string]: `${retard}s` }}
+      aria-hidden="true"
+    >
+      <g transform={`translate(0 ${y}) scale(${echelle})`} opacity=".44">
+        {/* Nageoires derrière le corps : elles s'y accrochent au lieu d'y être
+            posées. */}
+        <path
+          className="isl-nageoire"
+          style={{ ['--phase' as string]: '0s' }}
+          d="M44 14 Q28 46 68 30Z"
+          fill="#8fb6bb"
+        />
+        <path d="M104 20 Q106 40 126 26Z" fill="#8fb6bb" />
+        <path d="M86 -24 Q100 -50 124 -22Z" fill="#8fb6bb" />
+        <path d="M140 -16 Q148 -30 160 -14Z" fill="#8fb6bb" />
+
+        {/* Corps, puis la queue en croissant. */}
+        <ellipse cx="78" cy="0" rx="80" ry="27" fill="#cfe3e4" />
+        <path
+          className="isl-nageoire"
+          style={{ ['--phase' as string]: '-0.8s' }}
+          d="M152 -10 Q188 -8 208 -32 Q200 -4 210 0 Q200 4 208 32 Q188 8 152 10Z"
+          fill="#b3d2d5"
+        />
+
+        {/* Les taches. Irrégulières et de tailles inégales : c'est ce qui
+            distingue un pelage d'un motif imprimé. */}
+        <g fill="#1d3f4a" opacity=".62">
+          <path d="M16 -16 Q46 -28 70 -14 Q50 0 20 -4Z" />
+          <path d="M84 -20 Q114 -24 126 -6 Q100 4 82 -4Z" />
+          <path d="M40 8 Q68 4 80 18 Q54 26 38 18Z" />
+          <path d="M116 6 Q140 2 148 16 Q128 22 114 16Z" />
+          <path d="M2 -6 Q14 -16 26 -8 Q14 2 4 4Z" />
+          <path d="M62 -4 Q78 -8 84 2 Q70 8 60 4Z" />
+        </g>
+
+        {/* L'œil, minuscule, et la bouche : deux traits qui font une tête. */}
+        <circle cx="14" cy="-7" r="3.2" fill="#0e2a33" />
+        <path d="M-2 5 Q16 12 34 8" stroke="#8fb6bb" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+      </g>
+    </g>
+  );
+}
+
 /** Île des hommes-poissons — sous la mer, mais éclairée. */
 function Fishman() {
   return (
@@ -691,6 +1217,20 @@ function Fishman() {
           l'écran. Une colonne de lumière qui commence au milieu de nulle part
           ne ressemble à rien. Voir `IslandSky`, où ils traversent toute la
           hauteur. */}
+
+      {/* --- Les bêtes de la fosse -------------------------------------------
+          Dessinées **avant** la bulle : elles passent derrière elle, dans
+          l'eau libre, ce qui est la seule position juste. Devant, elles
+          seraient entrées dans la ville — et une bulle qu'on traverse n'est
+          plus une bulle.
+
+          Elles sont lentes : soixante et quatre-vingts secondes pour traverser
+          le cadre. Un décor de fond ne doit pas attirer l'œil ; ce qu'on
+          cherche, c'est que le joueur ne remarque rien et trouve la page
+          vivante. Le retard de la seconde évite qu'elles n'entrent ensemble à
+          la première seconde de chaque cycle. */}
+      <GrandPoisson y={104} duree={82} retard={0} echelle={0.92} />
+      <PoissonRuban y={166} duree={58} retard={11} echelle={0.82} />
 
       {/* La bulle géante qui enferme l'île. Ses deux pieds touchent exactement
           le bas du cadre : elle est entière, aucun bord ne la tranche. */}

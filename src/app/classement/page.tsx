@@ -10,6 +10,7 @@ import {
   getCachedLeaderboardTop,
 } from '@/lib/cache';
 import { Nav } from '@/components/Nav';
+import { Tutorial } from '@/components/Tutorial';
 import Link from 'next/link';
 import { CHARACTER_INDEX } from '@/data/characters';
 import { spoilerState } from '@/domain/chapter/lock';
@@ -128,6 +129,7 @@ export default async function LeaderboardPage() {
         </p>
         {panneauLigues}
         <AdBanner />
+        <Tutorial page="classement" />
         <Nav />
       </HarborScene>
     );
@@ -146,6 +148,7 @@ export default async function LeaderboardPage() {
         </p>
         {panneauLigues}
         <AdBanner />
+        <Tutorial page="classement" />
         <Nav />
       </HarborScene>
     );
@@ -371,6 +374,7 @@ export default async function LeaderboardPage() {
           du classement par le lien de bas de page ou par le bouton retour du
           navigateur. */}
       <AdBanner />
+      <Tutorial page="classement" />
       <Nav />
     </HarborScene>
   );

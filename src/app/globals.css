@@ -1890,6 +1890,33 @@ button[aria-busy='true']:not(.hb-btn)::before {
   white-space: nowrap;
 }
 
+/* Le refus définitif. Volontairement discret — c'est une sortie, pas une
+   action qu'on propose — mais jamais caché : le produit promet qu'on peut se
+   passer des visites guidées d'un geste, et une promesse qu'il faut chercher
+   n'en est pas une.
+
+   Souligné plutôt que coloré : à cette taille, la couleur seule ne suffit pas
+   à dire « cliquable » (§111, WCAG 1.4.1). */
+.hb-tuto__jamais {
+  display: block;
+  width: 100%;
+  margin-top: 0.9rem;
+  padding: 0.25rem 0;
+  font-size: 0.72rem;
+  color: #5d4a2c;
+  text-align: center;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.hb-tuto__jamais:hover,
+.hb-tuto__jamais:focus-visible {
+  color: #2a1c07;
+}
+
 /* ===========================================================================
    Chapeau de paille sur le pont de la page de connexion.
    =========================================================================== */
@@ -2031,6 +2058,20 @@ button[aria-busy='true']:not(.hb-btn)::before {
 .hb-card--rarity .hb-shop__icon {
   color: #2a1c07; /* repli : voir la note sur .hb-rcard__rarity */
   color: color-mix(in srgb, var(--rarity, #8ea3bd) 70%, #2a1c07);
+}
+
+/* La quantité du lot et le prix à l'unité.
+
+   Assez fort pour être lu **avant** la comparaison des prix — c'est toute sa
+   raison d'être — sans disputer la vedette au nom du produit. D'où le corps
+   intermédiaire et la teinte d'encre pleine plutôt que la teinte atténuée des
+   descriptions : atténué, il aurait été sauté exactement comme l'était le
+   paragraphe qu'il remplace. */
+.hb-shop__lot {
+  margin-top: 0.15rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #3c2f14;
 }
 
 .hb-shop__rarity {
@@ -5169,3 +5210,134 @@ button[aria-busy='true']:not(.hb-btn)::before {
     opacity: 0.45;
   }
 }
+
+/* --- Le drapeau d'Alabasta ------------------------------------------------- */
+
+/*
+ * Un drapeau tourne **autour de sa hampe**, pas autour de son propre centre :
+ * d'où `transform-box: fill-box` avec une origine sur le bord gauche. Sans
+ * cette ligne, l'origine par défaut est le centre du cadre SVG entier — à
+ * quatre cents unités de là — et le drapeau décrivait un arc de cercle à
+ * travers le ciel.
+ *
+ * Le pincement horizontal (`scaleX`) fait le reste : c'est lui qui donne
+ * l'impression que le tissu se creuse quand le vent forcit. Une rotation seule
+ * se lit comme une pancarte qui balance.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .isl-drapeau {
+    animation: isl-flotte 5.5s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: left center;
+  }
+}
+
+@keyframes isl-flotte {
+  0%,
+  100% {
+    transform: rotate(-1.6deg) scaleX(1);
+  }
+  50% {
+    transform: rotate(1.6deg) scaleX(0.93);
+  }
+}
+
+/* --- Les bêtes de la fosse ------------------------------------------------- */
+
+/*
+ * La traversée. Même mécanique que le vol d'oiseaux — un pourcentage résolu
+ * sur le cadre SVG, donc indépendant de la taille du dessin — mais la marge
+ * est plus large : ces bêtes font deux cents unités de long, et une marge de
+ * quinze pour cent les aurait fait apparaître par morceaux au bord du cadre.
+ *
+ * Deux sens, deux animations. On aurait pu retourner le groupe en `scaleX(-1)`
+ * et n'en garder qu'une, mais la transformation de traversée écrase alors
+ * celle du retournement : les deux vivent sur la même propriété.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .isl-nage {
+    animation: isl-traverse-mer var(--duree, 64s) linear var(--retard, 0s) infinite;
+  }
+
+  .isl-nage--envers {
+    animation-name: isl-traverse-mer-envers;
+  }
+
+  /*
+   * L'ondulation, anneau par anneau. `--phase` et non `--retard` : le groupe
+   * qui traverse porte déjà un `--retard`, et les variables personnalisées
+   * s'héritent — un même nom aurait fait démarrer chaque anneau avec le retard
+   * d'entrée du poisson, soit onze secondes de corps immobile.
+   */
+  .isl-ondule {
+    animation: isl-ondule 2.8s ease-in-out var(--phase, 0s) infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  /* Les filaments et les nageoires balaient au lieu de monter : une nageoire
+     qui se translate se décroche du corps. */
+  .isl-filament {
+    animation: isl-balaie 4.2s ease-in-out var(--phase, 0s) infinite;
+    transform-box: fill-box;
+    transform-origin: bottom center;
+  }
+
+  .isl-nageoire {
+    animation: isl-balaie 3.6s ease-in-out var(--phase, 0s) infinite;
+    transform-box: fill-box;
+    transform-origin: 15% 50%;
+  }
+}
+
+/* Sans animation, les bêtes restent dans le cadre plutôt que d'attendre hors
+   champ pour l'éternité : le décor garde ses habitants, il cesse seulement de
+   les faire nager. */
+@media (prefers-reduced-motion: reduce) {
+  .isl-nage {
+    transform: translateX(22%);
+  }
+
+  .isl-nage--envers {
+    transform: translateX(58%);
+  }
+}
+
+@keyframes isl-traverse-mer {
+  from {
+    transform: translateX(-28%);
+  }
+  to {
+    transform: translateX(128%);
+  }
+}
+
+@keyframes isl-traverse-mer-envers {
+  from {
+    transform: translateX(128%);
+  }
+  to {
+    transform: translateX(-28%);
+  }
+}
+
+@keyframes isl-ondule {
+  0%,
+  100% {
+    transform: translateY(-5px);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@keyframes isl-balaie {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(8deg);
+  }
+}
+

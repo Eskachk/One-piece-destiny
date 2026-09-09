@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
 import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
+import { Tutorial } from '@/components/Tutorial';
 import Link from 'next/link';
 import { MarketBoard } from '@/components/MarketBoard';
 import { Watchlist } from '@/components/Watchlist';
@@ -55,6 +56,7 @@ export default async function MarketPage() {
         {/* La barre manquait sur cette branche : sans base configurée, le
             joueur se retrouvait sur un écran sans aucune sortie autre que le
             lien de bas de page. */}
+        <Tutorial page="market" />
         <Nav />
       </HarborScene>
     );
@@ -202,6 +204,7 @@ export default async function MarketPage() {
         <Watchlist watched={watched} />
       </section>
       <AdBanner />
+      <Tutorial page="market" />
       <Nav />
     </HarborScene>
   );

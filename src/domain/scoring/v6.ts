@@ -82,7 +82,7 @@ export const CAPS = { base: 34, synergy: 34, risk: 32, total: 100 } as const;
  * perdant, ce qui pousserait à jouer contre son propre pronostic. On veut
  * qu'il reste correct, pas qu'il devienne une faute.
  */
-const CONSENSUS = 0.45;
+export const CONSENSUS = 0.45;
 
 const RELATION_WEIGHTS: Record<RelationKind, number> = {
   ALLIANCE: 11,

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
 import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
+import { Tutorial } from '@/components/Tutorial';
 import { ChestPanel } from '@/components/ChestPanel';
 import { chestOdds } from '@/domain/collection/odds';
 import { CraftButton } from '@/components/CraftButton';
@@ -299,6 +300,7 @@ export default async function CollectionPage() {
         </section>
       )}
       <AdBanner />
+      <Tutorial page="collection" />
       <Nav />
     </HarborScene>
   );

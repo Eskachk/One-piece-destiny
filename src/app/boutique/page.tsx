@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
 import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
+import { Tutorial } from '@/components/Tutorial';
 import { ShopPanel } from '@/components/ShopPanel';
 import { CATALOG } from '@/domain/payments/catalog';
 import { CHARACTERS } from '@/data/characters';
@@ -61,6 +62,13 @@ export default async function ShopPage() {
       // afficher un par erreur.
       fullPrice:
         priceCents < product.priceCents ? euros(product.priceCents) : null,
+      // Le prix à l'unité se calcule sur le prix **effectivement payé**, pas
+      // sur celui du catalogue : pendant l'offre de lancement, afficher
+      // 2,50 € le coffre alors qu'il en coûte 2,00 serait un mensonge à
+      // rebours, et le seul chiffre que le joueur vérifierait.
+      lot: product.lot
+        ? `${product.lot.quantite} ${product.lot.unite} · ${euros(Math.round(priceCents / product.lot.quantite))} l’unité`
+        : null,
       description: product.description,
       rarityColor: product.rarity ? RARITY_COLOR[product.rarity] : null,
       rarityLabel: product.rarity ? RARITY_LABEL[product.rarity] : null,
@@ -105,6 +113,7 @@ export default async function ShopPage() {
         }
       />
 
+      <Tutorial page="boutique" />
       <Nav />
     </HarborScene>
   );
