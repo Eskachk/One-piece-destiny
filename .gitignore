@@ -51,3 +51,6 @@ android/*
 
 # Rapports de couverture : artefacts de test, regeneres a chaque execution.
 /coverage
+
+# L'affiche est régénérée par `npm run affiche`, pas versionnée.
+/affiche-one-piece-quest.png
