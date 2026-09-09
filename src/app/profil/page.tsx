@@ -232,7 +232,7 @@ export default async function ProfilePage() {
               : `${divisionState.promotionStreak} semaine(s) en zone de promotion.`)}
           {divisionState.relegationStreak > 0 &&
             (currentRank === 0
-              ? `${divisionState.relegationStreak} semaine(s) difficile(s) — mais East Blue est le point de départ, on n’en descend pas.`
+              ? `${divisionState.relegationStreak} semaine(s) difficile(s). East Blue est le point de départ, on n’en descend pas.`
               : `${divisionState.relegationStreak} semaine(s) en zone de relégation.`)}
           {divisionState.promotionStreak === 0 &&
             divisionState.relegationStreak === 0 &&

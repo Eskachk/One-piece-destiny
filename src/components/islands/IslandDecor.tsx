@@ -1530,7 +1530,7 @@ function Fishman() {
           vivante. Le retard de la seconde évite qu'elles n'entrent ensemble à
           la première seconde de chaque cycle. */}
       <GrandPoisson y={104} duree={82} retard={0} echelle={0.92} />
-      <PoissonRuban y={166} duree={58} retard={11} echelle={0.82} />
+      <PoissonRuban y={166} duree={58} retard={-11} echelle={0.82} />
 
       {/* La bulle géante qui enferme l'île. Ses deux pieds touchent exactement
           le bas du cadre : elle est entière, aucun bord ne la tranche. */}

@@ -128,7 +128,7 @@ export const TUTORIELS: Record<PageTutoriel, readonly Etape[]> = {
       titre: 'Ce que rapporte un personnage',
       corps: `${CHIFFRES.base} points s’il apparaît dans le chapitre. Jusqu’à ${CHIFFRES.synergie} de plus pour ses liens avec les autres personnages présents. Jusqu’à ${CHIFFRES.risque} pour l’improbabilité du pari. ${CHIFFRES.total} au maximum.`,
       repere:
-        'Un absent perd la présence — mais garde une partie des liens qu’il avait bien vus.',
+        'Un absent perd la présence, mais garde une partie des liens qu’il avait bien vus.',
     },
     {
       titre: 'La rareté ne donne aucun point',
@@ -199,7 +199,7 @@ export const TUTORIELS: Record<PageTutoriel, readonly Etape[]> = {
     {
       titre: 'La rareté est un plaisir, pas un avantage',
       corps:
-        'Un Mythique ne rapporte pas un point de plus qu’un Commun. Il est plus rare à obtenir, plus beau à posséder — et strictement égal devant le classement.',
+        'Un Mythique ne rapporte pas un point de plus qu’un Commun. Il est plus rare à obtenir et plus beau à posséder, mais strictement égal devant le classement.',
     },
   ],
 
@@ -258,7 +258,7 @@ export const TUTORIELS: Record<PageTutoriel, readonly Etape[]> = {
     {
       titre: 'Ton style de jeu',
       corps:
-        'Au bout de quelques semaines, le jeu déduit ta façon de parier — prudente, opportuniste, ou franchement téméraire.',
+        'Au bout de quelques semaines, le jeu déduit ta façon de parier : prudente, opportuniste, ou franchement téméraire.',
       repere: 'C’est un miroir, pas une note : aucun style ne rapporte plus qu’un autre.',
     },
     {

@@ -241,7 +241,7 @@ export function verifyEmailAddressEmail(to: string, link: string): EmailMessage 
     lines: [
       'Confirme cette adresse pour sécuriser ton compte : c’est elle qui recevra les liens de réinitialisation et les alertes de sécurité.',
       'Ce lien expire dans 24 heures.',
-      'Si tu n’es pas à l’origine de cette inscription, ignore ce message — aucun compte ne sera activé à ton nom sans cette confirmation.',
+      'Si tu n’es pas à l’origine de cette inscription, ignore ce message : aucun compte ne sera activé à ton nom sans cette confirmation.',
     ],
     action: { label: 'Confirmer mon adresse', href: link },
   });
@@ -267,7 +267,7 @@ export function priceAlertEmail(
     intro: `Une annonce à ${price} Berries vient de paraître (ton seuil : ${threshold}).`,
     lines: [
       'Cette annonce reste disponible tant que personne ne l’achète.',
-      'Aucun personnage n’influence ton score par son prix — seule la collection est en jeu.',
+      'Aucun personnage n’influence ton score par son prix. Seule la collection est en jeu.',
     ],
     action: { label: 'Voir l’annonce', href: `${baseUrl()}/market` },
     showPreferences: true,

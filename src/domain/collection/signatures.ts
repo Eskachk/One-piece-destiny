@@ -449,7 +449,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
     head: 'tricorne', mark: 'beard', prop: 'none', build: 'giant',
   },
   'rocks-d-xebec': {
-    note: 'Silhouette imposante à la chevelure sombre, manteau lourd — l’œuvre n’en montre presque rien.',
+    note: 'Silhouette imposante à la chevelure sombre, manteau lourd. L’œuvre n’en montre presque rien.',
     hair: '#121218', cut: 'long', skin: MAT, outfit: '#2a2333', coat: '#191322',
     extras: ['cape', 'pauldrons', 'belt'],
     face: 'square',

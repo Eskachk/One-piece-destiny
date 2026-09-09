@@ -21,7 +21,7 @@ const RULES: { title: string; body: string; sanction: string }[] = [
   {
     title: 'Deux comptes au maximum',
     body:
-      'Tu peux avoir un second compte — pour tester une autre stratégie, ou parce que vous êtes deux à jouer sur la même connexion. Au-delà, c’est une ferme : multiplier les coffres d’arrivée, se parrainer soi-même ou occuper plusieurs places au classement fausse la semaine de tout le monde. Partager une connexion n’est jamais reproché en soi ; c’est le fait de faire remonter la valeur de plusieurs comptes vers un seul qui l’est.',
+      'Tu peux avoir un second compte, pour tester une autre stratégie ou parce que vous êtes deux à jouer sur la même connexion. Au-delà, c’est une ferme : multiplier les coffres d’arrivée, se parrainer soi-même ou occuper plusieurs places au classement fausse la semaine de tout le monde. Partager une connexion n’est jamais reproché en soi ; c’est le fait de faire remonter la valeur de plusieurs comptes vers un seul qui l’est.',
     sanction:
       'Les comptes au-delà du deuxième sont fermés et leurs gains annulés. Le compte bénéficiaire perd ses récompenses de parrainage.',
   },
@@ -35,7 +35,7 @@ const RULES: { title: string; body: string; sanction: string }[] = [
   {
     title: 'Pas d’arnaque sur le Marché',
     body:
-      'Une carte s’échange contre des Berries, à l’intérieur du jeu, et rien d’autre. Toute vente contre un paiement extérieur, tout échange promis « après coup », toute usurpation d’identité pour obtenir une carte est une arnaque — y compris si l’autre joueur était d’accord.',
+      'Une carte s’échange contre des Berries, à l’intérieur du jeu, et rien d’autre. Toute vente contre un paiement extérieur, tout échange promis « après coup », toute usurpation d’identité pour obtenir une carte est une arnaque, y compris si l’autre joueur était d’accord.',
     sanction:
       'Annulation de l’échange quand elle est possible, blocage du Market, fermeture du compte en cas de récidive.',
   },
@@ -55,13 +55,13 @@ const RULES: { title: string; body: string; sanction: string }[] = [
   {
     title: 'Pas de spoiler avant la sortie officielle',
     body:
-      'Les résultats ne s’affichent qu’après la publication du chapitre, et c’est délibéré. Diffuser le contenu d’un chapitre en avance gâche le rendez-vous pour tout le monde.',
+      'Les résultats ne s’affichent qu’après la publication du chapitre. Diffuser le contenu d’un chapitre en avance gâche le rendez-vous pour tout le monde.',
     sanction: 'Avertissement, puis fermeture du compte.',
   },
   {
     title: 'Ton compte n’est pas à prêter',
     body:
-      'Ne partage ni ton mot de passe, ni tes codes de secours. Personne de l’équipe ne te les demandera jamais — un message qui le fait est une tentative de vol, quelle que soit sa mise en forme.',
+      'Ne partage ni ton mot de passe, ni tes codes de secours. Personne de l’équipe ne te les demandera jamais. Un message qui le fait est une tentative de vol, quelle que soit sa mise en forme.',
     sanction:
       'Ce qui est fait depuis ton compte t’est imputable. Active la double authentification si tu tiens à ta collection.',
   },

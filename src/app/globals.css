@@ -5111,6 +5111,9 @@ button[aria-busy='true']:not(.hb-btn)::before {
 @media (prefers-reduced-motion: no-preference) {
   .isl-vol {
     animation: isl-traverse var(--duree, 46s) linear var(--retard, 0s) infinite;
+    /* Même garde que sur `.isl-nage` : un retard positif ne doit jamais
+       laisser un vol immobile en plein ciel avant de disparaître. */
+    animation-fill-mode: backwards;
   }
 
   .isl-aile {
@@ -5262,6 +5265,21 @@ button[aria-busy='true']:not(.hb-btn)::before {
 @media (prefers-reduced-motion: no-preference) {
   .isl-nage {
     animation: isl-traverse-mer var(--duree, 64s) linear var(--retard, 0s) infinite;
+    /*
+     * `backwards` — et le défaut qu'il répare.
+     *
+     * Sans lui, un retard **positif** laisse l'élément à sa position brute
+     * pendant toute l'attente : le poisson-ruban restait planté au milieu du
+     * cadre onze secondes, puis l'animation démarrait à `translateX(-28%)` et
+     * le téléportait hors champ. Il avait l'air de bugger, et c'est ce qu'il
+     * faisait.
+     *
+     * `backwards` lui fait prendre la pose de départ dès le premier instant :
+     * il attend hors du cadre, comme il se doit. Le décalage entre les deux
+     * bêtes se règle par un retard **négatif**, qui les fait entrer déjà en
+     * mouvement plutôt qu'après un temps mort.
+     */
+    animation-fill-mode: backwards;
   }
 
   .isl-nage--envers {
