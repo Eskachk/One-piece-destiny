@@ -34,7 +34,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { ENCRE, OR, OR_SOMBRE, PAVILLON, fondPort } from './fond.mjs';
+import { ENCRE, OR, OR_SOMBRE, PAVILLON, POSE_ICONE, fondPort } from './fond.mjs';
 import {
   enBase64,
   visuelClassement,
@@ -178,6 +178,23 @@ const affiche = h(
     width: 1920,
     height: 1080,
     style: { position: 'absolute', top: 0, left: 0 },
+  }),
+
+  // L'icône de l'application, posée à plat sur les planches, à gauche. Elle
+  // vit ici et non dans le SVG du décor : une image imbriquée dans une image
+  // n'est pas rendue par la chaîne Satori, et elle disparaissait en silence.
+  h('img', {
+    src: `data:image/png;base64,${readFileSync(
+      join(RACINE, 'public', 'icons', 'icon-512.png'),
+    ).toString('base64')}`,
+    width: POSE_ICONE.taille,
+    height: POSE_ICONE.taille,
+    style: {
+      position: 'absolute',
+      left: POSE_ICONE.left,
+      top: POSE_ICONE.top,
+      transform: `rotate(${POSE_ICONE.angle}deg)`,
+    },
   }),
 
   /* --- L'en-tête, dans la hiérarchie de la page de connexion -------------- */

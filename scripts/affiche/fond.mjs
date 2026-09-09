@@ -128,6 +128,22 @@ const pavillon = `
  * les cent vingt pixels de bois du bas se lisent comme une plinthe et non
  * comme le pont d'un navire. Deux objets suffisent — trois encombreraient une
  * zone qui doit rester calme sous le bouton.
+ *
+ * À gauche, l'icône de l'application, posée à plat sur les planches. Le
+ * rouleau de cordage qui s'y trouvait se lisait mal — trois anneaux
+ * concentriques ouverts font un rond inachevé plutôt qu'une corde lovée. La
+ * remplacer par l'icône n'est pas seulement une réparation : une affiche qui
+ * invite à installer une application gagne à montrer ce qu'on va trouver sur
+ * son écran d'accueil.
+ *
+ * L'icône elle-même n'est pas dans ce SVG : seule son ombre l'est. Une balise
+ * `image` imbriquée ici n'était **pas rendue** — ce décor est déjà passé à
+ * Satori comme une image, et une image dans une image ne survit pas à la
+ * chaîne. Fidèle à la manière dont Satori échoue, rien ne le signalait :
+ * l'ombre s'affichait, l'icône manquait.
+ *
+ * Elle est donc posée par `index.mjs`, en élément à part entière, aux
+ * coordonnées que `POSE_ICONE` publie juste en dessous.
  */
 const accessoiresDuPont = `
   <g transform="translate(1610 ${PONT + 56}) rotate(-6)">
@@ -138,11 +154,15 @@ const accessoiresDuPont = `
     <path d="M-57 2 q57 16 114 0 l0 15 q-57 16 -114 0Z" fill="${PAVILLON}"/>
     <ellipse cy="10" rx="112" ry="32" fill="none" stroke="#c8a45e" stroke-width="3"/>
   </g>
-  <g transform="translate(330 ${PONT + 64})" fill="none" stroke-linecap="round">
-    <ellipse rx="66" ry="21" stroke="#c8a066" stroke-width="10"/>
-    <ellipse rx="45" ry="14" stroke="#a87f4c" stroke-width="9"/>
-    <ellipse rx="24" ry="7" stroke="#c8a066" stroke-width="8"/>
-  </g>`;
+  <ellipse cx="336" cy="${PONT + 102}" rx="64" ry="13" fill="#3a200c" opacity="0.35"/>`;
+
+/** Où l'icône vient se poser, en pixels de l'affiche. Lu par `index.mjs`. */
+/*
+ * Le pont ne fait que 118 pixels de haut, et une icône inclinée occupe plus
+ * que son côté : à 7 degrés, un carré de 100 en réclame 111. D'où cette
+ * taille-là — la première version, à 120, sortait du cadre par le bas.
+ */
+export const POSE_ICONE = { left: 276, top: 971, taille: 100, angle: -7 };
 
 export const fondPort = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${L} ${H}" width="${L}" height="${H}">
   <defs>

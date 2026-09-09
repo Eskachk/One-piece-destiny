@@ -1900,8 +1900,13 @@ button[aria-busy='true']:not(.hb-btn)::before {
 .hb-tuto__jamais {
   display: block;
   width: 100%;
-  margin-top: 0.9rem;
-  padding: 0.25rem 0;
+  /* La marge se resserre et le rembourrage grossit : mesurée sur un mobile de
+     375 px, la cible ne faisait que 25 px de haut — au-dessus du minimum de
+     24 px du WCAG 2.5.8, mais bien trop mince pour un pouce. Elle atteint
+     maintenant 44 px sans que rien ne bouge à l'oeil, puisque c'est du vide
+     qui se déplace de la marge vers l'intérieur du bouton. */
+  margin-top: 0.35rem;
+  padding: 0.8rem 0;
   font-size: 0.72rem;
   color: #5d4a2c;
   text-align: center;
