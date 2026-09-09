@@ -129,7 +129,7 @@ export function detectAnomalies(input: AnomalyInput): Anomaly[] {
       kind: 'NO_RISK_REWARD',
       severity: 'INFO',
       message:
-        'Aucun pari risqué ne rapporte vraiment : la semaine favorise les choix évidents.',
+        'Les paris risqués n’ont rien rapporté cette semaine, les choix évidents l’ont emporté.',
     });
   }
 

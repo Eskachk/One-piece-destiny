@@ -50,9 +50,9 @@ export function ChestOdds({ odds }: { odds: RarityOdds[] }) {
           </table>
 
           <p className="mt-2 border-t hb-border pt-2 text-[11px] leading-relaxed hb-ink-soft">
-            Ces taux décrivent le tirage réel du serveur : ils sont calculés à
-            partir des mêmes constantes. La garantie de légendaire n’y est pas
-            incluse — elle ne fait que les améliorer.
+            Ces taux sont calculés à partir des constantes qui servent au
+            tirage sur le serveur. La garantie de légendaire n’y est pas
+            comptée ; elle ne fait que les améliorer.
           </p>
         </div>
       )}

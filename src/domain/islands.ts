@@ -179,7 +179,7 @@ const ROUTES: readonly (readonly [string, IslandId])[] = [
   ['/classement', 'alabasta'],
   ['/collection', 'fishman'],
   ['/market', 'wano'],
-  ['/boutique', 'logue'],
+  ['/boutique', 'drum'],
   ['/profil', 'sabaody'],
   ['/parametres', 'dressrosa'],
   ['/admin', 'hq'],
@@ -194,8 +194,8 @@ export function islandOf(pathname: string): IslandId {
   // et l'arc-en-ciel donnent une échelle qu'aucune autre île n'a : on lève les
   // yeux avant de choisir ses six.
   //
-  // Drum n'est plus attribuée à aucune route : Dressrosa a pris les
-  // Paramètres. Le décor reste dessiné et visible sur la page d'aperçu — il
-  // est bon, et il servira à la prochaine page qui en demandera un.
+  // Drum a pris la Boutique, où Logue Town se trouvait. Logue reste dessinée
+  // et visible sur la page d'aperçu ; elle servira à la prochaine page qui
+  // demandera un décor.
   return pathname === '/' ? 'elbaf' : 'harbor';
 }

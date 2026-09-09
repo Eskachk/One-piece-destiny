@@ -159,7 +159,7 @@ export const CATALOG: Record<ProductId, Product> = {
     grants: { berries: 0, chests: 0, royalChests: 10 },
     lot: { quantite: 10, unite: 'coffres royaux' },
     description:
-      'Légendaire ou mieux garanti dans chacun, aucune carte commune, ouverture en cérémonie dédiée. La rareté est une valeur de collection, elle ne donne aucun point au classement.',
+      'Légendaire ou mieux garanti dans chacun, aucune carte commune, et une ouverture en cérémonie dédiée.',
   },
   berries_pouch: {
     id: 'berries_pouch',
@@ -168,7 +168,7 @@ export const CATALOG: Record<ProductId, Product> = {
     priceCents: 499,
     currency: 'EUR',
     grants: { berries: 7_500, chests: 0 },
-    description: '7 500 Berries, soit 5 coffres à la boutique du jeu. Les Berries n’achètent que de la collection, jamais un avantage de score.',
+    description: '7 500 Berries, soit 5 coffres à la boutique du jeu.',
   },
   berries_hold: {
     id: 'berries_hold',
@@ -178,7 +178,7 @@ export const CATALOG: Record<ProductId, Product> = {
     currency: 'EUR',
     grants: { berries: 36_000, chests: 0 },
     description:
-      '36 000 Berries, soit 24 coffres à la boutique du jeu. Les Berries n’achètent que de la collection.',
+      '36 000 Berries, soit 24 coffres à la boutique du jeu.',
   },
   /**
    * Rayon personnages.
@@ -205,7 +205,7 @@ export const CATALOG: Record<ProductId, Product> = {
     grants: { berries: 0, chests: 0, characterId: 'shanks' },
     rarity: 'LEGENDARY',
     description:
-      'Ajoute Shanks à ta collection. Légendaire — valeur de collection, aucun point au classement.',
+      'Ajoute Shanks à ta collection, sans passer par les coffres.',
   },
   character_mihawk: {
     id: 'character_mihawk',
@@ -216,7 +216,7 @@ export const CATALOG: Record<ProductId, Product> = {
     grants: { berries: 0, chests: 0, characterId: 'mihawk' },
     rarity: 'LEGENDARY',
     description:
-      'Ajoute Mihawk à ta collection. Légendaire — valeur de collection, aucun point au classement.',
+      'Ajoute Mihawk à ta collection, sans passer par les coffres.',
   },
   /**
    * Le Mythique du rayon.
@@ -246,7 +246,7 @@ export const CATALOG: Record<ProductId, Product> = {
     grants: { berries: 0, chests: 0, characterId: 'luffy' },
     rarity: 'MYTHIC',
     description:
-      'Ajoute Luffy à ta collection. Mythique — valeur de collection, aucun point au classement.',
+      'Ajoute Luffy à ta collection, sans passer par les coffres.',
   },
 };
 

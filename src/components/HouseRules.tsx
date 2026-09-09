@@ -49,7 +49,7 @@ const RULES: { title: string; body: string; sanction: string }[] = [
   {
     title: 'Pas d’automatisation',
     body:
-      'Scripts, robots, ou tout outil qui joue, ouvre des coffres ou achète à ta place. Le jeu tient en trois choix par semaine : il n’a rien à automatiser.',
+      'Scripts, robots, ou tout outil qui joue, ouvre des coffres ou achète à ta place. Le jeu se joue en trois choix par semaine, il n’y a rien à automatiser.',
     sanction: 'Fermeture du compte.',
   },
   {

@@ -81,8 +81,9 @@ export default async function ShopPage() {
       <h1 className="hb-title mt-1">Boutique</h1>
 
       <p className="hb-muted mt-3 text-sm">
-        Des coffres et des Berries, en argent réel. Tout ce qui est ici
-        s’obtient aussi en jouant — c’est du raccourci, jamais de l’exclusivité.
+        Des coffres et des Berries, en argent réel. Tout ce qui est vendu ici
+        s’obtient aussi en jouant, et rien n’y donne le moindre point au
+        classement.
       </p>
 
       <ShopPanel

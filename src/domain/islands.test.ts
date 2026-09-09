@@ -50,7 +50,7 @@ describe('île d’une route', () => {
     expect(islandOf('/classement')).toBe('alabasta');
     expect(islandOf('/collection')).toBe('fishman');
     expect(islandOf('/market')).toBe('wano');
-    expect(islandOf('/boutique')).toBe('logue');
+    expect(islandOf('/boutique')).toBe('drum');
     expect(islandOf('/profil')).toBe('sabaody');
     expect(islandOf('/parametres')).toBe('dressrosa');
     expect(islandOf('/admin')).toBe('hq');

@@ -97,13 +97,13 @@ const SECTIONS: { key: string; title: string; blurb: string }[] = [
     key: 'COINS',
     title: 'Berries',
     blurb:
-      'La monnaie du jeu. Elle n’ouvre que de la collection : aucun bonus de score n’est en vente.',
+      'La monnaie du jeu. Elle sert à ouvrir des coffres et à acheter au Marché.',
   },
   {
     key: 'CHARACTER',
     title: 'Personnages',
     blurb:
-      'Des Légendaires nommés, tous obtenables gratuitement en coffre. L’achat abrège, il n’ouvre rien d’exclusif.',
+      'Des personnages nommés, tous obtenables gratuitement en coffre.',
   },
 ];
 

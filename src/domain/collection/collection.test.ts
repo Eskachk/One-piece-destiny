@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import {
   CHEST_SIZE,
@@ -214,10 +216,43 @@ describe('sets de collection (§33)', () => {
     expect(progress.complete).toBe(false);
   });
 
-  it('ne promet que des récompenses cosmétiques', () => {
+  it('ne promet jamais une récompense qui pèserait sur le score', () => {
+    /*
+     * Le §33 exige des récompenses purement cosmétiques. La version
+     * précédente de ce test cherchait le mot « cosmétique » dans chaque
+     * libellé — ce qui vérifiait une convention d'affichage, pas une
+     * propriété. Le mot a été remonté en tête de rubrique, où le joueur le
+     * lit une fois plutôt que cinq ; le test interdit désormais ce qui est
+     * réellement en cause, à savoir toute récompense qui promettrait un
+     * avantage chiffré.
+     */
+    const INTERDITS = [
+      'point',
+      'score',
+      'bonus',
+      'berries',
+      'multiplicateur',
+      '%',
+      'classement',
+    ];
+
     for (const set of COLLECTION_SETS) {
-      expect(set.reward.toLowerCase()).toContain('cosmétique');
+      const libelle = set.reward.toLowerCase();
+      for (const mot of INTERDITS) {
+        expect(libelle, `${set.id} promet « ${set.reward} »`).not.toContain(mot);
+      }
     }
+  });
+
+  it('dit au joueur que ces récompenses sont cosmétiques', () => {
+    // Le complément du test précédent : la promesse a quitté les libellés, il
+    // faut donc qu'elle soit bien faite quelque part. Elle est en tête de la
+    // rubrique des sets, sur la page Collection.
+    const source = readFileSync(
+      join(__dirname, '..', '..', 'app', 'collection', 'page.tsx'),
+      'utf8',
+    );
+    expect(source).toContain('récompenses de set sont cosmétiques');
   });
 
   it('calcule la progression de tous les sets', () => {

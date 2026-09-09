@@ -22,31 +22,31 @@ export const COLLECTION_SETS: CollectionSet[] = [
     id: 'mugiwara',
     name: 'Mugiwara',
     affiliation: 'Mugiwara',
-    reward: "Pavillon du capitaine — cosmétique",
+    reward: 'Pavillon du capitaine',
   },
   {
     id: 'marine',
     name: 'Marine',
     affiliation: 'Marine',
-    reward: 'Cachet officiel — cosmétique',
+    reward: 'Cachet officiel',
   },
   {
     id: 'cross-guild',
     name: 'Cross Guild',
     affiliation: 'Cross Guild',
-    reward: 'Sceau du Cross Guild — cosmétique',
+    reward: 'Sceau du Cross Guild',
   },
   {
     id: 'worst-generation',
     name: 'Pire Génération',
     affiliation: 'Worst Generation',
-    reward: 'Avis de recherche doré — cosmétique',
+    reward: 'Avis de recherche doré',
   },
   {
     id: 'revolutionnaires',
     name: 'Révolutionnaires',
     affiliation: 'Révolutionnaires',
-    reward: 'Braise révolutionnaire — cosmétique',
+    reward: 'Braise révolutionnaire',
   },
 ];
 

@@ -231,6 +231,9 @@ export default async function CollectionPage() {
         <h2 className="hb-legend">
           Sets
         </h2>
+        <p className="hb-muted mt-1 text-xs">
+          Les récompenses de set sont cosmétiques.
+        </p>
         <ul className="mt-3 space-y-2">
           {sets.map((entry) => (
             <li

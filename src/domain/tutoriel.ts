@@ -150,7 +150,7 @@ export const TUTORIELS: Record<PageTutoriel, readonly Etape[]> = {
     {
       titre: 'Les questions bonus',
       corps: `Sous ton équipage, jusqu’à ${CHIFFRES.questions} questions sur le chapitre à venir. Chaque bonne réponse rapporte ${CHIFFRES.bonusQuestion} Berries.`,
-      repere: 'Une mauvaise réponse ne coûte rien : elle ne rapporte pas.',
+      repere: 'Une mauvaise réponse ne rapporte rien, et ne coûte rien non plus.',
     },
   ],
 
@@ -188,7 +188,7 @@ export const TUTORIELS: Record<PageTutoriel, readonly Etape[]> = {
       titre: 'Les coffres s’ouvrent en cérémonie',
       corps:
         'Chaque coffre est une petite mise en scène. Les probabilités de chaque rareté sont affichées avant l’ouverture, jamais après.',
-      repere: 'Le tirage se fait sur le serveur : rien dans ton navigateur ne peut l’influencer.',
+      repere: 'Le tirage se fait sur le serveur, rien dans ton navigateur ne peut l’influencer.',
     },
     {
       titre: 'Un doublon n’est jamais perdu',
@@ -259,12 +259,12 @@ export const TUTORIELS: Record<PageTutoriel, readonly Etape[]> = {
       titre: 'Ton style de jeu',
       corps:
         'Au bout de quelques semaines, le jeu déduit ta façon de parier : prudente, opportuniste, ou franchement téméraire.',
-      repere: 'C’est un miroir, pas une note : aucun style ne rapporte plus qu’un autre.',
+      repere: 'Aucun style ne rapporte plus qu’un autre.',
     },
     {
       titre: 'Parrainer rapporte',
       corps: `Ton lien de parrainage vaut ${CHIFFRES.parrainage} Berries par joueur qui reste, et davantage encore pour celui que tu amènes.`,
-      repere: 'Il faut qu’il joue quelques chapitres : un compte créé puis abandonné ne rapporte rien.',
+      repere: 'Il faut qu’il joue quelques chapitres. Un compte créé puis abandonné ne rapporte rien.',
     },
     {
       titre: 'Tes réglages sont ici',
