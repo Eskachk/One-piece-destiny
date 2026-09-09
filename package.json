@@ -7,6 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "icones": "node scripts/icones/index.mjs",
     "affiche": "node scripts/affiche/index.mjs",
     "test": "vitest run",
     "test:watch": "vitest",
