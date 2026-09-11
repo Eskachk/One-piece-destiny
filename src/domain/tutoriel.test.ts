@@ -111,15 +111,30 @@ describe('forme des visites guidées', () => {
     'profil',
   ];
 
-  it('couvre les six onglets de la barre', () => {
-    // Une page ajoutée à la navigation sans visite guidée est précisément le
-    // trou que ce travail vient combler.
-    expect(Object.keys(TUTORIELS).sort()).toEqual([...PAGES].sort());
+  const LANGUES = Object.keys(TUTORIELS) as (keyof typeof TUTORIELS)[];
+
+  it('existe dans chaque langue de l’interface', () => {
+    expect(LANGUES.sort()).toEqual(['en', 'fr']);
   });
 
-  it('reste court partout', () => {
+  it.each(LANGUES)('%s couvre les six onglets de la barre', (langue) => {
+    // Une page ajoutée à la navigation sans visite guidée est précisément le
+    // trou que ce travail vient combler.
+    expect(Object.keys(TUTORIELS[langue]).sort()).toEqual([...PAGES].sort());
+  });
+
+  it('a le même nombre d’étapes dans chaque langue', () => {
+    // Une étape ajoutée en français et oubliée en anglais ne casserait rien :
+    // le joueur anglophone aurait simplement une visite plus courte, sans que
+    // personne ne le sache.
     for (const page of PAGES) {
-      const etapes = TUTORIELS[page];
+      expect(TUTORIELS.en[page].length, page).toBe(TUTORIELS.fr[page].length);
+    }
+  });
+
+  it.each(LANGUES)('%s reste court partout', (langue) => {
+    for (const page of PAGES) {
+      const etapes = TUTORIELS[langue][page];
       expect(etapes.length, `${page} : trop peu d’étapes`).toBeGreaterThanOrEqual(3);
       expect(etapes.length, `${page} : trop d’étapes`).toBeLessThanOrEqual(7);
 
@@ -136,11 +151,11 @@ describe('forme des visites guidées', () => {
     }
   });
 
-  it('n’emploie que des apostrophes typographiques', () => {
+  it.each(LANGUES)('%s n’emploie que des apostrophes typographiques', (langue) => {
     // Le reste du produit en emploie partout ; une apostrophe droite au milieu
     // d'un texte soigné se voit immédiatement.
     for (const page of PAGES) {
-      for (const etape of TUTORIELS[page]) {
+      for (const etape of TUTORIELS[langue][page]) {
         const texte = `${etape.titre} ${etape.corps} ${etape.repere ?? ''}`;
         expect(texte.includes("'"), `${page} — ${etape.titre}`).toBe(false);
       }

@@ -32,6 +32,8 @@
  * soit sept cents fiches expédiées au navigateur pour afficher trois nombres.
  */
 
+import type { Locale } from './i18n/locales';
+
 /** Les pages qui portent une visite. Ce sont les six onglets de la barre. */
 export type PageTutoriel =
   | 'accueil'
@@ -110,7 +112,7 @@ export const EXEMPLE = {
  *   — **aucune étape ne décrit un bouton.** Le joueur voit les boutons ; ce
  *     qu'il ne voit pas, ce sont les règles qui décident de son score.
  */
-export const TUTORIELS: Record<PageTutoriel, readonly Etape[]> = {
+const FR: Record<PageTutoriel, readonly Etape[]> = {
   accueil: [
     {
       titre: 'Deviner le prochain chapitre',
@@ -272,4 +274,180 @@ export const TUTORIELS: Record<PageTutoriel, readonly Etape[]> = {
         'Notifications, affichage, protection du compte et fermeture : tout ce qui te concerne se règle depuis cette page.',
     },
   ],
+};
+
+const EN: Record<PageTutoriel, readonly Etape[]> = {
+  accueil: [
+    {
+      titre: 'Guess the next chapter',
+      corps:
+        'A new chapter comes out every week. Your game: guess who will appear in it, before it is released.',
+      repere: 'Nobody has read it. No spoiler can help you.',
+    },
+    {
+      titre: 'Three characters, not one more',
+      corps:
+        'You build your crew from three characters you own. Change them as often as you like until Sunday 23:59:59.',
+      repere: 'Then everything locks, and the chapter comes out.',
+    },
+    {
+      titre: 'What a character earns',
+      corps: `${CHIFFRES.base} points if they appear in the chapter. Up to ${CHIFFRES.synergie} more for their links with the other characters present. Up to ${CHIFFRES.risque} for how unlikely the bet was. ${CHIFFRES.total} at most.`,
+      repere:
+        'An absent character loses the presence points, but keeps part of the links they had rightly seen.',
+    },
+    {
+      titre: 'Rarity gives no points',
+      corps:
+        'The scoring engine never looks at a card’s rarity. Rarity says what a card is worth in your collection, never what it is worth on the ranking.',
+      repere: 'That is also why no purchase can make you win.',
+    },
+    {
+      titre: 'A “worthless” card beats a star',
+      corps: `Measured on the real engine. Luffy, picked by ${EXEMPLE.tauxVedette}% of players and present in the chapter: ${EXEMPLE.vedette} points. A Common picked by ${EXEMPLE.tauxInconnu}%, present alongside his own crew: ${EXEMPLE.inconnu} points.`,
+      repere: `A choice everyone makes separates no one: it loses up to ${CHIFFRES.consensus}% of its value.`,
+    },
+    {
+      titre: 'Aim for a scene, not three big names',
+      corps:
+        'A link only triggers if both characters appear in the same chapter. Three unrelated celebrities are worth three times the presence and nothing else; three characters from the same side earn points off each other.',
+      repere: `In the previous example, that Common still scored ${EXEMPLE.inconnuAbsent} points without even appearing, for his links with the scene alone.`,
+    },
+    {
+      titre: 'The bonus questions',
+      corps: `Below your crew, up to ${CHIFFRES.questions} questions about the coming chapter. Each correct answer earns ${CHIFFRES.bonusQuestion} Berries.`,
+      repere: 'A wrong answer earns nothing, and costs nothing either.',
+    },
+  ],
+
+  classement: [
+    {
+      titre: 'What your bet produced',
+      corps:
+        'Your place, your bounty for the week, and the breakdown for every character you lined up.',
+    },
+    {
+      titre: 'Every point is accounted for',
+      corps:
+        'Presence, links, unlikelihood, consensus effect: the calculation is written line by line, character by character. Nothing is rounded off backstage.',
+      repere: 'If a score surprises you, the reason is right there.',
+    },
+    {
+      titre: 'The chapter stays hidden as long as you want',
+      corps:
+        'The results talk about a chapter you may not have read yet. Anything that could spoil it stays hidden until you ask to see it.',
+    },
+    {
+      titre: 'Nothing is recomputed afterwards',
+      corps:
+        'A published ranking never moves again. If the scoring rules change, they only apply to later chapters: each one keeps the version it was judged with.',
+    },
+  ],
+
+  collection: [
+    {
+      titre: 'Everything you own',
+      corps:
+        'Your cards, sorted by rarity and by set. This is where you pick the three characters of your crew.',
+    },
+    {
+      titre: 'Chests open with a ceremony',
+      corps:
+        'Every chest is a little show. The odds for each rarity are shown before opening, never after.',
+      repere: 'The draw happens on the server, nothing in your browser can influence it.',
+    },
+    {
+      titre: 'A duplicate is never wasted',
+      corps:
+        'A card you already own turns into shards, and shards craft the card you are missing.',
+      repere: 'It is the only way to pick a character precisely.',
+    },
+    {
+      titre: 'Rarity is a pleasure, not an edge',
+      corps:
+        'A Mythic does not earn a single point more than a Common. It is rarer to get and prettier to own, but strictly equal on the ranking.',
+    },
+  ],
+
+  market: [
+    {
+      titre: 'The character exchange',
+      corps:
+        'Buy and sell cards for Berries, the currency the game pays you every week.',
+    },
+    {
+      titre: 'Prices move on their own',
+      corps:
+        'They follow what players buy and sell. A card everyone wants goes up; a card everyone is letting go of goes down.',
+    },
+    {
+      titre: 'Watch without buying',
+      corps:
+        'Put a card on your watchlist to follow its price without committing.',
+    },
+    {
+      titre: 'No Berry buys a point',
+      corps:
+        'The market serves the collection, and only the collection. The ranking is not for sale.',
+    },
+  ],
+
+  boutique: [
+    {
+      titre: 'What is sold here',
+      corps: 'Chests and Berries, for real money.',
+    },
+    {
+      titre: 'Nothing is exclusive',
+      corps:
+        'Everything in the shop can also be earned by playing. Paying shortens the wait; it opens no closed door.',
+      repere: 'The Berries you earn each week open exactly the same chests.',
+    },
+    {
+      titre: 'The odds are written before you buy',
+      corps:
+        'The probability of each rarity is shown on the page, next to the price.',
+    },
+    {
+      titre: 'Money does not buy the ranking',
+      corps:
+        'Since rarity gives no points, nothing sold here can earn you a place.',
+    },
+  ],
+
+  profil: [
+    {
+      titre: 'Your journey',
+      corps:
+        'Your level, your division, your past weeks and the progress of your collection sets.',
+    },
+    {
+      titre: 'Your play style',
+      corps:
+        'After a few weeks, the game works out how you bet: cautious, opportunistic, or downright reckless.',
+      repere: 'No style earns more than another.',
+    },
+    {
+      titre: 'Referrals pay',
+      corps: `Your referral link is worth ${CHIFFRES.parrainage} Berries for every player who stays, and even more for the one you bring in.`,
+      repere: 'They need to play a few chapters. An account created and then abandoned earns nothing.',
+    },
+    {
+      titre: 'Your settings live here',
+      corps:
+        'Notifications, display, account protection and closure: everything about you is managed from this page.',
+    },
+  ],
+};
+
+/**
+ * Les visites, par langue puis par page.
+ *
+ * Les deux tables partagent `CHIFFRES` et `EXEMPLE` : un plafond qui change
+ * dans le moteur se répercute dans les deux langues d'un coup, et le test qui
+ * rejoue l'exemple sur le moteur vaut pour l'anglais comme pour le français.
+ */
+export const TUTORIELS: Record<Locale, Record<PageTutoriel, readonly Etape[]>> = {
+  fr: FR,
+  en: EN,
 };

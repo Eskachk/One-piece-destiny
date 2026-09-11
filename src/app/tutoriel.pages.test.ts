@@ -37,7 +37,7 @@ const lire = (fichier: string) => readFileSync(join(__dirname, fichier), 'utf8')
 
 describe('visites guidées, une par onglet', () => {
   it('couvre les six onglets, sans en inventer un septième', () => {
-    expect(ONGLETS.map((o) => o.page).sort()).toEqual(Object.keys(TUTORIELS).sort());
+    expect(ONGLETS.map((o) => o.page).sort()).toEqual(Object.keys(TUTORIELS.fr).sort());
   });
 
   it.each(ONGLETS)('$page rend sa visite dans chaque branche', ({ page, fichier }) => {
@@ -59,7 +59,7 @@ describe('visites guidées, une par onglet', () => {
     // le texte serait faux, et la clé de stockage aussi — la vraie visite ne
     // se rouvrirait jamais.
     const source = lire(fichier);
-    for (const autre of Object.keys(TUTORIELS)) {
+    for (const autre of Object.keys(TUTORIELS.fr)) {
       if (autre === page) continue;
       expect(source.includes(`<Tutorial page="${autre}" />`), `${fichier} → ${autre}`).toBe(false);
     }

@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { TUTORIELS, type PageTutoriel } from '@/domain/tutoriel';
+import { useT } from '@/components/LocaleProvider';
 
 /**
  * Visite guidée d'une page (cahier §55, §111, §113).
@@ -71,7 +72,8 @@ function noter(cle: string): void {
 }
 
 export function Tutorial({ page }: { page: PageTutoriel }) {
-  const etapes = TUTORIELS[page];
+  const { t, locale } = useT();
+  const etapes = TUTORIELS[locale][page];
   const [index, setIndex] = useState<number | null>(null);
   const carte = useRef<HTMLDivElement>(null);
 
@@ -129,7 +131,7 @@ export function Tutorial({ page }: { page: PageTutoriel }) {
             dès le deuxième écran. */}
         <div aria-live="polite">
           <p className="hb-legend">
-            Étape {index + 1} sur {etapes.length}
+            {t('tuto.step', { n: index + 1, total: etapes.length })}
           </p>
           <h2 id="tuto-title" className="hb-title mt-1" style={{ fontSize: '1.7rem' }}>
             {etape.titre}
@@ -142,7 +144,7 @@ export function Tutorial({ page }: { page: PageTutoriel }) {
           {/* « Passer » visible dès la première étape : enterrer la sortie au
               bout de cinq écrans transforme une aide en péage. */}
           <button type="button" onClick={() => fermer(false)} className="hb-btn--ghost hb-tuto__skip">
-            Passer
+            {t('action.skip')}
           </button>
 
           <button
@@ -150,12 +152,12 @@ export function Tutorial({ page }: { page: PageTutoriel }) {
             onClick={() => (derniere ? fermer(false) : setIndex(index + 1))}
             className="hb-btn flex-1"
           >
-            {derniere ? 'J’ai compris' : 'Suivant'}
+            {derniere ? t('action.understood') : t('action.next')}
           </button>
         </div>
 
         <button type="button" onClick={() => fermer(true)} className="hb-tuto__jamais">
-          Ne plus afficher les visites guidées
+          {t('tuto.never')}
         </button>
       </div>
     </div>
