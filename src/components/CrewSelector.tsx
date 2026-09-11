@@ -1,11 +1,9 @@
 'use client';
 
-import { RARITY_LABEL } from '@/domain/collection/rarity';
 import { CardFilters } from './CardFilters';
-import {
-  decrireRecurrence,
-  type Recurrence,
-} from '@/domain/chapter/recurrence';
+import type { Recurrence } from '@/domain/chapter/recurrence';
+import { useT } from '@/components/LocaleProvider';
+import { decrireRecurrenceT, libellePresence, libelleRarete } from '@/domain/i18n/libelles';
 import {
   CRITERES_PAR_DEFAUT,
   comptesParAttribut,
@@ -18,7 +16,7 @@ import Link from 'next/link';
 
 import { useMemo, useState, useTransition } from 'react';
 import { saveCrew } from '@/app/actions/crew';
-import { presenceLabel, teamRisk, type RiskBand } from '@/domain/risk';
+import { teamRisk, type RiskBand } from '@/domain/risk';
 import type { Character } from '@/domain/types';
 
 /**
@@ -110,6 +108,7 @@ export function CrewSelector({
   const [feedback, setFeedback] = useState<
     { kind: 'ok' | 'error'; message: string } | null
   >(null);
+  const { t, tn, tradMessage } = useT();
   const [pending, startTransition] = useTransition();
 
   const risk = useMemo(() => teamRisk(crew), [crew]);
@@ -143,18 +142,16 @@ export function CrewSelector({
       const result = await attempt(saveCrew(crew.map((c) => c.id)));
       setFeedback(
         result.ok
-          ? { kind: 'ok', message: 'Équipage enregistré.' }
-          : { kind: 'error', message: result.error },
+          ? { kind: 'ok', message: t('crew.saved') }
+          : { kind: 'error', message: tradMessage(result.error) ?? result.error },
       );
     });
   };
 
   return (
     <section className="mt-8">
-      <h2 className="hb-title mt-6" style={{ fontSize: '1.55rem' }}>Choisis ton équipage</h2>
-      <p className="hb-muted mt-1 text-sm">
-        3 personnages. Modifiable jusqu&apos;au dimanche 23:59:59.
-      </p>
+      <h2 className="hb-title mt-6" style={{ fontSize: '1.55rem' }}>{t('crew.title')}</h2>
+      <p className="hb-muted mt-1 text-sm">{t('crew.subtitle')}</p>
 
       {/* Les 3 emplacements — l'action avant tout le reste. */}
       <ul className="mt-5 grid grid-cols-3 gap-3 md:grid-cols-6">
@@ -174,14 +171,14 @@ export function CrewSelector({
                       {character.name}
                     </span>
                     <span className="hb-legend mt-1">
-                      {RARITY_LABEL[character.rarity]}
+                      {libelleRarete(t, character.rarity)}
                     </span>
                   </>
                 ) : (
                   <>
                     <span className="text-2xl" style={{ color: 'rgba(20,41,79,.28)' }}>???</span>
                     <span className="hb-legend mt-2">
-                      Choisir
+                      {t('crew.slot.pick')}
                     </span>
                   </>
                 )}
@@ -197,7 +194,7 @@ export function CrewSelector({
         <div className="hb-card mt-5">
           <div className="flex items-baseline justify-between">
             <span className="hb-legend">
-              Risk
+              {t('crew.risk')}
             </span>
             <span
               className={`font-mono text-sm font-bold ${RISK_STYLES[risk.band].className}`}
@@ -211,7 +208,7 @@ export function CrewSelector({
             aria-valuenow={risk.value}
             aria-valuemin={0}
             aria-valuemax={100}
-            aria-label="Niveau de risque de l'équipage"
+            aria-label={t('crew.risk.aria')}
           >
             <div
               className="h-full rounded-full bg-linear-to-r from-turquoise via-treasure to-danger"
@@ -224,7 +221,9 @@ export function CrewSelector({
               <li key={character.id} className="flex justify-between">
                 <span>{character.name}</span>
                 <span className="hb-muted">
-                  Présence {presenceLabel(character.presenceExpectation).toLowerCase()}
+                  {t('crew.risk.presence', {
+                    niveau: libellePresence(t, character.presenceExpectation).toLowerCase(),
+                  })}
                 </span>
               </li>
             ))}
@@ -235,9 +234,9 @@ export function CrewSelector({
       {!locked && !authenticated && (
         <p className="hb-card mt-4 text-center text-sm">
           <Link href="/login" className="hb-link">
-            Connecte-toi
+            {t('crew.signInToSave')}
           </Link>{' '}
-          pour enregistrer ton équipage et entrer au classement.
+          {t('crew.signInToSaveRest')}
         </p>
       )}
 
@@ -250,12 +249,11 @@ export function CrewSelector({
             aria-busy={pending}
             className="hb-btn mt-4"
           >
-            {pending ? 'Enregistrement…' : 'Enregistrer mon équipage'}
+            {pending ? t('crew.saving') : t('crew.save')}
           </button>
           {!complete && (
             <p className="hb-muted mt-2 text-center text-xs">
-              Sélectionne {CREW_SIZE - crew.length} personnage
-              {CREW_SIZE - crew.length > 1 ? 's' : ''} de plus.
+              {tn('crew.pickMore', CREW_SIZE - crew.length)}
             </p>
           )}
         </div>
@@ -268,7 +266,7 @@ export function CrewSelector({
           href={`/share/${chapterNumber}/${crew.map((c) => c.id).join(',')}`}
           className="hb-btn hb-btn--ghost mt-3"
         >
-          Partager ma prédiction
+          {t('crew.share')}
         </Link>
       )}
 
@@ -288,25 +286,21 @@ export function CrewSelector({
         <div className="mt-6">
           <div className="flex items-center justify-between">
             <h3 className="hb-legend">
-              Ta collection ({owned.length})
+              {t('crew.roster', { n: owned.length })}
             </h3>
             <button
               type="button"
               onClick={() => setPicking(false)}
               className="hb-link text-xs"
             >
-              Fermer
+              {t('crew.roster.close')}
             </button>
           </div>
           {owned.length === 0 ? (
-            <p className="hb-card mt-3 text-sm">
-              Tu ne possèdes encore aucun personnage. Ouvre ton coffre
-              d’inscription depuis la Collection pour commencer.
-            </p>
+            <p className="hb-card mt-3 text-sm">{t('crew.roster.empty')}</p>
           ) : owned.length <= CREW_SIZE ? (
             <p className="hb-muted mt-3 text-xs">
-              Tu possèdes {owned.length} personnage{owned.length > 1 ? 's' : ''} pour{' '}
-              {CREW_SIZE} emplacements : ouvre des coffres pour avoir le choix.
+              {tn('crew.roster.few', owned.length, { slots: CREW_SIZE })}
             </p>
           ) : null}
 
@@ -320,17 +314,14 @@ export function CrewSelector({
               comptes={comptes}
               total={owned.length}
               affiches={visibles.length}
-              nom="personnage"
+              nom="character"
               attributs={attributs}
               comptesAttributs={comptesAttributs}
             />
           )}
 
           {visibles.length === 0 && owned.length > 0 && (
-            <p className="hb-card mt-3 text-sm">
-              Aucun personnage ne correspond. Retire un attribut, essaie un
-              autre nom, ou remets la rareté sur « Toutes ».
-            </p>
+            <p className="hb-card mt-3 text-sm">{t('crew.roster.noMatch')}</p>
           )}
 
           <ul className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
@@ -350,7 +341,7 @@ export function CrewSelector({
                       {character.name}
                     </span>
                     <span className="hb-legend mt-0.5 block">
-                      {RARITY_LABEL[character.rarity]}
+                      {libelleRarete(t, character.rarity)}
                     </span>
                     {/* Le rapport se lit d'un coup d'œil et sert à comparer
                         deux candidats ; la phrase complète reste pour qui
@@ -358,13 +349,13 @@ export function CrewSelector({
                     {character.recurrence && character.recurrence.observes > 0 && (
                       <span
                         className={`hb-recurrence${character.recurrence.vus === 0 ? ' hb-recurrence--nulle' : ''}`}
-                        title={decrireRecurrence(character.recurrence)}
+                        title={decrireRecurrenceT(t, character.recurrence)}
                       >
                         <span aria-hidden="true">
                           📖 {character.recurrence.vus}/{character.recurrence.observes}
                         </span>
                         <span className="sr-only">
-                          {decrireRecurrence(character.recurrence)}
+                          {decrireRecurrenceT(t, character.recurrence)}
                         </span>
                       </span>
                     )}

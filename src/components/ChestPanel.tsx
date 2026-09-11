@@ -16,6 +16,7 @@ import {
   STARTER_CHEST_SLOTS,
 } from '@/domain/collection/chest';
 import { CHEST_PRICE_BERRIES } from '@/domain/collection/rewards';
+import { useT } from './LocaleProvider';
 
 /**
  * Coffres : inscription, réserve et boutique (cahier §26, §27, §31, §36, §113).
@@ -67,6 +68,7 @@ export function ChestPanel({
   /** Calculées côté serveur depuis les constantes du tirage (§113). */
   odds: RarityOdds[];
 }) {
+  const { t, tn, tradMessage } = useT();
   const [result, setResult] = useState<OpenStarterResult | null>(null);
   const [shopError, setShopError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -97,7 +99,7 @@ export function ChestPanel({
     <section className="rounded-xl hb-surface p-5">
       <div className="flex items-baseline justify-between">
         <h2 className="font-display text-xl hb-ink">
-          {showStarter ? 'Coffre d’inscription' : 'Coffres'}
+          {showStarter ? t('chest.starter') : t('chest.title')}
         </h2>
         <span className="font-mono text-sm hb-gold">🪙 {berries}</span>
       </div>
@@ -109,8 +111,8 @@ export function ChestPanel({
           tenue au moment où l'on cherche justement à donner confiance. */}
       {pendingBerries > 0 && (
         <p className="mt-2 rounded-lg border hb-border hb-hi px-3 py-2 text-xs hb-ink">
-          <strong className="hb-num">{pendingBerries} Berries</strong> t’attendent.
-          Elles se débloquent dès que tu verrouilles ton premier équipage.
+          <strong className="hb-num">{t('chest.pending', { n: pendingBerries })}</strong>
+          {t('chest.pending.rest')}
         </p>
       )}
 
@@ -121,31 +123,26 @@ export function ChestPanel({
               qu'il ne mente jamais. Il a déjà annoncé cinq personnages pour un
               coffre qui en donnait trois. */}
           <ul className="mt-3 space-y-1 text-sm hb-ink-soft">
-            <li>• {STARTER_CHEST_SLOTS.length} personnages, tous différents</li>
-            <li>• au moins un Rare ou mieux</li>
-            <li>• un doublon rapporte toujours des fragments</li>
+            <li>{t('chest.starter.slots', { n: STARTER_CHEST_SLOTS.length })}</li>
+            <li>{t('chest.starter.rare')}</li>
+            <li>{t('chest.starter.dup')}</li>
           </ul>
 
-          <p className="mt-3 text-xs hb-ink-soft">
-            La rareté détermine la valeur de collection, pas la puissance en
-            jeu : un personnage commun peut être excellent pour une stratégie.
-          </p>
+          <p className="mt-3 text-xs hb-ink-soft">{t('chest.starter.note')}</p>
         </>
       ) : (
         <>
           <p className="mt-2 text-sm hb-ink-soft">
             {unopenedChests > 0
-              ? `${unopenedChests} coffre${unopenedChests > 1 ? 's' : ''} à ouvrir.`
+              ? tn('chest.stock', unopenedChests)
               : unlimited
-                ? 'Réserve illimitée — compte administrateur.'
-                : 'Aucun coffre en réserve.'}
+                ? t('chest.stock.unlimited')
+                : t('chest.stock.none')}
           </p>
 
           {/* §31 : la garantie est annoncée, jamais découverte après coup. */}
           <p className="mt-1 text-xs hb-ink-soft">
-            {remainingToPity === 0
-              ? '✨ Ton prochain coffre garantit un légendaire.'
-              : `Légendaire garanti dans ${remainingToPity} coffre${remainingToPity > 1 ? 's' : ''} au plus tard.`}
+            {remainingToPity === 0 ? t('chest.pity.now') : tn('chest.pity', remainingToPity)}
           </p>
         </>
       )}
@@ -158,12 +155,12 @@ export function ChestPanel({
 
       {result && !result.ok && (
         <p role="alert" className="mt-3 text-sm hb-ko">
-          {result.error}
+          {tradMessage(result.error)}
         </p>
       )}
       {shopError && (
         <p role="alert" className="mt-3 text-sm hb-ko">
-          {shopError}
+          {tradMessage(shopError)}
         </p>
       )}
 
@@ -176,7 +173,7 @@ export function ChestPanel({
             aria-busy={pending}
             className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50"
           >
-            {pending ? 'Ouverture…' : 'Ouvrir le coffre'}
+            {pending ? t('chest.opening') : t('chest.open.starter')}
           </button>
         ) : (
           <>
@@ -187,7 +184,7 @@ export function ChestPanel({
               aria-busy={pending}
               className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
             >
-              {pending ? 'Un instant…' : 'Ouvrir un coffre'}
+              {pending ? t('chest.wait') : t('chest.open')}
             </button>
 
             {/* Coffre royal : bouton distinct, et seulement s'il y en a un.
@@ -201,7 +198,7 @@ export function ChestPanel({
                 aria-busy={pending}
                 className="hb-royal-btn transition-quick w-full rounded-xl px-4 py-3 font-semibold disabled:opacity-50"
               >
-                Ouvrir un coffre royal ({royalChests})
+                {t('chest.open.royal', { n: royalChests })}
               </button>
             )}
 
@@ -212,15 +209,14 @@ export function ChestPanel({
               aria-busy={pending}
               className="transition-quick w-full rounded-xl border hb-border px-4 py-2 text-sm hb-accent disabled:opacity-40"
             >
-              Acheter un coffre — {CHEST_PRICE_BERRIES} 🪙
+              {t('chest.buy', { n: CHEST_PRICE_BERRIES })}
             </button>
           </>
         )}
       </div>
 
       <p className="mt-3 text-[11px] hb-ink-soft">
-        Les Berries n&apos;achètent que de la collection : aucun bonus de score
-        n&apos;est en vente.
+        {t('chest.note')}
       </p>
 
       {/* §113 : la composition et les taux sont annoncés avant l'achat. */}

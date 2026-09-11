@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useState, useTransition } from 'react';
 import { markNotificationsReadAction } from '@/app/actions/social';
+import { useT } from './LocaleProvider';
 
 /**
  * Notifications (cahier §108) et parrainage (§71) sur le profil.
@@ -22,6 +23,7 @@ export function NotificationCenter({
 }: {
   notifications: NotificationView[];
 }) {
+  const { t, tradMessage } = useT();
   const [pending, startTransition] = useTransition();
   const unread = notifications.filter((n) => !n.read).length;
 
@@ -29,7 +31,7 @@ export function NotificationCenter({
     <section className="mt-6">
       <div className="flex items-baseline justify-between">
         <h2 className="text-sm uppercase tracking-widest hb-ink-soft">
-          Notifications {unread > 0 && `(${unread})`}
+          {t('pf.notif')} {unread > 0 && `(${unread})`}
         </h2>
         {unread > 0 && (
           <button
@@ -48,24 +50,24 @@ export function NotificationCenter({
             }
             className="text-xs hb-accent underline disabled:opacity-40"
           >
-            Tout marquer comme lu
+            {t('pf.notif.markRead')}
           </button>
         )}
       </div>
 
       {notifications.length === 0 ? (
-        <p className="mt-3 text-sm hb-ink-soft">Rien de neuf.</p>
+        <p className="mt-3 text-sm hb-ink-soft">{t('pf.notif.empty')}</p>
       ) : (
         <ul className="mt-3 space-y-2">
           {notifications.map((notification) => {
             const content = (
               <>
                 <span className="block text-sm hb-ink">
-                  {notification.title}
+                  {tradMessage(notification.title)}
                 </span>
                 {notification.body && (
                   <span className="mt-0.5 block text-xs hb-ink-soft">
-                    {notification.body}
+                    {tradMessage(notification.body)}
                   </span>
                 )}
                 <span className="mt-1 block text-[10px] hb-ink-soft">
@@ -98,8 +100,7 @@ export function NotificationCenter({
       {/* Le canal e-mail existe désormais ; le push, non. On ne mentionne que
           ce qui est réellement branché. */}
       <p className="mt-3 text-[11px] hb-ink-soft">
-        Ces notifications s&apos;affichent ici et peuvent aussi partir par
-        e-mail, selon tes préférences ci-dessous.
+        {t('pf.notif.note')}
       </p>
     </section>
   );
@@ -134,6 +135,7 @@ export function ReferralPanel({
   /** Chapitres que le filleul doit avoir joués pour que le parrain soit payé. */
   minChapters: number;
 }) {
+  const { t } = useT();
   const [copied, setCopied] = useState(false);
 
   const share = async () => {
@@ -147,7 +149,7 @@ export function ReferralPanel({
       if (typeof navigator !== 'undefined' && navigator.share) {
         await navigator.share({
           title: 'One Piece Quest',
-          text: `Rejoins-moi : tu démarres avec ${referredBerries} Berries.`,
+          text: t('pf.ref.share.text', { n: referredBerries }),
           url: link,
         });
         return;
@@ -163,41 +165,37 @@ export function ReferralPanel({
 
   return (
     <section className="hb-card mt-6">
-      <h2 className="hb-legend">Invite un équipier</h2>
+      <h2 className="hb-legend">{t('pf.ref.title')}</h2>
 
       <p className="hb-muted mt-2 text-sm">
-        Qui arrive par ton lien démarre avec{' '}
-        <span className="hb-num">{referredBerries}</span> Berries au lieu de{' '}
-        <span className="hb-num">{referredBerries / 2}</span> — débloquées à son
-        premier équipage verrouillé.
+        {t('pf.ref.intro.a')} <span className="hb-num">{referredBerries}</span>{' '}
+        {t('pf.ref.intro.b')} <span className="hb-num">{referredBerries / 2}</span>{' '}
+        {t('pf.ref.intro.c')}
       </p>
 
       {link ? (
         <>
-          <p className="hb-serial mt-3 break-all" aria-label="Ton lien d’invitation">
+          <p className="hb-serial mt-3 break-all" aria-label={t('pf.ref.link.aria')}>
             {link}
           </p>
           <button type="button" onClick={share} className="hb-btn mt-3 w-full">
-            {copied ? 'Lien copié ✓' : 'Partager mon lien'}
+            {copied ? t('pf.ref.copied') : t('pf.ref.share')}
           </button>
         </>
       ) : (
         <p className="hb-muted mt-3 text-sm">
-          Ton lien n&apos;est pas encore disponible. Recharge la page.
+          {t('pf.ref.missing')}
         </p>
       )}
 
       <p className="hb-muted mt-3 text-xs">
-        Tu reçois <span className="hb-num">{referrerBerries}</span> Berries par
-        filleul, une fois qu&apos;il a{' '}
-        <strong>confirmé son adresse et joué {minChapters} chapitres</strong> —
-        pas à son inscription. Un compte créé pour la forme ne rapporte donc
-        rien, et attendre trois semaines pour rien non plus. Plafond :{' '}
-        {maxRewarded} filleuls récompensés.
+        {t('pf.ref.rule.a')} <span className="hb-num">{referrerBerries}</span>{' '}
+        {t('pf.ref.rule.b')} <strong>{t('pf.ref.rule.strong', { n: minChapters })}</strong>{' '}
+        {t('pf.ref.rule.c', { n: maxRewarded })}
       </p>
 
       <p className="hb-muted mt-2 text-xs">
-        {referredCount} / {maxRewarded} parrainages récompensés.
+        {t('pf.ref.count', { n: referredCount, max: maxRewarded })}
       </p>
     </section>
   );

@@ -483,3 +483,13 @@ export function catalogueAttributs(
       .sort((a, b) => a.label.localeCompare(b.label, 'fr')),
   })).filter((groupe) => groupe.attributs.length > 0);
 }
+
+/**
+ * Retrouve l'identifiant d'un attribut à partir de son libellé français.
+ *
+ * Le détail du score est stocké avec le libellé (« Épéiste partagé → +6 »),
+ * pas l'identifiant : c'est ce qui permet de le retraduire à l'affichage.
+ */
+export function attributIdDeLibelle(label: string): string | undefined {
+  return RULES.find((rule) => rule.label === label)?.id;
+}

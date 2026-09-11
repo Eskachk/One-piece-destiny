@@ -1,7 +1,9 @@
 'use client';
 
 import { useId } from 'react';
-import { RARITY_LABEL, RARITY_ORDER } from '@/domain/collection/rarity';
+import { RARITY_ORDER } from '@/domain/collection/rarity';
+import { useT } from '@/components/LocaleProvider';
+import { libelleAttribut, libelleFamille, libelleRarete, libelleTri } from '@/domain/i18n/libelles';
 import {
   TRI_LABEL,
   type Criteres,
@@ -39,7 +41,7 @@ export function CardFilters({
   total,
   affiches,
   /** Rappelle ce qu'on filtre : « cartes », « personnages »… */
-  nom = 'carte',
+  nom = 'card',
   attributs = [],
   comptesAttributs,
 }: {
@@ -48,13 +50,15 @@ export function CardFilters({
   comptes: Record<Rarity, number>;
   total: number;
   affiches: number;
-  nom?: string;
+  /** Ce qu'on compte : des cartes (Collection) ou des personnages (Équipage). */
+  nom?: 'card' | 'character';
   /** Pastilles proposées, groupées et ordonnées par le serveur. */
   attributs?: GroupeAttributs[];
   /** Ce que donnerait chaque pastille si on la cochait maintenant. */
   comptesAttributs?: Map<string, number>;
 }) {
   const id = useId();
+  const { t, tn } = useT();
   const filtre =
     criteres.rarete !== 'TOUTES' ||
     criteres.recherche.trim() !== '' ||
@@ -82,14 +86,14 @@ export function CardFilters({
       <div className="hb-filtres__ligne">
         <div className="hb-filtres__champ">
           <label htmlFor={`${id}-q`} className="hb-filtres__label">
-            Chercher
+            {t('filters.search')}
           </label>
           <input
             id={`${id}-q`}
             type="search"
             value={criteres.recherche}
             onChange={(e) => onChange({ ...criteres, recherche: e.target.value })}
-            placeholder="Un nom…"
+            placeholder={t('filters.searchPlaceholder')}
             autoComplete="off"
             className="hb-filtres__saisie"
           />
@@ -97,7 +101,7 @@ export function CardFilters({
 
         <div className="hb-filtres__champ">
           <label htmlFor={`${id}-r`} className="hb-filtres__label">
-            Rareté
+            {t('filters.rarity')}
           </label>
           <select
             id={`${id}-r`}
@@ -116,14 +120,13 @@ export function CardFilters({
               choses incompatibles dans le même déroulé.
             */}
             <option value="TOUTES">
-              Toutes (
-              {RARITY_ORDER.reduce((somme, r) => somme + comptes[r], 0)})
+              {t('filters.all')} ({RARITY_ORDER.reduce((somme, r) => somme + comptes[r], 0)})
             </option>
             {/* Du plus rare au plus commun : c'est l'ordre dans lequel on
                 cherche une carte, pas l'ordre de la table interne. */}
             {[...RARITY_ORDER].reverse().map((r) => (
               <option key={r} value={r}>
-                {RARITY_LABEL[r]} ({comptes[r]})
+                {libelleRarete(t, r)} ({comptes[r]})
               </option>
             ))}
           </select>
@@ -131,7 +134,7 @@ export function CardFilters({
 
         <div className="hb-filtres__champ">
           <label htmlFor={`${id}-t`} className="hb-filtres__label">
-            Trier
+            {t('filters.sort')}
           </label>
           <select
             id={`${id}-t`}
@@ -139,9 +142,9 @@ export function CardFilters({
             onChange={(e) => onChange({ ...criteres, tri: e.target.value as Tri })}
             className="hb-filtres__saisie"
           >
-            {(Object.keys(TRI_LABEL) as Tri[]).map((t) => (
-              <option key={t} value={t}>
-                {TRI_LABEL[t]}
+            {(Object.keys(TRI_LABEL) as Tri[]).map((tri) => (
+              <option key={tri} value={tri}>
+                {libelleTri(t, tri)}
               </option>
             ))}
           </select>
@@ -164,19 +167,17 @@ export function CardFilters({
       {attributs.length > 0 && (
         <details className="hb-filtres__attributs" open={criteres.attributs.length > 0}>
           <summary className="hb-filtres__resume">
-            Attributs
+            {t('filters.attributes')}
             {criteres.attributs.length > 0 && (
               <span className="hb-filtres__badge">{criteres.attributs.length}</span>
             )}
           </summary>
 
-          <p className="hb-filtres__aide">
-            Cumulables : chaque attribut ajouté restreint la liste.
-          </p>
+          <p className="hb-filtres__aide">{t('filters.attributesHint')}</p>
 
           {attributs.map((groupe) => (
             <div key={groupe.famille} className="hb-filtres__groupe">
-              <span className="hb-filtres__famille">{groupe.titre}</span>
+              <span className="hb-filtres__famille">{libelleFamille(t, groupe.famille)}</span>
               <div className="hb-filtres__pastilles">
                 {groupe.attributs.map((attribut) => {
                   const actif = criteres.attributs.includes(attribut.id);
@@ -194,7 +195,7 @@ export function CardFilters({
                       className={`hb-pastille${actif ? ' hb-pastille--on' : ''}`}
                     >
                       <span aria-hidden="true">{attribut.symbol}</span>
-                      <span>{attribut.label}</span>
+                      <span>{libelleAttribut(t, attribut.id)}</span>
                       <span className="hb-pastille__n">{compte}</span>
                     </button>
                   );
@@ -212,8 +213,8 @@ export function CardFilters({
       */}
       <p role="status" className="hb-filtres__compte">
         {affiches === total
-          ? `${total} ${nom}${total > 1 ? 's' : ''}`
-          : `${affiches} ${nom}${affiches > 1 ? 's' : ''} sur ${total}`}
+          ? tn(`filters.count.${nom}`, total)
+          : t('filters.countOf', { shown: tn(`filters.count.${nom}`, affiches), total })}
         {filtre && (
           <button
             type="button"
@@ -227,7 +228,7 @@ export function CardFilters({
             }
             className="hb-link ml-2 text-xs"
           >
-            Tout afficher
+            {t('filters.showAll')}
           </button>
         )}
       </p>

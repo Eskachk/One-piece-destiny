@@ -1,3 +1,4 @@
+import { MESSAGES } from '@/domain/i18n/locales';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -247,12 +248,14 @@ describe('sets de collection (§33)', () => {
   it('dit au joueur que ces récompenses sont cosmétiques', () => {
     // Le complément du test précédent : la promesse a quitté les libellés, il
     // faut donc qu'elle soit bien faite quelque part. Elle est en tête de la
-    // rubrique des sets, sur la page Collection.
+    // rubrique des sets, sur la page Collection — dans les deux langues.
     const source = readFileSync(
       join(__dirname, '..', '..', 'app', 'collection', 'page.tsx'),
       'utf8',
     );
-    expect(source).toContain('récompenses de set sont cosmétiques');
+    expect(source).toContain("t('col.sets.note')");
+    expect(MESSAGES.fr['col.sets.note']).toContain('récompenses de set sont cosmétiques');
+    expect(MESSAGES.en['col.sets.note']).toContain('Set rewards are cosmetic');
   });
 
   it('calcule la progression de tous les sets', () => {

@@ -14,7 +14,8 @@ import {
   ceremonyPlan,
   reducedMotionPlan,
 } from '@/domain/collection/chest-ceremony';
-import { RARITY_LABEL } from '@/domain/collection/rarity';
+import { useT } from '@/components/LocaleProvider';
+import { libelleRarete } from '@/domain/i18n/libelles';
 import { RarityCard } from '@/components/RarityCard';
 
 /**
@@ -41,7 +42,7 @@ const ChestScene = dynamic(() => import('./ChestScene'), {
   ssr: false,
   loading: () => (
     <div className="flex h-full items-center justify-center text-sm text-parchment/40">
-      Préparation du coffre…
+      <PreparingLabel />
     </div>
   ),
 });
@@ -67,6 +68,11 @@ const ChestScene = dynamic(() => import('./ChestScene'), {
  * niveau de la scène, laisse le reste de la page debout, et prévient
  * l'appelant qu'il faut basculer en mode dégradé.
  */
+function PreparingLabel() {
+  const { t } = useT();
+  return <>{t('chest.preparing')}</>;
+}
+
 class SceneBoundary extends Component<
   { onFail: () => void; children: ReactNode },
   { failed: boolean }
@@ -116,6 +122,7 @@ export function ChestOpening({
 }) {
   // Décidé après montage : `matchMedia` et WebGL n'existent pas côté serveur,
   // et les interroger au premier rendu casserait l'hydratation.
+  const { t } = useT();
   const [mode, setMode] = useState<'pending' | 'scene' | 'plain'>('pending');
   const [revealed, setRevealed] = useState(false);
   const [sceneReady, setSceneReady] = useState(false);
@@ -230,7 +237,7 @@ export function ChestOpening({
         <>
           {plan.tier !== 'STANDARD' && shown >= ordered.length && (
             <p className="hb-legend mb-3 text-center">
-              {RARITY_LABEL[plan.highlight]} — la prise de la semaine
+              {t('chest.catch', { rarity: libelleRarete(t, plan.highlight) })}
             </p>
           )}
 
@@ -244,7 +251,7 @@ export function ChestOpening({
                   attributes={card.attributes}
                   footer={
                     card.duplicate ? (
-                      <span className="hb-shards">+{card.shards} ✨ fragments</span>
+                      <span className="hb-shards">{t('chest.dupShards', { n: card.shards })}</span>
                     ) : null
                   }
                 />

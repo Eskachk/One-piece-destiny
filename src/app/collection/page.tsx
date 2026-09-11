@@ -15,21 +15,23 @@ import {
 import { getCachedRecurrences } from '@/lib/cache';
 import { CHARACTERS, CHARACTER_INDEX } from '@/data/characters';
 import { allSetsProgress, collectionSummary } from '@/domain/collection/sets';
-import { RARITY_COLOR, RARITY_LABEL, rarityRank } from '@/domain/collection/rarity';
+import { RARITY_COLOR, rarityRank } from '@/domain/collection/rarity';
 import { CRAFT_COST } from '@/domain/collection/crafting';
 import { isAllowedAdmin, requireSession } from '@/lib/auth/guards';
 import { getRepository } from '@/lib/repository';
 import { AdBanner } from '@/components/AdBanner';
+import { traduire } from '@/lib/i18n';
+import { libelleRarete, libelleSet, libelleSetRecompense } from '@/domain/i18n/libelles';
 
 export const dynamic = 'force-dynamic';
 
 /** Nombre d'avis de recherche affichés (§68). */
 const MOST_WANTED_SHOWN = 24;
 
-export const metadata: Metadata = {
-  title: 'Collection',
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await traduire();
+  return { title: t('col.meta.title'), robots: { index: false, follow: false } };
+}
 
 /**
  * Collection (cahier §22, §67, §68).
@@ -51,9 +53,10 @@ export default async function CollectionPage() {
    * `requireSession` peut rediriger ; c'est sans importance ici, la lecture
    * partie en parallèle est simplement abandonnée.
    */
-  const [session, recurrence] = await Promise.all([
+  const [session, recurrence, { t, tn }] = await Promise.all([
     requireSession(),
     getCachedRecurrences(),
+    traduire(),
   ]);
   const repository = getRepository();
 
@@ -100,14 +103,12 @@ export default async function CollectionPage() {
 
   return (
     <HarborScene variant="page" island={islandOf('/collection')}>
-      <p className="hb-eyebrow">
-        One Piece Quest
-      </p>
-      <h1 className="hb-title mt-1">Collection</h1>
+      <p className="hb-eyebrow">{t('brand')}</p>
+      <h1 className="hb-title mt-1">{t('col.title')}</h1>
 
       <p className="hb-muted mt-3 font-mono text-sm">
         <span className="hb-num text-2xl">{summary.owned}</span> /{' '}
-        {summary.total} personnages · {summary.percent}%
+        {t('col.summary', { total: summary.total, percent: summary.percent })}
       </p>
 
       <div className="mt-6">
@@ -130,9 +131,7 @@ export default async function CollectionPage() {
               l'équipage est la sélection de trois qu'on compose sur l'accueil.
               Deux choses pour un seul mot : on ne savait plus laquelle on
               regardait. */}
-          <h2 className="hb-legend">
-            Tes cartes
-          </h2>
+          <h2 className="hb-legend">{t('col.owned')}</h2>
           {/* Les cartes sont dessinées ici, par le serveur, puis remises à
               `OwnedCollection` qui se contente de choisir lesquelles montrer.
               Les dessiner côté navigateur enverrait `CharacterArt` et la table
@@ -168,7 +167,7 @@ export default async function CollectionPage() {
                           <span className="hb-serial">
                             {identity.serialCode}
                             {identity.mintNumber !== null && (
-                              <span className="hb-num"> · n°{identity.mintNumber}</span>
+                              <span className="hb-num">{t('col.serial.mint', { n: identity.mintNumber })}</span>
                             )}
                           </span>
                         ) : null
@@ -193,13 +192,10 @@ export default async function CollectionPage() {
       */}
       {shards > 0 && (
         <section className="mt-8">
-          <h2 className="hb-legend">Fragments</h2>
+          <h2 className="hb-legend">{t('col.shards')}</h2>
           <p className="hb-card mt-3">
             <span className="hb-num" style={{ fontSize: '1.8rem' }}>✨ {shards}</span>
-            <span className="hb-muted ml-2 text-xs">
-              fragments — gagnés sur chaque doublon, dépensables sur n’importe
-              quel personnage manquant.
-            </span>
+            <span className="hb-muted ml-2 text-xs">{t('col.shards.hint')}</span>
           </p>
           <ul className="mt-3 grid grid-cols-2 gap-2 text-xs md:grid-cols-5">
             {(['COMMON', 'RARE', 'EPIC', 'LEGENDARY', 'MYTHIC'] as const).map(
@@ -209,15 +205,15 @@ export default async function CollectionPage() {
                     className="hb-legend block"
                     style={{ color: RARITY_COLOR[rarity] }}
                   >
-                    {RARITY_LABEL[rarity]}
+                    {libelleRarete(t, rarity)}
                   </span>
                   <span className="hb-num mt-0.5 block">
                     {CRAFT_COST[rarity]}
                   </span>
                   <span className="hb-muted block">
                     {shards >= CRAFT_COST[rarity]
-                      ? 'à portée'
-                      : `il manque ${CRAFT_COST[rarity] - shards}`}
+                      ? t('col.shards.ready')
+                      : t('col.shards.missing', { n: CRAFT_COST[rarity] - shards })}
                   </span>
                 </li>
               ),
@@ -228,12 +224,8 @@ export default async function CollectionPage() {
 
       {/* Sets (§33) — récompenses cosmétiques uniquement. */}
       <section className="mt-8">
-        <h2 className="hb-legend">
-          Sets
-        </h2>
-        <p className="hb-muted mt-1 text-xs">
-          Les récompenses de set sont cosmétiques.
-        </p>
+        <h2 className="hb-legend">{t('col.sets')}</h2>
+        <p className="hb-muted mt-1 text-xs">{t('col.sets.note')}</p>
         <ul className="mt-3 space-y-2">
           {sets.map((entry) => (
             <li
@@ -241,7 +233,7 @@ export default async function CollectionPage() {
               className="hb-card"
             >
               <div className="flex items-baseline justify-between">
-                <span className="text-sm font-semibold">{entry.set.name}</span>
+                <span className="text-sm font-semibold">{libelleSet(t, entry.set.id)}</span>
                 <span className="hb-muted font-mono text-xs">
                   {entry.owned.length}/{entry.total}
                 </span>
@@ -257,7 +249,9 @@ export default async function CollectionPage() {
                 />
               </div>
               <p className="hb-muted mt-2 text-[11px]">
-                {entry.complete ? `✅ ${entry.set.reward}` : entry.set.reward}
+                {entry.complete
+                  ? `✅ ${libelleSetRecompense(t, entry.set.id)}`
+                  : libelleSetRecompense(t, entry.set.id)}
               </p>
             </li>
           ))}
@@ -267,12 +261,9 @@ export default async function CollectionPage() {
       {/* Manquants, présentés en avis de recherche (§68). */}
       {missing.length > 0 && (
         <section className="mt-8">
-          <h2 className="hb-legend">
-            Avis de recherche
-          </h2>
+          <h2 className="hb-legend">{t('col.wanted')}</h2>
           <p className="hb-muted mt-1 text-xs">
-            {missingAll.length} personnage{missingAll.length > 1 ? 's' : ''} à
-            trouver — les {missing.length} plus rares ci-dessous.
+            {tn('col.wanted.hint', missingAll.length, { shown: missing.length })}
           </p>
           <ul className="mt-3 grid grid-cols-2 gap-2 md:grid-cols-3 xl:grid-cols-4">
             {missing.map((character) => (
@@ -280,9 +271,7 @@ export default async function CollectionPage() {
                 key={character.id}
                 className="hb-wanted"
               >
-                <span className="hb-legend block">
-                  Recherché
-                </span>
+                <span className="hb-legend block">{t('col.wanted.tag')}</span>
                 <span className="mt-1 block text-sm font-semibold">
                   {character.name}
                 </span>
@@ -290,7 +279,7 @@ export default async function CollectionPage() {
                   className="hb-legend mt-0.5 block"
                   style={{ color: RARITY_COLOR[character.rarity] }}
                 >
-                  {RARITY_LABEL[character.rarity]}
+                  {libelleRarete(t, character.rarity)}
                 </span>
                 <CraftButton
                   characterId={character.id}

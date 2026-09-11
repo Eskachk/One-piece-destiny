@@ -6,7 +6,9 @@ import { Nav } from '@/components/Nav';
 import { Tutorial } from '@/components/Tutorial';
 import { collectionSummary } from '@/domain/collection/sets';
 import { CHARACTERS } from '@/data/characters';
-import { deriveStyle, MIN_WEEKS_FOR_STYLE, STYLE_DESCRIPTION, STYLE_LABEL } from '@/domain/player/style';
+import { deriveStyle, MIN_WEEKS_FOR_STYLE } from '@/domain/player/style';
+import { traduire } from '@/lib/i18n';
+import { libelleAge, libelleStyle, libelleStyleDescription } from '@/domain/i18n/libelles';
 import { DIVISION_LABEL, DIVISIONS, divisionRank } from '@/domain/season/divisions';
 import { SEASON_01, seasonStanding } from '@/domain/season/season';
 import {
@@ -16,7 +18,7 @@ import {
 import { AccountStatus } from '@/components/AccountStatus';
 import { HouseRules } from '@/components/HouseRules';
 import { NotificationPreferences } from '@/components/NotificationPreferences';
-import { restrictionsForBirthDate } from '@/domain/compliance/age';
+import { bandOf } from '@/domain/compliance/age';
 import {
   MAX_REWARDED_REFERRALS,
   REFERRAL_BERRIES_REFERRER,
@@ -34,10 +36,10 @@ import { AdBanner } from '@/components/AdBanner';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'Journal de bord',
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await traduire();
+  return { title: t('pf.meta.title'), robots: { index: false, follow: false } };
+}
 
 /**
  * Journal de bord (cahier §66) — profil du joueur.
@@ -47,7 +49,7 @@ export const metadata: Metadata = {
  * sur le score : c'est de la reconnaissance, pas de la puissance.
  */
 export default async function ProfilePage() {
-  const session = await requireSession();
+  const [session, { t, tn, locale }] = await Promise.all([requireSession(), traduire()]);
   const repository = getRepository();
 
   const available = social.isSocialAvailable();
@@ -107,7 +109,7 @@ export default async function ProfilePage() {
     body: n.body,
     href: n.href,
     read: n.read,
-    createdAt: n.createdAt.toLocaleDateString('fr-FR'),
+    createdAt: n.createdAt.toLocaleDateString(locale === 'en' ? 'en-GB' : 'fr-FR'),
   }));
 
   const currentRank = divisionRank(divisionState.division);
@@ -134,65 +136,50 @@ export default async function ProfilePage() {
   // quelqu'un pour lui montrer sa collection n'était pas une bonne idée.
   const player = account?.players as unknown as { handle: string } | undefined;
 
-  const restrictions = restrictionsForBirthDate(
-    account?.birth_date ? new Date(`${account.birth_date}T00:00:00Z`) : null,
-    new Date(),
-  );
+  const dateDeNaissance = account?.birth_date
+    ? new Date(`${account.birth_date}T00:00:00Z`)
+    : null;
 
   return (
     <HarborScene variant="page" island={islandOf('/profil')}>
-      <p className="hb-eyebrow">
-        Journal de bord
-      </p>
+      <p className="hb-eyebrow">{t('pf.eyebrow')}</p>
       <div className="flex items-baseline justify-between gap-3">
-        <h1 className="hb-title mt-1">{player?.handle ?? 'Sans nom'}</h1>
+        <h1 className="hb-title mt-1">{player?.handle ?? t('pf.noName')}</h1>
         <Link href="/parametres" className="hb-link shrink-0 text-sm">
-          Paramètres
+          {t('pf.settings')}
         </Link>
       </div>
 
       {/* Style de jeu (§16) */}
       <section className="hb-card hb-card--wood mt-5">
-        <p className="hb-legend">
-          Ton style
-        </p>
+        <p className="hb-legend">{t('pf.style')}</p>
         <p className="hb-title" style={{ fontSize: '1.9rem' }}>
-          {STYLE_LABEL[style.style]}
+          {libelleStyle(t, style.style)}
         </p>
-        <p className="hb-muted mt-1 text-sm">
-          {STYLE_DESCRIPTION[style.style]}
-        </p>
+        <p className="hb-muted mt-1 text-sm">{libelleStyleDescription(t, style.style)}</p>
 
         {style.weeks < MIN_WEEKS_FOR_STYLE && (
           <p className="hb-muted mt-2 text-xs">
-            {MIN_WEEKS_FOR_STYLE - style.weeks} semaine
-            {MIN_WEEKS_FOR_STYLE - style.weeks > 1 ? 's' : ''} de plus pour
-            trancher.
+            {tn('pf.style.more', MIN_WEEKS_FOR_STYLE - style.weeks)}
           </p>
         )}
 
         {style.weeks > 0 && (
           <dl className="mt-4 grid grid-cols-3 gap-2 text-center">
             <div>
-              <dt className="hb-legend">
-                Risque
-              </dt>
+              <dt className="hb-legend">{t('pf.style.risk')}</dt>
               <dd className="hb-num text-sm">
                 {Math.round(style.averages.risk)}
               </dd>
             </div>
             <div>
-              <dt className="hb-legend">
-                Synergie
-              </dt>
+              <dt className="hb-legend">{t('pf.style.synergy')}</dt>
               <dd className="hb-num text-sm">
                 {Math.round(style.averages.synergyShare * 100)}%
               </dd>
             </div>
             <div>
-              <dt className="hb-legend">
-                Popularité
-              </dt>
+              <dt className="hb-legend">{t('pf.style.popularity')}</dt>
               <dd className="hb-num text-sm">
                 {Math.round(style.averages.averagePickRate * 100)}%
               </dd>
@@ -203,9 +190,7 @@ export default async function ProfilePage() {
 
       {/* Division (§19) */}
       <section className="hb-card mt-5">
-        <p className="hb-legend">
-          Division
-        </p>
+        <p className="hb-legend">{t('pf.division')}</p>
         <p className="hb-title" style={{ fontSize: '1.9rem' }}>
           {DIVISION_LABEL[divisionState.division]}
         </p>
@@ -227,48 +212,42 @@ export default async function ProfilePage() {
             le moteur ne peut pas produire (`!atBottom`). */}
         <p className="hb-muted mt-3 text-xs">
           {divisionState.promotionStreak > 0 &&
-            (currentRank === DIVISIONS.length - 1
-              ? `${divisionState.promotionStreak} semaine(s) au sommet. Il n’y a plus de division au-dessus.`
-              : `${divisionState.promotionStreak} semaine(s) en zone de promotion.`)}
+            t(currentRank === DIVISIONS.length - 1 ? 'pf.division.top' : 'pf.division.promo', {
+              n: divisionState.promotionStreak,
+            })}
           {divisionState.relegationStreak > 0 &&
-            (currentRank === 0
-              ? `${divisionState.relegationStreak} semaine(s) difficile(s). East Blue est le point de départ, on n’en descend pas.`
-              : `${divisionState.relegationStreak} semaine(s) en zone de relégation.`)}
+            t(currentRank === 0 ? 'pf.division.bottom' : 'pf.division.releg', {
+              n: divisionState.relegationStreak,
+            })}
           {divisionState.promotionStreak === 0 &&
             divisionState.relegationStreak === 0 &&
-            (currentRank === DIVISIONS.length - 1
-              ? 'Tu es au sommet. Reste dans le haut du classement pour t’y maintenir.'
-              : 'Deux bonnes semaines consécutives pour monter.')}
+            t(currentRank === DIVISIONS.length - 1 ? 'pf.division.stayTop' : 'pf.division.climb')}
         </p>
       </section>
 
       {/* Saison (§20) */}
       <section className="hb-card mt-5">
         <div className="flex items-baseline justify-between">
-          <p className="hb-legend">
-            {SEASON_01.name}
-          </p>
-          <p className="hb-num text-lg">{standing.total} pts</p>
+          <p className="hb-legend">{t('pf.season', { n: '01' })}</p>
+          <p className="hb-num text-lg">{t('pf.season.pts', { n: standing.total })}</p>
         </div>
 
         <p className="hb-muted mt-2 text-sm">
-          {standing.counted.length} / {SEASON_01.countedResults} résultats
-          comptés · {standing.played} semaine
-          {standing.played > 1 ? 's' : ''} jouée
-          {standing.played > 1 ? 's' : ''}
+          {tn('pf.season.counted', standing.played, {
+            counted: standing.counted.length,
+            max: SEASON_01.countedResults,
+          })}
         </p>
 
         {/* La règle qui évite qu'une absence ruine la saison mérite d'être
             dite au joueur, pas seulement appliquée. */}
         <p className="hb-muted mt-2 text-xs">
-          Seuls tes {SEASON_01.countedResults} meilleurs résultats sur{' '}
-          {SEASON_01.chapters} comptent : une semaine manquée ne ruine pas ta
-          saison.
+          {t('pf.season.rule', { max: SEASON_01.countedResults, chapters: SEASON_01.chapters })}
         </p>
 
         {standing.dropped.length > 0 && (
           <p className="hb-muted mt-1 text-xs">
-            {standing.dropped.length} résultat(s) écarté(s).
+            {t('pf.season.dropped', { n: standing.dropped.length })}
           </p>
         )}
       </section>
@@ -276,9 +255,7 @@ export default async function ProfilePage() {
       {/* Historique des prédictions */}
       {profiles.length > 0 && (
         <section className="mt-6">
-          <h2 className="hb-legend">
-            Historique
-          </h2>
+          <h2 className="hb-legend">{t('pf.history')}</h2>
           <ul className="mt-3 space-y-1">
             {profiles.slice(0, 12).map((profile) => (
               <li
@@ -289,8 +266,8 @@ export default async function ProfilePage() {
                   #{profile.chapterNumber}
                 </span>
                 <span className="hb-muted text-xs">
-                  risque {Math.round(profile.risk)}
-                  {profile.percentile !== null && ` · top ${profile.percentile}%`}
+                  {t('pf.history.risk', { n: Math.round(profile.risk) })}
+                  {profile.percentile !== null && t('pf.history.top', { n: profile.percentile })}
                 </span>
                 <span className="hb-num text-sm">
                   {profile.total}
@@ -302,8 +279,11 @@ export default async function ProfilePage() {
       )}
 
       <p className="hb-muted mt-6 text-sm">
-        Collection : {collection.owned} / {collection.total} ({collection.percent}
-        %)
+        {t('pf.collection', {
+          owned: collection.owned,
+          total: collection.total,
+          percent: collection.percent,
+        })}
       </p>
 
       {available && (
@@ -324,7 +304,7 @@ export default async function ProfilePage() {
         <AccountStatus
           verified={Boolean(account?.email_verified_at)}
           birthDate={account?.birth_date ?? null}
-          restrictionReason={restrictions.reason}
+          restrictionReason={libelleAge(t, bandOf(dateDeNaissance, new Date()))}
         />
       </div>
 

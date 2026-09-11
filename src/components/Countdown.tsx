@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useT } from '@/components/LocaleProvider';
 
 /**
  * Compte à rebours du verrouillage (cahier §63).
@@ -20,6 +21,7 @@ export function Countdown({
   deadlineIso: string;
   initialRemainingMs: number;
 }) {
+  const { t } = useT();
   const deadline = new Date(deadlineIso).getTime();
   const [remaining, setRemaining] = useState(initialRemainingMs);
 
@@ -34,7 +36,7 @@ export function Countdown({
   if (remaining === 0) {
     return (
       <p className="font-mono text-2xl tracking-[0.2em] hb-ko">
-        🔒 VERROUILLÉ
+        {t('home.lock.locked')}
       </p>
     );
   }
@@ -54,13 +56,13 @@ export function Countdown({
       aria-live="off"
     >
       {pad(days)}
-      <span className="text-base hb-ink-soft">J </span>
+      <span className="text-base hb-ink-soft">{t('home.lock.days')} </span>
       {pad(hours)}
-      <span className="text-base hb-ink-soft">H </span>
+      <span className="text-base hb-ink-soft">{t('home.lock.hours')} </span>
       {pad(minutes)}
-      <span className="text-base hb-ink-soft">M </span>
+      <span className="text-base hb-ink-soft">{t('home.lock.minutes')} </span>
       {pad(seconds)}
-      <span className="text-base hb-ink-soft">S</span>
+      <span className="text-base hb-ink-soft">{t('home.lock.seconds')}</span>
     </p>
   );
 }

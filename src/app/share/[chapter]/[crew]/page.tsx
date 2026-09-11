@@ -4,6 +4,7 @@ import { CHARACTER_INDEX } from '@/data/characters';
 import { lireChapitre, lireEquipage } from '@/domain/social/partage';
 import { teamRisk } from '@/domain/risk';
 import type { Character } from '@/domain/types';
+import { traduire } from '@/lib/i18n';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,15 +21,13 @@ export async function generateMetadata({
 }: {
   params: Promise<{ chapter: string; crew: string }>;
 }): Promise<Metadata> {
-  const { chapter } = await params;
+  const [{ chapter }, { t }] = await Promise.all([params, traduire()]);
   const numero = lireChapitre(chapter);
-  const titre = numero
-    ? `Ma prédiction — Chapitre ${numero}`
-    : 'Ma prédiction';
+  const titre = numero ? t('share.meta.title', { n: numero }) : t('share.meta.title.none');
 
   return {
     title: titre,
-    description: 'Le chapitre est le spectacle. Ta prédiction est le jeu.',
+    description: t('share.meta.description'),
     openGraph: { title: titre },
     /*
      * Hors index, et c'est une mesure de charge autant que de référencement.
@@ -51,7 +50,7 @@ export default async function SharePage({
 }: {
   params: Promise<{ chapter: string; crew: string }>;
 }) {
-  const { chapter, crew } = await params;
+  const [{ chapter, crew }, { t }] = await Promise.all([params, traduire()]);
   // Même contrôle que dans la carte : le numéro est réaffiché, il doit être
   // un numéro. Un chemin quelconque devenait le titre de la page.
   const numero = lireChapitre(chapter);
@@ -69,7 +68,7 @@ export default async function SharePage({
         One Piece Quest
       </p>
       <h1 className="mt-1 font-display text-3xl text-parchment">
-        {numero ? `Chapitre ${numero}` : 'Ma prédiction'}
+        {numero ? t('share.chapter', { n: numero }) : t('share.meta.title.none')}
       </h1>
 
       <ul className="mt-6 space-y-2">
@@ -88,19 +87,19 @@ export default async function SharePage({
 
       {picked.length > 0 && (
         <p className="mt-4 font-mono text-sm text-parchment/70">
-          Risk {risk.value} / 100 · {risk.band}
+          {t('share.risk', { n: risk.value, band: risk.band })}
         </p>
       )}
 
       {/* Aucun score n'apparaît : la carte se partage avant la sortie du
           chapitre, l'afficher en ferait un canal de spoiler (§3). */}
-      <p className="mt-6 text-sm text-parchment/60">🔒 Prédiction verrouillée</p>
+      <p className="mt-6 text-sm text-parchment/60">{t('share.locked')}</p>
 
       <Link
         href="/"
         className="transition-quick mt-8 block rounded-xl bg-treasure px-4 py-3 text-center font-semibold text-abyss"
       >
-        Faire ma propre prédiction
+        {t('share.cta')}
       </Link>
     </main>
   );

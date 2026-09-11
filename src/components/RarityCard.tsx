@@ -1,11 +1,12 @@
+'use client';
+
 import type { ReactNode } from 'react';
+import { useT } from './LocaleProvider';
+import { decrireRecurrenceT, libelleAttribut, libelleRarete } from '@/domain/i18n/libelles';
 import type { Rarity } from '@/domain/types';
 import type { Attribute } from '@/domain/collection/attributes';
-import {
-  decrireRecurrence,
-  type Recurrence,
-} from '@/domain/chapter/recurrence';
-import { RARITY_COLOR, RARITY_LABEL } from '@/domain/collection/rarity';
+import type { Recurrence } from '@/domain/chapter/recurrence';
+import { RARITY_COLOR } from '@/domain/collection/rarity';
 import { CharacterArt } from './CharacterArt';
 
 /**
@@ -57,6 +58,7 @@ export function RarityCard({
   serial?: ReactNode;
   footer?: ReactNode;
 }) {
+  const { t } = useT();
   return (
     <article
       className="hb-rcard"
@@ -78,18 +80,18 @@ export function RarityCard({
 
       <div className="hb-rcard__head">
         <span className="hb-rcard__name">{name}</span>
-        <span className="hb-rcard__rarity">{RARITY_LABEL[rarity]}</span>
+        <span className="hb-rcard__rarity">{libelleRarete(t, rarity)}</span>
       </div>
 
       {attributes.length > 0 && (
         <ul className="hb-rcard__attrs">
           {attributes.map((attribute) => (
-            <li key={attribute.id} className="hb-attr" title={attribute.label}>
+            <li key={attribute.id} className="hb-attr" title={libelleAttribut(t, attribute.id)}>
               <span aria-hidden="true">{attribute.symbol}</span>
               {/* Le symbole seul n'est pas lisible par un lecteur d'écran, et
                   ne survit pas à une police dépourvue d'emoji. Le nom est
                   donc toujours présent dans le document. */}
-              <span className="hb-attr__label">{attribute.label}</span>
+              <span className="hb-attr__label">{libelleAttribut(t, attribute.id)}</span>
             </li>
           ))}
         </ul>
@@ -108,12 +110,12 @@ export function RarityCard({
       {recurrence && recurrence.observes > 0 && (
         <p
           className={`hb-recurrence${recurrence.vus === 0 ? ' hb-recurrence--nulle' : ''}`}
-          title={decrireRecurrence(recurrence)}
+          title={decrireRecurrenceT(t, recurrence)}
         >
           <span aria-hidden="true">
             📖 {recurrence.vus}/{recurrence.observes}
           </span>
-          <span className="sr-only">{decrireRecurrence(recurrence)}</span>
+          <span className="sr-only">{decrireRecurrenceT(t, recurrence)}</span>
         </p>
       )}
 

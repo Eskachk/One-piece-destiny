@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import type { RarityOdds } from '@/domain/collection/odds';
-import { RARITY_LABEL } from '@/domain/collection/rarity';
+import { useT } from './LocaleProvider';
+import { libelleRarete } from '@/domain/i18n/libelles';
 
 /**
  * Probabilités annoncées d'un coffre (cahier §113).
@@ -16,6 +17,7 @@ import { RARITY_LABEL } from '@/domain/collection/rarity';
  * réellement le serveur.
  */
 export function ChestOdds({ odds }: { odds: RarityOdds[] }) {
+  const { t } = useT();
   const [open, setOpen] = useState(false);
 
   return (
@@ -26,20 +28,20 @@ export function ChestOdds({ odds }: { odds: RarityOdds[] }) {
         aria-expanded={open}
         className="text-xs hb-accent underline"
       >
-        {open ? 'Masquer les probabilités' : 'Voir les probabilités'}
+        {open ? t('chest.odds.hide') : t('chest.odds.show')}
       </button>
 
       {open && (
         <div className="mt-2 rounded-lg border hb-border hb-input p-3">
           <table className="w-full text-xs">
             <caption className="pb-2 text-left hb-ink-soft">
-              Chance d’obtenir au moins une carte de chaque rareté, par coffre.
+              {t('chest.odds.caption')}
             </caption>
             <tbody>
               {odds.map((entry) => (
                 <tr key={entry.rarity}>
                   <th scope="row" className="py-0.5 text-left font-normal hb-ink">
-                    {RARITY_LABEL[entry.rarity]}
+                    {libelleRarete(t, entry.rarity)}
                   </th>
                   <td className="py-0.5 text-right font-mono hb-gold">
                     {entry.atLeastOnePercent.toFixed(2)} %
@@ -50,9 +52,7 @@ export function ChestOdds({ odds }: { odds: RarityOdds[] }) {
           </table>
 
           <p className="mt-2 border-t hb-border pt-2 text-[11px] leading-relaxed hb-ink-soft">
-            Ces taux sont calculés à partir des constantes qui servent au
-            tirage sur le serveur. La garantie de légendaire n’y est pas
-            comptée ; elle ne fait que les améliorer.
+            {t('chest.odds.note')}
           </p>
         </div>
       )}

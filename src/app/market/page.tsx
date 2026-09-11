@@ -18,13 +18,14 @@ import * as market from '@/lib/market/repository';
 import { getRepository } from '@/lib/repository';
 import { getCachedRecentSales } from '@/lib/cache';
 import { AdBanner } from '@/components/AdBanner';
+import { traduire } from '@/lib/i18n';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'Marché de la Grand Line',
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await traduire();
+  return { title: t('mk.meta.title'), robots: { index: false, follow: false } };
+}
 
 /**
  * Grand Line Market (cahier §35, §37).
@@ -34,24 +35,18 @@ export const metadata: Metadata = {
  * affichées plutôt que cachées.
  */
 export default async function MarketPage() {
-  const session = await requireSession();
+  const [session, { t, locale }] = await Promise.all([requireSession(), traduire()]);
 
   if (!market.isMarketAvailable()) {
     return (
       <HarborScene variant="page" island={islandOf('/market')}>
-        <h1 className="hb-title">
-          Marché de la Grand Line
-        </h1>
-        <p className="hb-card mt-5 text-sm">
-          Le Marché repose sur des transactions atomiques en base. Sans
-          configuration Postgres, il est indisponible — plutôt que simulé en
-          mémoire, ce qui donnerait une fausse assurance sur les doubles ventes.
-        </p>
+        <h1 className="hb-title">{t('mk.title.long')}</h1>
+        <p className="hb-card mt-5 text-sm">{t('mk.unavailable')}</p>
         <Link
           href="/"
           className="hb-link mt-5 block text-center text-sm"
         >
-          Retour à l&apos;équipage
+          {t('mk.back')}
         </Link>
         {/* La barre manquait sur cette branche : sans base configurée, le
             joueur se retrouvait sur un écran sans aucune sortie autre que le
@@ -124,19 +119,15 @@ export default async function MarketPage() {
   return (
     <HarborScene variant="page" island={islandOf('/market')}>
       <div className="flex items-baseline justify-between">
-        <p className="hb-eyebrow">
-          🏴 Grand Line
-        </p>
+        <p className="hb-eyebrow">{t('mk.eyebrow')}</p>
         <span className="hb-num text-sm">
           🪙 {wallet.berries}
         </span>
       </div>
-      <h1 className="hb-title mt-1">Marché</h1>
+      <h1 className="hb-title mt-1">{t('mk.title')}</h1>
 
       <p className="hb-muted mt-3 text-xs">
-        {Math.round(MARKET_FEE_RATE * 100)} % de taxe sur chaque vente. Les
-        Berries n&apos;achètent que de la collection : le prix d&apos;un
-        personnage n&apos;influence jamais son score.
+        {t('mk.fee', { rate: Math.round(MARKET_FEE_RATE * 100) })}
       </p>
 
       <div className="mt-6">
@@ -167,7 +158,7 @@ export default async function MarketPage() {
       */}
       {sold.length > 0 && (
         <section className="mt-8">
-          <h2 className="hb-legend">Ventes récentes</h2>
+          <h2 className="hb-legend">{t('mk.recent')}</h2>
           <ul className="mt-3 space-y-2">
             {sold.map((sale) => (
               <li key={sale.id} className="rounded-xl hb-surface px-3 py-2">
@@ -183,10 +174,10 @@ export default async function MarketPage() {
                   {' → '}
                   <span className="hb-handle">{sale.buyerHandle}</span>
                   {' · '}
-                  {/* `fr-FR` en dur : la date est rendue côté serveur, où la
+                  {/* Langue explicite : la date est rendue côté serveur, où la
                       langue du navigateur n'existe pas. Laisser la valeur par
                       défaut donnerait un format américain à tout le monde. */}
-                  {sale.soldAt.toLocaleDateString('fr-FR', {
+                  {sale.soldAt.toLocaleDateString(locale === 'en' ? 'en-GB' : 'fr-FR', {
                     day: 'numeric',
                     month: 'short',
                   })}
@@ -198,9 +189,7 @@ export default async function MarketPage() {
       )}
 
       <section className="mt-8">
-        <h2 className="hb-legend">
-          Liste de surveillance
-        </h2>
+        <h2 className="hb-legend">{t('mk.watchlist')}</h2>
         <Watchlist watched={watched} />
       </section>
       <AdBanner />

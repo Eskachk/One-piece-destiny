@@ -3,7 +3,9 @@
 import { useState, useTransition } from 'react';
 import { updatePreferencesAction } from '@/app/actions/preferences';
 import type { NotificationPreferences as Preferences } from '@/domain/notifications/preferences';
+import type { MessageKey } from '@/domain/i18n/locales';
 import { attempt } from './attempt';
+import { useT } from './LocaleProvider';
 
 /**
  * Réglage des notifications (cahier §108).
@@ -12,15 +14,16 @@ import { attempt } from './attempt';
  * sont pas désactivables, et afficher une case grisée laisserait croire
  * qu'elle pourrait s'ouvrir. Une phrase l'explique à la place.
  */
-const ROWS: { key: keyof Preferences; label: string; hint?: string }[] = [
-  { key: 'weeklyInApp', label: 'Rendez-vous hebdomadaire — dans l’application' },
-  { key: 'weeklyEmail', label: 'Rendez-vous hebdomadaire — par e-mail', hint: 'Verrouillage, résultats publiés.' },
-  { key: 'rewardsInApp', label: 'Récompenses — dans l’application' },
-  { key: 'rewardsEmail', label: 'Récompenses — par e-mail' },
-  { key: 'marketingEmail', label: 'Nouveautés et annonces', hint: 'Désactivé par défaut. Aucun envoi sans ton accord.' },
+const ROWS: { key: keyof Preferences; hint?: boolean }[] = [
+  { key: 'weeklyInApp' },
+  { key: 'weeklyEmail', hint: true },
+  { key: 'rewardsInApp' },
+  { key: 'rewardsEmail' },
+  { key: 'marketingEmail', hint: true },
 ];
 
 export function NotificationPreferences({ initial }: { initial: Preferences }) {
+  const { t, tradMessage } = useT();
   const [preferences, setPreferences] = useState(initial);
   const [message, setMessage] = useState<{ kind: 'ok' | 'error'; text: string } | null>(null);
   const [pending, startTransition] = useTransition();
@@ -35,25 +38,27 @@ export function NotificationPreferences({ initial }: { initial: Preferences }) {
       const result = await attempt(updatePreferencesAction(next));
       if (result.ok) {
         setPreferences(result.preferences);
-        setMessage({ kind: 'ok', text: 'Préférences enregistrées.' });
+        setMessage({ kind: 'ok', text: t('pref.saved') });
       } else {
         setPreferences(preferences);
-        setMessage({ kind: 'error', text: result.error });
+        setMessage({ kind: 'error', text: tradMessage(result.error) });
       }
     });
   };
 
   return (
     <section className="rounded-xl hb-surface p-5">
-      <h2 className="font-display text-xl hb-ink">Notifications</h2>
+      <h2 className="font-display text-xl hb-ink">{t('pref.title')}</h2>
 
       <ul className="mt-4 space-y-3">
         {ROWS.map((row) => (
           <li key={row.key} className="flex items-start justify-between gap-4">
             <label htmlFor={row.key} className="text-sm hb-ink">
-              {row.label}
+              {t(`pref.${row.key}`)}
               {row.hint && (
-                <span className="block text-xs hb-ink-soft">{row.hint}</span>
+                <span className="block text-xs hb-ink-soft">
+                  {t(`pref.${row.key}.hint` as MessageKey)}
+                </span>
               )}
             </label>
             <input
@@ -70,9 +75,7 @@ export function NotificationPreferences({ initial }: { initial: Preferences }) {
       </ul>
 
       <p className="mt-4 border-t hb-border pt-3 text-xs hb-ink-soft">
-        Les alertes de sécurité — mot de passe, double authentification — sont
-        toujours envoyées. Elles protègent l’accès à ton compte et ne peuvent
-        pas être désactivées.
+        {t('pref.security')}
       </p>
 
       {message && (

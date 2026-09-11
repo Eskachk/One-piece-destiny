@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
 import { MainNav } from '@/components/MainNav';
+import { traduire } from '@/lib/i18n';
 
 /**
  * Politique de confidentialité (obligation Play Store, RGPD art. 13).
@@ -31,12 +32,14 @@ import { MainNav } from '@/components/MainNav';
  * prestataire, sans passer par ici rend cette page inexacte — et une page de
  * confidentialité inexacte est pire que pas de page du tout.
  */
-export const metadata: Metadata = {
-  title: 'Politique de confidentialité',
-  description:
-    'Quelles données One Piece Quest enregistre, pourquoi, combien de temps, et comment les faire supprimer.',
-  alternates: { canonical: '/confidentialite' },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await traduire();
+  return {
+    title: t('privacy.meta.title'),
+    description: t('privacy.meta.description'),
+    alternates: { canonical: '/confidentialite' },
+  };
+}
 
 /** Dernière révision. À modifier à chaque changement de fond. */
 const MISE_A_JOUR = '7 septembre 2026';
@@ -57,11 +60,11 @@ const MISE_A_JOUR = '7 septembre 2026';
  */
 const CONTACT = process.env.CONTACT_EMAIL?.trim() || null;
 
-function Contact() {
+function Contact({ libelle }: { libelle: string }) {
   if (!CONTACT) {
     return (
       <Link className="hb-link" href="/parametres">
-        tes paramètres
+        {libelle}
       </Link>
     );
   }
@@ -87,7 +90,17 @@ function Section({
   );
 }
 
-export default function Confidentialite() {
+/**
+ * La version anglaise est une traduction fidèle du texte français, section
+ * par section. Les deux se modifient ensemble : une donnée ajoutée d'un côté
+ * et pas de l'autre ferait de l'une des deux pages une déclaration fausse.
+ */
+export default async function Confidentialite() {
+  const { locale } = await traduire();
+  return locale === 'en' ? <PageEn /> : <PageFr />;
+}
+
+function PageFr() {
   return (
     <HarborScene variant="page" decor={false}>
       <p className="hb-eyebrow">Vie privée</p>
@@ -106,7 +119,7 @@ export default function Confidentialite() {
         <p>
           Le jeu est édité à titre personnel par l’auteur de One Piece Quest.
           Pour toute question sur tes données, ou pour demander leur
-          suppression, passe par <Contact />.
+          suppression, passe par <Contact libelle="tes paramètres" />.
         </p>
         <p className="hb-ink-soft">
           One Piece Quest est un projet de fans, sans lien avec Eiichiro Oda,
@@ -237,7 +250,7 @@ export default function Confidentialite() {
             tes paramètres
           </Link>{' '}
           — notifications, apparence, sécurité. Pour le reste, passe par{' '}
-          <Contact />.
+          <Contact libelle="tes paramètres" />.
         </p>
         <p>
           Si une réponse ne te convient pas, tu peux saisir la CNIL —{' '}
@@ -267,6 +280,188 @@ export default function Confidentialite() {
         </Link>
         <Link href="/parametres" className="hb-link text-sm">
           Mes paramètres
+        </Link>
+      </div>
+
+      <MainNav />
+    </HarborScene>
+  );
+}
+
+function PageEn() {
+  return (
+    <HarborScene variant="page" decor={false}>
+      <p className="hb-eyebrow">Privacy</p>
+      <h1 className="hb-title mt-1">What the game knows about you</h1>
+
+      <p className="hb-card mt-5 text-sm">
+        One Piece Quest is a prediction game. It needs an account to know who a
+        crew belongs to and where to place you on the leaderboard — and nothing
+        more. This page says exactly what is stored, what for, and for how long.
+        <br />
+        <span className="hb-ink-soft">Last updated: 7 September 2026.</span>
+      </p>
+
+      <Section titre="Who is responsible">
+        <p>
+          The game is published personally by the author of One Piece Quest.
+          For any question about your data, or to request its deletion, go
+          through <Contact libelle="your settings" />.
+        </p>
+        <p className="hb-ink-soft">
+          One Piece Quest is a fan project, unaffiliated with Eiichiro Oda,
+          Shueisha or Toei Animation.
+        </p>
+      </Section>
+
+      <Section titre="What is stored, and why">
+        <ul className="ml-4 list-disc space-y-2">
+          <li>
+            <strong>Email address.</strong> It identifies your account, lets you
+            recover it if you forget your password, and delivers the alerts you
+            asked for. Without it, a lost account is lost for good.
+          </li>
+          <li>
+            <strong>Display name.</strong> Shown publicly on the leaderboard, on
+            the market and in leagues. You choose it: do not put your real name
+            in it if you do not want it seen.
+          </li>
+          <li>
+            <strong>Password.</strong> Never stored. The database only keeps an
+            Argon2id hash, from which the password cannot be recovered. Nobody —
+            the administrator included — can read it.
+          </li>
+          <li>
+            <strong>Date of birth.</strong> Only to check the minimum age and,
+            below it, parental consent.
+          </li>
+          <li>
+            <strong>Google sign-in</strong> (if you use it). The game keeps your
+            email address and the stable identifier Google passes along. No
+            access to your contacts, calendar or files.
+          </li>
+          <li>
+            <strong>Your game.</strong> Crews, scores, cards, Berries, market
+            trades, leagues, answers to chapter questions. That is the game
+            itself.
+          </li>
+          <li>
+            <strong>IP address and technical logs.</strong> Kept at account
+            creation and on sensitive events (sign-in, password change,
+            purchase). They serve one purpose only: detecting multiple accounts
+            and fraud. They are used neither to profile nor to locate you.
+          </li>
+          <li>
+            <strong>Purchases.</strong> If you buy Berries, the payment is
+            handled by Stripe. <strong>Your card number never goes through this
+            site and is never stored on it.</strong> The game only keeps the
+            amount, the date and a transaction identifier.
+          </li>
+        </ul>
+      </Section>
+
+      <Section titre="What is never collected">
+        <p>
+          No geographic location, no address book, no microphone, no camera, no
+          files from your phone. The last three permissions are explicitly
+          refused by the site itself, on top of never being requested.
+        </p>
+      </Section>
+
+      <Section titre="Advertising">
+        <p>
+          The game shows ads served by Google AdSense, which may set cookies and
+          use an advertising identifier to pick ads. In Europe, a consent banner
+          asks for your agreement before any processing for advertising
+          purposes, and you can decline.
+        </p>
+        <p>
+          Google’s personalised advertising settings can be changed at any time
+          on{' '}
+          <a
+            className="hb-link"
+            href="https://myadcenter.google.com"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            myadcenter.google.com
+          </a>
+          .
+        </p>
+      </Section>
+
+      <Section titre="Who the data is shared with">
+        <p>
+          No data is sold or exchanged. It is entrusted only to the providers
+          the game needs to run:
+        </p>
+        <ul className="ml-4 list-disc space-y-1">
+          <li>
+            <strong>Vercel</strong> — site hosting (servers in Europe).
+          </li>
+          <li>
+            <strong>Supabase</strong> — database.
+          </li>
+          <li>
+            <strong>Google</strong> — Google sign-in and ad network.
+          </li>
+          <li>
+            <strong>Stripe</strong> — payments, if you make any.
+          </li>
+          <li>
+            <strong>The email delivery service</strong> — for the game’s
+            messages only.
+          </li>
+        </ul>
+      </Section>
+
+      <Section titre="For how long">
+        <p>
+          Your account and its progress are kept as long as you keep it. After
+          deletion, game data is erased; technical traces tied to fraud and the
+          accounting records of purchases are kept for as long as the law
+          requires, then erased.
+        </p>
+      </Section>
+
+      <Section titre="Your rights">
+        <p>
+          You can request access to your data, its correction, its deletion, or
+          object to a processing. Most settings are directly in{' '}
+          <Link className="hb-link" href="/parametres">
+            your settings
+          </Link>{' '}
+          — notifications, appearance, security. For the rest, go through{' '}
+          <Contact libelle="your settings" />.
+        </p>
+        <p>
+          If an answer does not satisfy you, you can refer to the CNIL, the
+          French data protection authority —{' '}
+          <a
+            className="hb-link"
+            href="https://www.cnil.fr"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            cnil.fr
+          </a>
+          .
+        </p>
+      </Section>
+
+      <Section titre="Children">
+        <p>
+          The game is not intended for children under 13. Below the age required
+          in your country, parental consent is requested at sign-up.
+        </p>
+      </Section>
+
+      <div className="mt-5 flex flex-wrap gap-4">
+        <Link href="/" className="hb-link text-sm">
+          Back to the crew
+        </Link>
+        <Link href="/parametres" className="hb-link text-sm">
+          My settings
         </Link>
       </div>
 

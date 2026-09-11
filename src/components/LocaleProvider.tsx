@@ -56,8 +56,10 @@ export function useT() {
       nombre: nombre(locale),
       euros: euros(locale),
       /** Traduit un message français rendu par une action serveur. */
-      tradMessage: (message: string | null | undefined) =>
-        message ? traduireMessage(locale, message) : message,
+      // Le type d'entrée est rendu tel quel : un `null` reste `null`, ce qui
+      // évite d'élargir l'état d'un composant à `undefined` pour rien.
+      tradMessage: <M extends string | null | undefined>(message: M): M =>
+        (message ? traduireMessage(locale, message) : message) as M,
     }),
     [locale],
   );

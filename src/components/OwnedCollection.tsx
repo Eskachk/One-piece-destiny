@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState, type ReactNode } from 'react';
+import { useT } from './LocaleProvider';
 import { CardFilters } from './CardFilters';
 import {
   CRITERES_PAR_DEFAUT,
@@ -43,6 +44,7 @@ export function OwnedCollection({
   /** Catalogue des pastilles, construit par le serveur. */
   attributs?: GroupeAttributs[];
 }) {
+  const { t } = useT();
   const [criteres, setCriteres] = useState(CRITERES_PAR_DEFAUT);
 
   const comptes = useMemo(
@@ -68,10 +70,7 @@ export function OwnedCollection({
       />
 
       {visibles.length === 0 ? (
-        <p className="hb-card mt-3 text-sm">
-          Aucune carte ne correspond. Retire un attribut, essaie un autre nom,
-          ou remets la rareté sur « Toutes ».
-        </p>
+        <p className="hb-card mt-3 text-sm">{t('col.noMatch')}</p>
       ) : (
         <ul className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-4">
           {visibles.map((carte) => (

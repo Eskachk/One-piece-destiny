@@ -7,6 +7,8 @@ import { COLLECTION } from './messages/collection';
 import { MARCHE } from './messages/marche';
 import { BOUTIQUE } from './messages/boutique';
 import { PROFIL } from './messages/profil';
+import { SERVEUR } from './messages/serveur';
+import { DIVERS } from './messages/divers';
 
 /**
  * Langues de l'interface.
@@ -89,6 +91,8 @@ export const MESSAGES = {
     ...MARCHE.fr,
     ...BOUTIQUE.fr,
     ...PROFIL.fr,
+    ...SERVEUR.fr,
+    ...DIVERS.fr,
   },
   en: {
     ...COMMUN.en,
@@ -100,6 +104,8 @@ export const MESSAGES = {
     ...MARCHE.en,
     ...BOUTIQUE.en,
     ...PROFIL.en,
+    ...SERVEUR.en,
+    ...DIVERS.en,
   },
 } as const;
 
@@ -185,7 +191,14 @@ export function euros(locale: Locale): (cents: number) => string {
  * lisible.
  */
 let fixes: Map<string, MessageKey> | null = null;
-let gabarits: { cle: MessageKey; motif: RegExp }[] = [];
+let gabarits: { cle: MessageKey; motif: RegExp; poids: number }[] = [];
+
+/**
+ * L'apostrophe n'entre pas dans la comparaison : le dictionnaire écrit « n’a »
+ * et certains messages du serveur écrivent « n'a ». Un joueur ne voit pas la
+ * différence ; la recherche inverse ne doit pas la voir non plus.
+ */
+const normaliser = (t: string) => t.replace(/'/g, '’');
 
 function preparerInverse(): void {
   fixes = new Map();
@@ -199,29 +212,33 @@ function preparerInverse(): void {
 
   for (const [cle, phrase] of Object.entries(MESSAGES.fr) as [MessageKey, string][]) {
     if (!/\{\w+\}/.test(phrase)) {
-      fixes.set(phrase, cle);
+      fixes.set(normaliser(phrase), cle);
       continue;
     }
-    const source = phrase
+    const source = normaliser(phrase)
       .split(/(\{\w+\})/)
       .map((morceau) => {
         const param = morceau.match(/^\{(\w+)\}$/);
         return param ? `(?<${param[1]}>.+?)` : echapper(morceau);
       })
       .join('');
-    gabarits.push({ cle, motif: new RegExp(`^${source}$`) });
+    gabarits.push({ cle, motif: new RegExp(`^${source}$`), poids: phrase.replace(/\{\w+\}/g, '').length });
   }
+  // Les gabarits les plus précis d'abord : « {b} Berries et {n} coffres » doit
+  // passer avant « {n} coffres », dont le paramètre avalerait tout le début.
+  gabarits.sort((a, b) => b.poids - a.poids);
 }
 
 export function traduireMessage(locale: Locale, message: string): string {
   if (locale === DEFAULT_LOCALE) return message;
   if (!fixes) preparerInverse();
 
-  const fixe = fixes!.get(message);
+  const propre = normaliser(message);
+  const fixe = fixes!.get(propre);
   if (fixe) return translator(locale)(fixe);
 
   for (const { cle, motif } of gabarits) {
-    const m = motif.exec(message);
+    const m = motif.exec(propre);
     if (m) return translator(locale)(cle, (m.groups ?? {}) as Params);
   }
 

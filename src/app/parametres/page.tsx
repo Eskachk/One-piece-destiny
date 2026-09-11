@@ -4,7 +4,7 @@ import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
 import { NotificationPreferences } from '@/components/NotificationPreferences';
 import { SettingsPanel } from '@/components/SettingsPanel';
-import { MESSAGES } from '@/domain/i18n/locales';
+import { traduire } from '@/lib/i18n';
 import { requireSession } from '@/lib/auth/guards';
 import { preferencesOf } from '@/lib/notifications/dispatch';
 import { readDisplaySettings } from '@/lib/settings/store';
@@ -12,10 +12,10 @@ import { db } from '@/lib/supabase-admin';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'Paramètres',
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await traduire();
+  return { title: t('settings.title'), robots: { index: false, follow: false } };
+}
 
 /**
  * Paramètres du compte et de l'affichage.
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
  * page.
  */
 export default async function SettingsPage() {
-  const session = await requireSession();
+  const [session, { t }] = await Promise.all([requireSession(), traduire()]);
 
   const [display, preferences, account] = await Promise.all([
     readDisplaySettings(),
@@ -43,12 +43,9 @@ export default async function SettingsPage() {
   ]);
 
   const player = account.data?.players as unknown as { handle: string } | undefined;
-  const t = (key: keyof (typeof MESSAGES)['fr']) =>
-    MESSAGES[display.locale][key] ?? MESSAGES.fr[key];
-
   return (
     <HarborScene variant="page" island={islandOf('/parametres')}>
-      <p className="hb-eyebrow">One Piece Quest</p>
+      <p className="hb-eyebrow">{t('brand')}</p>
       <h1 className="hb-title mt-1">{t('settings.title')}</h1>
       <p className="hb-muted mt-3 text-sm">{t('settings.subtitle')}</p>
 

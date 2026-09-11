@@ -3,6 +3,7 @@
 import { attempt } from './attempt';
 import { useState, useTransition } from 'react';
 import { setPriceAlertAction, setWatchAction } from '@/app/actions/market';
+import { useT } from './LocaleProvider';
 
 /**
  * Watchlist (cahier §41).
@@ -27,6 +28,7 @@ export interface WatchedCharacter {
 }
 
 export function Watchlist({ watched }: { watched: WatchedCharacter[] }) {
+  const { t, tn, tradMessage } = useT();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
@@ -40,7 +42,7 @@ export function Watchlist({ watched }: { watched: WatchedCharacter[] }) {
   if (watched.length === 0) {
     return (
       <p className="mt-3 text-sm hb-ink-soft">
-        Aucun personnage surveillé. Ajoute-en depuis les annonces.
+        {t('mk.watch.empty')}
       </p>
     );
   }
@@ -49,7 +51,7 @@ export function Watchlist({ watched }: { watched: WatchedCharacter[] }) {
     <div className="mt-3 space-y-2">
       {error && (
         <p role="alert" className="text-sm hb-ko">
-          {error}
+          {tradMessage(error)}
         </p>
       )}
 
@@ -68,8 +70,8 @@ export function Watchlist({ watched }: { watched: WatchedCharacter[] }) {
           <div className="mt-1 flex items-baseline justify-between text-[11px] hb-ink-soft">
             <span>
               {entry.sales === 0
-                ? 'Jamais vendu'
-                : `Moyenne ${entry.averageSale} 🪙 sur ${entry.sales} vente${entry.sales > 1 ? 's' : ''}`}
+                ? t('mk.watch.never')
+                : tn('mk.watch.avg', entry.sales, { avg: entry.averageSale })}
               {entry.weekChange !== null && (
                 <span
                   className={
@@ -89,7 +91,7 @@ export function Watchlist({ watched }: { watched: WatchedCharacter[] }) {
               onClick={() => unwatch(entry.characterId)}
               className="underline disabled:opacity-40"
             >
-              Retirer
+              {t('mk.watch.remove')}
             </button>
           </div>
 
@@ -111,6 +113,7 @@ export function WatchToggle({
   characterId: string;
   watching: boolean;
 }) {
+  const { t } = useT();
   const [pending, startTransition] = useTransition();
 
   /*
@@ -142,7 +145,7 @@ export function WatchToggle({
       aria-busy={pending}
       aria-pressed={voulu}
       aria-label={
-        voulu ? 'Retirer de la liste de surveillance' : 'Ajouter à la liste de surveillance'
+        voulu ? t('mk.watch.drop') : t('mk.watch.add')
       }
       onClick={() => {
         const cible = !voulu;
@@ -177,6 +180,7 @@ function AlertThreshold({
   characterId: string;
   initial: number | null;
 }) {
+  const { t, tradMessage } = useT();
   const [value, setValue] = useState(initial === null ? '' : String(initial));
   const [saved, setSaved] = useState<number | null>(initial);
   const [message, setMessage] = useState<string | null>(null);
@@ -188,7 +192,7 @@ function AlertThreshold({
     const alertBelow = trimmed === '' ? null : Number(trimmed);
 
     if (alertBelow !== null && (!Number.isInteger(alertBelow) || alertBelow < 1)) {
-      setMessage('Indique un montant entier en Berries.');
+      setMessage(t('mk.alert.integer'));
       return;
     }
 
@@ -198,11 +202,11 @@ function AlertThreshold({
         setSaved(result.alertBelow);
         setMessage(
           result.alertBelow === null
-            ? 'Alerte retirée.'
-            : `Alerte sous ${result.alertBelow} 🪙.`,
+            ? t('mk.alert.removed')
+            : t('mk.alert.set', { n: result.alertBelow }),
         );
       } else {
-        setMessage(result.error);
+        setMessage(tradMessage(result.error));
       }
     });
   };
@@ -214,7 +218,7 @@ function AlertThreshold({
           htmlFor={`alert-${characterId}`}
           className="text-[11px] hb-ink-soft"
         >
-          M’alerter sous
+          {t('mk.alert.label')}
         </label>
         <input
           id={`alert-${characterId}`}
@@ -235,7 +239,7 @@ function AlertThreshold({
           aria-busy={pending}
           className="text-[11px] hb-accent underline disabled:opacity-30"
         >
-          Enregistrer
+          {t('action.save')}
         </button>
       </div>
 

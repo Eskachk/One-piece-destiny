@@ -9,7 +9,8 @@ import {
 } from '@/app/actions/market';
 import { WatchToggle } from '@/components/Watchlist';
 import { feeBreakdown } from '@/domain/market/pricing';
-import { RARITY_LABEL } from '@/domain/collection/rarity';
+import { useT } from './LocaleProvider';
+import { libelleRarete } from '@/domain/i18n/libelles';
 import type { Rarity } from '@/domain/types';
 
 /**
@@ -47,6 +48,7 @@ export function MarketBoard({
   sellable: SellableView[];
   berries: number;
 }) {
+  const { t, tradMessage } = useT();
   const [selling, setSelling] = useState<SellableView | null>(null);
   const [price, setPrice] = useState('');
   const [message, setMessage] = useState<
@@ -59,8 +61,8 @@ export function MarketBoard({
       const result = await attempt(action());
       setMessage(
         result.ok
-          ? { kind: 'ok', text: 'C\'est fait.' }
-          : { kind: 'error', text: String(result.error) },
+          ? { kind: 'ok', text: t('mk.done') }
+          : { kind: 'error', text: tradMessage(String(result.error)) },
       );
       if (result.ok) {
         setSelling(null);
@@ -86,13 +88,11 @@ export function MarketBoard({
 
       {/* Carnet d'annonces */}
       <section>
-        <h2 className="text-sm uppercase tracking-widest hb-ink-soft">
-          Annonces
-        </h2>
+        <h2 className="text-sm uppercase tracking-widest hb-ink-soft">{t('mk.listings')}</h2>
 
         {listings.length === 0 ? (
           <p className="mt-3 text-sm hb-ink-soft">
-            Aucune annonce. Le marché est calme.
+            {t('mk.listings.empty')}
           </p>
         ) : (
           <ul className="mt-3 space-y-2">
@@ -119,7 +119,7 @@ export function MarketBoard({
                       comme une mention de bas de carte : c'est l'information
                       qui permet de reconnaître un habitué du Market. */}
                   <p className="mt-1 text-xs hb-ink-soft">
-                    Vendu par <span className="hb-handle">{listing.sellerHandle}</span>
+                    {t('mk.soldBy')} <span className="hb-handle">{listing.sellerHandle}</span>
                   </p>
 
                   {listing.isMine ? (
@@ -130,7 +130,7 @@ export function MarketBoard({
                       onClick={() => run(() => cancelListingAction(listing.id))}
                       className="transition-quick mt-3 w-full rounded-lg border border-danger/40 px-3 py-2 text-sm hb-ko disabled:opacity-40"
                     >
-                      Retirer mon annonce
+                      {t('mk.cancel')}
                     </button>
                   ) : (
                     <button
@@ -141,10 +141,10 @@ export function MarketBoard({
                       className="transition-quick mt-3 w-full rounded-lg hb-goldfill px-3 py-2 text-sm font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
                     >
                       {listing.alreadyOwned
-                        ? 'Déjà dans ta collection'
+                        ? t('mk.owned')
                         : tooPoor
-                          ? 'Berries insuffisantes'
-                          : 'Acheter'}
+                          ? t('mk.tooPoor')
+                          : t('mk.buy')}
                     </button>
                   )}
                 </li>
@@ -156,26 +156,24 @@ export function MarketBoard({
 
       {/* Mise en vente */}
       <section>
-        <h2 className="text-sm uppercase tracking-widest hb-ink-soft">
-          Vendre
-        </h2>
+        <h2 className="text-sm uppercase tracking-widest hb-ink-soft">{t('mk.sell')}</h2>
 
         {sellable.length === 0 ? (
           <p className="mt-3 text-sm hb-ink-soft">
-            Rien à vendre pour l&apos;instant.
+            {t('mk.sell.empty')}
           </p>
         ) : selling ? (
           <div className="mt-3 rounded-xl hb-surface p-4">
             <p className="hb-ink">{selling.name}</p>
             <p className="text-[11px] uppercase tracking-wider hb-accent">
-              {RARITY_LABEL[selling.rarity]}
+              {libelleRarete(t, selling.rarity)}
             </p>
 
             <label
               htmlFor="price"
               className="mt-3 block text-xs hb-ink-soft"
             >
-              Prix entre {selling.floor} et {selling.ceiling} 🪙
+              {t('mk.sell.price', { floor: selling.floor, ceiling: selling.ceiling })}
             </label>
             <input
               id="price"
@@ -190,7 +188,7 @@ export function MarketBoard({
             {/* Ce que le vendeur touchera, avant de valider (§42). */}
             {preview && (
               <p className="mt-2 text-xs hb-ink-soft">
-                Taxe {preview.fee} 🪙 · tu reçois{' '}
+                {t('mk.sell.preview', { fee: preview.fee })}{' '}
                 <span className="hb-gold">{preview.sellerReceives} 🪙</span>
               </p>
             )}
@@ -210,14 +208,14 @@ export function MarketBoard({
                 }
                 className="transition-quick flex-1 rounded-lg hb-goldfill px-3 py-2 text-sm font-semibold hb-on-gold disabled:opacity-40"
               >
-                Mettre en vente
+                {t('mk.sell.submit')}
               </button>
               <button
                 type="button"
                 onClick={() => setSelling(null)}
                 className="rounded-lg border hb-border px-3 py-2 text-sm hb-accent"
               >
-                Annuler
+                {t('action.cancel')}
               </button>
             </div>
           </div>
@@ -232,7 +230,7 @@ export function MarketBoard({
                 >
                   <span className="block text-sm hb-ink">{card.name}</span>
                   <span className="mt-0.5 block text-[11px] uppercase tracking-wider hb-ink-soft">
-                    {RARITY_LABEL[card.rarity]}
+                    {libelleRarete(t, card.rarity)}
                   </span>
                 </button>
               </li>

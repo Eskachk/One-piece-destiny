@@ -17,11 +17,10 @@ import { spoilerState } from '@/domain/chapter/lock';
 import { SpoilerVeil } from '@/components/SpoilerVeil';
 import { readDisplaySettings } from '@/lib/settings/store';
 import { percentileFromRank } from '@/domain/scoring/chapter-results';
-import {
-  AWARD_LABEL,
-  type ChapterAnalysis,
-  type SpecialAward,
-} from '@/domain/scoring/chapter-analysis';
+import type { ChapterAnalysis, SpecialAward } from '@/domain/scoring/chapter-analysis';
+import { traduire } from '@/lib/i18n';
+import { traduireDetailScore } from '@/domain/i18n/detail-score';
+import type { MessageKey } from '@/domain/i18n/locales';
 import type { CharacterScore } from '@/domain/scoring';
 import { getAuthenticatedSession } from '@/lib/auth/session-store';
 import { getRepository } from '@/lib/repository';
@@ -32,16 +31,18 @@ import { classementLigue, liguesDe } from '@/lib/league/repository';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  // URL de référence. Sans elle, une même page atteinte avec un
-  // paramètre de campagne, une barre oblique finale ou depuis un
-  // domaine d'aperçu compte comme plusieurs pages, et le signal se
-  // divise entre elles.
-  alternates: { canonical: '/classement' },
-  title: 'Classement hebdomadaire',
-  description:
-    'Le classement de la semaine : meilleures prédictions, plus beaux paris et percentile de chaque capitaine.',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await traduire();
+  return {
+    // URL de référence. Sans elle, une même page atteinte avec un
+    // paramètre de campagne, une barre oblique finale ou depuis un
+    // domaine d'aperçu compte comme plusieurs pages, et le signal se
+    // divise entre elles.
+    alternates: { canonical: '/classement' },
+    title: t('lb.meta.title'),
+    description: t('lb.meta.description'),
+  };
+}
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 
@@ -68,9 +69,10 @@ export default async function LeaderboardPage() {
    * ajoutait un aller-retour — de 80 à 130 ms depuis la plateforme — sur la
    * page que tout le jeu consulte le dimanche soir, en même temps.
    */
-  const [session, publie] = await Promise.all([
+  const [session, publie, { t, tn }] = await Promise.all([
     getAuthenticatedSession(),
     getCachedLatestPublishedChapter(),
+    traduire(),
   ]);
 
   // Le classement porte sur le dernier chapitre **publié**. S'il n'y en a pas
@@ -121,12 +123,8 @@ export default async function LeaderboardPage() {
   if (!chapter) {
     return (
       <HarborScene variant="page" island={islandOf('/classement')}>
-        <h1 className="hb-title">
-          Classement hebdomadaire
-        </h1>
-        <p className="hb-card mt-5 text-sm">
-          Aucun chapitre en cours.
-        </p>
+        <h1 className="hb-title">{t('lb.title')}</h1>
+        <p className="hb-card mt-5 text-sm">{t('lb.noChapter')}</p>
         {panneauLigues}
         <AdBanner />
         <Tutorial page="classement" />
@@ -139,12 +137,9 @@ export default async function LeaderboardPage() {
   if (spoilerState(chapter) === 'SPOILER_LOCK') {
     return (
       <HarborScene variant="page" island={islandOf('/classement')}>
-        <h1 className="hb-title">
-          Classement hebdomadaire
-        </h1>
+        <h1 className="hb-title">{t('lb.title')}</h1>
         <p className="hb-card mt-5 text-sm">
-          🔒 Les résultats du chapitre {chapter.chapterNumber} ne sont pas encore
-          publiés. Rien n&apos;est révélé avant la sortie officielle.
+          {t('lb.locked', { n: chapter.chapterNumber })}
         </p>
         {panneauLigues}
         <AdBanner />
@@ -184,31 +179,26 @@ export default async function LeaderboardPage() {
 
   return (
     <HarborScene variant="page" island={islandOf('/classement')}>
-      <p className="hb-eyebrow">
-        Chapitre {chapter.chapterNumber}
-      </p>
-      <h1 className="hb-title mt-1">Prime hebdomadaire</h1>
+      <p className="hb-eyebrow">{t('lb.chapter', { n: chapter.chapterNumber })}</p>
+      <h1 className="hb-title mt-1">{t('lb.bounty')}</h1>
 
       {/* Voile personnel (paramètres). Distinct du verrou du §3 : celui-ci
           intervient après publication, pour le joueur qui n'a pas encore lu le
           chapitre. Tout ce qui suit révèle des apparitions. */}
       <SpoilerVeil
         active={display.spoilerShield}
-        label={`Afficher les résultats du chapitre ${chapter.chapterNumber}`}
+        label={t('lb.veil', { n: chapter.chapterNumber })}
       >
 
       {/* Position personnelle : le percentile parle plus qu'un rang absolu. */}
       {mine && (
         <section className="hb-card hb-card--wood mt-5">
-          <p className="hb-legend">
-            Ta position
-          </p>
+          <p className="hb-legend">{t('lb.mine')}</p>
           <p className="hb-title" style={{ fontSize: '2.6rem' }}>#{mine.rank}</p>
-          <p className="hb-num mt-1">{mine.total} pts</p>
+          <p className="hb-num mt-1">{t('lb.pts', { n: mine.total })}</p>
           {percentile !== null && (
             <p className="mt-3 text-sm">
-              Top <span className="hb-num">{percentile}%</span>{' '}
-              sur {total} capitaine{total > 1 ? 's' : ''}
+              {tn('lb.percentile', total, { p: percentile })}
             </p>
           )}
         </section>
@@ -217,9 +207,7 @@ export default async function LeaderboardPage() {
       {/* Replay de performance (cahier §65) */}
       {mine && Array.isArray(mine.breakdown) && (
         <section className="mt-6">
-          <h2 className="hb-legend">
-            Comment ton équipage a performé
-          </h2>
+          <h2 className="hb-legend">{t('lb.replay')}</h2>
           <ul className="mt-3 space-y-3">
             {(mine.breakdown as CharacterScore[]).map((score) => (
               <li
@@ -231,11 +219,11 @@ export default async function LeaderboardPage() {
                     {CHARACTER_INDEX.get(score.characterId)?.name ??
                       score.characterId}
                   </span>
-                  <span className="hb-num">{score.total} pts</span>
+                  <span className="hb-num">{t('lb.pts', { n: score.total })}</span>
                 </div>
                 <ul className="hb-muted mt-2 space-y-0.5 text-xs">
                   {score.breakdown.map((line, index) => (
-                    <li key={index}>{line}</li>
+                    <li key={index}>{traduireDetailScore(t, line)}</li>
                   ))}
                 </ul>
               </li>
@@ -247,34 +235,46 @@ export default async function LeaderboardPage() {
       {/* Analyse post-chapitre (cahier §64) */}
       {analysis && (
         <section className="mt-8">
-          <h2 className="hb-legend">
-            Chapitre {chapter.chapterNumber} — analyse
-          </h2>
+          <h2 className="hb-legend">{t('lb.analysis', { n: chapter.chapterNumber })}</h2>
           <dl className="mt-3 space-y-2">
             {(
               [
                 [
-                  'Le plus choisi',
+                  t('lb.analysis.mostPicked'),
                   analysis.mostPicked &&
-                    `${name(analysis.mostPicked.characterId)} — ${percent(analysis.mostPicked.pickRate)}`,
+                    t('lb.analysis.pick', {
+                      name: name(analysis.mostPicked.characterId),
+                      rate: percent(analysis.mostPicked.pickRate),
+                    }),
                 ],
                 [
-                  'Meilleur rendement',
+                  t('lb.analysis.best'),
                   analysis.bestPerformer &&
-                    `${name(analysis.bestPerformer.characterId)} — ${analysis.bestPerformer.points} pts`,
+                    t('lb.analysis.points', {
+                      name: name(analysis.bestPerformer.characterId),
+                      n: analysis.bestPerformer.points,
+                    }),
                 ],
                 [
-                  'Plus belle surprise',
+                  t('lb.analysis.surprise'),
                   analysis.biggestSurprise &&
-                    `${name(analysis.biggestSurprise.characterId)} — ${analysis.biggestSurprise.points} pts, choisi par ${percent(analysis.biggestSurprise.pickRate)}`,
+                    t('lb.analysis.surpriseValue', {
+                      name: name(analysis.biggestSurprise.characterId),
+                      n: analysis.biggestSurprise.points,
+                      rate: percent(analysis.biggestSurprise.pickRate),
+                    }),
                 ],
                 [
-                  'Piège de la semaine',
+                  t('lb.analysis.trap'),
                   analysis.biggestTrap &&
-                    `${name(analysis.biggestTrap.characterId)} — ${analysis.biggestTrap.points} pts malgré ${percent(analysis.biggestTrap.pickRate)} de sélection`,
+                    t('lb.analysis.trapValue', {
+                      name: name(analysis.biggestTrap.characterId),
+                      n: analysis.biggestTrap.points,
+                      rate: percent(analysis.biggestTrap.pickRate),
+                    }),
                 ],
-                ['Score moyen', String(analysis.averageScore)],
-                ['Score médian', String(analysis.medianScore)],
+                [t('lb.analysis.average'), String(analysis.averageScore)],
+                [t('lb.analysis.median'), String(analysis.medianScore)],
               ] as const
             ).map(([label, value]) =>
               value ? (
@@ -293,9 +293,7 @@ export default async function LeaderboardPage() {
       {/* Classements spécialisés (cahier §18) */}
       {awards.length > 0 && (
         <section className="mt-8">
-          <h2 className="hb-legend">
-            Distinctions
-          </h2>
+          <h2 className="hb-legend">{t('lb.awards')}</h2>
           <ul className="mt-3 space-y-1">
             {awards.map((award) => (
               <li
@@ -303,7 +301,7 @@ export default async function LeaderboardPage() {
                 className="hb-tile flex items-baseline justify-between"
               >
                 <span className="hb-legend">
-                  {AWARD_LABEL[award.award as SpecialAward] ?? award.award}
+                  {t(`award.${award.award as SpecialAward}` as MessageKey)}
                 </span>
                 <span className="text-sm font-semibold">
                   {award.handle ?? award.playerId.slice(0, 8)}
@@ -315,13 +313,11 @@ export default async function LeaderboardPage() {
       )}
 
       <section className="mt-8">
-        <h2 className="hb-legend">
-          Classement
-        </h2>
+        <h2 className="hb-legend">{t('lb.ranking')}</h2>
 
         {top.length === 0 ? (
           <p className="hb-muted mt-3 text-sm">
-            Aucune équipe classée pour ce chapitre.
+            {t('lb.empty')}
           </p>
         ) : (
           <ol className="mt-3 space-y-1">
@@ -366,7 +362,7 @@ export default async function LeaderboardPage() {
       {panneauLigues}
 
       <Link href="/" className="hb-link mt-6 block text-center text-sm">
-        Retour à l&apos;équipage
+        {t('lb.back')}
       </Link>
 
       {/* La barre d'onglets manquait sur ce retour — celui que voient tous les

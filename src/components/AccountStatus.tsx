@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react';
 import { resendVerificationAction, setBirthDateAction } from '@/app/actions/preferences';
 import { attempt } from './attempt';
+import { useT } from './LocaleProvider';
 
 /**
  * État du compte : adresse confirmée et date de naissance (cahier §86, §114).
@@ -23,6 +24,7 @@ export function AccountStatus({
   birthDate: string | null;
   restrictionReason: string;
 }) {
+  const { t, tradMessage } = useT();
   const [message, setMessage] = useState<string | null>(null);
   const [date, setDate] = useState(birthDate ?? '');
   const [pending, startTransition] = useTransition();
@@ -43,15 +45,13 @@ export function AccountStatus({
 
   return (
     <section className="rounded-xl hb-surface p-5">
-      <h2 className="font-display text-xl hb-ink">Compte</h2>
+      <h2 className="font-display text-xl hb-ink">{t('pf.account')}</h2>
 
       <div className="mt-4 flex items-start justify-between gap-4">
         <div>
-          <p className="text-sm hb-ink">Adresse e-mail</p>
+          <p className="text-sm hb-ink">{t('pf.account.email')}</p>
           <p className="text-xs hb-ink-soft">
-            {verified
-              ? 'Confirmée. C’est elle qui reçoit les alertes de sécurité.'
-              : 'Non confirmée. Confirme-la pour sécuriser la récupération de ton compte.'}
+            {verified ? t('pf.account.email.ok') : t('pf.account.email.ko')}
           </p>
         </div>
         {verified ? (
@@ -64,14 +64,14 @@ export function AccountStatus({
             aria-busy={pending}
             className="shrink-0 text-xs hb-accent underline disabled:opacity-40"
           >
-            Renvoyer le lien
+            {t('pf.account.resend')}
           </button>
         )}
       </div>
 
       <div className="mt-4 border-t hb-border pt-4">
         <label htmlFor="birthDate" className="text-sm hb-ink">
-          Date de naissance
+          {t('pf.account.birth')}
         </label>
         <p className="text-xs hb-ink-soft">{restrictionReason}</p>
 
@@ -92,20 +92,18 @@ export function AccountStatus({
             aria-busy={pending}
             className="text-xs hb-accent underline disabled:opacity-30"
           >
-            Enregistrer
+            {t('action.save')}
           </button>
         </div>
 
         <p className="mt-2 text-[11px] hb-ink-soft">
-          {birthDate === null
-            ? 'Déclarative : elle n’est pas vérifiée. Elle sert à appliquer les restrictions d’âge, et ne se saisit qu’une fois.'
-            : 'Enregistrée, et non modifiable. Sans cela, un compte restreint n’aurait qu’à se redéclarer majeur.'}
+          {birthDate === null ? t('pf.account.birth.new') : t('pf.account.birth.set')}
         </p>
       </div>
 
       {message && (
         <p role="status" className="mt-3 text-sm hb-accent">
-          {message}
+          {tradMessage(message)}
         </p>
       )}
     </section>

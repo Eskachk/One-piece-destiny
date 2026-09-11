@@ -71,12 +71,28 @@
   </head>
   <body>
     <img src="/icons/icon-192.png" alt="" />
-    <h1>Le Log Pose ne répond plus</h1>
-    <p>
+    <h1 data-fr="Le Log Pose ne répond plus" data-en="The Log Pose has gone quiet">Le Log Pose ne répond plus</h1>
+    <p
+      data-fr="Aucune connexion réseau. Le jeu a besoin du serveur pour lire ton équipage et le classement de la semaine — reconnecte-toi au réseau, puis réessaie."
+      data-en="No network connection. The game needs the server to read your crew and this week’s leaderboard — reconnect, then try again."
+    >
       Aucune connexion réseau. Le jeu a besoin du serveur pour lire ton
       équipage et le classement de la semaine — reconnecte-toi au réseau, puis
       réessaie.
     </p>
-    <button type="button" onclick="location.reload()">Réessayer</button>
+    <button type="button" onclick="location.reload()" data-fr="Réessayer" data-en="Try again">Réessayer</button>
+    <script>
+      // La langue vient du même cookie que le reste du jeu (`opq_display`,
+      // lisible par le navigateur). Sans cookie, ou sans script : français.
+      (function () {
+        var m = /(?:^|;\s*)opq_display=([a-z]{2})/.exec(document.cookie);
+        var lang = m && m[1] === 'en' ? 'en' : 'fr';
+        if (lang === 'fr') return;
+        document.documentElement.lang = lang;
+        document.title = 'Offline — One Piece Quest';
+        var nodes = document.querySelectorAll('[data-en]');
+        for (var i = 0; i < nodes.length; i++) nodes[i].textContent = nodes[i].getAttribute('data-en');
+      })();
+    </script>
   </body>
 </html>

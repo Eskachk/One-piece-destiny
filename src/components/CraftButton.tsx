@@ -3,6 +3,7 @@
 import { attempt } from './attempt';
 import { useState, useTransition } from 'react';
 import { craftCharacterAction } from '@/app/actions/collection';
+import { useT } from './LocaleProvider';
 
 /**
  * Fabrication d'un personnage par fragments (cahier §29).
@@ -20,6 +21,7 @@ export function CraftButton({
   shards: number;
   cost: number;
 }) {
+  const { t, tradMessage } = useT();
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -54,13 +56,13 @@ export function CraftButton({
           aria-busy={pending}
           className="transition-quick mt-1 w-full rounded hb-goldfill px-2 py-1 text-[11px] font-semibold hb-on-gold disabled:opacity-50"
         >
-          {pending ? '…' : 'Fabriquer'}
+          {pending ? '…' : t('col.craft')}
         </button>
       )}
 
       {error && (
         <p role="alert" className="mt-1 text-[10px] hb-ko">
-          {error}
+          {tradMessage(error)}
         </p>
       )}
     </div>

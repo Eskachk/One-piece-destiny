@@ -11,14 +11,15 @@ import {
   COVERAGE,
   LOCALES,
   LOCALE_LABEL,
-  MESSAGES,
+  translator,
+  traduireMessage,
   type Locale,
+  type MessageKey,
 } from '@/domain/i18n/locales';
 import {
   HANDLE_MAX_LENGTH,
   HANDLE_MIN_LENGTH,
   checkHandle,
-  describeHandleIssue,
 } from '@/domain/player/handle';
 
 /**
@@ -94,8 +95,9 @@ export function SettingsPanel({
   // Traduction locale au composant : le panneau est le seul écran qui doit
   // pouvoir changer de langue **avant** rechargement, puisque c'est lui qui la
   // change. Ailleurs, la langue vient du rendu serveur.
-  const t = (key: keyof (typeof MESSAGES)['fr']) =>
-    MESSAGES[display.locale][key] ?? MESSAGES.fr[key];
+  // Le panneau parle la langue **choisie**, pas celle de la page : le reste de
+  // l'écran change au rafraîchissement, ce panneau change au clic.
+  const t = translator(display.locale);
 
   const save = (next: Display) => {
     // L'affichage change tout de suite, l'enregistrement suit. Un interrupteur
@@ -107,7 +109,7 @@ export function SettingsPanel({
         // Échec : on revient à l'état précédent plutôt que de laisser
         // l'interface affirmer un réglage qui n'est pas enregistré.
         setDisplay(display);
-        setMessage({ ok: false, text: String(result.error) });
+        setMessage({ ok: false, text: traduireMessage(display.locale, String(result.error)) });
       } else {
         setMessage({ ok: true, text: t('settings.saved') });
       }
@@ -116,7 +118,11 @@ export function SettingsPanel({
 
   const handleCheck = draftHandle === handle ? null : checkHandle(draftHandle);
   const handleError =
-    handleCheck && !handleCheck.valid ? describeHandleIssue(handleCheck.issue!) : null;
+    handleCheck && !handleCheck.valid
+      ? t(`auth.handle.${handleCheck.issue!}` as MessageKey, {
+          n: handleCheck.issue === 'TOO_SHORT' ? HANDLE_MIN_LENGTH : HANDLE_MAX_LENGTH,
+        })
+      : null;
 
   const renameMe = () => {
     startTransition(async () => {
@@ -124,7 +130,7 @@ export function SettingsPanel({
       setMessage(
         result.ok
           ? { ok: true, text: t('settings.saved') }
-          : { ok: false, text: String(result.error) },
+          : { ok: false, text: traduireMessage(display.locale, String(result.error)) },
       );
     });
   };
@@ -230,21 +236,21 @@ export function SettingsPanel({
         <ul className="mt-2 space-y-1 text-sm">
           <li>
             <Link href="/forgot" className="hb-link">
-              Changer mon mot de passe
+              {t('settings.password')}
             </Link>
           </li>
           <li className="hb-muted">
-            Double authentification :{' '}
+            {t('settings.mfa')}{' '}
             <strong>{mfaEnabled ? t('settings.on') : t('settings.off')}</strong>
           </li>
           <li className="hb-muted">
-            Adresse e-mail :{' '}
-            <strong>{emailVerified ? 'confirmée' : 'non confirmée'}</strong>
+            {t('settings.email')}{' '}
+            <strong>{emailVerified ? t('settings.email.ok') : t('settings.email.ko')}</strong>
             {!emailVerified && (
               <>
                 {' — '}
                 <Link href="/profil" className="hb-link">
-                  renvoyer le lien
+                  {t('settings.email.resend')}
                 </Link>
               </>
             )}

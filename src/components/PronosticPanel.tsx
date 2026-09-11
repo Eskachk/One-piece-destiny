@@ -4,6 +4,7 @@ import { useState, useTransition } from 'react';
 import { attempt } from './attempt';
 import { answerQuestionAction } from '@/app/actions/pronostics';
 import { BONUS_PAR_BONNE_REPONSE } from '@/domain/chapter/pronostics';
+import { useT } from '@/components/LocaleProvider';
 
 /**
  * Pronostics secondaires de la semaine.
@@ -41,6 +42,7 @@ export function PronosticPanel({
   const [reponses, setReponses] = useState<Record<string, number | null>>(() =>
     Object.fromEntries(questions.map((q) => [q.id, q.choix])),
   );
+  const { t, tn, tradMessage } = useT();
   const [erreur, setErreur] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -70,10 +72,9 @@ export function PronosticPanel({
 
   return (
     <section className="mt-8">
-      <h2 className="hb-legend">Pronostics de la semaine</h2>
+      <h2 className="hb-legend">{t('pronostic.title')}</h2>
       <p className="hb-muted mt-1 text-xs">
-        {BONUS_PAR_BONNE_REPONSE} Berries par bonne réponse, versés à la
-        publication. Ces questions ne rapportent aucun point au classement.
+        {t('pronostic.subtitle', { n: BONUS_PAR_BONNE_REPONSE })}
       </p>
 
       {/*
@@ -117,13 +118,13 @@ export function PronosticPanel({
 
       <p role="status" className="hb-muted mt-2 text-xs">
         {ouvert
-          ? `${repondues} sur ${questions.length} répondue${repondues > 1 ? 's' : ''}. Tu peux changer d’avis jusqu’au verrouillage.`
-          : 'Les pronostics sont fermés. Réponses et bonus à la publication.'}
+          ? tn('pronostic.answered', repondues, { total: questions.length })
+          : t('pronostic.closed')}
       </p>
 
       {erreur && (
         <p role="alert" className="hb-card mt-2 text-sm">
-          {erreur}
+          {tradMessage(erreur)}
         </p>
       )}
     </section>

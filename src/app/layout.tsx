@@ -6,10 +6,13 @@ import { LocaleProvider } from '@/components/LocaleProvider';
 import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
 import { baseUrl } from '@/lib/email/templates';
 import { readDisplaySettings } from '@/lib/settings/store';
+import { traduire } from '@/lib/i18n';
 import './globals.css';
 
 /** SEO : titres uniques, Open Graph, canonical (cahier §106). */
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
+  const { t, locale } = await traduire();
+  return {
   /**
    * Sans cette base, les images d'Open Graph sont annoncées en chemin relatif.
    * Un chemin relatif ne veut rien dire pour le robot qui lit la page depuis
@@ -21,21 +24,20 @@ export const metadata: Metadata = {
     default: 'One Piece Quest',
     template: '%s — One Piece Quest',
   },
-  description:
-    'Le chapitre est le spectacle. Ta prédiction est le jeu. Choisis 3 personnages avant dimanche 23:59:59 et affronte le classement hebdomadaire.',
+  description: t('site.description'),
   openGraph: {
     title: 'One Piece Quest',
-    description: 'Devine qui apparaîtra dans le prochain chapitre.',
+    description: t('site.og'),
     type: 'website',
     siteName: 'One Piece Quest',
-    locale: 'fr_FR',
+    locale: locale === 'en' ? 'en_GB' : 'fr_FR',
   },
   // `summary_large_image` plutôt que la vignette carrée : la carte fait
   // 1200 × 630, elle est faite pour être vue en grand.
   twitter: {
     card: 'summary_large_image',
     title: 'One Piece Quest',
-    description: 'Devine qui apparaîtra dans le prochain chapitre.',
+    description: t('site.og'),
   },
   applicationName: 'One Piece Quest',
   /*
@@ -75,7 +77,8 @@ export const metadata: Metadata = {
     // lit le document sans exécuter le script.
     'google-adsense-account': 'ca-pub-9364111418812673',
   },
-};
+  };
+}
 
 export const viewport: Viewport = {
   // Le noir de l'icone, au pixel pres. Doit rester identique a `theme_color`

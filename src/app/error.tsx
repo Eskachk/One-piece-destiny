@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { signalerIncidentClientAction } from '@/app/actions/incidents';
 import { HarborScene } from '@/components/HarborScene';
 import { MainNav } from '@/components/MainNav';
+import { useT } from '@/components/LocaleProvider';
 
 /**
  * Écran d'erreur (cahier §55, §60, §111).
@@ -38,6 +39,7 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const { t } = useT();
   useEffect(() => {
     // La console du navigateur, pas l'écran : de quoi diagnostiquer si l'on
     // est devant l'appareil, sans rien exposer sur la page.
@@ -63,29 +65,25 @@ export default function Error({
 
   return (
     <HarborScene variant="page" decor={false}>
-      <h1 className="hb-title">Le pont a tangué</h1>
+      <h1 className="hb-title">{t('err.title')}</h1>
 
-      <p className="hb-card mt-5 text-sm">
-        Quelque chose s&apos;est mal passé pendant le chargement de cette page.
-        Rien n&apos;est perdu : ton équipage, ta collection et tes Berries sont
-        enregistrés.
-      </p>
+      <p className="hb-card mt-5 text-sm">{t('err.body')}</p>
 
       <div className="mt-5 flex flex-wrap gap-3">
         {/* `reset` refait le rendu de la route sans recharger l'application :
             c'est le geste juste pour une panne passagère — un aller-retour de
             base qui a expiré — et il évite de repartir de l'écran d'accueil. */}
         <button type="button" onClick={reset} className="hb-btn">
-          Réessayer
+          {t('err.retry')}
         </button>
         <Link href="/" className="hb-link self-center text-sm">
-          Retour à l&apos;équipage
+          {t('err.back')}
         </Link>
       </div>
 
       {error.digest && (
         <p className="hb-muted mt-6 text-xs">
-          Code de l&apos;incident : <span className="font-mono">{error.digest}</span>
+          {t('err.code')} <span className="font-mono">{error.digest}</span>
         </p>
       )}
 

@@ -7,6 +7,7 @@ import { HarborScene } from '@/components/HarborScene';
 import { islandOf } from '@/domain/islands';
 import { Nav } from '@/components/Nav';
 import { Tutorial } from '@/components/Tutorial';
+import { traduire } from '@/lib/i18n';
 import { CHARACTER_INDEX } from '@/data/characters';
 import {
   attributesOf,
@@ -48,17 +49,17 @@ export const dynamic = 'force-dynamic';
  * mêmes que quatre autres pages. Elle est pourtant la seule en tête du
  * sitemap, avec la priorité maximale.
  */
-export const metadata: Metadata = {
-  title: {
-    absolute: 'One Piece Quest — le jeu de pronostics du chapitre hebdomadaire',
-  },
-  description:
-    'Choisis 3 personnages avant dimanche 23:59. Marque des points quand ils apparaissent dans le chapitre. Classement hebdomadaire, collection de cartes et Marché entre joueurs.',
-  // URL de référence. Sans elle, une même page atteinte avec un paramètre de
-  // campagne ou depuis un domaine d'aperçu compte comme plusieurs pages, et le
-  // signal se divise entre elles.
-  alternates: { canonical: '/' },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await traduire();
+  return {
+    title: { absolute: t('home.meta.title') },
+    description: t('home.meta.description'),
+    // URL de référence. Sans elle, une même page atteinte avec un paramètre
+    // de campagne ou depuis un domaine d'aperçu compte comme plusieurs pages,
+    // et le signal se divise entre elles.
+    alternates: { canonical: '/' },
+  };
+}
 
 /**
  * HUD capitaine (cahier §54), présent quel que soit l'état du chapitre.
@@ -66,13 +67,14 @@ export const metadata: Metadata = {
  * Plus de cas anonyme : la page redirige vers la connexion avant d'arriver
  * ici. Garder la branche entretiendrait l'idée qu'elle peut se produire.
  */
-function Hud() {
+async function Hud() {
+  const { t } = await traduire();
   return (
     <header className="flex items-center justify-between">
-      <span className="hb-eyebrow">One Piece Quest</span>
+      <span className="hb-eyebrow">{t('brand')}</span>
       <form action={logoutAction}>
         <button type="submit" className="hb-link" style={{ fontSize: '0.78rem' }}>
-          Déconnexion
+          {t('action.signOut')}
         </button>
       </form>
     </header>
@@ -112,6 +114,7 @@ export default async function HomePage() {
   // La redirection a lieu **côté serveur**, avant tout rendu : rien de la page
   // de jeu n'est envoyé à un visiteur anonyme.
   if (!session) redirect('/login');
+  const { t } = await traduire();
 
   const repository = getRepository();
 
@@ -122,11 +125,8 @@ export default async function HomePage() {
     return (
       <HarborScene variant="page" island={islandOf('/')}>
         <Hud />
-        <h1 className="hb-title mt-5">Prochain chapitre à venir</h1>
-        <p className="hb-card mt-4 text-sm">
-          Aucun chapitre n&apos;est ouvert aux prédictions pour le moment.
-          Reviens quand le prochain sera annoncé.
-        </p>
+        <h1 className="hb-title mt-5">{t('home.noChapter.title')}</h1>
+        <p className="hb-card mt-4 text-sm">{t('home.noChapter.body')}</p>
         <AdBanner />
         <Nav />
         <Tutorial page="accueil" />
@@ -198,7 +198,7 @@ export default async function HomePage() {
       <Hud />
 
       <section className="mt-5">
-        <p className="hb-eyebrow">Chapitre</p>
+        <p className="hb-eyebrow">{t('home.chapter')}</p>
         <h1
           className="hb-title"
           style={{ fontSize: 'clamp(3rem, 14vw, 4.4rem)' }}
@@ -210,7 +210,7 @@ export default async function HomePage() {
             il est sur bois, pas sur parchemin, pour peser davantage. */}
         <div className="hb-card hb-card--wood mt-4">
           <p className="hb-legend" style={{ color: '#f0d6a6' }}>
-            Verrouillage de l’équipage
+            {t('home.lock.title')}
           </p>
           <div className="mt-2">
             <Countdown
@@ -220,7 +220,7 @@ export default async function HomePage() {
           </div>
           {editable && (
             <p className="mt-3 text-xs" style={{ color: '#f4dcb4' }}>
-              ⚠️ Ton équipage doit être verrouillé avant dimanche 23:59:59.
+              {t('home.lock.warning')}
             </p>
           )}
         </div>
@@ -230,7 +230,7 @@ export default async function HomePage() {
         {spoiler === 'SPOILER_LOCK' && (
           <p className="hb-muted mt-3 flex items-center gap-2 text-xs">
             <span aria-hidden>🔒</span>
-            Résultats masqués jusqu&apos;à la publication officielle.
+            {t('home.spoiler')}
           </p>
         )}
       </section>

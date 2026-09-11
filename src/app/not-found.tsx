@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { HarborScene } from '@/components/HarborScene';
 import { MainNav } from '@/components/MainNav';
+import { traduire } from '@/lib/i18n';
 
 /**
  * Page introuvable (cahier §55, §106).
@@ -16,28 +17,26 @@ import { MainNav } from '@/components/MainNav';
  * `noindex` : une 404 porte déjà le bon code de statut, mais l'indiquer aussi
  * dans les balises évite qu'un moteur garde l'adresse en réserve.
  */
-export const metadata: Metadata = {
-  title: 'Page introuvable',
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await traduire();
+  return { title: t('nf.meta.title'), robots: { index: false, follow: false } };
+}
 
-export default function NotFound() {
+export default async function NotFound() {
+  const { t } = await traduire();
   return (
     <HarborScene variant="page" decor={false}>
-      <p className="hb-eyebrow">Erreur 404</p>
-      <h1 className="hb-title mt-1">Cette île n&apos;est pas sur la carte</h1>
+      <p className="hb-eyebrow">{t('nf.eyebrow')}</p>
+      <h1 className="hb-title mt-1">{t('nf.title')}</h1>
 
-      <p className="hb-card mt-5 text-sm">
-        L&apos;adresse demandée n&apos;existe pas, ou n&apos;existe plus. Un lien
-        de partage vers un équipage supprimé finit ici, par exemple.
-      </p>
+      <p className="hb-card mt-5 text-sm">{t('nf.body')}</p>
 
       <div className="mt-5 flex flex-wrap gap-4">
         <Link href="/" className="hb-link text-sm">
-          Retour à l&apos;équipage
+          {t('nf.back')}
         </Link>
         <Link href="/classement" className="hb-link text-sm">
-          Voir le classement
+          {t('nf.leaderboard')}
         </Link>
       </div>
 

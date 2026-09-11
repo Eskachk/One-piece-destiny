@@ -12,8 +12,9 @@
  * ensuite dans la Grand Line. Le contraste raconte le passage.
  */
 
-import { ISLANDS, type IslandId } from '@/domain/islands';
+import type { IslandId } from '@/domain/islands';
 import { IslandDecor } from './islands/IslandDecor';
+import { IslandName } from './islands/IslandName';
 import { IslandSky } from './islands/IslandSky';
 import { EternalPose } from './EternalPose';
 import { HatMark } from './ChopperHat';
@@ -321,7 +322,7 @@ export function HarborScene({
           <div className="isl-fx" aria-hidden="true" />
 
           <span className="isl-name" aria-hidden="true">
-            {island !== 'harbor' && island !== 'hq' ? ISLANDS[island].name : ''}
+            {island !== 'harbor' && island !== 'hq' ? <IslandName island={island} /> : ''}
           </span>
           </>
         )}

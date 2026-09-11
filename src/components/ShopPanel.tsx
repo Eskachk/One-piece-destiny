@@ -11,6 +11,8 @@ import {
 } from './ShopIcons';
 import { ChestOdds } from '@/components/ChestOdds';
 import type { RarityOdds } from '@/domain/collection/odds';
+import { useT } from './LocaleProvider';
+import type { MessageKey } from '@/domain/i18n/locales';
 
 /**
  * Boutique en argent réel (cahier §113, §114).
@@ -86,26 +88,7 @@ function ProductIcon({ product }: { product: ShopProduct }) {
  * qu'il ouvre chaque semaine. Les personnages en dernier, parce que c'est le
  * seul achat qui court-circuite la collection — on ne le met pas en vitrine.
  */
-const SECTIONS: { key: string; title: string; blurb: string }[] = [
-  {
-    key: 'CHEST',
-    title: 'Coffres',
-    blurb:
-      'Mêmes probabilités que les coffres gagnés en jeu. Le coffre royal ajoute une garantie et sa propre cérémonie.',
-  },
-  {
-    key: 'COINS',
-    title: 'Berries',
-    blurb:
-      'La monnaie du jeu. Elle sert à ouvrir des coffres et à acheter au Marché.',
-  },
-  {
-    key: 'CHARACTER',
-    title: 'Personnages',
-    blurb:
-      'Des personnages nommés, tous obtenables gratuitement en coffre.',
-  },
-];
+const SECTIONS = ['CHEST', 'COINS', 'CHARACTER'] as const;
 
 export function ShopPanel({
   products,
@@ -129,8 +112,9 @@ export function ShopPanel({
   enabled: boolean;
   disabledReason: string;
   /** Offre de lancement en cours, ou `null`. Décidée côté serveur. */
-  promotion: { discount: number; daysLeft: number; endsOn: string } | null;
+  promotion: { discount: number; daysLeft: number; endsOn: string; body: string } | null;
 }) {
+  const { t, tradMessage } = useT();
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -143,7 +127,7 @@ export function ShopPanel({
         // aucune donnée bancaire ne transite par ce site.
         window.location.href = result.url;
       } else {
-        setError(result.error);
+        setError(tradMessage(result.error));
       }
     });
   };
@@ -162,19 +146,14 @@ export function ShopPanel({
         <p className="hb-promo" role="status">
           <span className="hb-promo__badge">−{promotion.discount} %</span>
           <span>
-            <strong>Offre de lancement sur les coffres.</strong>{' '}
-            La première semaine seulement — jusqu&apos;au {promotion.endsOn}, soit{' '}
-            {promotion.daysLeft} jour{promotion.daysLeft > 1 ? 's' : ''} restant
-            {promotion.daysLeft > 1 ? 's' : ''}. Les Berries et les personnages
-            restent au prix habituel, et les probabilités des coffres ne
-            changent pas.
+            <strong>{t('shop.promo.title')}</strong> {promotion.body}
           </span>
         </p>
       )}
 
       {!enabled && (
         <p className="hb-card mt-4 text-sm">
-          <strong>La boutique n’est pas encore ouverte.</strong>
+          <strong>{t('shop.closed')}</strong>
           <span className="hb-muted mt-1 block">{disabledReason}</span>
         </p>
       )}
@@ -186,18 +165,18 @@ export function ShopPanel({
       )}
 
       {SECTIONS.map((section) => {
-        const items = products.filter((p) => p.category === section.key);
+        const items = products.filter((p) => p.category === section);
         if (items.length === 0) return null;
 
         return (
-          <section key={section.key} className="mt-7">
-            <h2 className="hb-legend">{section.title}</h2>
-            <p className="hb-muted mt-1 text-xs">{section.blurb}</p>
+          <section key={section} className="mt-7">
+            <h2 className="hb-legend">{t(`shop.section.${section}`)}</h2>
+            <p className="hb-muted mt-1 text-xs">{t(`shop.section.${section}.blurb` as MessageKey)}</p>
 
             {/*
               Les taux, là où l'achat se conclut. Voir la prop `chestOdds`.
             */}
-            {section.key === 'CHEST' && <ChestOdds odds={chestOdds} />}
+            {section === 'CHEST' && <ChestOdds odds={chestOdds} />}
 
             <ul className="mt-3 space-y-3">
               {items.map((product) => (
@@ -267,7 +246,7 @@ export function ShopPanel({
                     onClick={() => buy(product.id)}
                     className="hb-btn mt-3 disabled:opacity-40"
                   >
-                    {pending ? 'Un instant…' : 'Acheter'}
+                    {pending ? t('shop.wait') : t('shop.buy')}
                   </button>
                 </li>
               ))}
@@ -277,19 +256,9 @@ export function ShopPanel({
       })}
 
       <div className="hb-card mt-6">
-        <p className="hb-legend">Ce que l’argent n’achète pas</p>
-        <p className="mt-2 text-sm">
-          Aucun produit de cette page ne donne de points, ne modifie un score,
-          ni n’avantage au classement. La rareté d’un personnage est une valeur
-          de collection : un Commun peut être excellent une semaine donnée, un
-          Légendaire peut ne rien rapporter.
-        </p>
-        <p className="hb-muted mt-2 text-xs">
-          Les probabilités des coffres achetés sont exactement celles des
-          coffres gagnés en jeu — elles sont affichées ci-dessus, au rayon
-          Coffres, et aussi sur la page Collection. Les achats sont réservés
-          aux comptes majeurs et plafonnés par jour.
-        </p>
+        <p className="hb-legend">{t('shop.limits.title')}</p>
+        <p className="mt-2 text-sm">{t('shop.limits.body')}</p>
+        <p className="hb-muted mt-2 text-xs">{t('shop.limits.note')}</p>
       </div>
     </div>
   );

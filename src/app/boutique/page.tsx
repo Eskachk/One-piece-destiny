@@ -7,8 +7,11 @@ import { ShopPanel } from '@/components/ShopPanel';
 import { CATALOG } from '@/domain/payments/catalog';
 import { CHARACTERS } from '@/data/characters';
 import { chestOdds } from '@/domain/collection/odds';
-import { RARITY_COLOR, RARITY_LABEL } from '@/domain/collection/rarity';
+import { RARITY_COLOR } from '@/domain/collection/rarity';
 import { requireSession } from '@/lib/auth/guards';
+import { traduire } from '@/lib/i18n';
+import { libelleRarete } from '@/domain/i18n/libelles';
+import type { MessageKey } from '@/domain/i18n/locales';
 import { paymentsState } from '@/lib/payments/provider';
 import {
   LAUNCH_DISCOUNT,
@@ -18,13 +21,10 @@ import {
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
-  title: 'Boutique',
-  robots: { index: false, follow: false },
-};
-
-const euros = (cents: number) =>
-  (cents / 100).toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await traduire();
+  return { title: t('shop.meta.title'), robots: { index: false, follow: false } };
+}
 
 /**
  * Boutique en argent réel (cahier §36, §113, §114).
@@ -35,7 +35,7 @@ const euros = (cents: number) =>
  * de l'action serveur, qui revérifie.
  */
 export default async function ShopPage() {
-  await requireSession();
+  const [, { t, tn, locale, euros }] = await Promise.all([requireSession(), traduire()]);
 
   const state = paymentsState();
 
@@ -55,7 +55,7 @@ export default async function ShopPage() {
     return {
       id: product.id,
       category: product.category,
-      label: product.label,
+      label: t(`product.${product.id}` as MessageKey),
       price: euros(priceCents),
       // Le prix d'origine n'est transmis que s'il y a réellement une remise :
       // le panneau ne sait pas en reconstituer un, donc il ne peut pas en
@@ -67,24 +67,24 @@ export default async function ShopPage() {
       // 2,50 € le coffre alors qu'il en coûte 2,00 serait un mensonge à
       // rebours, et le seul chiffre que le joueur vérifierait.
       lot: product.lot
-        ? `${product.lot.quantite} ${product.lot.unite} · ${euros(Math.round(priceCents / product.lot.quantite))} l’unité`
+        ? t('shop.lot', {
+            n: product.lot.quantite,
+            unit: t(product.id === 'royal_chest' ? 'shop.unit.royalChests' : 'shop.unit.chests'),
+            each: euros(Math.round(priceCents / product.lot.quantite)),
+          })
         : null,
-      description: product.description,
+      description: t(`product.${product.id}.desc` as MessageKey),
       rarityColor: product.rarity ? RARITY_COLOR[product.rarity] : null,
-      rarityLabel: product.rarity ? RARITY_LABEL[product.rarity] : null,
+      rarityLabel: product.rarity ? libelleRarete(t, product.rarity) : null,
     };
   });
 
   return (
     <HarborScene variant="page" island={islandOf('/boutique')}>
-      <p className="hb-eyebrow">One Piece Quest</p>
-      <h1 className="hb-title mt-1">Boutique</h1>
+      <p className="hb-eyebrow">{t('brand')}</p>
+      <h1 className="hb-title mt-1">{t('shop.title')}</h1>
 
-      <p className="hb-muted mt-3 text-sm">
-        Des coffres et des Berries, en argent réel. Tout ce qui est vendu ici
-        s’obtient aussi en jouant, et rien n’y donne le moindre point au
-        classement.
-      </p>
+      <p className="hb-muted mt-3 text-sm">{t('shop.intro')}</p>
 
       <ShopPanel
         products={products}
@@ -96,7 +96,13 @@ export default async function ShopPage() {
             ? {
                 discount: Math.round(LAUNCH_DISCOUNT * 100),
                 daysLeft: promo.daysLeft,
-                endsOn: promo.endsAt.toLocaleDateString('fr-FR', {
+                body: tn('shop.promo.body', promo.daysLeft, {
+                  date: promo.endsAt.toLocaleDateString(locale === 'en' ? 'en-GB' : 'fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                  }),
+                }),
+                endsOn: promo.endsAt.toLocaleDateString(locale === 'en' ? 'en-GB' : 'fr-FR', {
                   day: 'numeric',
                   month: 'long',
                 }),
@@ -110,7 +116,7 @@ export default async function ShopPage() {
             : // Le message du système explique la cause réelle (audit juridique
               // en attente, clé manquante, mode test) plutôt que d'inventer une
               // panne. Un joueur qui lit « bientôt » sans raison suppose un bug.
-              `${state.reason} En attendant, les Berries gagnées chaque semaine ouvrent exactement les mêmes coffres.`
+              `${state.reason} ${t('shop.closed.meanwhile')}`
         }
       />
 
