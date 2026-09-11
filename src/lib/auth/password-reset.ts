@@ -35,7 +35,7 @@ function hashToken(token: string): string {
 
 /** Réponse unique, quelle que soit l'issue réelle. */
 export const GENERIC_REQUEST_MESSAGE =
-  "Si un compte existe pour cette adresse, un lien de réinitialisation vient d'être envoyé.";
+  'Si un compte existe pour cette adresse, un lien de réinitialisation vient d’être envoyé.';
 
 async function recentRequests(
   column: 'email' | 'requested_ip',

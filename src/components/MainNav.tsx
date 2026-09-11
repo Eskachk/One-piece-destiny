@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import { useLinkStatus } from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MESSAGES, type Locale, type MessageKey } from '@/domain/i18n/locales';
+import type { MessageKey } from '@/domain/i18n/locales';
+import { useT } from '@/components/LocaleProvider';
 import {
   IconAdmin,
   IconCollection,
@@ -75,15 +76,19 @@ function PendingDot() {
   return pending ? <span className="hb-nav__pending" aria-hidden="true" /> : null;
 }
 
-export function MainNav({
-  admin = false,
-  locale = 'fr',
-}: {
-  admin?: boolean;
-  locale?: Locale;
-}) {
+/**
+ * La langue vient du contexte, plus d'une prop.
+ *
+ * Quatre écrans montent cette barre sans passer par `Nav` — le squelette de
+ * chargement, la page d'erreur, la page introuvable, la politique de
+ * confidentialité — et tous l'appelaient sans `locale`, donc en français,
+ * quel que soit le réglage du joueur. Un joueur anglophone voyait sa barre
+ * changer de langue le temps d'un chargement. Le contexte est posé une fois à
+ * la racine ; personne ne peut plus l'oublier.
+ */
+export function MainNav({ admin = false }: { admin?: boolean }) {
   const pathname = usePathname();
-  const t = (key: MessageKey) => MESSAGES[locale][key] ?? MESSAGES.fr[key];
+  const { t } = useT();
 
   // L'onglet d'administration n'est **qu'un raccourci d'affichage**. Le
   // contrôle réel est sur la route : `requireAdmin` exige le rôle en base et
@@ -93,7 +98,7 @@ export function MainNav({
 
   return (
     <nav
-      aria-label="Navigation principale"
+      aria-label={t('nav.aria')}
       className={`hb-nav${admin ? ' hb-nav--admin' : ''}`}
     >
       <ul>

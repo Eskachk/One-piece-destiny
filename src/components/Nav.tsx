@@ -24,5 +24,5 @@ export async function Nav() {
     readDisplaySettings(),
   ]);
 
-  return <MainNav admin={admin} locale={display.locale} />;
+  return <MainNav admin={admin} />;
 }

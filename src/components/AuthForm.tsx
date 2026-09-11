@@ -5,12 +5,9 @@ import { useActionState, useState } from 'react';
 import type { AuthFormState } from '@/app/actions/auth';
 import { PASSWORD_MIN_LENGTH } from '@/domain/auth/password-policy';
 import { PIEGE_CHAMP } from '@/domain/auth/piege';
-import {
-  HANDLE_MAX_LENGTH,
-  HANDLE_MIN_LENGTH,
-  checkHandle,
-  describeHandleIssue,
-} from '@/domain/player/handle';
+import { HANDLE_MAX_LENGTH, HANDLE_MIN_LENGTH, checkHandle } from '@/domain/player/handle';
+import { useT } from '@/components/LocaleProvider';
+import type { MessageKey } from '@/domain/i18n/locales';
 
 /**
  * Formulaire de connexion / inscription — scène du port.
@@ -75,6 +72,7 @@ export function AuthForm({
   mode: 'login' | 'register';
   action: (state: AuthFormState, formData: FormData) => Promise<AuthFormState>;
 }) {
+  const { t, tradMessage } = useT();
   const [state, formAction, pending] = useActionState(action, { error: null });
   const [visible, setVisible] = useState(false);
   const [handle, setHandle] = useState('');
@@ -84,9 +82,13 @@ export function AuthForm({
   // son pseudo passe. Le serveur revalide de toute façon — ce contrôle-ci est
   // un confort de saisie, jamais une garantie.
   const handleCheck = handle.length > 0 ? checkHandle(handle) : null;
+  // `checkHandle` rend un code, et c'est le code qu'on traduit : le message
+  // français du domaine ne passe pas par ici.
   const handleError =
     handleCheck && !handleCheck.valid
-      ? describeHandleIssue(handleCheck.issue!)
+      ? t(`auth.handle.${handleCheck.issue!}` as MessageKey, {
+          n: handleCheck.issue === 'TOO_LONG' ? HANDLE_MAX_LENGTH : HANDLE_MIN_LENGTH,
+        })
       : null;
 
   return (
@@ -94,7 +96,7 @@ export function AuthForm({
       {isRegister && (
         <div>
           <label htmlFor="handle" className="harbor__label">
-            Pseudo
+            {t('auth.field.handle')}
           </label>
           <div className="harbor__field">
             <CrewIcon />
@@ -110,7 +112,7 @@ export function AuthForm({
               autoComplete="username"
               autoCapitalize="off"
               spellCheck={false}
-              placeholder="Ton nom de pirate"
+              placeholder={t('auth.field.handlePlaceholder')}
               aria-describedby="handle-hint"
               className="harbor__input"
             />
@@ -121,7 +123,7 @@ export function AuthForm({
             style={handleError ? { color: '#b4402f' } : undefined}
           >
             {handleError ??
-              `Visible au classement et sur le Marché. ${HANDLE_MIN_LENGTH} à ${HANDLE_MAX_LENGTH} caractères, modifiable dans les paramètres.`}
+              t('auth.field.handleHint', { min: HANDLE_MIN_LENGTH, max: HANDLE_MAX_LENGTH })}
           </p>
         </div>
       )}
@@ -142,7 +144,7 @@ export function AuthForm({
       */}
       {isRegister && (
         <div aria-hidden="true" className="hb-piege">
-          <label htmlFor={PIEGE_CHAMP}>Société</label>
+          <label htmlFor={PIEGE_CHAMP}>{t('auth.field.company')}</label>
           <input
             id={PIEGE_CHAMP}
             name={PIEGE_CHAMP}
@@ -156,7 +158,7 @@ export function AuthForm({
 
       <div>
         <label htmlFor="email" className="harbor__label">
-          Adresse e-mail
+          {t('auth.field.email')}
         </label>
         <div className="harbor__field">
           <MailIcon />
@@ -166,7 +168,7 @@ export function AuthForm({
             type="email"
             required
             autoComplete="email"
-            placeholder="capitaine@exemple.fr"
+            placeholder={t('auth.field.emailPlaceholder')}
             className="harbor__input"
           />
         </div>
@@ -174,7 +176,7 @@ export function AuthForm({
 
       <div>
         <label htmlFor="password" className="harbor__label">
-          Mot de passe
+          {t('auth.field.password')}
         </label>
         <div className="harbor__field">
           <LockIcon />
@@ -192,7 +194,7 @@ export function AuthForm({
             type="button"
             onClick={() => setVisible(!visible)}
             aria-label={
-              visible ? 'Masquer le mot de passe' : 'Afficher le mot de passe'
+              visible ? t('auth.field.hidePassword') : t('auth.field.showPassword')
             }
             style={{
               position: 'absolute',
@@ -229,14 +231,11 @@ export function AuthForm({
         </div>
 
         {isRegister ? (
-          <p className="harbor__hint">
-            {PASSWORD_MIN_LENGTH} caractères minimum. Une phrase que tu retiens
-            vaut mieux qu&apos;un mot compliqué.
-          </p>
+          <p className="harbor__hint">{t('auth.field.passwordHint', { min: PASSWORD_MIN_LENGTH })}</p>
         ) : (
           <p style={{ marginTop: '0.45rem', textAlign: 'right' }}>
             <Link href="/forgot" className="harbor__link" style={{ fontSize: '0.85rem' }}>
-              Mot de passe oublié ?
+              {t('auth.action.forgot')}
             </Link>
           </p>
         )}
@@ -244,7 +243,7 @@ export function AuthForm({
 
       {state.error && (
         <p role="alert" className="harbor__alert">
-          {state.error}
+          {tradMessage(state.error)}
         </p>
       )}
 
@@ -256,25 +255,25 @@ export function AuthForm({
       >
         <AnchorIcon />
         {pending
-          ? 'Un instant…'
+          ? t('auth.action.pending')
           : isRegister
-            ? 'Créer mon compte'
-            : 'Se connecter'}
+            ? t('auth.action.createAccount')
+            : t('auth.action.signIn')}
       </button>
 
       <p className="harbor__meta">
         {isRegister ? (
           <>
-            Déjà un équipage ?{' '}
+            {t('auth.meta.hasCrew')}{' '}
             <Link href="/login" className="harbor__link">
-              Se connecter
+              {t('auth.action.signIn')}
             </Link>
           </>
         ) : (
           <>
-            Pas encore de compte ?{' '}
+            {t('auth.meta.noAccount')}{' '}
             <Link href="/register" className="harbor__link">
-              S&apos;inscrire
+              {t('auth.action.signUp')}
             </Link>
           </>
         )}

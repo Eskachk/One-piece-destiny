@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { traduire } from '@/lib/i18n';
 
 /**
  * Bouton « Continuer avec Google ».
@@ -32,10 +33,11 @@ import Link from 'next/link';
  * Précharger la destination n'avait de toute façon aucun intérêt : elle
  * redirige immédiatement vers un autre domaine.
  */
-export function GoogleButton() {
+export async function GoogleButton() {
+  const { t } = await traduire();
   return (
     <>
-      <p className="harbor__divider">ou</p>
+      <p className="harbor__divider">{t('auth.action.or')}</p>
 
       <Link href="/api/auth/google" prefetch={false} className="harbor__google">
         <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
@@ -56,7 +58,7 @@ export function GoogleButton() {
             d="M24 10.8c3.3 0 6.2 1.1 8.5 3.3l6.3-6.3C35 4.3 30 2 24 2 15.4 2 7.9 6.9 4.3 14.2l7.3 5.7c1.8-5.2 6.6-9.1 12.4-9.1z"
           />
         </svg>
-        Continuer avec Google
+        {t('auth.action.google')}
       </Link>
     </>
   );

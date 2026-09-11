@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Anton, Caveat } from 'next/font/google';
 import Script from 'next/script';
 import { AppShell } from '@/components/AppShell';
+import { LocaleProvider } from '@/components/LocaleProvider';
 import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
 import { baseUrl } from '@/lib/email/templates';
 import { readDisplaySettings } from '@/lib/settings/store';
@@ -193,7 +194,11 @@ export default async function RootLayout({
           }}
         />
 
-        <AppShell>{children}</AppShell>
+        {/* La langue est posée une fois, ici, pour tous les composants client
+            du produit : voir `LocaleProvider`. */}
+        <LocaleProvider locale={display.locale}>
+          <AppShell>{children}</AppShell>
+        </LocaleProvider>
 
         {/*
           Agent de service : il rend le site installable, et c'est lui qui

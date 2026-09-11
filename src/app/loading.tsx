@@ -1,6 +1,7 @@
 import { HarborScene } from '@/components/HarborScene';
 import { HatLoader } from '@/components/ChopperHat';
 import { MainNav } from '@/components/MainNav';
+import { traduire } from '@/lib/i18n';
 
 /**
  * Écran d'attente de navigation (cahier §55, §60).
@@ -45,14 +46,15 @@ function Bar({ width, height = '1rem' }: { width: string; height?: string }) {
   );
 }
 
-export default function Loading() {
+export default async function Loading() {
+  const { t } = await traduire();
   return (
     <HarborScene variant="page" decor={false}>
       {/* `aria-busy` plutôt qu'un texte « Chargement… » : un lecteur d'écran
           annonce l'état de la région, sans qu'on ajoute une ligne de texte que
           les autres devraient voir clignoter à chaque navigation. */}
       <div aria-busy="true" aria-live="polite">
-        <span className="sr-only">Chargement de la page…</span>
+        <span className="sr-only">{t('state.loadingPage')}</span>
 
         {/* Le seul moment du produit où l'on demande au joueur d'attendre est
             aussi le seul où une animation gagne sa place. Le chapeau frémit
