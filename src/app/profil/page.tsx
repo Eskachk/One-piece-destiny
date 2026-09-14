@@ -27,11 +27,9 @@ import {
   referralLink,
 } from '@/domain/social/referral';
 import { baseUrl } from '@/lib/email/templates';
-import { db } from '@/lib/supabase-admin';
-import { preferencesOf } from '@/lib/notifications/dispatch';
+import { lireProfil } from '@/lib/lectures';
 import { requireSession } from '@/lib/auth/guards';
 import * as social from '@/lib/social/repository';
-import { getRepository } from '@/lib/repository';
 import { AdBanner } from '@/components/AdBanner';
 
 export const dynamic = 'force-dynamic';
@@ -50,58 +48,32 @@ export async function generateMetadata(): Promise<Metadata> {
  */
 export default async function ProfilePage() {
   const [session, { t, tn, locale }] = await Promise.all([requireSession(), traduire()]);
-  const repository = getRepository();
-
   const available = social.isSocialAvailable();
 
   /*
-   * Toutes les lectures de la page partent **ensemble**.
+   * Toutes les lectures de la page partent **ensemble** — et, depuis la
+   * migration 0038, en **un seul** aller-retour (`lib/lectures.ts`) : sur le
+   * palier de base actuel, chaque requête est prise sur un budget commun à
+   * tous les joueurs, et le journal en dépensait dix.
    *
-   * Elles étaient enchaînées : division, historique, inventaire, puis
-   * notifications, puis code de parrainage, puis état du parrainage, puis
-   * préférences, puis compte. Sept allers-retours en série, alors qu'aucun ne
-   * dépend du précédent — chacun ne dépend que de `session.playerId`, connu
-   * avant le premier.
-   *
-   * En série, la page coûte la **somme** des latences ; en parallèle, le
-   * **maximum**. C'est la seule variable qui compte ici : les requêtes sont
-   * toutes indexées et rendent quelques lignes, leur coût est l'aller-retour,
-   * pas le calcul. Mesuré depuis cette machine, l'aller-retour vers Supabase
-   * est de 92 ms — sept en série font 650 ms de page blanche.
-   *
-   * `Promise.all` échouerait en bloc à la première erreur, ce qui est le bon
-   * comportement : une page de profil amputée de son historique ne vaut pas
-   * mieux qu'une page en erreur, et l'erreur, elle, se voit.
+   * Le code de parrainage n'est créé que s'il manque encore — première
+   * visite du journal — et c'est le seul cas où une seconde requête part.
    */
-  const [
-    divisionState,
-    profiles,
-    ownedIds,
-    notificationsBrutes,
-    referralCode,
-    referralState,
-    preferences,
-    compte,
-  ] = await Promise.all([
-    repository.getDivisionState(session.playerId),
-    repository.getWeeklyProfiles(session.playerId),
-    repository.getOwnedCharacterIds(session.playerId),
-    available ? social.listNotifications(session.playerId) : Promise.resolve([]),
-    // Le code est créé au premier affichage : le joueur ne doit pas avoir à
-    // demander son propre lien d'invitation pour l'obtenir.
-    available ? social.ensureReferralCode(session.playerId) : Promise.resolve(null),
-    available
-      ? social.getReferralState(session.playerId)
-      : Promise.resolve({ alreadyReferred: false, referredCount: 0 }),
-    preferencesOf(session.playerId),
-    // Etat du compte (§86, §114). Les restrictions sont recalculees plus bas,
-    // cote serveur : le navigateur ne les recoit que pour affichage.
-    db()
-      .from('user_accounts')
-      .select('email_verified_at, birth_date, players!inner(handle)')
-      .eq('player_id', session.playerId)
-      .maybeSingle(),
-  ]);
+  const profil = await lireProfil(session.playerId);
+  const divisionState = profil.division;
+  const profiles = profil.profiles;
+  const ownedIds = profil.ownedIds;
+  const notificationsBrutes = profil.notifications;
+  const referralCode =
+    profil.referralCode ??
+    (available ? await social.ensureReferralCode(session.playerId) : null);
+  const referralState = profil.referralState;
+  const preferences = profil.preferences;
+  // État du compte (§86, §114). Les restrictions sont recalculées plus bas,
+  // côté serveur : le navigateur ne les reçoit que pour affichage.
+  const account = profil.account
+    ? { email_verified_at: profil.account.emailVerifiedAt, birth_date: profil.account.birthDate }
+    : null;
 
   const notifications = notificationsBrutes.map((n) => ({
     id: n.id,
@@ -113,7 +85,6 @@ export default async function ProfilePage() {
   }));
 
   const currentRank = divisionRank(divisionState.division);
-  const account = compte.data;
 
   const standing = seasonStanding(
     profiles.map((p) => ({ chapterNumber: p.chapterNumber, total: p.total })),
@@ -134,7 +105,7 @@ export default async function ProfilePage() {
   // joueur a maintenant un pseudo, choisi par lui : c'est celui-là qu'on
   // montre. Afficher une adresse — même tronquée — sur l'écran qu'on tend à
   // quelqu'un pour lui montrer sa collection n'était pas une bonne idée.
-  const player = account?.players as unknown as { handle: string } | undefined;
+  const player = profil.handle ? { handle: profil.handle } : undefined;
 
   const dateDeNaissance = account?.birth_date
     ? new Date(`${account.birth_date}T00:00:00Z`)

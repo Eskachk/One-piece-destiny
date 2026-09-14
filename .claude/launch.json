@@ -31,6 +31,15 @@
         "3200"
       ],
       "port": 3200
+    },
+    {
+      "name": "grand-line-mesure-3300",
+      "runtimeExecutable": "cmd.exe",
+      "runtimeArgs": [
+        "/c",
+        "set PAYMENTS_ENABLED=false&& node node_modules/next/dist/bin/next start -p 3300"
+      ],
+      "port": 3300
     }
   ]
 }

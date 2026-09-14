@@ -109,6 +109,14 @@ const caveat = Caveat({
   subsets: ['latin'],
   variable: '--font-brush',
   display: 'swap',
+  /*
+   * Pas de préchargement : cette écriture ne sert qu'à la bannière de
+   * l'écran d'entrée. Préchargée, ses 74 Ko partaient sur chaque page, en
+   * concurrence avec le script de la page, pour un texte qui n'y est pas.
+   * Sans préchargement, le navigateur ne la demande que s'il rencontre un
+   * élément qui l'utilise.
+   */
+  preload: false,
 });
 
 export default async function RootLayout({

@@ -10,7 +10,7 @@ import {
   getCachedLeaderboardTop,
   getCachedTopPicks,
 } from '@/lib/cache';
-import { questionsDe, reponsesDe } from '@/lib/chapter/questions';
+import { lireJoueur } from '@/lib/lectures';
 import { BONUS_PAR_BONNE_REPONSE } from '@/domain/chapter/pronostics';
 import { Nav } from '@/components/Nav';
 import { Tutorial } from '@/components/Tutorial';
@@ -26,7 +26,6 @@ import { traduireDetailScore } from '@/domain/i18n/detail-score';
 import type { MessageKey } from '@/domain/i18n/locales';
 import type { CharacterScore } from '@/domain/scoring';
 import { getAuthenticatedSession } from '@/lib/auth/session-store';
-import { getRepository } from '@/lib/repository';
 import { AdBanner } from '@/components/AdBanner';
 import { LeaguePanel, type LigueVue } from '@/components/LeaguePanel';
 import { LIGUES_ACTIVES, classer } from '@/domain/league/league';
@@ -166,23 +165,22 @@ export default async function LeaderboardPage() {
    * mettait le tout en cache, jusqu'à ce que Next refuse l'entrée devenue trop
    * lourde et cesse silencieusement de cacher quoi que ce soit.
    */
-  const [top, total, rawAnalysis, awards, display, mine, plusChoisis, recompense, questions, reponses] =
+  const [top, total, rawAnalysis, awards, display, joueur, plusChoisis] =
     await Promise.all([
       getCachedLeaderboardTop(chapter.id),
       getCachedLeaderboardSize(chapter.id),
       getCachedChapterAnalysis(chapter.id),
       getCachedChapterAwards(chapter.id),
       readDisplaySettings(),
-      session
-        ? getRepository().getPlayerChapterResult(chapter.id, session.playerId)
-        : Promise.resolve(null),
+      // Tout ce qui est propre au visiteur — son résultat, sa récompense, ses
+      // pronostics — en un seul aller-retour, hors du cache partagé.
+      session ? lireJoueur(session.playerId, chapter.id) : Promise.resolve(null),
       getCachedTopPicks(chapter.id),
-      // Le bilan personnel : ce que la semaine a rapporté, et les pronostics.
-      // Trois lectures propres au visiteur, hors du cache partagé.
-      session ? getRepository().getWeeklyReward(chapter.id, session.playerId) : Promise.resolve(null),
-      session ? questionsDe(chapter.id) : Promise.resolve([]),
-      session ? reponsesDe(chapter.id, session.playerId) : Promise.resolve(new Map<string, number>()),
     ]);
+  const mine = joueur?.result ?? null;
+  const recompense = joueur?.reward ?? null;
+  const questions = joueur?.questions ?? [];
+  const reponses = joueur?.answers ?? new Map<string, number>();
   const analysis = rawAnalysis as ChapterAnalysis | null;
 
   const percentile = mine ? percentileFromRank(mine.rank, total) : null;

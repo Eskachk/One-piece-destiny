@@ -204,6 +204,26 @@ export const MARKET_TAG = 'market:sales';
  * `toLocaleDateString` échouerait à la première page servie depuis le cache,
  * et pas avant : le défaut n'apparaît qu'à la deuxième visite.
  */
+/**
+ * Le carnet d'annonces, partagé par tous les visiteurs du marché.
+ *
+ * Il change à chaque mise en vente, retrait ou achat — les trois actions
+ * purgent `MARKET_TAG`. Entre deux, il est identique pour tout le monde, et
+ * le relire à chaque affichage dépensait une requête du budget commun. Même
+ * précaution que pour les ventes : les dates reviennent en chaînes.
+ */
+export async function getCachedActiveListings() {
+  const rows = await unstable_cache(
+    async () => {
+      const { listActiveListings } = await import('@/lib/market/repository');
+      return listActiveListings();
+    },
+    ['market-listings'],
+    { tags: [MARKET_TAG], revalidate: 30 },
+  )();
+  return rows.map((row) => ({ ...row, listedAt: new Date(row.listedAt) }));
+}
+
 export async function getCachedRecentSales() {
   const rows = await unstable_cache(
     async () => {

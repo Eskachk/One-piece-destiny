@@ -151,6 +151,8 @@ export async function createListingAction(
     price: parsed.data.price,
   });
 
+  // Le carnet d'annonces partagé (`getCachedActiveListings`) change ici.
+  revalidateTag(MARKET_TAG);
   revalidatePath('/market');
   return { ok: true };
 }
@@ -173,6 +175,8 @@ export async function cancelListingAction(
     return { ok: false, error: 'Annonce introuvable ou déjà close.' };
   }
 
+  // Le carnet d'annonces partagé (`getCachedActiveListings`) change ici.
+  revalidateTag(MARKET_TAG);
   revalidatePath('/market');
   return { ok: true };
 }

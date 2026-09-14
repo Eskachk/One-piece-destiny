@@ -238,6 +238,27 @@ export default function config(phase: string): NextConfig {
          * servi. Il est ici à la racine, mais l'en-tête protège d'un
          * déplacement futur du fichier.
          */
+        /*
+         * Les fichiers de `public/` — icônes, chapeau, image de la carte de
+         * partage — étaient servis avec `max-age=0` : chaque page faisait
+         * revalider chacun d'eux, un aller-retour par fichier, à chaque
+         * visite. Ils ne portent pas d'empreinte dans leur nom, donc pas
+         * d'`immutable` ; un jour de cache et une semaine de
+         * `stale-while-revalidate` suffisent : le navigateur affiche ce
+         * qu'il a et se met à jour en arrière-plan.
+         */
+        {
+          source: '/icons/:path*',
+          headers: [
+            { key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' },
+          ],
+        },
+        {
+          source: '/:file((?:chapeau-chopper|chapeau-chopper-fixe)\\.(?:png|gif))',
+          headers: [
+            { key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' },
+          ],
+        },
         {
           source: '/sw.js',
           headers: [

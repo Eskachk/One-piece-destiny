@@ -341,20 +341,28 @@ export const postgresRepository: Repository = {
   },
 
   async saveResults(chapterId, rows) {
-    for (const row of rows) {
-      const teamId = await teamIdFor(row.playerId, chapterId);
-      if (!teamId) continue;
+    /*
+     * Une lecture des équipes du chapitre, puis des écritures par paquets.
+     *
+     * La version précédente cherchait l'identifiant d'équipe puis écrivait
+     * le score, joueur par joueur : deux allers-retours par ligne, deux
+     * mille pour mille joueurs. Ici, les équipes sont lues d'un coup et les
+     * scores partent par paquets de deux cents.
+     */
+    const equipes = await readAllPages<{ id: string; player_id: string }>(
+      'teams.select',
+      (from, to) =>
+        db().from('teams').select('id, player_id').eq('chapter_id', chapterId).range(from, to),
+    );
+    const teamByPlayer = new Map(equipes.map((team) => [team.player_id, team.id]));
 
-      const characters = row.breakdown as {
-        base: number;
-        synergy: number;
-        risk: number;
-      }[];
-
+    const lignes = rows.flatMap((row) => {
+      const teamId = teamByPlayer.get(row.playerId);
+      if (!teamId) return [];
+      const characters = row.breakdown as { base: number; synergy: number; risk: number }[];
       const sum = (key: 'base' | 'synergy' | 'risk') =>
         characters.reduce((total, c) => total + c[key], 0);
-
-      const { error } = await db().from('team_scores').upsert(
+      return [
         {
           team_id: teamId,
           chapter_id: chapterId,
@@ -365,8 +373,14 @@ export const postgresRepository: Repository = {
           breakdown: row.breakdown,
           scoring_version: CURRENT_SCORING_VERSION,
         },
-        { onConflict: 'team_id' },
-      );
+      ];
+    });
+
+    const PAQUET = 200;
+    for (let i = 0; i < lignes.length; i += PAQUET) {
+      const { error } = await db()
+        .from('team_scores')
+        .upsert(lignes.slice(i, i + PAQUET), { onConflict: 'team_id' });
       if (error) throw new Error(`team_scores.upsert : ${error.message}`);
     }
   },
@@ -630,33 +644,20 @@ export const postgresRepository: Repository = {
   },
 
   async grantBerriesAndChests(playerId, berries, chests) {
-    if (berries > 0) {
-      const wallet = await postgresRepository.getWallet(playerId);
-      const { error } = await db()
-        .from('wallets')
-        .update({ berries: wallet.berries + berries, version: wallet.version + 1 })
-        .eq('player_id', playerId)
-        .eq('version', wallet.version);
-      if (error) throw new Error(`wallets.update : ${error.message}`);
-    }
-
-    if (chests > 0) {
-      const { data } = await db()
-        .from('player_progress')
-        .select('unopened_chests')
-        .eq('player_id', playerId)
-        .maybeSingle();
-
-      const { error } = await db().from('player_progress').upsert(
-        {
-          player_id: playerId,
-          unopened_chests: (data?.unopened_chests ?? 0) + chests,
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: 'player_id' },
-      );
-      if (error) throw new Error(`player_progress.upsert : ${error.message}`);
-    }
+    /*
+     * Une addition côté base (`crediter_joueur`, migration 0040), pas une
+     * lecture suivie d'une écriture conditionnée par la version : cette
+     * forme-là perdait la récompense en silence dès que le joueur dépensait
+     * au même instant — la condition sur la version ne trouvait rien, et
+     * personne ne vérifiait qu'une ligne avait été touchée.
+     */
+    if (berries <= 0 && chests <= 0) return;
+    const { error } = await db().rpc('crediter_joueur', {
+      p_player: playerId,
+      p_berries: berries,
+      p_chests: chests,
+    });
+    if (error) throw new Error(`crediter_joueur : ${error.message}`);
   },
 
   async consumeChest(playerId) {
@@ -741,32 +742,38 @@ export const postgresRepository: Repository = {
   async grantWeeklyRewards(chapterId, grants) {
     let applied = 0;
 
-    for (const grant of grants) {
-      // La clé primaire (player_id, chapter_id) porte l'idempotence :
-      // republier un chapitre ne distribue pas deux fois les Berries.
-      const claim = await db()
-        .from('weekly_rewards')
-        .insert({
-          player_id: grant.playerId,
-          chapter_id: chapterId,
-          berries: grant.berries,
-          chests: grant.chests,
-          percentile: grant.percentile,
-        })
-        .select('player_id')
-        .maybeSingle();
+    // Par lots de vingt : les joueurs sont indépendants, et la garantie
+    // d'unicité (§92) tient par joueur — voir `publishResultsAction`.
+    const LOT = 20;
+    for (let i = 0; i < grants.length; i += LOT) {
+      const appliques = await Promise.all(
+        grants.slice(i, i + LOT).map(async (grant) => {
+          const claim = await db()
+            .from('weekly_rewards')
+            .insert({
+              player_id: grant.playerId,
+              chapter_id: chapterId,
+              berries: grant.berries,
+              chests: grant.chests,
+              percentile: grant.percentile,
+            })
+            .select('player_id')
+            .maybeSingle();
 
-      if (claim.error) {
-        if (claim.error.code === '23505') continue; // déjà attribué
-        throw new Error(`weekly_rewards.insert : ${claim.error.message}`);
-      }
+          if (claim.error) {
+            if (claim.error.code === '23505') return 0; // déjà attribué
+            throw new Error(`weekly_rewards.insert : ${claim.error.message}`);
+          }
 
-      await postgresRepository.grantBerriesAndChests(
-        grant.playerId,
-        grant.berries,
-        grant.chests,
+          await postgresRepository.grantBerriesAndChests(
+            grant.playerId,
+            grant.berries,
+            grant.chests,
+          );
+          return 1;
+        }),
       );
-      applied += 1;
+      applied += appliques.reduce<number>((a, b) => a + b, 0);
     }
 
     return applied;

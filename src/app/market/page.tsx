@@ -15,8 +15,8 @@ import {
 } from '@/domain/market/pricing';
 import { requireSession } from '@/lib/auth/guards';
 import * as market from '@/lib/market/repository';
-import { getRepository } from '@/lib/repository';
-import { getCachedRecentSales } from '@/lib/cache';
+import { getCachedActiveListings, getCachedRecentSales } from '@/lib/cache';
+import { lireMarche } from '@/lib/lectures';
 import { AdBanner } from '@/components/AdBanner';
 import { traduire } from '@/lib/i18n';
 
@@ -57,8 +57,6 @@ export default async function MarketPage() {
     );
   }
 
-  const repository = getRepository();
-
   /*
    * ## Une seule vague, là où il y en avait deux
    *
@@ -71,17 +69,15 @@ export default async function MarketPage() {
    * joueur, connu depuis la vague précédente. Elles rejoignent donc celle-ci,
    * et la troisième disparaît.
    */
-  const [listings, wallet, ownedIds, watchedIds, sold, asks, sales, thresholds] =
-    await Promise.all([
-      market.listActiveListings(),
-      repository.getWallet(session.playerId),
-      repository.getOwnedCharacterIds(session.playerId),
-      market.getWatchlist(session.playerId),
-      getCachedRecentSales(),
-      market.lowestAsksForWatchlist(session.playerId),
-      market.salesForWatchlist(session.playerId),
-      market.getAlertThresholds(session.playerId),
-    ]);
+  // Deux lectures partagées (annonces, ventes récentes) et une lecture
+  // personnelle groupée (`lib/lectures.ts`) : trois allers-retours au lieu
+  // de huit.
+  const [listings, sold, moi] = await Promise.all([
+    getCachedActiveListings(),
+    getCachedRecentSales(),
+    lireMarche(session.playerId),
+  ]);
+  const { wallet, ownedIds, watchedIds, asks, sales, thresholds } = moi;
 
   const owned = new Set(ownedIds);
   const watching = new Set(watchedIds);

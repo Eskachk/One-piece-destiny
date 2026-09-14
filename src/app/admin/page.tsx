@@ -23,6 +23,14 @@ import { Nav } from '@/components/Nav';
 
 export const dynamic = 'force-dynamic';
 
+/**
+ * La publication des résultats traite tous les joueurs de la semaine. Par
+ * lots de vingt elle tient en quelques secondes pour mille joueurs, mais
+ * les actions de cette page ne doivent pas être coupées par le délai par
+ * défaut de la plateforme si la base ralentit ce soir-là.
+ */
+export const maxDuration = 300;
+
 /** Le HQ ne doit jamais être indexé (cahier §105 : /admin est privé). */
 /**
  * Titre neutre, et ce n’est pas un oubli.

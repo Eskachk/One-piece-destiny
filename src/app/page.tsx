@@ -23,7 +23,7 @@ import {
 } from '@/lib/cache';
 import { PronosticPanel } from '@/components/PronosticPanel';
 import { sansReponse } from '@/domain/chapter/pronostics';
-import { questionsDe, reponsesDe } from '@/lib/chapter/questions';
+import { lireJoueur } from '@/lib/lectures';
 import { getRepository } from '@/lib/repository';
 import { AdBanner } from '@/components/AdBanner';
 
@@ -146,12 +146,13 @@ export default async function HomePage() {
    * étaient lus **après** l'équipage alors que rien ne les en empêchait : une
    * troisième attente pour une page qui n'en avait besoin que de deux.
    */
-  const [team, ownedIds, questions, mesReponses] = await Promise.all([
-    repository.getTeam(session.playerId, chapter.id),
-    repository.getOwnedCharacterIds(session.playerId),
-    questionsDe(chapter.id),
-    reponsesDe(chapter.id, session.playerId),
-  ]);
+  // Un seul aller-retour pour tout ce qui est propre au joueur : équipage,
+  // cartes, questions et réponses. Voir `lib/lectures.ts`.
+  const joueur = await lireJoueur(session.playerId, chapter.id);
+  const team = joueur.team;
+  const ownedIds = joueur.cards.map((card) => card.characterId);
+  const questions = joueur.questions;
+  const mesReponses = joueur.answers;
   const savedCrewIds = team?.characterIds ?? [];
 
   // Seuls les personnages possédés sont alignables. La liste est construite

@@ -52,6 +52,13 @@ import { audit } from '@/lib/audit';
 import { chapterTag, CURRENT_CHAPTER_TAG } from '@/lib/cache';
 import { db } from '@/lib/supabase-admin';
 
+/** Joueurs traités en parallèle à la publication. Voir le commentaire dans `publishResultsAction`. */
+const LOT_PUBLICATION = 20;
+
+function* parLots<T>(items: readonly T[], taille: number): Generator<T[]> {
+  for (let i = 0; i < items.length; i += taille) yield items.slice(i, i + taille);
+}
+
 /**
  * Pipeline hebdomadaire côté administration (cahier §5.2).
  *
@@ -585,35 +592,54 @@ export async function publishResults(): Promise<AdminActionResult> {
     })),
   );
 
-  for (const [index, result] of results.entries()) {
-    const percentile = percentileFromRank(index + 1, results.length);
-    const team = teamById.get(result.playerId);
+  /*
+   * Par lots, pas un joueur après l'autre.
+   *
+   * Chaque joueur coûte trois allers-retours ici (profil, lecture puis
+   * écriture de sa division) et quatre à six dans les notifications plus
+   * bas. En série, mille joueurs faisaient plusieurs minutes de fonction —
+   * au-delà de ce que la plateforme accorde à une action — et une
+   * publication interrompue au milieu laissait la moitié des joueurs sans
+   * profil de la semaine, sans que rien ne le signale.
+   *
+   * Les joueurs sont indépendants les uns des autres : rien n'empêche de
+   * traiter vingt lignes à la fois. Vingt, et pas mille : c'est la charge
+   * que la base absorbe sans faire attendre les pages des joueurs qui
+   * consultent le classement au même moment.
+   */
+  for (const lot of parLots(results.map((result, index) => ({ result, index })), LOT_PUBLICATION)) {
+    await Promise.all(
+      lot.map(async ({ result, index }) => {
+        const percentile = percentileFromRank(index + 1, results.length);
+        const team = teamById.get(result.playerId);
 
-    // Historique hebdomadaire : alimente la détection de style (§16) et le
-    // classement de saison (§20).
-    await repository.recordWeeklyProfile({
-      playerId: result.playerId,
-      chapterId: chapter.id,
-      chapterNumber: chapter.chapterNumber,
-      // Le taux de sélection ne modifie plus le risque : au v6 il escompte le
-      // score entier. Le passer ici le compterait deux fois.
-      risk: team ? teamRisk(
-        team.characterIds
-          .map((id) => CHARACTER_INDEX.get(id))
-          .filter((c): c is NonNullable<typeof c> => c !== undefined),
-      ).value : 0,
-      synergyShare: synergyShare(result),
-      averagePickRate: team
-        ? averagePickRate([...team.characterIds], pickRates)
-        : 0,
-      total: result.score.total,
-      percentile,
-    });
+        // Historique hebdomadaire : alimente la détection de style (§16) et
+        // le classement de saison (§20).
+        await repository.recordWeeklyProfile({
+          playerId: result.playerId,
+          chapterId: chapter.id,
+          chapterNumber: chapter.chapterNumber,
+          // Le taux de sélection ne modifie plus le risque : au v6 il
+          // escompte le score entier. Le passer ici le compterait deux fois.
+          risk: team
+            ? teamRisk(
+                team.characterIds
+                  .map((id) => CHARACTER_INDEX.get(id))
+                  .filter((c): c is NonNullable<typeof c> => c !== undefined),
+              ).value
+            : 0,
+          synergyShare: synergyShare(result),
+          averagePickRate: team ? averagePickRate([...team.characterIds], pickRates) : 0,
+          total: result.score.total,
+          percentile,
+        });
 
-    // Mouvement de division (§19), sur la base du percentile.
-    const current = await repository.getDivisionState(result.playerId);
-    const outcome = applyChapterToDivision(current, percentile);
-    await repository.setDivisionState(result.playerId, outcome.state);
+        // Mouvement de division (§19), sur la base du percentile.
+        const current = await repository.getDivisionState(result.playerId);
+        const outcome = applyChapterToDivision(current, percentile);
+        await repository.setDivisionState(result.playerId, outcome.state);
+      }),
+    );
   }
 
   await repository.updateChapter({
@@ -628,30 +654,28 @@ export async function publishResults(): Promise<AdminActionResult> {
   // consultables serait une promesse en l'air.
   let notified = 0;
   if (social.isSocialAvailable()) {
-    for (const [index, result] of results.entries()) {
-      const percentile = percentileFromRank(index + 1, results.length);
-      const reward = weeklyReward({ participated: true, rank: index + 1 });
+    for (const lot of parLots(results.map((result, index) => ({ result, index })), LOT_PUBLICATION)) {
+      const envoyes = await Promise.all(
+        lot.map(async ({ result, index }) => {
+          const reward = weeklyReward({ participated: true, rank: index + 1 });
 
-      // Les deux canaux passent par `dispatch` : les préférences du joueur
-      // s'appliquent, et l'e-mail n'annonce que l'existence des résultats —
-      // jamais un score, jamais un personnage (§3).
-      const sent = await dispatch(
-        result.playerId,
-        resultsReady(result.playerId, chapter.id, chapter.chapterNumber),
-        (address) => resultsReadyEmail(address, chapter.chapterNumber),
+          // Les deux canaux passent par `dispatch` : les préférences du
+          // joueur s'appliquent, et l'e-mail n'annonce que l'existence des
+          // résultats — jamais un score, jamais un personnage (§3).
+          const sent = await dispatch(
+            result.playerId,
+            resultsReady(result.playerId, chapter.id, chapter.chapterNumber),
+            (address) => resultsReadyEmail(address, chapter.chapterNumber),
+          );
+          await dispatch(
+            result.playerId,
+            rewardReceived(result.playerId, chapter.id, reward.berries, reward.chests),
+            (address) => rewardReadyEmail(address, reward.berries, reward.chests),
+          );
+          return sent.inApp ? 1 : 0;
+        }),
       );
-      if (sent.inApp) notified += 1;
-
-      await dispatch(
-        result.playerId,
-        rewardReceived(
-          result.playerId,
-          chapter.id,
-          reward.berries,
-          reward.chests,
-        ),
-        (address) => rewardReadyEmail(address, reward.berries, reward.chests),
-      );
+      notified += envoyes.reduce<number>((a, b) => a + b, 0);
     }
   }
 
