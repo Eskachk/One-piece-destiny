@@ -2957,6 +2957,7 @@ button[aria-busy='true']:not(.hb-btn)::before {
   right: 0.9rem;
   z-index: 1;
   padding: 0.22rem 0.55rem;
+  border: 0;
   border-radius: 0.4rem;
   font-family: var(--font-poster), system-ui, sans-serif;
   font-size: 0.64rem;
@@ -2964,7 +2965,52 @@ button[aria-busy='true']:not(.hb-btn)::before {
   text-transform: uppercase;
   color: #16304f;
   background: rgba(255, 255, 255, 0.62);
+  /* Inerte par défaut : le fond est en `pointer-events: none`, et l'étiquette
+     avec lui. Le bouton ne s'active que sur grand écran, ci-dessous. */
   pointer-events: none;
+  cursor: default;
+}
+
+/* ---------------------------------------------------------------------------
+   Contemplation (grand écran seulement).
+
+   Le nom de l'île devient un bouton qui efface l'interface : le fond, en
+   position fixe, reste seul à l'écran. Tout ce qui est effacé l'est en
+   opacité, avec une transition, plutôt qu'en `display: none` — on veut voir
+   la page se retirer, pas disparaître d'un coup. `visibility` suit pour que
+   rien ne reste cliquable ni lisible au clavier.
+   --------------------------------------------------------------------------- */
+@media (min-width: 900px) and (hover: hover) {
+  .isl-name {
+    pointer-events: auto;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .isl-name:hover {
+    background: rgba(255, 255, 255, 0.92);
+    transform: translateY(-1px);
+  }
+  .isl-name:focus-visible {
+    outline: 2px solid #f5c542;
+    outline-offset: 2px;
+  }
+
+  .harbor__content,
+  .hb-hat {
+    transition: opacity 0.45s ease, visibility 0s linear 0s;
+  }
+  html.contemplation .harbor__content,
+  html.contemplation .hb-hat {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+  }
+  html.contemplation .isl-name {
+    background: rgba(255, 255, 255, 0.92);
+  }
+  html.contemplation .isl-name::after {
+    content: ' ✕';
+  }
 }
 
 /* Sur écran étroit, la colonne prend toute la largeur : le nom se glisse

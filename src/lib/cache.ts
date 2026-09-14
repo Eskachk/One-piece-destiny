@@ -1,3 +1,5 @@
+import { computePickRates } from '@/domain/scoring/chapter-results';
+import { topPicks, type ChapterAnalysis } from '@/domain/scoring/chapter-analysis';
 import 'server-only';
 
 import { unstable_cache } from 'next/cache';
@@ -152,6 +154,28 @@ export function getCachedChapterAwards(chapterId: string) {
   return unstable_cache(
     async () => getRepository().getChapterAwards(chapterId),
     ['chapter-awards', chapterId],
+    { tags: [chapterTag(chapterId)], revalidate: 300 },
+  )();
+}
+
+/**
+ * Les trois personnages les plus choisis d'un chapitre.
+ *
+ * L'analyse enregistrée à la publication les porte depuis peu ; pour les
+ * chapitres publiés avant, on les recalcule depuis les équipages, une fois
+ * par période de cache. C'est partagé par tous les joueurs, donc en cache.
+ */
+export function getCachedTopPicks(chapterId: string) {
+  return unstable_cache(
+    async () => {
+      const analysis = (await getRepository().getChapterAnalysis(chapterId)) as
+        | ChapterAnalysis
+        | null;
+      if (analysis?.topPicks) return analysis.topPicks;
+      const teams = await getRepository().listTeams(chapterId);
+      return topPicks(computePickRates(teams));
+    },
+    ['chapter-top-picks', chapterId],
     { tags: [chapterTag(chapterId)], revalidate: 300 },
   )();
 }

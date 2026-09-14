@@ -726,6 +726,18 @@ export const postgresRepository: Repository = {
     return true;
   },
 
+  async getWeeklyReward(chapterId, playerId) {
+    const { data, error } = await db()
+      .from('weekly_rewards')
+      .select('berries, chests')
+      .eq('chapter_id', chapterId)
+      .eq('player_id', playerId)
+      .maybeSingle();
+
+    if (error) throw new Error(`weekly_rewards.select : ${error.message}`);
+    return data ? { berries: data.berries, chests: data.chests } : null;
+  },
+
   async grantWeeklyRewards(chapterId, grants) {
     let applied = 0;
 

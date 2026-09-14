@@ -321,9 +321,7 @@ export function HarborScene({
               est en CSS (`.isl-fx`), donc rien n'est ajouté au balisage. */}
           <div className="isl-fx" aria-hidden="true" />
 
-          <span className="isl-name" aria-hidden="true">
-            {island !== 'harbor' && island !== 'hq' ? <IslandName island={island} /> : ''}
-          </span>
+          {island !== 'harbor' && island !== 'hq' && <IslandName island={island} />}
           </>
         )}
 

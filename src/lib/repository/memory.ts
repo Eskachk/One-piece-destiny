@@ -34,7 +34,7 @@ interface Store {
   progress: Map<string, PlayerProgress>;
   chestRequests: Set<string>;
   wallets: Map<string, Wallet>;
-  weeklyGrants: Set<string>;
+  weeklyGrants: Map<string, { berries: number; chests: number }>;
   divisions: Map<string, DivisionState>;
   profiles: Map<string, StoredWeeklyProfile[]>;
   analysis: Map<string, unknown>;
@@ -61,7 +61,7 @@ function createStore(): Store {
     progress: new Map(),
     chestRequests: new Set(),
     wallets: new Map(),
-    weeklyGrants: new Set(),
+    weeklyGrants: new Map(),
     divisions: new Map(),
     profiles: new Map(),
     analysis: new Map(),
@@ -330,6 +330,10 @@ export const memoryRepository: Repository = {
     return true;
   },
 
+  async getWeeklyReward(chapterId, playerId) {
+    return store().weeklyGrants.get(`${playerId}:${chapterId}`) ?? null;
+  },
+
   async grantWeeklyRewards(chapterId, grants) {
     const state = store();
     let applied = 0;
@@ -338,7 +342,7 @@ export const memoryRepository: Repository = {
       const key = `${grant.playerId}:${chapterId}`;
       // §92 : une seule attribution par joueur et par chapitre.
       if (state.weeklyGrants.has(key)) continue;
-      state.weeklyGrants.add(key);
+      state.weeklyGrants.set(key, { berries: grant.berries, chests: grant.chests });
 
       await memoryRepository.grantBerriesAndChests(
         grant.playerId,

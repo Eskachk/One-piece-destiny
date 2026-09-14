@@ -13,6 +13,15 @@ import type { ChapterResult } from './chapter-results';
 
 export interface ChapterAnalysis {
   mostPicked: { characterId: string; pickRate: number } | null;
+  /**
+   * Les trois personnages les plus choisis, du plus au moins choisi.
+   *
+   * Absent des analyses enregistrées avant son ajout : la page recalcule
+   * alors depuis les équipages verrouillées. Ce champ existe parce que
+   * `mostPicked` seul ne dit rien de l'écart entre le premier et les
+   * suivants — et c'est précisément ce que le joueur veut savoir.
+   */
+  topPicks?: { characterId: string; pickRate: number }[];
   bestPerformer: { characterId: string; points: number } | null;
   /** Peu choisi mais très rentable : la bonne surprise. */
   biggestSurprise: { characterId: string; points: number; pickRate: number } | null;
@@ -23,6 +32,18 @@ export interface ChapterAnalysis {
 }
 
 const SURPRISE_MAX_PICK_RATE = 0.25;
+const TOP_PICKS = 3;
+
+/** Les personnages les plus choisis, ordre décroissant, égalités par identifiant. */
+export function topPicks(
+  pickRates: Map<string, number>,
+  limit = TOP_PICKS,
+): { characterId: string; pickRate: number }[] {
+  return [...pickRates.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, limit)
+    .map(([characterId, pickRate]) => ({ characterId, pickRate }));
+}
 const TRAP_MIN_PICK_RATE = 0.4;
 
 function median(values: number[]): number {
@@ -74,6 +95,7 @@ export function analyseChapter(
     mostPicked: mostPicked
       ? { characterId: mostPicked[0], pickRate: mostPicked[1] }
       : null,
+    topPicks: topPicks(pickRates),
     bestPerformer: bestPerformer
       ? { characterId: bestPerformer[0], points: bestPerformer[1] }
       : null,

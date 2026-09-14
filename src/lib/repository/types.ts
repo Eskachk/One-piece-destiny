@@ -209,6 +209,15 @@ export interface Repository {
     cost: number,
   ): Promise<boolean>;
 
+  /**
+   * Ce qu'un joueur a reçu pour un chapitre, ou `null` s'il n'a rien reçu —
+   * chapitre non publié, ou joueur sans équipage cette semaine-là.
+   */
+  getWeeklyReward(
+    chapterId: string,
+    playerId: string,
+  ): Promise<{ berries: number; chests: number } | null>;
+
   /** Attribution des récompenses d'un chapitre, idempotente (§92). */
   grantWeeklyRewards(
     chapterId: string,

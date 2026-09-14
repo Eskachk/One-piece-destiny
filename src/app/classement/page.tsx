@@ -8,7 +8,10 @@ import {
   getCachedLatestPublishedChapter,
   getCachedLeaderboardSize,
   getCachedLeaderboardTop,
+  getCachedTopPicks,
 } from '@/lib/cache';
+import { questionsDe, reponsesDe } from '@/lib/chapter/questions';
+import { BONUS_PAR_BONNE_REPONSE } from '@/domain/chapter/pronostics';
 import { Nav } from '@/components/Nav';
 import { Tutorial } from '@/components/Tutorial';
 import Link from 'next/link';
@@ -163,19 +166,32 @@ export default async function LeaderboardPage() {
    * mettait le tout en cache, jusqu'à ce que Next refuse l'entrée devenue trop
    * lourde et cesse silencieusement de cacher quoi que ce soit.
    */
-  const [top, total, rawAnalysis, awards, display, mine] = await Promise.all([
-    getCachedLeaderboardTop(chapter.id),
-    getCachedLeaderboardSize(chapter.id),
-    getCachedChapterAnalysis(chapter.id),
-    getCachedChapterAwards(chapter.id),
-    readDisplaySettings(),
-    session
-      ? getRepository().getPlayerChapterResult(chapter.id, session.playerId)
-      : Promise.resolve(null),
-  ]);
+  const [top, total, rawAnalysis, awards, display, mine, plusChoisis, recompense, questions, reponses] =
+    await Promise.all([
+      getCachedLeaderboardTop(chapter.id),
+      getCachedLeaderboardSize(chapter.id),
+      getCachedChapterAnalysis(chapter.id),
+      getCachedChapterAwards(chapter.id),
+      readDisplaySettings(),
+      session
+        ? getRepository().getPlayerChapterResult(chapter.id, session.playerId)
+        : Promise.resolve(null),
+      getCachedTopPicks(chapter.id),
+      // Le bilan personnel : ce que la semaine a rapporté, et les pronostics.
+      // Trois lectures propres au visiteur, hors du cache partagé.
+      session ? getRepository().getWeeklyReward(chapter.id, session.playerId) : Promise.resolve(null),
+      session ? questionsDe(chapter.id) : Promise.resolve([]),
+      session ? reponsesDe(chapter.id, session.playerId) : Promise.resolve(new Map<string, number>()),
+    ]);
   const analysis = rawAnalysis as ChapterAnalysis | null;
 
   const percentile = mine ? percentileFromRank(mine.rank, total) : null;
+
+  // Les pronostics ne figurent au bilan que si le joueur y a répondu : une
+  // question ignorée n'est pas un échec, et la lister comme telle le dirait.
+  const repondues = questions.filter((q) => reponses.has(q.id));
+  const bonnes = repondues.filter((q) => q.answer !== null && reponses.get(q.id) === q.answer);
+  const bonus = bonnes.length * BONUS_PAR_BONNE_REPONSE;
 
   return (
     <HarborScene variant="page" island={islandOf('/classement')}>
@@ -201,6 +217,104 @@ export default async function LeaderboardPage() {
               {tn('lb.percentile', total, { p: percentile })}
             </p>
           )}
+        </section>
+      )}
+
+      {/* Le bilan : ce que l'équipage a rapporté, ce que le joueur a reçu, et
+          ses pronostics. Le détail ligne par ligne vient juste après ; ceci
+          est la vue d'ensemble qu'on lit en trois secondes. */}
+      {mine && (
+        <section className="hb-card mt-5">
+          <h2 className="hb-legend">{t('lb.summary')}</h2>
+
+          {Array.isArray(mine.breakdown) && (
+            <div className="mt-3">
+              <p className="hb-muted text-xs">{t('lb.summary.crew')}</p>
+              <ul className="mt-1 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+                {(mine.breakdown as CharacterScore[]).map((score) => (
+                  <li key={score.characterId}>
+                    <span className="font-semibold">{name(score.characterId)}</span>{' '}
+                    <span className="hb-num">{t('lb.pts', { n: score.total })}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="hb-muted mt-1 text-xs">{t('lb.summary.crewTotal', { n: mine.total })}</p>
+            </div>
+          )}
+
+          <div className="mt-3 border-t hb-border pt-3">
+            <p className="hb-muted text-xs">{t('lb.summary.reward')}</p>
+            {recompense ? (
+              <p className="mt-1 text-sm">
+                <span className="hb-num">🪙 {t('lb.summary.reward.berries', { n: recompense.berries })}</span>
+                {recompense.chests > 0 && (
+                  <>
+                    {' + '}
+                    <span className="hb-num">🎁 {tn('lb.summary.reward.chests', recompense.chests)}</span>
+                  </>
+                )}
+                {bonus > 0 && (
+                  <span className="hb-muted block text-xs">{t('lb.summary.reward.bonus', { n: bonus })}</span>
+                )}
+              </p>
+            ) : (
+              <p className="hb-muted mt-1 text-sm">{t('lb.summary.reward.none')}</p>
+            )}
+          </div>
+
+          {repondues.length > 0 && (
+            <div className="mt-3 border-t hb-border pt-3">
+              <p className="hb-muted text-xs">{t('lb.summary.questions')}</p>
+              <p className="mt-1 text-sm font-semibold">
+                {t('lb.summary.questions.score', {
+                  good: bonnes.length,
+                  total: repondues.length,
+                  n: bonus,
+                })}
+              </p>
+              <ul className="mt-2 space-y-2">
+                {repondues.map((q) => {
+                  const choix = reponses.get(q.id)!;
+                  const juste = q.answer !== null && choix === q.answer;
+                  return (
+                    <li key={q.id} className="hb-tile text-xs">
+                      <p className="font-semibold">{q.prompt}</p>
+                      <p className={juste ? 'hb-accent' : 'hb-ko'}>
+                        {juste ? '✅' : '❌'} {t('lb.summary.answer.you', { a: q.options[choix] ?? '—' })}
+                      </p>
+                      {!juste && q.answer !== null && (
+                        <p className="hb-muted">
+                          {t('lb.summary.answer.right', { a: q.options[q.answer] ?? '—' })}
+                        </p>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </section>
+      )}
+
+      {/* Les plus choisis, en toutes lettres : le classement d'une semaine se
+          lit aussi à travers ce que tout le monde a joué. */}
+      {plusChoisis.length > 0 && (
+        <section className="mt-6">
+          <h2 className="hb-legend">{t('lb.topPicks')}</h2>
+          <p className="hb-muted mt-1 text-xs">{t('lb.topPicks.hint')}</p>
+          <ol className="mt-3 space-y-1">
+            {plusChoisis.map((pick, index) => (
+              <li key={pick.characterId} className="hb-tile flex items-baseline justify-between">
+                <span className="text-sm">
+                  <span className="hb-muted mr-2 font-mono">{MEDALS[index] ?? `#${index + 1}`}</span>
+                  <span className="font-semibold">{name(pick.characterId)}</span>
+                </span>
+                <span className="hb-num text-sm">
+                  {t('lb.topPicks.rate', { rate: percent(pick.pickRate) })}
+                </span>
+              </li>
+            ))}
+          </ol>
         </section>
       )}
 

@@ -34,6 +34,8 @@ export const DIVERS = {
     'island.sabaody': 'L’archipel de Sabaody',
     'island.alabasta': 'Alabasta',
     'island.drum': 'Le royaume de Drum',
+    'island.contemplate': 'Admirer le décor (Échap pour revenir)',
+    'island.contemplate.exit': 'Retrouver la page',
     'privacy.meta.title': 'Politique de confidentialité',
     'privacy.meta.description':
       'Quelles données One Piece Quest enregistre, pourquoi, combien de temps, et comment les faire supprimer.',
@@ -70,6 +72,8 @@ export const DIVERS = {
     'island.sabaody': 'Sabaody Archipelago',
     'island.alabasta': 'Alabasta',
     'island.drum': 'Drum Kingdom',
+    'island.contemplate': 'Admire the scenery (Esc to come back)',
+    'island.contemplate.exit': 'Back to the page',
     'privacy.meta.title': 'Privacy policy',
     'privacy.meta.description':
       'What data One Piece Quest stores, why, for how long, and how to have it deleted.',
