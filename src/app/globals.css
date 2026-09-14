@@ -3129,34 +3129,17 @@ button[aria-busy='true']:not(.hb-btn)::before {
 }
 
 /* ===========================================================================
-   Ambiance de chaque île : ce qui tombe, monte ou dérive.
+   Voiles d'ambiance de chaque île : ce qui est innombrable et sans contour.
 
-   C'est cette couche qui occupe la hauteur de l'écran — le décor, lui, est posé
-   en bas. Neige à Drum, pétales à Wano, sable à Alabasta, averse et éclairs à
-   Logue Town, bulles à Sabaody, remous sous la mer, brume et feuilles à Elbaf.
+   Remous sous la mer, bancs de brume sur la lande, l'éclair de Logue Town.
+   Tout est en dégradés animés : aucun élément dans le balisage.
 
-   Tout est en dégradés répétés animés par `background-position` : aucun élément
-   dans le balisage, aucun téléchargement.
-
-   ## Ce qui a été refait, et pourquoi
-
-   **Une seule animation par couche.** La version précédente en déclarait deux
-   sur le même élément — `fx-chute` *et* `fx-chute-lente` — qui animaient toutes
-   deux `background-position`. La seconde écrasait la première : la moitié du
-   mouvement n'existait pas.
-
-   **Trois plans au lieu de deux.** Deux tailles de flocons donnent une trame ;
-   trois, à trois vitesses, donnent une profondeur.
-
-   **Des trajectoires, pas des translations.** Ce qui tombe ne tombe pas droit.
-   Chaque boucle passe par quatre ou cinq positions intermédiaires qui décalent
-   les plans latéralement, chacun à contretemps : le flocon louvoie, le pétale
-   plane, la bourrasque de sable accélère puis retombe. C'est ce zigzag qui fait
-   la différence entre « ça bouge » et « ça vit ».
-
-   **La reprise reste invisible.** Chaque couche avance sur la boucle
-   d'exactement une hauteur (ou une largeur) de tuile, et son décalage latéral
-   revient à zéro : le raccord tombe pile sur le motif.
+   Ce qui tombe, monte ou dérive — neige, pétales, sable, pluie, bulles,
+   confettis — **a quitté cette couche**. C'était des tuiles de dégradés
+   répétés, et une tuile se voit : chaque flocon avait un jumeau à 130 px, la
+   neige était une grille de points. Ces particules sont maintenant des
+   éléments individuels, tirés d'un générateur à graine fixe : voir
+   `components/islands/Particules.tsx` et `.pt` plus bas.
 
    `will-change` est délibérément **absent** : il forcerait une couche de
    composition permanente pour une animation de fond, sur toutes les pages, y
@@ -3182,51 +3165,6 @@ button[aria-busy='true']:not(.hb-btn)::before {
   pointer-events: none;
 }
 
-/* Neige — Drum. Trois tailles de flocons, trois vitesses, et un louvoiement
-   inversé d'un plan à l'autre. */
-[data-island='drum'] .isl-fx {
-  background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 0.95) 1.9px, transparent 2.6px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.75) 1.3px, transparent 1.9px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.5) 0.9px, transparent 1.4px);
-  background-size: 130px 170px, 84px 118px, 52px 76px;
-}
-
-/* Pétales — Wano. Des ellipses, pas des disques : un pétale est plus large que
-   haut, et c'est ce qui le distingue d'un flocon. Il plane aussi bien plus
-   loin sur les côtés — d'où une dérive latérale trois fois plus ample. */
-[data-island='wano'] .isl-fx {
-  background-image:
-    radial-gradient(ellipse 5.5px 3px, rgba(255, 208, 222, 0.95) 60%, transparent 61%),
-    radial-gradient(ellipse 4px 2.2px, rgba(255, 228, 238, 0.85) 60%, transparent 61%),
-    radial-gradient(ellipse 3px 1.6px, rgba(255, 242, 246, 0.7) 60%, transparent 61%);
-  background-size: 150px 190px, 104px 138px, 68px 96px;
-}
-
-/* Sable — Alabasta. Des traits presque horizontaux : le vent du désert pousse
-   de côté, il ne fait pas tomber. Et il souffle par rafales, pas à débit
-   constant : la boucle avance vite, ralentit, repart. */
-[data-island='alabasta'] .isl-fx {
-  /* Les angles sont proches de 0° et de 180°, pas de 90° : en CSS l'angle est
-     celui de la **progression** du dégradé, et les bandes lui sont
-     perpendiculaires. À 99°, les traînées tombaient à la verticale — on lisait
-     une averse en plein désert. */
-  background-image:
-    linear-gradient(9deg, transparent 0 6px, rgba(242, 216, 162, 0.6) 6px 9px, transparent 9px 40px),
-    linear-gradient(174deg, transparent 0 12px, rgba(228, 198, 140, 0.45) 12px 14px, transparent 14px 60px),
-    linear-gradient(6deg, transparent 0 20px, rgba(214, 180, 120, 0.3) 20px 23px, transparent 23px 44px);
-  background-size: 220px 80px, 300px 130px, 160px 60px;
-}
-
-/* Pluie — Logue Town. Traits obliques, fins et rapides, sur trois plans. */
-[data-island='logue'] .isl-fx {
-  background-image:
-    linear-gradient(74deg, transparent 0 10px, rgba(232, 242, 255, 0.55) 10px 11.5px, transparent 11.5px 30px),
-    linear-gradient(76deg, transparent 0 18px, rgba(206, 224, 244, 0.4) 18px 19.5px, transparent 19.5px 46px),
-    linear-gradient(78deg, transparent 0 26px, rgba(186, 206, 230, 0.28) 26px 27px, transparent 27px 64px);
-  background-size: 120px 150px, 160px 190px, 210px 240px;
-}
-
 /* L'éclair. Il ne se répète pas à intervalle régulier : la boucle est longue et
    la décharge tient sur trois pour cent de sa durée, avec le double flash
    caractéristique. Une lueur qui pulse en continu ne serait pas un orage. */
@@ -3237,16 +3175,6 @@ button[aria-busy='true']:not(.hb-btn)::before {
     transparent 70%
   );
   opacity: 0;
-}
-
-/* Bulles — Sabaody. Elles **montent**, et se dandinent en montant : une bulle
-   qui s'élève en ligne droite ne ressemble à rien. */
-[data-island='sabaody'] .isl-fx {
-  background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 0.5) 5.5px, transparent 6.6px),
-    radial-gradient(circle, rgba(226, 210, 255, 0.55) 3.2px, transparent 4px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.35) 1.8px, transparent 2.4px);
-  background-size: 190px 250px, 120px 168px, 76px 110px;
 }
 
 /* Eau de mer — Île des hommes-poissons. Pas des particules : des **remous**,
@@ -3260,15 +3188,6 @@ button[aria-busy='true']:not(.hb-btn)::before {
   opacity: 0.9;
 }
 
-/* … et par-dessus, ce qui monte. Séparé, parce qu'une bulle monte à vitesse
-   constante alors qu'un remous va et vient. */
-[data-island='fishman'] .isl-fx::after {
-  background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 0.5) 3.4px, transparent 4.4px),
-    radial-gradient(circle, rgba(255, 255, 255, 0.32) 2px, transparent 2.8px);
-  background-size: 170px 230px, 110px 150px;
-}
-
 /* Elbaf — le grand nord après l'averse. Deux bancs de brume qui traversent
    lentement la lande… */
 [data-island='elbaf'] .isl-fx {
@@ -3278,59 +3197,17 @@ button[aria-busy='true']:not(.hb-btn)::before {
   opacity: 0.85;
 }
 
-/* … et les feuilles que l'arbre d'Adam laisse tomber. Larges, lentes, et qui
-   planent loin de côté : à cette taille d'arbre, une feuille met du temps à
-   arriver. */
-[data-island='elbaf'] .isl-fx::after {
-  background-image:
-    radial-gradient(ellipse 7px 3.4px, rgba(150, 190, 96, 0.95) 60%, transparent 61%),
-    radial-gradient(ellipse 5px 2.4px, rgba(198, 220, 132, 0.85) 60%, transparent 61%),
-    radial-gradient(ellipse 3.4px 1.7px, rgba(226, 236, 176, 0.7) 60%, transparent 61%);
-  /* Trois fois plus serré, et trois plans au lieu de deux. Les tuiles faisaient
-     150 × 200 et 96 × 132 : à peu près une feuille par écran, sur une boucle de
-     24 s. Il ne se passait littéralement rien pendant des secondes entières. */
-  background-size: 78px 104px, 54px 74px, 38px 52px;
-}
-
 @media (prefers-reduced-motion: no-preference) {
-  [data-island='drum'] .isl-fx {
-    animation: fx-neige 17s linear infinite;
-  }
-
-  [data-island='wano'] .isl-fx {
-    animation: fx-petales 21s linear infinite;
-  }
-
-  [data-island='alabasta'] .isl-fx {
-    animation: fx-sable 11s linear infinite;
-  }
-
-  [data-island='logue'] .isl-fx {
-    animation: fx-pluie 1.5s linear infinite;
-  }
-
   [data-island='logue'] .isl-fx::after {
     animation: fx-eclair 11s linear infinite;
-  }
-
-  [data-island='sabaody'] .isl-fx {
-    animation: fx-bulles 19s linear infinite;
   }
 
   [data-island='fishman'] .isl-fx {
     animation: fx-remous 13s ease-in-out infinite alternate;
   }
 
-  [data-island='fishman'] .isl-fx::after {
-    animation: fx-remontee 15s linear infinite;
-  }
-
   [data-island='elbaf'] .isl-fx {
     animation: fx-brume 22s ease-in-out infinite alternate;
-  }
-
-  [data-island='elbaf'] .isl-fx::after {
-    animation: fx-feuilles 11s linear infinite;
   }
 
   /* --- Ce qui bouge dans le dessin lui-même ------------------------------
@@ -3458,69 +3335,6 @@ button[aria-busy='true']:not(.hb-btn)::before {
    mouvement.
    --------------------------------------------------------------------------- */
 
-@keyframes fx-neige {
-  0% {
-    background-position: 0 0, 0 0, 0 0;
-  }
-  25% {
-    background-position: 17px 42.5px, -12px 29.5px, 8px 19px;
-  }
-  50% {
-    background-position: 2px 85px, 3px 59px, -3px 38px;
-  }
-  75% {
-    background-position: -17px 127.5px, 12px 88.5px, -8px 57px;
-  }
-  100% {
-    background-position: 0 170px, 0 118px, 0 76px;
-  }
-}
-
-@keyframes fx-petales {
-  0% {
-    background-position: 0 0, 0 0, 0 0;
-  }
-  20% {
-    background-position: 38px 38px, -28px 27.6px, 19px 19.2px;
-  }
-  40% {
-    background-position: 11px 76px, 15px 55.2px, -13px 38.4px;
-  }
-  60% {
-    background-position: 48px 114px, -22px 82.8px, 21px 57.6px;
-  }
-  80% {
-    background-position: 13px 152px, 19px 110.4px, -11px 76.8px;
-  }
-  100% {
-    background-position: 0 190px, 0 138px, 0 96px;
-  }
-}
-
-@keyframes fx-sable {
-  0% {
-    background-position: 0 0, 0 0, 0 0;
-  }
-  16% {
-    background-position: -72px 5px, -98px -4px, -54px 6px;
-  }
-  34% {
-    background-position: -99px -3px, -135px 5px, -72px -5px;
-  }
-  62% {
-    background-position: -172px 4px, -234px -6px, -122px 5px;
-  }
-  100% {
-    background-position: -220px 0, -300px 0, -160px 0;
-  }
-}
-
-@keyframes fx-pluie {
-  to {
-    background-position: -42px 150px, -50px 190px, -58px 240px;
-  }
-}
-
 /* Le double flash : une première décharge, un noir très court, une seconde plus
    forte, puis la rémanence qui s'éteint. Le reste de la boucle est noir. */
 @keyframes fx-eclair {
@@ -3546,63 +3360,15 @@ button[aria-busy='true']:not(.hb-btn)::before {
   }
 }
 
-@keyframes fx-bulles {
-  0% {
-    background-position: 0 0, 0 0, 0 0;
-  }
-  25% {
-    background-position: 15px -62.5px, -11px -42px, 7px -27.5px;
-  }
-  50% {
-    background-position: -3px -125px, 4px -84px, -4px -55px;
-  }
-  75% {
-    background-position: -15px -187.5px, 11px -126px, -7px -82.5px;
-  }
-  100% {
-    background-position: 0 -250px, 0 -168px, 0 -110px;
-  }
-}
-
 @keyframes fx-remous {
   to {
     background-position: 6% 10%, -8% -8%, 5% 7%;
   }
 }
 
-@keyframes fx-remontee {
-  0% {
-    background-position: 0 0, 0 0;
-  }
-  50% {
-    background-position: 9px -115px, -7px -75px;
-  }
-  100% {
-    background-position: 0 -230px, 0 -150px;
-  }
-}
-
 @keyframes fx-brume {
   to {
     background-position: 24% 3%, -20% -3%;
-  }
-}
-
-@keyframes fx-feuilles {
-  0% {
-    background-position: 0 0, 0 0;
-  }
-  25% {
-    background-position: 29px 50px, -19px 33px;
-  }
-  50% {
-    background-position: 7px 100px, 13px 66px;
-  }
-  75% {
-    background-position: 35px 150px, -15px 99px;
-  }
-  100% {
-    background-position: 0 200px, 0 132px;
   }
 }
 
@@ -4277,67 +4043,6 @@ button[aria-busy='true']:not(.hb-btn)::before {
   99% {
     transform: translate3d(55%, 0, 0);
     opacity: 0;
-  }
-}
-
-/* --- Deux ambiances qui manquaient ----------------------------------------
-
-   `.isl-fx` couvrait sept îles sur dix. Dressrosa et le port n'avaient rien :
-   sur ces deux pages, tout le mouvement reposait sur les nuages. */
-
-/* Dressrosa — les confettis. C'est l'île de la fête, et la note d'intention du
-   produit le dit depuis le début (« ses ors et ses confettis ») ; seule
-   l'ambiance manquait. Des rectangles, pas des disques : un confetti est un
-   bout de papier, et c'est ce qui le distingue d'un flocon. */
-[data-island='dressrosa'] .isl-fx {
-  background-image:
-    linear-gradient(38deg, transparent 0 3px, rgba(255, 92, 108, 0.85) 3px 9px, transparent 9px),
-    linear-gradient(-24deg, transparent 0 2px, rgba(255, 206, 92, 0.85) 2px 7px, transparent 7px),
-    linear-gradient(64deg, transparent 0 2px, rgba(126, 216, 255, 0.75) 2px 6px, transparent 6px);
-  background-size: 116px 152px, 84px 118px, 62px 92px;
-  opacity: 0.7;
-}
-
-/* Le port — la poussière d'aube dans la lumière rasante. Rien qui tombe : à
-   l'aube au bord de l'eau, ce qu'on voit flotter monte plus qu'il ne descend. */
-[data-island='harbor'] .isl-fx {
-  background-image:
-    radial-gradient(circle, rgba(255, 245, 214, 0.85) 1.6px, transparent 2.3px),
-    radial-gradient(circle, rgba(255, 250, 232, 0.6) 1.1px, transparent 1.6px);
-  background-size: 176px 232px, 108px 146px;
-  opacity: 0.55;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  [data-island='dressrosa'] .isl-fx {
-    animation: fx-confettis 15s linear infinite;
-  }
-
-  [data-island='harbor'] .isl-fx {
-    animation: fx-poussiere 26s linear infinite;
-  }
-}
-
-/* Le confetti tombe en tournoyant : la dérive latérale change de signe en
-   cours de chute, ce qu'une translation droite ne rend pas. */
-@keyframes fx-confettis {
-  0% {
-    background-position: 0 -152px, 0 -118px, 0 -92px;
-  }
-  50% {
-    background-position: 26px 0, -18px -20px, 14px -10px;
-  }
-  100% {
-    background-position: 0 152px, 0 118px, 0 92px;
-  }
-}
-
-@keyframes fx-poussiere {
-  0% {
-    background-position: 0 232px, 0 146px;
-  }
-  100% {
-    background-position: 22px 0, -16px 0;
   }
 }
 
@@ -5531,4 +5236,386 @@ button[aria-busy='true']:not(.hb-btn)::before {
 [data-island='hq'] .hb-page .hb-filtres__label,
 [data-island='hq'] .hb-page .hb-muted {
   color: #bccbdd; /* 8,4:1 */
+}
+
+/* ===========================================================================
+   Particules — ce qui tombe, monte, dérive ou scintille.
+   ===========================================================================
+
+   Le balisage vient de `components/islands/Particules.tsx` : un `<i class="pt">`
+   par particule, avec ses variables (`--x`, `--y`, `--t`, `--d`, `--r`, `--b`,
+   `--pb`, `--rb`, `--o`, `--c`), et un `<b>` à l'intérieur qui porte la forme.
+
+   Deux éléments, deux animations : l'enveloppe fait le trajet (chute, montée,
+   rafale), l'intérieur fait le balancement et la rotation. Chaque particule a
+   ainsi sa propre vitesse de chute **et** sa propre période de louvoiement,
+   avec des phases décalées — c'est ce qui fait qu'aucune ne ressemble à sa
+   voisine.
+
+   Tout est en `transform` et `opacity`. Les trajets sont écrits en longueurs
+   d'écran (`vh`, `vw`) retranchées de la position de départ : la particule
+   part toujours hors champ et le traverse entièrement, quelle que soit sa
+   position de repos — et c'est cette position de repos qu'on voit sous
+   « animations réduites », où tout s'immobilise. */
+
+.isl-part {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+
+.pt {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--t);
+  height: var(--t);
+  opacity: var(--o);
+}
+
+.pt > b {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--c, #ffffff);
+}
+
+/* --- Les formes ------------------------------------------------------------- */
+
+/* Flocon : un disque et un halo. Le halo est ce qui le rend lumineux plutôt
+   que blanc. */
+.pt--flocon > b {
+  box-shadow: 0 0 calc(var(--t) * 1.2) rgba(255, 255, 255, 0.55);
+}
+
+/* Feuille et pétale : une ellipse à deux pointes, obtenue par deux rayons
+   nuls en diagonale. La feuille est plus allongée que le pétale. */
+.pt--feuille > b {
+  border-radius: 80% 0 80% 0;
+  height: 62%;
+  background: linear-gradient(135deg, var(--c) 0%, color-mix(in srgb, var(--c) 70%, #2f6b3c) 100%);
+}
+
+.pt--petale > b {
+  border-radius: 70% 0 70% 0;
+  height: 78%;
+  background: radial-gradient(circle at 30% 30%, #ffffff 0%, var(--c) 60%);
+}
+
+/* Confetti : un rectangle plus haut que large, une teinte franche. */
+.pt--confetti > b {
+  border-radius: 1px;
+  width: 58%;
+}
+
+/* Bulle : un anneau, un reflet en haut à gauche, presque rien au milieu. */
+.pt--bulle > b {
+  background:
+    radial-gradient(circle at 32% 30%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 28%),
+    radial-gradient(circle, rgba(255, 255, 255, 0.05) 60%, rgba(255, 255, 255, 0.55) 78%, rgba(255, 255, 255, 0) 100%);
+  box-shadow: inset 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+/* Grain de sable : une traînée horizontale, effilée aux deux bouts. */
+.pt--grain > b {
+  height: 1.6px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(242, 216, 162, 0) 0%, var(--c, #f2d8a2) 40%, var(--c, #f2d8a2) 60%, rgba(242, 216, 162, 0) 100%);
+}
+
+/* Goutte : un trait vertical, à peine penché, plus dense en bas. */
+.pt--goutte > b {
+  width: 1.3px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, rgba(232, 242, 255, 0) 0%, #e8f2ff 100%);
+  transform: rotate(-7deg);
+}
+
+/* Poussière, pollen, plancton, luciole : un point qui luit. Chaque teinte est
+   celle de la lumière du lieu — jamais du blanc pur, qui ne se fondrait dans
+   rien. */
+.pt--poussiere > b,
+.pt--pollen > b,
+.pt--plancton > b,
+.pt--luciole > b {
+  box-shadow: 0 0 calc(var(--t) * 1.6) var(--c, #ffffff);
+}
+
+.pt--pollen > b {
+  --c: #f0e28a;
+}
+
+.pt--plancton > b {
+  --c: #b8fff4;
+}
+
+.pt--luciole > b {
+  --c: #ffe28a;
+  box-shadow:
+    0 0 calc(var(--t) * 1.6) #ffe28a,
+    0 0 calc(var(--t) * 4) rgba(255, 210, 90, 0.35);
+}
+
+/* Givre et paillette : une étoile à quatre branches — le point, et deux
+   traits en croix par les pseudo-éléments. Ce sont eux qui font « scintiller »
+   plutôt que « clignoter ». */
+.pt--givre > b,
+.pt--paillette > b {
+  position: relative;
+  background: #ffffff;
+  box-shadow: 0 0 calc(var(--t) * 2) rgba(255, 255, 255, 0.9);
+}
+
+.pt--paillette > b {
+  background: #fff1b0;
+  box-shadow: 0 0 calc(var(--t) * 2) rgba(255, 220, 120, 0.9);
+}
+
+.pt--givre > b::before,
+.pt--givre > b::after,
+.pt--paillette > b::before,
+.pt--paillette > b::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--t) * 4);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95), transparent);
+  transform: translate(-50%, -50%);
+}
+
+.pt--givre > b::after,
+.pt--paillette > b::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+/* --- Les trajets ------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .pt--chute {
+    animation: pt-chute var(--d) linear var(--r) infinite;
+  }
+
+  .pt--montee {
+    animation: pt-montee var(--d) linear var(--r) infinite;
+  }
+
+  /* Le sable souffle par rafales : la boucle accélère au milieu et retombe.
+     Un défilement à vitesse constante lirait comme un tapis roulant. */
+  .pt--rafale {
+    animation: pt-rafale var(--d) cubic-bezier(0.45, 0.05, 0.55, 0.95) var(--r) infinite;
+  }
+
+  .pt--flotte {
+    animation: pt-flotte var(--d) ease-in-out var(--r) infinite alternate;
+  }
+
+  .pt--scintille {
+    animation: pt-scintille var(--d) ease-in-out var(--r) infinite;
+  }
+
+  /* Le balancement, sur l'élément intérieur. Les gouttes n'en ont pas : leur
+     amplitude est nulle, et l'animation ne fait rien — on la laisse, une
+     règle de moins à écrire vaut moins qu'une exception à retenir. */
+  .pt--chute > b,
+  .pt--montee > b,
+  .pt--rafale > b,
+  .pt--flotte > b {
+    animation: pt-balance var(--pb) ease-in-out var(--rb) infinite alternate;
+  }
+
+  /* Feuilles, pétales, confettis : ils tournent en tombant. La rotation est
+     une propriété à part (`rotate`), pour ne pas se disputer le `transform`
+     du balancement sur le même élément. */
+  .pt--tourne > b {
+    animation:
+      pt-balance var(--pb) ease-in-out var(--rb) infinite alternate,
+      pt-tourne calc(var(--pb) * 2.3) linear var(--rb) infinite;
+  }
+
+  /* Le plancton, le pollen et les lucioles respirent en dérivant. */
+  .pt--plancton,
+  .pt--luciole,
+  .pt--pollen {
+    animation:
+      pt-flotte var(--d) ease-in-out var(--r) infinite alternate,
+      pt-respire calc(var(--pb) * 1.4) ease-in-out var(--rb) infinite;
+  }
+}
+
+@keyframes pt-chute {
+  from {
+    transform: translateY(calc(-14vh - var(--y)));
+  }
+  to {
+    transform: translateY(calc(114vh - var(--y)));
+  }
+}
+
+@keyframes pt-montee {
+  from {
+    transform: translateY(calc(114vh - var(--y)));
+  }
+  to {
+    transform: translateY(calc(-14vh - var(--y)));
+  }
+}
+
+@keyframes pt-rafale {
+  from {
+    transform: translateX(calc(112vw - var(--x)));
+  }
+  to {
+    transform: translateX(calc(-22vw - var(--x)));
+  }
+}
+
+@keyframes pt-balance {
+  from {
+    transform: translateX(calc(var(--b) * -1));
+  }
+  to {
+    transform: translateX(var(--b));
+  }
+}
+
+@keyframes pt-tourne {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes pt-flotte {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(var(--b), calc(var(--b) * -0.7));
+  }
+}
+
+@keyframes pt-scintille {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  50% {
+    opacity: var(--o);
+    transform: scale(1);
+  }
+}
+
+@keyframes pt-respire {
+  0%,
+  100% {
+    opacity: calc(var(--o) * 0.35);
+  }
+  50% {
+    opacity: var(--o);
+  }
+}
+
+/* Sous « animations réduites », tout est posé : un décor immobile mais
+   habité. Et un peu plus discret — une neige figée est un semis de points,
+   elle n'a pas à peser autant qu'une neige qui tombe. */
+@media (prefers-reduced-motion: reduce) {
+  .isl-part {
+    opacity: 0.6;
+  }
+}
+
+/* Sur un téléphone, le plan le plus lointain disparaît : c'est celui qui
+   apporte le moins et qui coûte autant que les autres. */
+@media (max-width: 640px) {
+  .pt--p2 {
+    display: none;
+  }
+}
+
+/* Et sur un petit téléphone, le plan intermédiaire aussi : il reste le tiers
+   des particules — le plus proche, le plus visible — et la page tient sans
+   effort. Sur un écran de bureau, ce sont cent soixante animations composées
+   en parallèle ; sur un téléphone d'entrée de gamme, ce serait trop. */
+@media (max-width: 480px) {
+  .pt--p1 {
+    display: none;
+  }
+}
+
+/* ===========================================================================
+   Ombres des nuages sur le sol.
+   ===========================================================================
+
+   Deux taches molles qui traversent le bas de l'écran en deux à trois
+   minutes, en `multiply` : elles assombrissent sans jamais teinter. La couche
+   est sous la lumière (`.isl-lux`) et sous le voile du contenu — on la
+   perçoit plus qu'on ne la voit, et c'est le but : un sol sur lequel passe
+   une ombre est un sol dehors.
+
+   Sous la mer et sous l'orage, pas d'ombre de nuage : le composant ne les
+   rend pas. Sur la neige de Drum non plus — le ciel y est couvert, uniforme,
+   et une ombre qui passe supposerait un soleil qu'il n'y a pas. */
+
+.isl-ombres {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+  mix-blend-mode: multiply;
+}
+
+.isl-ombres > i {
+  position: absolute;
+  bottom: 4%;
+  left: 0;
+  width: 64vw;
+  height: 34vh;
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgba(18, 42, 66, 0.2) 0%,
+    rgba(18, 42, 66, 0.11) 45%,
+    rgba(18, 42, 66, 0) 72%
+  );
+  transform: translateX(-70vw);
+}
+
+.isl-ombres > i:last-child {
+  bottom: 14%;
+  width: 46vw;
+  height: 26vh;
+  background: radial-gradient(
+    ellipse 50% 50% at 50% 50%,
+    rgba(18, 42, 66, 0.16) 0%,
+    rgba(18, 42, 66, 0.08) 45%,
+    rgba(18, 42, 66, 0) 72%
+  );
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .isl-ombres > i {
+    animation: ombre-passe 150s linear infinite;
+  }
+
+  .isl-ombres > i:last-child {
+    animation-duration: 210s;
+    animation-delay: -95s;
+  }
+}
+
+@keyframes ombre-passe {
+  from {
+    transform: translateX(-70vw);
+  }
+  to {
+    transform: translateX(170vw);
+  }
 }

@@ -89,6 +89,30 @@ export function AtmosphereDefs({
         <stop offset="55%" stopColor="#0a2233" stopOpacity="0" />
         <stop offset="100%" stopColor="#0a2233" stopOpacity="0.22" />
       </radialGradient>
+
+      {/* ## Le fondu du haut, et la couture qu'il referme
+
+          Le lavis et la vignette couvraient **tout le cadre**, bord supérieur
+          compris. Or le cadre ne fait que le tiers bas de l'écran : au-dessus
+          de lui, le ciel de la page ; en dessous, le même ciel *plus* le
+          lavis. La différence de ton dessinait une ligne horizontale nette
+          sur toute la largeur, à hauteur du sommet du cadre — la « couture »
+          que quatre captures d'écran ont montrée, sur quatre îles.
+
+          Ce masque éteint les deux couches de finition vers le haut : nulles
+          au bord, entières à mi-hauteur. Le dessin se fond dans son ciel au
+          lieu d'y poser une vitre teintée. */}
+      {/* Masque de **luminance** : du noir (masqué) au blanc (visible), en
+          couleurs opaques. Une première version jouait sur `stop-opacity` ;
+          le rendu ne suivait pas, et la couture restait. */}
+      <linearGradient id={`${id}-fondu-haut`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stopColor="#000000" />
+        <stop offset="18%" stopColor="#1f1f1f" />
+        <stop offset="50%" stopColor="#ffffff" />
+      </linearGradient>
+      <mask id={`${id}-fondu`} maskUnits="userSpaceOnUse" x="0" y="0" width="900" height="300">
+        <rect x="0" y="0" width="900" height="300" fill={`url(#${id}-fondu-haut)`} />
+      </mask>
     </defs>
   );
 }
@@ -168,13 +192,19 @@ export function Brume({
   );
 }
 
-/** Le lavis rasant et la vignette, posés en dernier sur tout le cadre. */
+/**
+ * Le lavis rasant et la vignette, posés en dernier.
+ *
+ * Sous le masque `-fondu` : ils n'existent qu'à partir du tiers du cadre,
+ * jamais à son bord haut. C'est ce qui empêche la ligne de raccord entre le
+ * ciel de la page et le dessin (voir `AtmosphereDefs`).
+ */
 export function Finition({ id }: { id: string }) {
   return (
-    <>
+    <g mask={`url(#${id}-fondu)`}>
       <rect x="0" y="0" width="900" height="300" fill={`url(#${id}-rasant)`} />
       <rect x="0" y="0" width="900" height="300" fill={`url(#${id}-vignette)`} />
-    </>
+    </g>
   );
 }
 

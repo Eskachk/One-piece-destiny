@@ -59,6 +59,13 @@ import {
 const CADRE = {
   viewBox: '0 0 900 300',
   preserveAspectRatio: 'xMidYMax meet',
+  /* La ramure d'Elbaf dépasse le bord haut de quelques dizaines d'unités : le
+     cadre la tranchait net, et l'arbre d'Adam avait un sommet plat comme une
+     haie taillée. Le débordement est laissé visible — la couche parente
+     (`.isl-layer`) borne de toute façon l'écran. La règle « tout dans le
+     cadre » vaut toujours pour ce qui **nomme** l'île ; pour un feuillage qui
+     respire, quelques unités au-dessus sont exactement ce qu'on attend. */
+  overflow: 'visible',
 } as const;
 
 /**
@@ -243,7 +250,10 @@ function Elbaf() {
           plusieurs pixels quand la base ne bouge pas, ce qui est exactement ce
           qu'on voit d'un arbre de cette taille — la cime respire, le tronc
           non. */}
-      <g className="elbaf-ramure" opacity=".68">
+      {/* Presque opaque : à 0,68, l'arc-en-ciel du fond passait **à travers**
+          la ramure et semblait posé devant l'arbre. Un feuillage de cette
+          épaisseur ne laisse rien voir. */}
+      <g className="elbaf-ramure" opacity=".93">
         <path d="M148 204 Q160 168 262 164 Q450 146 640 166 Q744 170 754 204 Q640 224 450 222 Q260 224 148 204Z" fill="#2f6b3c" />
         {[
           [188, 182, 27],
@@ -274,7 +284,7 @@ function Elbaf() {
       </g>
 
       {/* L'étage haut se balance un peu plus : il est plus loin du pivot. */}
-      <g className="elbaf-ramure elbaf-ramure--haute" opacity=".7">
+      <g className="elbaf-ramure elbaf-ramure--haute" opacity=".94">
         <path d="M182 78 Q194 40 288 34 Q450 14 616 36 Q712 42 722 78 Q616 98 450 96 Q288 98 182 78Z" fill="#377a44" />
         {[
           [222, 54, 28],

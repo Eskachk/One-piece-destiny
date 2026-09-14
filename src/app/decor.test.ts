@@ -31,6 +31,20 @@ import { ISLANDS, islandOf, type IslandId } from '../domain/islands';
 
 const CSS = readFileSync('src/app/globals.css', 'utf8');
 
+/**
+ * Les particules ont quitté la feuille de style : ce qui tombe, monte ou
+ * dérive est généré par `Particules.tsx`, île par île, dans `AMBIANCES`. Une
+ * île a donc une ambiance si elle a un voile `.isl-fx` **ou** un jeu de
+ * particules — et la faute à attraper est la même : une île qui n'a ni l'un
+ * ni l'autre est une page où rien ne bouge.
+ */
+const PARTICULES = readFileSync('src/components/islands/Particules.tsx', 'utf8');
+
+function particules(ile: IslandId): boolean {
+  return PARTICULES.includes(`
+  ${ile}: [`);
+}
+
 /** Les îles réellement atteignables par une route du produit. */
 const ROUTES = [
   '/',
@@ -75,9 +89,9 @@ describe('atmosphère des îles', () => {
     if (ile === 'hq') return;
 
     expect(
-      declare('isl-fx', ile),
-      `aucune ambiance « .isl-fx » pour ${ile} : rien ne bougerait sur cette ` +
-        'page hormis les nuages.',
+      declare('isl-fx', ile) || particules(ile),
+      `aucune ambiance pour ${ile} — ni voile « .isl-fx », ni particules : ` +
+        'rien ne bougerait sur cette page hormis les nuages.',
     ).toBe(true);
   });
 
@@ -87,11 +101,22 @@ describe('atmosphère des îles', () => {
     const anime = CSS.slice(CSS.indexOf('prefers-reduced-motion: no-preference'));
 
     for (const ile of HABITEES) {
-      if (ile !== 'hq') {
+      if (ile === 'hq') continue;
+      // Un voile est animé par une règle propre à l'île ; les particules le
+      // sont par les règles de trajet, communes à toutes.
+      if (declare('isl-fx', ile)) {
         expect(anime, `ambiance de ${ile} jamais animée`).toContain(
           `[data-island='${ile}'] .isl-fx`,
         );
+      } else {
+        expect(particules(ile), `${ile} sans voile ni particules`).toBe(true);
       }
+    }
+    for (const trajet of ['chute', 'montee', 'rafale', 'flotte', 'scintille']) {
+      expect(anime, `trajet « ${trajet} » jamais animé`).toContain(
+        `.pt--${trajet} {
+    animation: pt-${trajet}`,
+      );
     }
 
     // Les jeux de lumière sont animés par des règles uniques, qui valent pour
@@ -118,8 +143,9 @@ describe('atmosphère des îles', () => {
     // « … Npx, couleur Npx » — la signature d'un arrêt franc.
     const bloc = CSS.slice(
       CSS.indexOf('.isl-lux {'),
-      CSS.indexOf('--- Deux ambiances qui manquaient'),
+      CSS.indexOf('Les ombres de texte, et où elles servent'),
     );
+    expect(bloc.length).toBeGreaterThan(1000);
 
     const francs = bloc.match(
       /\b(\d+(?:\.\d+)?)(px|deg)\s*,\s*[^,;]+?\s\1\2\b/g,

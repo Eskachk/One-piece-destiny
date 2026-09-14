@@ -16,6 +16,7 @@ import type { IslandId } from '@/domain/islands';
 import { IslandDecor } from './islands/IslandDecor';
 import { IslandName } from './islands/IslandName';
 import { IslandSky } from './islands/IslandSky';
+import { OmbresNuages, Particules } from './islands/Particules';
 import { EternalPose } from './EternalPose';
 import { HatMark } from './ChopperHat';
 import { StrawHat } from './StrawHat';
@@ -301,6 +302,11 @@ export function HarborScene({
               une direction et une silhouette, ce n'est pas une trame. */}
           <IslandSky island={island} />
 
+          {/* Les ombres des nuages sur le sol, en `multiply` — la seule couche
+              qui **assombrit**. Elle passe avant la lumière, qui éclaire par-
+              dessus : c'est l'ordre du réel. */}
+          <OmbresNuages island={island} />
+
           {/* Les jeux de lumière : nappes qui dérivent et rais qui balaient.
 
               Couche à part, et non un dégradé de plus sur `.isl-fx` : la lumière
@@ -316,9 +322,11 @@ export function HarborScene({
             <div className="isl-lux__nappes" />
           </div>
 
-          {/* Ambiance : ce qui tombe, monte ou dérive. C'est cette couche qui
-              occupe la hauteur de l'écran — le décor, lui, est posé en bas. Tout
-              est en CSS (`.isl-fx`), donc rien n'est ajouté au balisage. */}
+          {/* Les voiles d'ambiance — remous sous la mer, bancs de brume sur la
+              lande, l'éclair de Logue Town. Ce qui est innombrable et sans
+              contour. Tout est en CSS (`.isl-fx`), donc rien n'est ajouté au
+              balisage. Les particules, elles, ont quitté cette couche :
+              voir `Particules`. */}
           <div className="isl-fx" aria-hidden="true" />
           </>
         )}
@@ -331,6 +339,10 @@ export function HarborScene({
             <Cloud className="harbor__cloud harbor__cloud--4" flip />
           </div>
         )}
+
+        {/* Ce qui tombe, monte, dérive ou scintille — **devant** les nuages :
+            la neige passe devant le ciel, pas derrière. */}
+        {decor && <Particules island={island} />}
 
         {/*
           Mer, pont et mât : **uniquement sur la scène d'entrée**.

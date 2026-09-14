@@ -121,23 +121,46 @@ function Oiseau({ x, y, e = 1 }: { x: number; y: number; e?: number }) {
 function CielFishman() {
   return (
     <svg className="isl-ciel" {...CADRE} aria-hidden="true">
-      {/* Les rais de lumière traversent maintenant **toute** la page. Ils
-          étaient dans la bande du bas et s'arrêtaient à son bord supérieur :
-          une colonne de lumière tranchée à l'horizontale au milieu de l'écran,
-          ce qui ne ressemble à rien. Ils respirent, chacun à son rythme. */}
-      <g fill="#ffffff">
+      {/* Les rais de lumière traversent **toute** la page, et respirent chacun
+          à son rythme.
+
+          Ils étaient des quadrilatères blancs à bords francs : cinq barreaux
+          obliques, pas de la lumière. Un rai n'a pas de bord — il est dense en
+          son axe et s'éteint sur ses flancs, et il s'évanouit en descendant
+          quand l'eau l'absorbe. D'où les deux dégradés : l'un en travers
+          (`objectBoundingBox`, il suit donc l'inclinaison de chaque forme),
+          l'autre en masque vertical qui les fait naître sous la surface et
+          mourir avant le fond. */}
+      <defs>
+        <linearGradient id="fsh-rai" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
+          <stop offset="42%" stopColor="#ffffff" stopOpacity="0.9" />
+          <stop offset="58%" stopColor="#ffffff" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
+        <linearGradient id="fsh-rai-fondu" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.15" />
+          <stop offset="22%" stopColor="#ffffff" stopOpacity="1" />
+          <stop offset="70%" stopColor="#ffffff" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+        </linearGradient>
+        <mask id="fsh-rai-masque" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="800">
+          <rect x="0" y="0" width="1200" height="800" fill="url(#fsh-rai-fondu)" />
+        </mask>
+      </defs>
+      <g fill="url(#fsh-rai)" mask="url(#fsh-rai-masque)">
         {[
-          { x: 60, w: 54, o: 0.16, d: '17s' },
-          { x: 250, w: 78, o: 0.2, d: '23s' },
-          { x: 470, w: 46, o: 0.14, d: '19s' },
-          { x: 700, w: 92, o: 0.18, d: '27s' },
-          { x: 950, w: 60, o: 0.15, d: '21s' },
+          { x: 60, w: 54, o: 0.22, d: '17s' },
+          { x: 250, w: 78, o: 0.28, d: '23s' },
+          { x: 470, w: 46, o: 0.2, d: '19s' },
+          { x: 700, w: 92, o: 0.26, d: '27s' },
+          { x: 950, w: 60, o: 0.22, d: '21s' },
         ].map(({ x, w, o, d }) => (
           <path
             key={x}
             className="ciel-respire"
             style={course({ '--duree': d, opacity: o })}
-            d={`M${x} 0 h${w} l${w * 1.5} 800 h-${w * 2.4}Z`}
+            d={`M${x} 0 h${w * 1.6} l${w * 1.5} 800 h-${w * 3.2}Z`}
           />
         ))}
       </g>
