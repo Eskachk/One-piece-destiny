@@ -123,6 +123,16 @@ export interface StatsRisque {
   evaluations_7j: number;
 }
 
+export interface PointSerie {
+  /** `YYYY-MM-DD`. */
+  jour: string;
+  inscriptions: number;
+  ventes: number;
+  volume: number;
+  achats: number;
+  cents: number;
+}
+
 export interface AdminStats {
   joueurs: StatsJoueurs;
   economie: StatsEconomie;
@@ -132,6 +142,8 @@ export interface AdminStats {
   jeu: StatsJeu;
   courrier: StatsCourrier;
   risque: StatsRisque;
+  /** Les trente derniers jours, du plus ancien au plus récent, zéros compris. */
+  series: PointSerie[];
   genere_le: string;
 }
 

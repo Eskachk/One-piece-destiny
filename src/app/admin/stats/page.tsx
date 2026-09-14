@@ -12,6 +12,7 @@ import {
   incidentsRecents,
 } from '@/lib/observability/incidents';
 import { Nav } from '@/components/Nav';
+import { GraphiqueJours } from '@/components/admin/GraphiqueJours';
 
 export const dynamic = 'force-dynamic';
 
@@ -213,7 +214,7 @@ export default async function AdminStatsPage() {
     );
   }
 
-  const { joueurs, economie, boutique, marche, collection, jeu, courrier, risque } = stats;
+  const { joueurs, economie, boutique, marche, collection, jeu, courrier, risque, series } = stats;
 
   return (
     <main className="hb-page mx-auto w-full max-w-3xl px-5 py-8">
@@ -236,6 +237,28 @@ export default async function AdminStatsPage() {
           Journal
         </Link>
       </nav>
+
+      {/* --- Au jour le jour ------------------------------------------------- */}
+      <Section
+        titre="Les trente derniers jours"
+        note="Un graphique par mesure : inscriptions, ventes au marché et achats en boutique ne se comptent pas dans la même unité. Survoler une colonne donne sa valeur."
+      >
+        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+          <GraphiqueJours
+            titre="Inscriptions"
+            points={series.map((p) => ({ jour: p.jour, valeur: p.inscriptions }))}
+          />
+          <GraphiqueJours
+            titre="Ventes au marché"
+            points={series.map((p) => ({ jour: p.jour, valeur: p.ventes }))}
+          />
+          <GraphiqueJours
+            titre="Achats en boutique"
+            points={series.map((p) => ({ jour: p.jour, valeur: p.cents }))}
+            formatValeur={(v) => euros(v)}
+          />
+        </div>
+      </Section>
 
       {/* --- Joueurs --------------------------------------------------------- */}
       <Section titre="Joueurs">
