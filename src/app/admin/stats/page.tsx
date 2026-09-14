@@ -80,21 +80,64 @@ function Tile({
   );
 }
 
+/**
+ * Les rubriques, dans l'ordre de lecture d'un compte rendu : d'abord ce qui
+ * bouge (le résumé, les trente jours), puis qui joue, puis l'argent, puis
+ * le jeu lui-même, et le système en dernier. Le sommaire en haut de page
+ * reprend cet ordre ; chaque rubrique porte une ancre.
+ */
+const RUBRIQUES = [
+  { id: 'bref', numero: 1, titre: 'En bref' },
+  { id: 'jours', numero: 2, titre: 'Les trente derniers jours' },
+  { id: 'joueurs', numero: 3, titre: 'Joueurs' },
+  { id: 'boutique', numero: 4, titre: 'Boutique — argent réel' },
+  { id: 'marche', numero: 5, titre: 'Marché — Berries entre joueurs' },
+  { id: 'economie', numero: 6, titre: 'Économie et collection' },
+  { id: 'jeu', numero: 7, titre: 'Jeu' },
+  { id: 'systeme', numero: 8, titre: 'Système' },
+] as const;
+
+type RubriqueId = (typeof RUBRIQUES)[number]['id'];
+
 function Section({
-  titre,
+  id,
   note,
   children,
 }: {
-  titre: string;
+  id: RubriqueId;
   note?: string;
   children: React.ReactNode;
 }) {
+  const rubrique = RUBRIQUES.find((r) => r.id === id)!;
   return (
-    <section className="mt-8">
-      <h2 className="text-xs uppercase tracking-widest text-parchment/60">{titre}</h2>
-      {note && <p className="mt-1 text-xs text-parchment/45">{note}</p>}
+    <section id={id} className="mt-10 scroll-mt-4 border-t border-turquoise/15 pt-6">
+      <h2 className="font-display text-xl text-parchment">
+        <span className="mr-2 font-mono text-sm text-treasure">{rubrique.numero}.</span>
+        {rubrique.titre}
+      </h2>
+      {note && <p className="mt-1 max-w-2xl text-xs text-parchment/50">{note}</p>}
       {children}
     </section>
+  );
+}
+
+/** Sous-titre à l'intérieur d'une rubrique, quand elle a plusieurs blocs. */
+function SousTitre({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="mt-5 text-[11px] uppercase tracking-widest text-parchment/55">{children}</h3>
+  );
+}
+
+function Sommaire() {
+  return (
+    <nav aria-label="Sommaire" className="mt-5 flex flex-wrap gap-x-4 gap-y-1 text-sm">
+      {RUBRIQUES.map((r) => (
+        <a key={r.id} href={`#${r.id}`} className="text-turquoise underline-offset-2 hover:underline">
+          <span className="mr-1 font-mono text-xs text-parchment/45">{r.numero}.</span>
+          {r.titre}
+        </a>
+      ))}
+    </nav>
   );
 }
 
@@ -141,8 +184,8 @@ async function JournalIncidents() {
   ]);
 
   return (
-    <section className="mt-8">
-      <h2 className="font-display text-lg text-parchment">Incidents</h2>
+    <div className="mt-5">
+      <SousTitre>Incidents</SousTitre>
 
       {origines.length === 0 ? (
         <p className="mt-2 text-sm text-parchment/60">
@@ -194,7 +237,7 @@ async function JournalIncidents() {
           </table>
         </div>
       )}
-    </section>
+    </div>
   );
 }
 
@@ -215,16 +258,39 @@ export default async function AdminStatsPage() {
   }
 
   const { joueurs, economie, boutique, marche, collection, jeu, courrier, risque, series } = stats;
+  const inscriptions30 = series.reduce((a, p) => a + p.inscriptions, 0);
 
   return (
     <main className="hb-page mx-auto w-full max-w-3xl px-5 py-8">
       <p className="text-xs uppercase tracking-[0.25em] text-turquoise">
         Poste de commandement
       </p>
-      <h1 className="font-display text-3xl text-parchment">Statistiques</h1>
-      <p className="mt-1 text-xs text-parchment/45">
-        Calculées à l’instant — {new Date(stats.genere_le).toLocaleString('fr-FR')}.
-      </p>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="font-display text-3xl text-parchment">Statistiques</h1>
+          <p className="mt-1 text-xs text-parchment/45">
+            Calculées à l’instant — {new Date(stats.genere_le).toLocaleString('fr-FR')}.
+          </p>
+        </div>
+        {/* Deux fichiers : le compte rendu complet, qu'on ouvre et qu'on
+            imprime, et les séries brutes pour un tableur. */}
+        <div className="flex flex-wrap gap-2">
+          <a
+            href="/admin/stats/rapport"
+            download
+            className="rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-navy"
+          >
+            ⬇ Télécharger le compte rendu
+          </a>
+          <a
+            href="/admin/stats/rapport?format=csv"
+            download
+            className="rounded-lg border border-turquoise/40 px-3 py-2 text-sm text-turquoise"
+          >
+            Séries (CSV)
+          </a>
+        </div>
+      </div>
 
       <nav className="mt-4 flex gap-3 text-sm">
         <Link href="/admin" className="text-turquoise underline">
@@ -238,10 +304,32 @@ export default async function AdminStatsPage() {
         </Link>
       </nav>
 
-      {/* --- Au jour le jour ------------------------------------------------- */}
+      <Sommaire />
+
+      {/* --- 1. En bref -------------------------------------------------- */}
+      <Section id="bref" note="Six chiffres pour savoir comment va le jeu aujourd’hui. Le détail est dans les rubriques suivantes.">
+        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <Tile label="Comptes" value={number(joueurs.total)} hint={`${joueurs.crees_7j} créés sur 7 j`} />
+          <Tile label="Actifs — 7 j" value={number(joueurs.actifs_7j)} hint={`${joueurs.actifs_24h} sur 24 h`} />
+          <Tile
+            label="Ont déjà joué"
+            value={number(joueurs.ont_joue)}
+            hint={`${pct(joueurs.ont_joue, joueurs.total)} des comptes`}
+          />
+          <Tile label="Revenu — 30 j" value={euros(boutique.revenu_30j)} hint={`${boutique.achats_30j} achats`} />
+          <Tile
+            label="Ventes au marché — 30 j"
+            value={number(marche.ventes_30j)}
+            hint={`${number(marche.volume_30j)} Berries`}
+          />
+          <Tile label="Équipages — chapitre en cours" value={number(jeu.equipes_courant)} />
+        </div>
+      </Section>
+
+      {/* --- 2. Au jour le jour ------------------------------------------ */}
       <Section
-        titre="Les trente derniers jours"
-        note="Un graphique par mesure : inscriptions, ventes au marché et achats en boutique ne se comptent pas dans la même unité. Survoler une colonne donne sa valeur."
+        id="jours"
+        note="Un graphique par mesure : inscriptions, ventes au marché et achats en boutique ne se comptent pas dans la même unité. Survoler une colonne donne sa valeur ; « Voir les valeurs » déplie le détail."
       >
         <div className="mt-3 grid gap-3 sm:grid-cols-3">
           <GraphiqueJours
@@ -260,31 +348,36 @@ export default async function AdminStatsPage() {
         </div>
       </Section>
 
-      {/* --- Joueurs --------------------------------------------------------- */}
-      <Section titre="Joueurs">
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+      {/* --- 3. Joueurs -------------------------------------------------- */}
+      <Section id="joueurs">
+        <SousTitre>Arrivées</SousTitre>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Tile label="Comptes" value={number(joueurs.total)} hint={`${joueurs.google} via Google`} />
           <Tile label="Créés — 24 h" value={number(joueurs.crees_24h)} />
           <Tile label="Créés — 7 j" value={number(joueurs.crees_7j)} />
-          <Tile label="Créés — 30 j" value={number(joueurs.crees_30j)} />
+          <Tile label="Créés — 30 j" value={number(joueurs.crees_30j)} hint={`${number(inscriptions30)} sur les 30 derniers jours`} />
+        </div>
+
+        <SousTitre>Engagement</SousTitre>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Tile label="Actifs — 24 h" value={number(joueurs.actifs_24h)} hint="Une session vue" />
           <Tile label="Actifs — 7 j" value={number(joueurs.actifs_7j)} />
+          <Tile
+            label="Ont déjà joué"
+            value={number(joueurs.ont_joue)}
+            hint={`${pct(joueurs.ont_joue, joueurs.total)} — au moins un équipage`}
+          />
+          <Tile label="Fidèles" value={number(joueurs.fideles)} hint="Deux chapitres joués ou plus" />
+        </div>
+
+        <SousTitre>Compte</SousTitre>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Tile
             label="Adresse vérifiée"
             value={number(joueurs.verifies)}
             hint={`${pct(joueurs.verifies, joueurs.total)} des comptes`}
           />
           <Tile label="Coffre d’arrivée ouvert" value={number(joueurs.coffre_arrivee)} />
-          <Tile
-            label="Ont déjà joué"
-            value={number(joueurs.ont_joue)}
-            hint={`${pct(joueurs.ont_joue, joueurs.total)} — au moins un équipage`}
-          />
-          <Tile
-            label="Fidèles"
-            value={number(joueurs.fideles)}
-            hint="Deux chapitres joués ou plus"
-          />
           <Tile
             label="Parrainages"
             value={number(joueurs.parrainages)}
@@ -297,7 +390,7 @@ export default async function AdminStatsPage() {
             meilleur indicateur d'une ferme : beaucoup d'inscriptions, peu de
             parties. Il mérite d'être calculé ici plutôt que de tête. */}
         {joueurs.total > 0 && (
-          <p className="mt-3 text-xs text-parchment/55">
+          <p className="mt-3 max-w-2xl text-xs text-parchment/55">
             {pct(joueurs.ont_joue, joueurs.total)} des comptes ont déjà verrouillé un
             équipage. Un effondrement de ce rapport après un pic d’inscriptions est le
             signe le plus fiable d’une création massive de comptes.
@@ -305,29 +398,44 @@ export default async function AdminStatsPage() {
         )}
 
         {joueurs.divisions.length > 0 && (
-          <ul className="mt-3 flex flex-wrap gap-2 text-xs">
-            {joueurs.divisions.map((d) => (
-              <li
-                key={d.division}
-                className="rounded-lg border border-turquoise/20 px-3 py-1 text-parchment/80"
-              >
-                {DIVISION_LABEL[d.division as Division] ?? d.division} —{' '}
-                <span className="font-mono text-treasure">{number(d.n)}</span>
-              </li>
-            ))}
-          </ul>
+          <>
+            <SousTitre>Divisions</SousTitre>
+            <ul className="mt-2 flex flex-wrap gap-2 text-xs">
+              {joueurs.divisions.map((d) => (
+                <li
+                  key={d.division}
+                  className="rounded-lg border border-turquoise/20 px-3 py-1 text-parchment/80"
+                >
+                  {DIVISION_LABEL[d.division as Division] ?? d.division} —{' '}
+                  <span className="font-mono text-treasure">{number(d.n)}</span>
+                </li>
+              ))}
+            </ul>
+          </>
         )}
       </Section>
 
-      {/* --- Boutique -------------------------------------------------------- */}
+      {/* --- 4. Boutique ------------------------------------------------- */}
       <Section
-        titre="Boutique — argent réel"
+        id="boutique"
         note="Seules les intentions passées à PAID par le webhook comptent : ce qui a été encaissé, jamais ce qui a été ouvert."
       >
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-          <Tile label="Revenu total" value={euros(boutique.revenu_total)} />
-          <Tile label="Revenu — 30 j" value={euros(boutique.revenu_30j)} />
-          <Tile label="Revenu — 7 j" value={euros(boutique.revenu_7j)} />
+        <SousTitre>Revenu</SousTitre>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <Tile label="Total" value={euros(boutique.revenu_total)} />
+          <Tile label="30 jours" value={euros(boutique.revenu_30j)} />
+          <Tile label="7 jours" value={euros(boutique.revenu_7j)} />
+          <Tile
+            label="Panier moyen"
+            value={
+              boutique.achats_total > 0
+                ? euros(boutique.revenu_total / boutique.achats_total)
+                : '—'
+            }
+          />
+        </div>
+        <SousTitre>Achats</SousTitre>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Tile
             label="Achats"
             value={number(boutique.achats_total)}
@@ -347,14 +455,6 @@ export default async function AdminStatsPage() {
                 : '—'
             }
           />
-          <Tile
-            label="Panier moyen"
-            value={
-              boutique.achats_total > 0
-                ? euros(boutique.revenu_total / boutique.achats_total)
-                : '—'
-            }
-          />
         </div>
         <div className="mt-3">
           <Palmares
@@ -370,9 +470,10 @@ export default async function AdminStatsPage() {
         </div>
       </Section>
 
-      {/* --- Marché ---------------------------------------------------------- */}
-      <Section titre="Marché — Berries entre joueurs">
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+      {/* --- 5. Marché --------------------------------------------------- */}
+      <Section id="marche">
+        <SousTitre>Activité</SousTitre>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
           <Tile label="Annonces actives" value={number(marche.annonces_actives)} />
           <Tile
             label="Ventes — 7 j"
@@ -399,7 +500,8 @@ export default async function AdminStatsPage() {
             hint="Berries retirées de la circulation"
           />
         </div>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <SousTitre>Palmarès</SousTitre>
+        <div className="mt-2 grid gap-3 sm:grid-cols-2">
           <Palmares
             titre="Personnages les plus vendus"
             vide="Aucune vente conclue."
@@ -445,9 +547,10 @@ export default async function AdminStatsPage() {
         </div>
       </Section>
 
-      {/* --- Économie -------------------------------------------------------- */}
-      <Section titre="Économie du jeu">
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+      {/* --- 6. Économie et collection ----------------------------------- */}
+      <Section id="economie">
+        <SousTitre>Monnaie et réserves</SousTitre>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Tile
             label="Berries en circulation"
             value={number(economie.berries)}
@@ -460,6 +563,9 @@ export default async function AdminStatsPage() {
             value={number(economie.fragments)}
             hint={`${number(economie.fragments_depenses)} dépensés`}
           />
+        </div>
+        <SousTitre>Ouvertures et fabrications</SousTitre>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
           <Tile
             label="Coffres ouverts"
             value={number(economie.coffres_ouverts_total)}
@@ -485,11 +591,8 @@ export default async function AdminStatsPage() {
             .
           </p>
         )}
-      </Section>
-
-      {/* --- Collection ------------------------------------------------------ */}
-      <Section titre="Collection">
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <SousTitre>Collection</SousTitre>
+        <div className="mt-2 grid gap-3 sm:grid-cols-2">
           <Palmares
             titre="Cartes par rareté"
             vide="Aucune carte."
@@ -542,17 +645,18 @@ export default async function AdminStatsPage() {
         </div>
       </Section>
 
-      {/* --- Jeu ------------------------------------------------------------- */}
-      <Section titre="Jeu">
+      {/* --- 7. Jeu ------------------------------------------------------ */}
+      <Section id="jeu">
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Tile label="Équipages — chapitre en cours" value={number(jeu.equipes_courant)} />
           <Tile label="Réponses aux pronostics" value={number(jeu.reponses_total)} />
           <Tile label="Ligues" value={number(jeu.ligues)} />
           <Tile label="Commentaires" value={number(jeu.commentaires)} />
         </div>
-        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <SousTitre>Les plus alignés</SousTitre>
+        <div className="mt-2 grid gap-3 sm:grid-cols-2">
           <Palmares
-            titre="Les plus alignés — chapitre en cours"
+            titre="Chapitre en cours"
             vide="Aucun équipage verrouillé."
             lignes={jeu.plus_alignes_courant.map((a) => ({
               cle: a.character_id,
@@ -563,7 +667,7 @@ export default async function AdminStatsPage() {
             }))}
           />
           <Palmares
-            titre="Les plus alignés — depuis le début"
+            titre="Depuis le début"
             vide="Aucun équipage verrouillé."
             lignes={jeu.plus_alignes.map((a) => ({
               cle: a.character_id,
@@ -574,10 +678,11 @@ export default async function AdminStatsPage() {
           />
         </div>
 
+        <SousTitre>Chapitres</SousTitre>
         {jeu.chapitres.length === 0 ? (
-          <p className="mt-3 text-sm text-parchment/60">Aucun chapitre.</p>
+          <p className="mt-2 text-sm text-parchment/60">Aucun chapitre.</p>
         ) : (
-          <div className="mt-3 overflow-x-auto">
+          <div className="mt-2 overflow-x-auto rounded-lg border border-turquoise/20 bg-navy/40 p-3">
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-left text-[11px] uppercase tracking-widest text-parchment/50">
@@ -615,9 +720,10 @@ export default async function AdminStatsPage() {
         )}
       </Section>
 
-      {/* --- Courrier et risque --------------------------------------------- */}
-      <Section titre="Courrier et notifications">
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+      {/* --- 8. Système -------------------------------------------------- */}
+      <Section id="systeme">
+        <SousTitre>Courrier et notifications</SousTitre>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Tile
             label="E-mails envoyés"
             value={number(courrier.envoyes)}
@@ -635,10 +741,8 @@ export default async function AdminStatsPage() {
             hint={`${number(courrier.notifications_non_lues)} non lues au total`}
           />
         </div>
-      </Section>
-
-      <Section titre="Risque">
-        <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+        <SousTitre>Risque</SousTitre>
+        <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Tile label="À examiner" value={number(risque.a_examiner)} />
           <Tile label="Restreints" value={number(risque.restreints)} />
           <Tile label="Évaluations — 7 j" value={number(risque.evaluations_7j)} />
@@ -648,9 +752,8 @@ export default async function AdminStatsPage() {
             hint="Conservés pour mesurer la justesse"
           />
         </div>
+        <JournalIncidents />
       </Section>
-
-      <JournalIncidents />
 
       <Nav />
     </main>
