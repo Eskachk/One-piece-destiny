@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { headers } from 'next/headers';
+import { empreinteIp } from '@/lib/privacy/empreinte';
 import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
 
 /**
@@ -41,7 +42,9 @@ export type AccountEventKind =
 async function requestIp(): Promise<string | null> {
   try {
     const store = await headers();
-    return store.get('x-forwarded-for')?.split(',')[0]?.trim() ?? null;
+    // Empreinte, jamais l'adresse : les signaux anti-abus ne comparent que
+    // des égalités.
+    return empreinteIp(store.get('x-forwarded-for')?.split(',')[0]);
   } catch {
     // Hors contexte de requête (tâche de fond) : l'événement reste utile.
     return null;

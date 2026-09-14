@@ -40,12 +40,17 @@ async function handle(request: Request) {
      * `allSettled` : une purge en échec ne doit pas faire répondre 500 sur un
      * envoi d'e-mails qui, lui, a réussi. Vercel réessaierait alors le lot.
      */
-    const [purge, purgeIncidents] = await Promise.allSettled([
+    const [purge, purgeIncidents, purgeDonnees] = await Promise.allSettled([
       db().rpc('purge_rate_limits'),
       // Même raisonnement pour le journal d'incidents (migration 0036) :
       // trente jours de rétention, une suppression sur index, greffée là
       // plutôt que dans un cron de plus.
       db().rpc('purge_error_log'),
+      // Et pour les données personnelles éphémères (migration 0043) :
+      // tentatives de connexion, sessions échues, jetons périmés, empreintes
+      // d'origine du journal d'audit. Ce qui n'explique plus rien n'a plus à
+      // être gardé.
+      db().rpc('purger_donnees_personnelles'),
     ]);
     if (purge.status === 'rejected') {
       console.error('[email] RATE_LIMIT_PURGE_FAILED', purge.reason);
@@ -53,8 +58,21 @@ async function handle(request: Request) {
     if (purgeIncidents.status === 'rejected') {
       console.error('[email] ERROR_LOG_PURGE_FAILED', purgeIncidents.reason);
     }
+    // Un `rpc` Supabase ne rejette pas : il rend `{ error }`. Les deux cas
+    // sont couverts, et le compte rendu de purge part dans la réponse, pour
+    // qu'un appel manuel dise ce qu'il a fait.
+    const purgeErreur =
+      purgeDonnees.status === 'rejected'
+        ? purgeDonnees.reason
+        : purgeDonnees.value.error?.message ?? null;
+    if (purgeErreur) {
+      console.error('[email] PERSONAL_DATA_PURGE_FAILED', purgeErreur);
+    }
 
-    return NextResponse.json(report);
+    return NextResponse.json({
+      ...report,
+      purge: purgeErreur ? { erreur: true } : purgeDonnees.status === 'fulfilled' ? purgeDonnees.value.data : null,
+    });
   } catch (error) {
     // Le message d'erreur peut contenir un détail d'infrastructure : il est
     // journalisé côté serveur, pas renvoyé à l'appelant.

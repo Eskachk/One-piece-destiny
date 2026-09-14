@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { headers } from 'next/headers';
+import { empreinteIp } from '@/lib/privacy/empreinte';
 
 /**
  * Vérification d'origine (cahier §87).
@@ -59,13 +60,19 @@ export async function assertSameOrigin(): Promise<void> {
  * ⚠️ `x-forwarded-for` est falsifiable si aucun proxy de confiance ne le
  * réécrit. En production, seul le reverse proxy / CDN doit pouvoir le poser
  * (cahier §103), sinon le rate limiting par IP se contourne trivialement.
+ *
+ * L'adresse ne sort d'ici que sous forme d'**empreinte** (`privacy/empreinte`) :
+ * tout ce qui la consomme — tentatives de connexion, cadence, sessions,
+ * inscription — ne compare que des égalités, et n'a donc jamais besoin de
+ * l'adresse elle-même. La pseudonymiser à la source garantit qu'aucun
+ * appelant ne peut l'écrire en clair par inadvertance.
  */
 export async function getRequestContext(): Promise<RequestContext> {
   const store = await headers();
   const forwarded = store.get('x-forwarded-for');
 
   return {
-    ip: forwarded?.split(',')[0]?.trim() || undefined,
+    ip: empreinteIp(forwarded?.split(',')[0]) ?? undefined,
     userAgent: store.get('user-agent') ?? undefined,
     /*
      * Conservée pour la journalisation **seulement**.

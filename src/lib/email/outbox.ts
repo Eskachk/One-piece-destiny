@@ -166,6 +166,17 @@ export async function drainOutbox(batchSize = 25): Promise<DrainReport> {
           provider_id: result.providerId,
           last_error: null,
           claimed_at: null,
+          /*
+           * Le contenu part avec le message. Un lien de réinitialisation ou
+           * de confirmation porte le jeton **en clair** dans l'URL ; le
+           * garder en base après l'envoi laisserait à quiconque lit la table
+           * de quoi ouvrir le compte pendant l'heure de validité. Le jeton
+           * n'existe alors plus que dans la boîte du destinataire, où est
+           * sa place. La ligne reste (statut, date, prestataire) : l'envoi
+           * demeure vérifiable, son texte non.
+           */
+          html: '',
+          body_text: '',
         })
         .eq('id', row.id);
 

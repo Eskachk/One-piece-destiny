@@ -215,7 +215,7 @@ export default async function JournalPage({
                     <span className="font-mono text-xs text-parchment/45">
                       {horodatage(ligne.at)}
                     </span>
-                    <span className="font-mono text-parchment/70">{ligne.ip ?? 'ip inconnue'}</span>
+                    <span className="font-mono text-parchment/70">{ligne.ip ? `origine ${ligne.ip}` : 'origine inconnue'}</span>
                     <span className={ligne.successful ? 'text-turquoise' : 'text-orange'}>
                       {ligne.successful ? 'réussie' : 'échouée'}
                     </span>

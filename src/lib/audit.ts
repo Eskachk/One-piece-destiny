@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { headers } from 'next/headers';
+import { empreinteIp } from '@/lib/privacy/empreinte';
 import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
 
 /**
@@ -70,7 +71,9 @@ export async function audit(entry: AuditEntry): Promise<void> {
       action: entry.action,
       status: entry.status,
       request_id: store.get('x-request-id'),
-      ip: forwarded?.split(',')[0]?.trim() ?? null,
+      // Le cahier demande l'IP ; on en garde l'empreinte, qui suffit à
+      // relier deux lignes d'une même origine sans dire laquelle.
+      ip: empreinteIp(forwarded?.split(',')[0]),
       metadata: entry.metadata ? sanitize(entry.metadata) : null,
     });
   } catch (error) {

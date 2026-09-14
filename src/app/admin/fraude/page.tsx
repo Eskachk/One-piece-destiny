@@ -9,6 +9,7 @@ import {
   MAX_ACCOUNTS_PER_PERSON,
   STARTER_CARD_LOCK_MS,
 } from '@/domain/antiabuse/config';
+import { masquerEmail } from '@/domain/privacy/masquage';
 import { REFERRAL_MIN_CHAPTERS } from '@/domain/social/referral';
 
 export const dynamic = 'force-dynamic';
@@ -105,7 +106,7 @@ export default async function FraudPage() {
           accounts={accounts.map((account) => ({
             playerId: account.playerId,
             handle: account.handle,
-            email: account.email,
+            email: masquerEmail(account.email),
             createdAt: account.createdAt.toLocaleDateString('fr-FR'),
             score: account.score,
             level: account.level,

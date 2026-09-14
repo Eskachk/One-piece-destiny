@@ -1,5 +1,7 @@
 import 'server-only';
 
+import { masquerEmail } from '@/domain/privacy/masquage';
+import { abregerEmpreinte } from '@/lib/privacy/empreinte';
 import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
 
 /**
@@ -29,6 +31,13 @@ import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
  * journal ne peut pas en contenir. Cette lecture ne fait qu'afficher ce qui a
  * survécu à ce filtre ; elle n'a pas à en ajouter un second.
  *
+ * Elle **réduit** en revanche ce qui identifie la personne : l'adresse sort
+ * masquée (`am•••@gmail.com`) et l'origine des connexions sous forme
+ * d'empreinte abrégée. L'administrateur cherche un compte et lit ce qu'il a
+ * fait ; il n'a pas besoin de pouvoir écrire à la personne ni de savoir d'où
+ * elle se connecte. Le masquage se fait ici, à la source, pour qu'aucune page
+ * ne puisse l'oublier.
+ *
  * En revanche, elle **se journalise elle-même** : consulter l'activité d'un
  * joueur est une action d'administration comme une autre, et doit laisser une
  * trace au même titre qu'une restriction de compte.
@@ -43,6 +52,7 @@ export interface JournalLine {
 
 export interface LoginLine {
   at: string;
+  /** Empreinte d'origine abrégée, jamais une adresse. */
   ip: string | null;
   successful: boolean;
 }
@@ -50,6 +60,7 @@ export interface LoginLine {
 export interface AccountJournal {
   playerId: string;
   handle: string;
+  /** Adresse **masquée** : deux lettres et le domaine. */
   email: string | null;
   createdAt: string | null;
   emailVerified: boolean;
@@ -168,7 +179,7 @@ export async function accountJournal(playerId: string): Promise<AccountJournal |
   return {
     playerId: joueur.id,
     handle: joueur.handle,
-    email: compte?.email ?? null,
+    email: masquerEmail(compte?.email),
     createdAt: joueur.created_at ?? null,
     emailVerified: Boolean(compte?.email_verified_at),
     mfaEnabled: Boolean(compte?.mfa_enabled),
@@ -178,7 +189,10 @@ export async function accountJournal(playerId: string): Promise<AccountJournal |
       status: row.status,
       metadata: row.metadata,
     })),
-    logins: (connexions.data ?? []) as LoginLine[],
+    logins: ((connexions.data ?? []) as LoginLine[]).map((ligne) => ({
+      ...ligne,
+      ip: abregerEmpreinte(ligne.ip),
+    })),
     truncated: brut.length > MAX_LINES,
   };
 }

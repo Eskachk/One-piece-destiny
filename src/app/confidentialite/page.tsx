@@ -160,11 +160,14 @@ function PageFr() {
             C’est le jeu lui-même.
           </li>
           <li>
-            <strong>Adresse IP et journaux techniques.</strong> Conservés à la
-            création du compte et lors d’événements sensibles (connexion,
-            changement de mot de passe, achat). Ils servent à une seule chose :
-            détecter les comptes multiples et la fraude. Ils ne servent ni à te
-            profiler, ni à te géolocaliser.
+            <strong>Adresse IP et journaux techniques.</strong> Ton adresse
+            n’est jamais enregistrée telle quelle : elle est remplacée, avant
+            écriture, par une empreinte irréversible qui permet seulement de
+            reconnaître deux actions venant de la même origine. Elle est relevée
+            à la création du compte et lors d’événements sensibles (connexion,
+            changement de mot de passe, achat), pour une seule chose : détecter
+            les comptes multiples et la fraude. Elle ne sert ni à te profiler,
+            ni à te géolocaliser — et ne le pourrait pas.
           </li>
           <li>
             <strong>Achats.</strong> Si tu achètes des Berries, le paiement est
@@ -235,9 +238,13 @@ function PageFr() {
       <Section titre="Combien de temps">
         <p>
           Ton compte et sa progression sont conservés tant que tu le gardes.
-          Après suppression, les données de jeu sont effacées ; les traces
-          techniques liées à la fraude et les justificatifs comptables des
-          achats sont conservés le temps qu’impose la loi, puis effacés.
+          Les traces éphémères s’effacent d’elles-mêmes, chaque jour : sessions
+          expirées sous deux jours, tentatives de connexion et empreintes
+          d’origine du journal sous quatre-vingt-dix jours, liens de
+          réinitialisation dès qu’ils sont envoyés. Après suppression du
+          compte, les données de jeu sont effacées ; les traces liées à la
+          fraude et les justificatifs comptables des achats sont conservés le
+          temps qu’impose la loi, puis effacés.
         </p>
       </Section>
 
@@ -346,10 +353,13 @@ function PageEn() {
             itself.
           </li>
           <li>
-            <strong>IP address and technical logs.</strong> Kept at account
-            creation and on sensitive events (sign-in, password change,
-            purchase). They serve one purpose only: detecting multiple accounts
-            and fraud. They are used neither to profile nor to locate you.
+            <strong>IP address and technical logs.</strong> Your address is
+            never stored as such: before being written it is replaced by an
+            irreversible fingerprint that only tells whether two actions came
+            from the same origin. It is taken at account creation and on
+            sensitive events (sign-in, password change, purchase), for one
+            purpose only: detecting multiple accounts and fraud. It is used
+            neither to profile nor to locate you — and could not be.
           </li>
           <li>
             <strong>Purchases.</strong> If you buy Berries, the payment is
@@ -417,8 +427,11 @@ function PageEn() {
 
       <Section titre="For how long">
         <p>
-          Your account and its progress are kept as long as you keep it. After
-          deletion, game data is erased; technical traces tied to fraud and the
+          Your account and its progress are kept as long as you keep it.
+          Short-lived traces erase themselves, every day: expired sessions
+          within two days, sign-in attempts and the log’s origin fingerprints
+          within ninety days, reset links as soon as they are sent. After
+          deletion, game data is erased; traces tied to fraud and the
           accounting records of purchases are kept for as long as the law
           requires, then erased.
         </p>

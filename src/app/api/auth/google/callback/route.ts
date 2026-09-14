@@ -1,6 +1,7 @@
 import { cookies, headers } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { audit } from '@/lib/audit';
+import { empreinteIp } from '@/lib/privacy/empreinte';
 import {
   exchangeGoogleCode,
   googleConfig,
@@ -86,7 +87,7 @@ export async function GET(request: Request) {
   await createSession(
     resolved.userId,
     {
-      ip: requestHeaders.get('x-forwarded-for')?.split(',')[0]?.trim() || undefined,
+      ip: empreinteIp(requestHeaders.get('x-forwarded-for')?.split(',')[0]) ?? undefined,
       userAgent: requestHeaders.get('user-agent') ?? undefined,
     },
     { mfaPending: Boolean(account?.mfa_enabled) },
