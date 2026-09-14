@@ -1,212 +1,144 @@
 import 'server-only';
-
 import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
-import { readAllPages } from '@/lib/repository/pagination';
 
 /**
- * Statistiques du Chapter HQ (cahier §82).
+ * Statistiques du poste de commandement.
  *
- * Toutes les requêtes sont des **agrégats**, jamais des listes complètes :
- * on demande à Postgres de compter, on ne rapatrie pas des milliers de lignes
- * pour les compter en JavaScript. C'est la différence entre une page qui tient
- * la charge et une page qui la crée.
+ * Tout vient d'un seul appel à `statistiques_admin()` (migration 0041) : les
+ * agrégations — les plus vendus, les plus alignés, les plus possédés — sont
+ * faites par la base, qui a les index pour ça, pas par la page après avoir
+ * rapatrié des tables entières.
  *
- * Les lectures partent ensemble. Enchaînées, elles cumuleraient une vingtaine
- * d'allers-retours pour un seul affichage.
+ * La version précédente faisait quinze requêtes, dont deux fausses depuis
+ * des mois (`wallets.unopened_chests`, `market_transactions.at` — colonnes
+ * inexistantes) : la page affichait 0 Berries en circulation et 0 vente,
+ * quoi qu'il se passe, sans erreur visible. Une fonction SQL est vérifiée
+ * à l'appel ; une colonne fausse y est une erreur, pas un zéro.
  */
 
-export interface PlayerStats {
+export interface StatsJoueurs {
   total: number;
-  createdLast24h: number;
-  createdLast7d: number;
-  verified: number;
-  withStarterOpened: number;
-  everLockedCrew: number;
-  restricted: number;
+  crees_24h: number;
+  crees_7j: number;
+  crees_30j: number;
+  verifies: number;
+  google: number;
+  coffre_arrivee: number;
+  ont_joue: number;
+  /** Ont joué au moins deux chapitres. */
+  fideles: number;
+  actifs_24h: number;
+  actifs_7j: number;
+  parrainages: number;
+  parrainages_recompenses: number;
+  restreints: number;
+  divisions: { division: string; n: number }[];
 }
 
-export interface EconomyStats {
-  berriesInCirculation: number;
-  chestsUnopened: number;
-  cardsMinted: number;
-  chestsOpenedLast7d: number;
-  marketListingsActive: number;
-  marketSalesLast7d: number;
-  marketVolumeLast7d: number;
+export interface StatsEconomie {
+  berries: number;
+  berries_attente: number;
+  coffres_royaux: number;
+  coffres_reserve: number;
+  fragments: number;
+  cartes: number;
+  cartes_frappees: number;
+  coffres_ouverts_total: number;
+  coffres_ouverts_7j: number;
+  coffres_par_type: { kind: string; n: number }[];
+  pitie_declenchee: number;
+  fabrications_total: number;
+  fabrications_7j: number;
+  fragments_depenses: number;
 }
 
-export interface ChapterStats {
-  chapterNumber: number;
-  status: string;
-  teamsLocked: number;
-  averageScore: number | null;
-  topScore: number | null;
+export interface StatsBoutique {
+  revenu_total: number;
+  revenu_30j: number;
+  revenu_7j: number;
+  achats_total: number;
+  achats_30j: number;
+  acheteurs: number;
+  intentions_30j: number;
+  echecs_30j: number;
+  dernier_achat: string | null;
+  produits: { product_id: string; achats: number; cents: number }[];
 }
 
-export interface RiskStats {
-  pendingReview: number;
-  restricted: number;
-  falsePositives: number;
+export interface StatsMarche {
+  annonces_actives: number;
+  ventes_total: number;
+  ventes_7j: number;
+  ventes_30j: number;
+  volume_total: number;
+  volume_7j: number;
+  volume_30j: number;
+  taxe_total: number;
+  prix_moyen_30j: number | null;
+  plus_vendus: { character_id: string; ventes: number; volume: number; prix_moyen: number }[];
+  plus_chers: { character_id: string; prix_max: number; prix_moyen: number; ventes: number }[];
+  vendeurs: { handle: string; ventes: number; volume: number }[];
+  surveilles: { character_id: string; n: number }[];
+}
+
+export interface StatsCollection {
+  par_rarete: { rarity: string; n: number }[];
+  par_source: { source: string; n: number }[];
+  plus_possedes: { character_id: string; n: number }[];
+  plus_fabriques: { character_id: string; n: number }[];
+  collectionneurs: { handle: string; cartes: number }[];
+}
+
+export interface StatsJeu {
+  chapitres: {
+    chapter_number: number;
+    status: string;
+    equipes: number;
+    moyenne: number | null;
+    meilleur: number | null;
+    reponses: number;
+    questions: number;
+  }[];
+  plus_alignes: { character_id: string; n: number }[];
+  plus_alignes_courant: { character_id: string; n: number }[];
+  equipes_courant: number;
+  reponses_total: number;
+  ligues: number;
+  commentaires: number;
+}
+
+export interface StatsCourrier {
+  en_attente: number;
+  envoyes: number;
+  envoyes_7j: number;
+  morts: number;
+  notifications_7j: number;
+  notifications_non_lues: number;
+}
+
+export interface StatsRisque {
+  a_examiner: number;
+  restreints: number;
+  faux_positifs: number;
+  evaluations_7j: number;
 }
 
 export interface AdminStats {
-  players: PlayerStats;
-  economy: EconomyStats;
-  chapters: ChapterStats[];
-  risk: RiskStats;
-}
-
-const DAY = 24 * 60 * 60 * 1000;
-
-/** Compte exact sans rapatrier les lignes. */
-async function countOf(
-  table: string,
-  apply: (query: ReturnType<typeof buildCount>) => unknown = (q) => q,
-): Promise<number> {
-  const query = buildCount(table);
-  const result = (await apply(query)) as { count: number | null };
-  return result.count ?? 0;
-}
-
-function buildCount(table: string) {
-  return db().from(table).select('*', { count: 'exact', head: true });
+  joueurs: StatsJoueurs;
+  economie: StatsEconomie;
+  boutique: StatsBoutique;
+  marche: StatsMarche;
+  collection: StatsCollection;
+  jeu: StatsJeu;
+  courrier: StatsCourrier;
+  risque: StatsRisque;
+  genere_le: string;
 }
 
 export async function adminStats(): Promise<AdminStats | null> {
   if (!isDatabaseConfigured()) return null;
 
-  const now = Date.now();
-  const since24h = new Date(now - DAY).toISOString();
-  const since7d = new Date(now - 7 * DAY).toISOString();
-
-  const [
-    playersTotal,
-    created24h,
-    created7d,
-    verified,
-    starterOpened,
-    lockedCrew,
-    restricted,
-    wallets,
-    cards,
-    chests7d,
-    listings,
-    sales7d,
-    pendingReview,
-    falsePositives,
-    chapters,
-  ] = await Promise.all([
-    countOf('players'),
-    countOf('user_accounts', (q) => q.gte('created_at', since24h)),
-    countOf('user_accounts', (q) => q.gte('created_at', since7d)),
-    countOf('user_accounts', (q) => q.not('email_verified_at', 'is', null)),
-    countOf('player_progress', (q) => q.not('starter_chest_opened_at', 'is', null)),
-    // `teams` compte les équipages, pas les joueurs : on dédoublonne plus bas.
-    db().from('teams').select('player_id'),
-    countOf('account_restrictions'),
-    db().from('wallets').select('berries, unopened_chests'),
-    countOf('inventory', (q) => q.not('serial_code', 'is', null)),
-    countOf('chest_openings', (q) => q.gte('opened_at', since7d)),
-    countOf('market_listings', (q) => q.eq('status', 'ACTIVE')),
-    db().from('market_transactions').select('price').gte('at', since7d),
-    countOf('risk_assessments', (q) =>
-      q.is('reviewed_at', null).in('level', ['REVIEW', 'RESTRICTED', 'HIGH_RISK']),
-    ),
-    countOf('risk_assessments', (q) => q.eq('verdict', 'FALSE_POSITIVE')),
-    db()
-      .from('chapter_events')
-      .select('id, chapter_number, status')
-      .order('chapter_number', { ascending: false })
-      .limit(6),
-  ]);
-
-  const walletRows = (wallets.data ?? []) as {
-    berries: number;
-    unopened_chests: number;
-  }[];
-
-  const saleRows = (sales7d.data ?? []) as { price: number }[];
-
-  return {
-    players: {
-      total: playersTotal,
-      createdLast24h: created24h,
-      createdLast7d: created7d,
-      verified,
-      withStarterOpened: starterOpened,
-      everLockedCrew: new Set(
-        ((lockedCrew.data ?? []) as { player_id: string }[]).map((r) => r.player_id),
-      ).size,
-      restricted,
-    },
-    economy: {
-      berriesInCirculation: walletRows.reduce((sum, w) => sum + w.berries, 0),
-      chestsUnopened: walletRows.reduce((sum, w) => sum + w.unopened_chests, 0),
-      cardsMinted: cards,
-      chestsOpenedLast7d: chests7d,
-      marketListingsActive: listings,
-      marketSalesLast7d: saleRows.length,
-      marketVolumeLast7d: saleRows.reduce((sum, s) => sum + s.price, 0),
-    },
-    chapters: await chapterStats(
-      ((chapters.data ?? []) as { id: string; chapter_number: number; status: string }[]),
-    ),
-    risk: {
-      pendingReview,
-      restricted,
-      falsePositives,
-    },
-  };
-}
-
-/**
- * Résultats des derniers chapitres.
- *
- * Les scores sont **lus tels qu'ils ont été calculés**, jamais recalculés à la
- * consultation (§75) : un tableau de bord qui recalcule finit par afficher des
- * chiffres que le classement ne montre pas.
- */
-async function chapterStats(
-  rows: { id: string; chapter_number: number; status: string }[],
-): Promise<ChapterStats[]> {
-  if (rows.length === 0) return [];
-
-  // Paginé : une ligne par joueur **et par chapitre**. C'est la lecture qui
-  // grossit le plus vite du produit, et un tableau de bord tronqué afficherait
-  // des moyennes fausses sans que rien ne le signale.
-  const scores = await readAllPages<{ chapter_id: string; total: number }>(
-    'team_scores.stats',
-    (from, to) =>
-      db()
-        .from('team_scores')
-        .select('chapter_id, total')
-        .in(
-          'chapter_id',
-          rows.map((r) => r.id),
-        )
-        .order('chapter_id', { ascending: true })
-        .order('total', { ascending: false })
-        .range(from, to),
-  );
-
-  const byChapter = new Map<string, number[]>();
-  for (const row of scores) {
-    const list = byChapter.get(row.chapter_id) ?? [];
-    list.push(row.total);
-    byChapter.set(row.chapter_id, list);
-  }
-
-  return rows.map((row) => {
-    const totals = byChapter.get(row.id) ?? [];
-    return {
-      chapterNumber: row.chapter_number,
-      status: row.status,
-      teamsLocked: totals.length,
-      averageScore:
-        totals.length > 0
-          ? Math.round(totals.reduce((a, b) => a + b, 0) / totals.length)
-          : null,
-      topScore: totals.length > 0 ? Math.max(...totals) : null,
-    };
-  });
+  const { data, error } = await db().rpc('statistiques_admin');
+  if (error) throw new Error(`statistiques_admin : ${error.message}`);
+  return data as AdminStats;
 }
