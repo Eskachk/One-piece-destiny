@@ -153,6 +153,9 @@ async function ouvrirSession(
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     body,
+    // Quinze secondes : au-delà, la caisse dit qu'elle n'a pas pu s'ouvrir
+    // plutôt que de laisser le bouton tourner jusqu'au délai de la plateforme.
+    signal: AbortSignal.timeout(15_000),
   });
 
   if (!response.ok) {
@@ -287,7 +290,10 @@ function stripeProvider(secretKey: string, webhookSecret: string): PaymentProvid
     async retrievePayment(reference) {
       const response = await fetch(
         `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(reference)}`,
-        { headers: { Authorization: `Bearer ${secretKey}` } },
+        {
+          headers: { Authorization: `Bearer ${secretKey}` },
+          signal: AbortSignal.timeout(15_000),
+        },
       );
       if (!response.ok) return null;
 

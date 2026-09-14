@@ -45,14 +45,20 @@ function hashToken(token: string): string {
  * dépend. Depuis la plateforme, elle coûte de 70 à 145 ms. C'était le dernier
  * aller-retour incompressible du produit.
  *
- * ## Pourquoi quinze secondes, et pas plus
+ * ## Pourquoi une minute, et pas plus
  *
  * Un cache de session est un compromis avec la révocation : tant qu'une
  * entrée vit, une session révoquée ailleurs continue d'être servie. Toutes les
  * voies de révocation invalident explicitement l'entrée (voir plus bas), donc
- * ce délai ne s'applique qu'à ce qu'on aurait oublié. Quinze secondes est la
- * borne de cet oubli, et c'est court devant les deux heures de la fenêtre
+ * ce délai ne s'applique qu'à ce qu'on aurait oublié. Une minute est la borne
+ * de cet oubli, et c'est court devant les deux heures de la fenêtre
  * d'inactivité.
+ *
+ * Elle était de quinze secondes. Le tir de charge du 14 septembre 2026 a
+ * montré que l'API de la base plafonne autour de 45 requêtes par seconde :
+ * chaque lecture de session est prise sur ce budget commun, et un joueur qui
+ * navigue relançait la sienne quatre fois par minute. Une fois par minute
+ * suffit — la révocation, elle, n'attend pas ce délai.
  *
  * ## Ce qui rend la déconnexion immédiate sans rien invalider
  *
@@ -60,7 +66,7 @@ function hashToken(token: string): string {
  * de jeton, ne calcule aucune clé de cache et ne lit rien du tout. Le cas le
  * plus fréquent — se déconnecter soi-même — est instantané par construction.
  */
-const SESSION_TTL = 15;
+const SESSION_TTL = 60;
 
 /** L'étiquette d'une session, pour pouvoir la purger. */
 function etiquetteSession(tokenHash: string): string {
@@ -353,7 +359,7 @@ export async function completeMfaChallenge(tokenHash: string): Promise<void> {
 
   // Sans cette purge, l'entrée en cache dirait encore « second facteur en
   // attente » : le joueur validerait son code et retomberait sur l'écran de
-  // saisie, pendant quinze secondes, sans rien comprendre.
+  // saisie, pendant une minute, sans rien comprendre.
   purgerSession(tokenHash);
 }
 
@@ -440,7 +446,7 @@ export async function revokeAllSessions(userId: string): Promise<void> {
     for (const ligne of lignes) purgerSession(ligne.token_hash);
   } catch (cause) {
     // La base est déjà à jour : les sessions sont révoquées. Seul le cache
-    // survit, quinze secondes au plus. On le journalise plutôt que de faire
+    // survit, une minute au plus. On le journalise plutôt que de faire
     // échouer un changement de mot de passe qui, lui, a réussi.
     void signalerIncident({
       scope: 'auth:purge-sessions',

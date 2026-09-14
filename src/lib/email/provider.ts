@@ -57,6 +57,9 @@ function resendProvider(apiKey: string, from: string, replyTo?: string): EmailPr
       try {
         const response = await fetch('https://api.resend.com/emails', {
           method: 'POST',
+          // La file d'envoi réessaie plus tard ; un appel qui pend bloquerait
+          // toute la tournée.
+          signal: AbortSignal.timeout(10_000),
           headers: {
             // La clé ne doit jamais se retrouver ailleurs que dans cet en-tête.
             Authorization: `Bearer ${apiKey}`,
