@@ -13,6 +13,7 @@ import { traduire } from '@/lib/i18n';
 import { libelleRarete } from '@/domain/i18n/libelles';
 import type { MessageKey } from '@/domain/i18n/locales';
 import { paymentsState } from '@/lib/payments/provider';
+import { rapprocherRetour } from '@/lib/payments/rapprochement';
 import {
   LAUNCH_DISCOUNT,
   effectivePriceCents,
@@ -34,10 +35,43 @@ export async function generateMetadata(): Promise<Metadata> {
  * client qui forcerait le booléen n'obtiendrait qu'un bouton actif et un refus
  * de l'action serveur, qui revérifie.
  */
-export default async function ShopPage() {
-  const [, { t, tn, locale, euros }] = await Promise.all([requireSession(), traduire()]);
+export default async function ShopPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ paiement?: string }>;
+}) {
+  const [session, { t, tn, locale, euros }, { paiement }] = await Promise.all([
+    requireSession(),
+    traduire(),
+    searchParams,
+  ]);
 
   const state = paymentsState();
+
+  /*
+   * Rapprochement **avant** de rendre la page.
+   *
+   * Le prestataire est interrogé sur les sessions ouvertes par ce joueur, et
+   * une session payée est créditée ici même, sans attendre le webhook. C'est
+   * fait à chaque visite de la boutique, pas seulement au retour de la caisse
+   * (`?paiement=ok`) : un joueur qui a payé puis fermé l'onglet avant la
+   * redirection doit retrouver son achat à sa prochaine visite, webhook ou
+   * pas. Sans session ouverte, cela ne coûte qu'une lecture.
+   *
+   * Le message, lui, dépend d'où l'on vient : « confirmation en cours » n'a de
+   * sens qu'au retour de la caisse — sur une visite ordinaire, une session
+   * abandonnée la veille n'a rien à annoncer.
+   */
+  const retour = state.enabled ? await rapprocherRetour(session.playerId) : { etat: 'rien' as const };
+
+  const bandeau =
+    retour.etat === 'credite'
+      ? { ton: 'ok' as const, texte: t('shop.retour.credite', { produit: t(`product.${retour.productId}` as MessageKey) }) }
+      : paiement === 'ok' && retour.etat === 'attente'
+        ? { ton: 'info' as const, texte: t('shop.retour.attente') }
+        : paiement === 'annule'
+          ? { ton: 'info' as const, texte: t('shop.retour.annule') }
+          : null;
 
   // L'offre est décidée **ici**, côté serveur, à partir de l'horloge du
   // serveur. La calculer dans le navigateur la rendrait dépendante de
@@ -88,6 +122,7 @@ export default async function ShopPage() {
       <p className="hb-muted mt-3 text-sm">{t('shop.intro')}</p>
 
       <ShopPanel
+        retour={bandeau}
         products={products}
         // Calculées à partir des mêmes constantes que le tirage du serveur :
         // elles ne peuvent pas diverger de ce qu'il fait réellement.

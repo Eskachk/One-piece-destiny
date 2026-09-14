@@ -15,6 +15,10 @@ export const BOUTIQUE = {
     'shop.unit.chests': 'coffres',
     'shop.unit.royalChests': 'coffres royaux',
     'shop.closed': 'La boutique n’est pas encore ouverte.',
+    'shop.retour.credite': 'Paiement confirmé — {produit} est ajouté à ton compte.',
+    'shop.retour.attente':
+      'Paiement reçu par le prestataire, confirmation en cours. Tes achats apparaîtront d’ici quelques instants ; recharge la page si besoin.',
+    'shop.retour.annule': 'Paiement annulé. Rien n’a été débité.',
     'shop.closed.meanwhile':
       'En attendant, les Berries gagnées chaque semaine ouvrent exactement les mêmes coffres.',
     'shop.promo.title': 'Offre de lancement sur les coffres.',
@@ -65,6 +69,10 @@ export const BOUTIQUE = {
     'shop.unit.chests': 'chests',
     'shop.unit.royalChests': 'royal chests',
     'shop.closed': 'The shop is not open yet.',
+    'shop.retour.credite': 'Payment confirmed — {produit} has been added to your account.',
+    'shop.retour.attente':
+      'Payment received by the provider, confirmation in progress. Your purchase will appear shortly; reload the page if needed.',
+    'shop.retour.annule': 'Payment cancelled. Nothing was charged.',
     'shop.closed.meanwhile': 'Meanwhile, the Berries earned every week open exactly the same chests.',
     'shop.promo.title': 'Launch offer on chests.',
     'shop.promo.body.one':

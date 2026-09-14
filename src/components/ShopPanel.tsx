@@ -98,6 +98,7 @@ export function ShopPanel({
   disabledReason,
   promotion,
   chestOdds,
+  retour,
 }: {
   products: ShopProduct[];
   /**
@@ -115,6 +116,8 @@ export function ShopPanel({
   disabledReason: string;
   /** Offre de lancement en cours, ou `null`. Décidée côté serveur. */
   promotion: { discount: number; daysLeft: number; endsOn: string; body: string } | null;
+  /** Retour de la caisse : paiement confirmé, en attente, ou annulé. */
+  retour: { ton: 'ok' | 'info'; texte: string } | null;
 }) {
   const { t, tradMessage } = useT();
   const [error, setError] = useState<string | null>(null);
@@ -150,6 +153,15 @@ export function ShopPanel({
           <span>
             <strong>{t('shop.promo.title')}</strong> {promotion.body}
           </span>
+        </p>
+      )}
+
+      {/* Le mot de la caisse, en premier : c'est ce que le joueur est revenu
+          lire. `role="status"` — annoncé par un lecteur d'écran sans voler le
+          focus, ce n'est pas une erreur. */}
+      {retour && (
+        <p role="status" className={`hb-card mt-4 text-sm ${retour.ton === 'ok' ? 'hb-ok' : ''}`}>
+          {retour.texte}
         </p>
       )}
 
