@@ -171,7 +171,7 @@ export function ChestPanel({
             onClick={() => run(openStarterChestAction)}
             disabled={pending}
             aria-busy={pending}
-            className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50"
+            className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-70"
           >
             {pending ? t('chest.opening') : t('chest.open.starter')}
           </button>
@@ -182,7 +182,7 @@ export function ChestPanel({
               onClick={() => run(() => openOwnedChestAction('WEEKLY'))}
               disabled={pending || (!unlimited && unopenedChests === 0)}
               aria-busy={pending}
-              className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
+              className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-70 disabled:hb-ink-soft"
             >
               {pending ? t('chest.wait') : t('chest.open')}
             </button>
@@ -196,7 +196,7 @@ export function ChestPanel({
                 onClick={() => run(() => openOwnedChestAction('ROYAL'))}
                 disabled={pending}
                 aria-busy={pending}
-                className="hb-royal-btn transition-quick w-full rounded-xl px-4 py-3 font-semibold disabled:opacity-50"
+                className="hb-royal-btn transition-quick w-full rounded-xl px-4 py-3 font-semibold disabled:opacity-70"
               >
                 {t('chest.open.royal', { n: royalChests })}
               </button>
@@ -207,7 +207,7 @@ export function ChestPanel({
               onClick={buy}
               disabled={pending || berries < CHEST_PRICE_BERRIES}
               aria-busy={pending}
-              className="transition-quick w-full rounded-xl border hb-border px-4 py-2 text-sm hb-accent disabled:opacity-40"
+              className="transition-quick w-full rounded-xl border hb-border px-4 py-2 text-sm hb-accent disabled:opacity-70"
             >
               {t('chest.buy', { n: CHEST_PRICE_BERRIES })}
             </button>

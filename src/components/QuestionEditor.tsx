@@ -90,7 +90,7 @@ export function QuestionEditor({ questions }: { questions: QuestionAdmin[] }) {
         >
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <span className="text-sm text-parchment">{question.prompt}</span>
-            <span className="text-xs text-parchment/50">
+            <span className="text-xs text-parchment/60">
               {question.reponses} réponse{question.reponses > 1 ? 's' : ''}
             </span>
           </div>
@@ -112,7 +112,7 @@ export function QuestionEditor({ questions }: { questions: QuestionAdmin[] }) {
             ))}
           </div>
 
-          <p className="mt-2 text-xs text-parchment/50">
+          <p className="mt-2 text-xs text-parchment/60">
             {question.answer === null
               ? 'Bonne réponse : pas encore tranchée.'
               : `Bonne réponse : ${question.options[question.answer]}`}

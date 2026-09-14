@@ -135,7 +135,7 @@ export function TeamLockControls({
         disabled={pending || dejaBonne}
         aria-busy={pending}
         onClick={() => lancer(nextSunday)}
-        className="transition-quick mt-4 w-full rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-abyss disabled:opacity-40"
+        className="transition-quick mt-4 w-full rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-abyss disabled:opacity-70"
       >
         {dejaBonne
           ? 'Déjà calée sur le prochain dimanche'
@@ -150,7 +150,7 @@ export function TeamLockControls({
         disabled={pending || locked}
         aria-busy={pending}
         onClick={() => lancer(new Date().toISOString())}
-        className="transition-quick mt-2 w-full rounded-lg border border-orange/50 px-3 py-2 text-sm text-orange disabled:opacity-40"
+        className="transition-quick mt-2 w-full rounded-lg border border-orange/50 px-3 py-2 text-sm text-orange disabled:opacity-70"
       >
         {locked ? 'Déjà verrouillé' : 'Verrouiller maintenant'}
       </button>
@@ -163,7 +163,7 @@ export function TeamLockControls({
         >
           Échéance précise
         </label>
-        <p className="mt-1 text-xs text-parchment/50">
+        <p className="mt-1 text-xs text-parchment/60">
           Pour les cas que les deux boutons ne couvrent pas : une pause
           annoncée, un report. Heure de ce navigateur.
         </p>
@@ -186,7 +186,7 @@ export function TeamLockControls({
             }
             lancer(d.toISOString());
           }}
-          className="transition-quick mt-2 w-full rounded-lg border border-turquoise/40 px-3 py-2 text-sm text-turquoise disabled:opacity-40"
+          className="transition-quick mt-2 w-full rounded-lg border border-turquoise/40 px-3 py-2 text-sm text-turquoise disabled:opacity-70"
         >
           Poser cette échéance
         </button>
@@ -207,11 +207,11 @@ export function TeamLockControls({
             disabled={pending}
             aria-busy={pending}
             onClick={() => executer(migrateOpenChapterEngine)}
-            className="transition-quick mt-2 w-full rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-abyss disabled:opacity-40"
+            className="transition-quick mt-2 w-full rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-abyss disabled:opacity-70"
           >
             Passer ce chapitre en {currentScoringVersion}
           </button>
-          <p className="mt-2 text-xs text-parchment/50">
+          <p className="mt-2 text-xs text-parchment/60">
             Refusé si le chapitre est publié, ou s’il porte déjà des scores
             calculés par l’ancien moteur : les garder à côté d’une nouvelle
             version promettrait un recalcul qui ne rendrait pas les mêmes
@@ -220,7 +220,7 @@ export function TeamLockControls({
         </div>
       )}
 
-      <p className="mt-4 text-xs text-parchment/45">
+      <p className="mt-4 text-xs text-parchment/60">
         Aucune équipe n’est touchée : rouvrir laisse les joueurs modifier la
         leur, verrouiller la fige telle qu’elle est. Un chapitre déjà publié
         refuse tout déplacement — rouvrir des équipes derrière un classement

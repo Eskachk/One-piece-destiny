@@ -196,7 +196,7 @@ export function SettingsPanel({
           disabled={pending || draftHandle === handle || Boolean(handleError)}
           aria-busy={pending}
           onClick={renameMe}
-          className="hb-btn--ghost mt-2 w-full rounded-lg px-3 py-2 disabled:opacity-40"
+          className="hb-btn--ghost mt-2 w-full rounded-lg px-3 py-2 disabled:opacity-70"
         >
           {t('settings.identitySave')}
         </button>

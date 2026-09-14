@@ -7,7 +7,7 @@ import { ShopPanel } from '@/components/ShopPanel';
 import { CATALOG } from '@/domain/payments/catalog';
 import { CHARACTERS } from '@/data/characters';
 import { chestOdds } from '@/domain/collection/odds';
-import { RARITY_COLOR } from '@/domain/collection/rarity';
+import { RARITY_COLOR, RARITY_TEXT } from '@/domain/collection/rarity';
 import { requireSession } from '@/lib/auth/guards';
 import { traduire } from '@/lib/i18n';
 import { libelleRarete } from '@/domain/i18n/libelles';
@@ -75,6 +75,7 @@ export default async function ShopPage() {
         : null,
       description: t(`product.${product.id}.desc` as MessageKey),
       rarityColor: product.rarity ? RARITY_COLOR[product.rarity] : null,
+      rarityText: product.rarity ? RARITY_TEXT[product.rarity] : null,
       rarityLabel: product.rarity ? libelleRarete(t, product.rarity) : null,
     };
   });

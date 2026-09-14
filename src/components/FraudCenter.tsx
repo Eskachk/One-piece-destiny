@@ -79,7 +79,7 @@ export function FraudCenter({ accounts }: { accounts: SuspiciousView[] }) {
           <header className="flex flex-wrap items-baseline justify-between gap-2">
             <div>
               <p className="font-semibold text-parchment">{account.handle}</p>
-              <p className="text-[11px] text-parchment/50">
+              <p className="text-[11px] text-parchment/60">
                 {account.email ?? 'sans adresse'} · créé le {account.createdAt}
               </p>
             </div>
@@ -122,7 +122,7 @@ export function FraudCenter({ accounts }: { accounts: SuspiciousView[] }) {
                 }))
               }
               placeholder="Motif (obligatoire pour restreindre)"
-              className="min-w-[14rem] flex-1 rounded-lg border border-turquoise/25 bg-abyss/60 px-3 py-2 text-sm text-parchment placeholder:text-parchment/35"
+              className="min-w-[14rem] flex-1 rounded-lg border border-turquoise/25 bg-abyss/60 px-3 py-2 text-sm text-parchment placeholder:text-parchment/60"
             />
 
             {(['24h', '7j', '30j'] as const).map((duration) => (
@@ -142,7 +142,7 @@ export function FraudCenter({ accounts }: { accounts: SuspiciousView[] }) {
                     }),
                   )
                 }
-                className="rounded-lg border border-orange/50 px-3 py-2 text-xs text-orange disabled:opacity-30"
+                className="rounded-lg border border-orange/50 px-3 py-2 text-xs text-orange disabled:opacity-70"
               >
                 Restreindre {duration}
               </button>
@@ -155,7 +155,7 @@ export function FraudCenter({ accounts }: { accounts: SuspiciousView[] }) {
               disabled={pending}
               aria-busy={pending}
               onClick={() => run(() => markFalsePositiveAction(account.playerId))}
-              className="rounded-lg border border-turquoise/40 px-3 py-2 text-xs text-turquoise disabled:opacity-30"
+              className="rounded-lg border border-turquoise/40 px-3 py-2 text-xs text-turquoise disabled:opacity-70"
             >
               Faux positif
             </button>
@@ -164,7 +164,7 @@ export function FraudCenter({ accounts }: { accounts: SuspiciousView[] }) {
               disabled={pending}
               aria-busy={pending}
               onClick={() => run(() => reevaluateAction(account.playerId))}
-              className="rounded-lg border border-parchment/25 px-3 py-2 text-xs text-parchment/70 disabled:opacity-30"
+              className="rounded-lg border border-parchment/25 px-3 py-2 text-xs text-parchment/70 disabled:opacity-70"
             >
               Réévaluer
             </button>
@@ -174,7 +174,7 @@ export function FraudCenter({ accounts }: { accounts: SuspiciousView[] }) {
                 disabled={pending}
                 aria-busy={pending}
                 onClick={() => run(() => liftRestrictionAction(account.playerId))}
-                className="rounded-lg border border-turquoise/40 px-3 py-2 text-xs text-turquoise disabled:opacity-30"
+                className="rounded-lg border border-turquoise/40 px-3 py-2 text-xs text-turquoise disabled:opacity-70"
               >
                 Lever la restriction
               </button>

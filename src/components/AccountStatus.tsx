@@ -62,7 +62,7 @@ export function AccountStatus({
             onClick={resend}
             disabled={pending}
             aria-busy={pending}
-            className="shrink-0 text-xs hb-accent underline disabled:opacity-40"
+            className="shrink-0 text-xs hb-accent underline disabled:opacity-70"
           >
             {t('pf.account.resend')}
           </button>
@@ -90,7 +90,7 @@ export function AccountStatus({
             onClick={saveDate}
             disabled={pending || date === '' || birthDate !== null}
             aria-busy={pending}
-            className="text-xs hb-accent underline disabled:opacity-30"
+            className="text-xs hb-accent underline disabled:opacity-70"
           >
             {t('action.save')}
           </button>

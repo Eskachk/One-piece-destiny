@@ -56,7 +56,7 @@ export function RequestResetForm() {
       <button
         type="submit"
         disabled={pending}
-        className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50"
+        className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-70"
       >
         {pending ? t('auth.action.sending') : t('auth.action.sendLink')}
       </button>
@@ -110,7 +110,7 @@ export function CompleteResetForm({ token }: { token: string }) {
       <button
         type="submit"
         disabled={pending}
-        className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50"
+        className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-70"
       >
         {pending ? t('auth.action.saving') : t('auth.action.changePassword')}
       </button>

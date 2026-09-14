@@ -60,7 +60,7 @@ export function GraphiqueJours({
   return (
     <figure className="rounded-lg border border-turquoise/20 bg-navy/40 p-3">
       <figcaption className="flex items-baseline justify-between">
-        <span className="text-[11px] uppercase tracking-widest text-parchment/50">{titre}</span>
+        <span className="text-[11px] uppercase tracking-widest text-parchment/60">{titre}</span>
         <span className="font-mono text-xs text-parchment/60">
           {formatValeur(total)}
           {unite} sur 30 j
@@ -176,7 +176,7 @@ export function GraphiqueJours({
       </svg>
 
       <details className="mt-1">
-        <summary className="cursor-pointer text-[11px] text-parchment/45">Voir les valeurs</summary>
+        <summary className="cursor-pointer text-[11px] text-parchment/60">Voir les valeurs</summary>
         <table className="mt-1 w-full text-[11px]">
           <tbody>
             {points
@@ -192,7 +192,7 @@ export function GraphiqueJours({
               ))}
             {total === 0 && (
               <tr>
-                <td className="py-0.5 text-parchment/45">Rien sur la période.</td>
+                <td className="py-0.5 text-parchment/60">Rien sur la période.</td>
               </tr>
             )}
           </tbody>

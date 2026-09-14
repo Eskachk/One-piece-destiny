@@ -53,7 +53,7 @@ export default function PreviewIlesPage() {
           <section key={id}>
             <h2 className="font-display text-lg text-parchment">
               {ISLANDS[id].name}{' '}
-              <span className="font-mono text-xs text-parchment/40">{id}</span>
+              <span className="font-mono text-xs text-parchment/60">{id}</span>
             </h2>
 
             {/*
@@ -80,7 +80,7 @@ export default function PreviewIlesPage() {
               </div>
             </div>
 
-            <ul className="mt-2 text-xs text-parchment/50">
+            <ul className="mt-2 text-xs text-parchment/60">
               {ISLANDS[id].elements.map((e) => (
                 <li key={e}>· {e}</li>
               ))}

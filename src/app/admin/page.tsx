@@ -218,19 +218,19 @@ export default async function AdminPage() {
 
         <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
           <div>
-            <dt className="text-parchment/50">Verrouillage</dt>
+            <dt className="text-parchment/60">Verrouillage</dt>
             <dd className="font-mono text-parchment/90">
               {chapter.teamLockAt.toISOString()}
             </dd>
           </div>
           <div>
-            <dt className="text-parchment/50">Moteur de score</dt>
+            <dt className="text-parchment/60">Moteur de score</dt>
             <dd className="font-mono text-parchment/90">
               {chapter.scoringVersion}
             </dd>
           </div>
           <div>
-            <dt className="text-parchment/50">Anti-spoiler</dt>
+            <dt className="text-parchment/60">Anti-spoiler</dt>
             <dd className="font-mono text-parchment/90">
               {spoilerState(chapter)}
             </dd>
@@ -258,7 +258,7 @@ export default async function AdminPage() {
               {inscrits > 0 && ` · ${Math.round((teams.length / inscrits) * 100)} %`}
             </span>
           </p>
-          <p className="mt-1 text-xs text-parchment/45">
+          <p className="mt-1 text-xs text-parchment/60">
             {teamsLocked
               ? 'Les équipages sont verrouillés : ce nombre ne bougera plus.'
               : `Encore modifiables jusqu’au verrouillage. ${

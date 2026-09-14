@@ -210,7 +210,7 @@ export default async function HomePage() {
         {/* Le compte à rebours est l'information la plus urgente de la page :
             il est sur bois, pas sur parchemin, pour peser davantage. */}
         <div className="hb-card hb-card--wood mt-4">
-          <p className="hb-legend" style={{ color: '#f0d6a6' }}>
+          <p className="hb-legend">
             {t('home.lock.title')}
           </p>
           <div className="mt-2">

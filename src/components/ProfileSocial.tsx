@@ -48,7 +48,7 @@ export function NotificationCenter({
                 await markNotificationsReadAction();
               })
             }
-            className="text-xs hb-accent underline disabled:opacity-40"
+            className="text-xs hb-accent underline disabled:opacity-70"
           >
             {t('pf.notif.markRead')}
           </button>

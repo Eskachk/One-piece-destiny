@@ -71,11 +71,11 @@ function Tile({
 }) {
   return (
     <div className="rounded-lg border border-turquoise/20 bg-navy/40 p-3">
-      <p className="text-[11px] uppercase tracking-widest text-parchment/50">
+      <p className="text-[11px] uppercase tracking-widest text-parchment/60">
         {label}
       </p>
       <p className="mt-1 font-mono text-xl text-treasure">{value}</p>
-      {hint && <p className="mt-0.5 text-[11px] text-parchment/45">{hint}</p>}
+      {hint && <p className="mt-0.5 text-[11px] text-parchment/60">{hint}</p>}
     </div>
   );
 }
@@ -115,7 +115,7 @@ function Section({
         <span className="mr-2 font-mono text-sm text-treasure">{rubrique.numero}.</span>
         {rubrique.titre}
       </h2>
-      {note && <p className="mt-1 max-w-2xl text-xs text-parchment/50">{note}</p>}
+      {note && <p className="mt-1 max-w-2xl text-xs text-parchment/60">{note}</p>}
       {children}
     </section>
   );
@@ -124,7 +124,7 @@ function Section({
 /** Sous-titre à l'intérieur d'une rubrique, quand elle a plusieurs blocs. */
 function SousTitre({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mt-5 text-[11px] uppercase tracking-widest text-parchment/55">{children}</h3>
+    <h3 className="mt-5 text-[11px] uppercase tracking-widest text-parchment/60">{children}</h3>
   );
 }
 
@@ -133,7 +133,7 @@ function Sommaire() {
     <nav aria-label="Sommaire" className="mt-5 flex flex-wrap gap-x-4 gap-y-1 text-sm">
       {RUBRIQUES.map((r) => (
         <a key={r.id} href={`#${r.id}`} className="text-turquoise underline-offset-2 hover:underline">
-          <span className="mr-1 font-mono text-xs text-parchment/45">{r.numero}.</span>
+          <span className="mr-1 font-mono text-xs text-parchment/60">{r.numero}.</span>
           {r.titre}
         </a>
       ))}
@@ -153,21 +153,21 @@ function Palmares({
 }) {
   return (
     <div className="rounded-lg border border-turquoise/20 bg-navy/40 p-3">
-      <p className="text-[11px] uppercase tracking-widest text-parchment/50">{titre}</p>
+      <p className="text-[11px] uppercase tracking-widest text-parchment/60">{titre}</p>
       {lignes.length === 0 ? (
-        <p className="mt-2 text-xs text-parchment/45">{vide}</p>
+        <p className="mt-2 text-xs text-parchment/60">{vide}</p>
       ) : (
         <ol className="mt-2 space-y-1">
           {lignes.map((l, i) => (
             <li key={l.cle} className="flex items-baseline gap-2 text-sm">
-              <span className="w-5 shrink-0 font-mono text-xs text-parchment/40">{i + 1}.</span>
+              <span className="w-5 shrink-0 font-mono text-xs text-parchment/60">{i + 1}.</span>
               <span className="min-w-0 flex-1 truncate text-parchment/90">
                 {l.libelle}
-                {l.detail && <span className="ml-1 text-[11px] text-parchment/45">{l.detail}</span>}
+                {l.detail && <span className="ml-1 text-[11px] text-parchment/60">{l.detail}</span>}
               </span>
               <span className="shrink-0 font-mono text-treasure">{l.valeur}</span>
               {l.valeur2 && (
-                <span className="shrink-0 font-mono text-xs text-parchment/50">{l.valeur2}</span>
+                <span className="shrink-0 font-mono text-xs text-parchment/60">{l.valeur2}</span>
               )}
             </li>
           ))}
@@ -208,7 +208,7 @@ async function JournalIncidents() {
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="text-parchment/50">
+              <tr className="text-parchment/60">
                 <th className="pb-2">Quand</th>
                 <th className="pb-2">Origine</th>
                 <th className="pb-2">Message</th>
@@ -228,7 +228,7 @@ async function JournalIncidents() {
                   <td className="max-w-[24rem] truncate" title={i.message}>
                     {i.message}
                   </td>
-                  <td className="font-mono text-parchment/50">
+                  <td className="font-mono text-parchment/60">
                     {i.digest ?? '—'}
                   </td>
                 </tr>
@@ -268,7 +268,7 @@ export default async function AdminStatsPage() {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h1 className="font-display text-3xl text-parchment">Statistiques</h1>
-          <p className="mt-1 text-xs text-parchment/45">
+          <p className="mt-1 text-xs text-parchment/60">
             Calculées à l’instant — {new Date(stats.genere_le).toLocaleString('fr-FR')}.
           </p>
         </div>
@@ -380,7 +380,7 @@ export default async function AdminStatsPage() {
             meilleur indicateur d'une ferme : beaucoup d'inscriptions, peu de
             parties. Il mérite d'être calculé ici plutôt que de tête. */}
         {joueurs.total > 0 && (
-          <p className="mt-3 max-w-2xl text-xs text-parchment/55">
+          <p className="mt-3 max-w-2xl text-xs text-parchment/60">
             {pct(joueurs.ont_joue, joueurs.total)} des comptes ont déjà verrouillé un
             équipage. Un effondrement de ce rapport après un pic d’inscriptions est le
             signe le plus fiable d’une création massive de comptes.
@@ -573,7 +573,7 @@ export default async function AdminStatsPage() {
           />
         </div>
         {economie.coffres_par_type.length > 0 && (
-          <p className="mt-2 text-xs text-parchment/55">
+          <p className="mt-2 text-xs text-parchment/60">
             Coffres ouverts :{' '}
             {economie.coffres_par_type
               .map((k) => `${number(k.n)} ${KIND_LABEL[k.kind] ?? k.kind}`)
@@ -675,7 +675,7 @@ export default async function AdminStatsPage() {
           <div className="mt-2 overflow-x-auto rounded-lg border border-turquoise/20 bg-navy/40 p-3">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-left text-[11px] uppercase tracking-widest text-parchment/50">
+                <tr className="text-left text-[11px] uppercase tracking-widest text-parchment/60">
                   <th className="py-2">Chapitre</th>
                   <th>État</th>
                   <th className="text-right">Équipages</th>

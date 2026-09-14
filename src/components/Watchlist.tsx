@@ -89,7 +89,7 @@ export function Watchlist({ watched }: { watched: WatchedCharacter[] }) {
               disabled={pending}
               aria-busy={pending}
               onClick={() => unwatch(entry.characterId)}
-              className="underline disabled:opacity-40"
+              className="underline disabled:opacity-70"
             >
               {t('mk.watch.remove')}
             </button>
@@ -157,7 +157,7 @@ export function WatchToggle({
           if (!result.ok) setVoulu(!cible);
         });
       }}
-      className={`transition-quick text-sm disabled:opacity-40 ${
+      className={`transition-quick text-sm disabled:opacity-70 ${
         voulu ? 'hb-gold' : 'hb-ink-soft'
       }`}
     >
@@ -237,7 +237,7 @@ function AlertThreshold({
           onClick={save}
           disabled={pending || value.trim() === String(saved ?? '')}
           aria-busy={pending}
-          className="text-[11px] hb-accent underline disabled:opacity-30"
+          className="text-[11px] hb-accent underline disabled:opacity-70"
         >
           {t('action.save')}
         </button>

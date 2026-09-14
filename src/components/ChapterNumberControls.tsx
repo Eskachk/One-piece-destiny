@@ -97,7 +97,7 @@ export function ChapterNumberControls({
             disabled={pending}
             aria-busy={pending}
             onClick={() => lancer(() => renumberOpenChapter(calendarNumber))}
-            className="transition-quick mt-2 w-full rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-abyss disabled:opacity-40"
+            className="transition-quick mt-2 w-full rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-abyss disabled:opacity-70"
           >
             Passer le chapitre ouvert au {calendarNumber}
           </button>
@@ -135,7 +135,7 @@ export function ChapterNumberControls({
               disabled={pending || !numero || Number(numero) === openChapterNumber}
               aria-busy={pending}
               onClick={() => lancer(() => renumberOpenChapter(Number(numero)))}
-              className="transition-quick mt-2 w-full rounded-lg border border-turquoise/40 px-3 py-2 text-sm text-turquoise disabled:opacity-40"
+              className="transition-quick mt-2 w-full rounded-lg border border-turquoise/40 px-3 py-2 text-sm text-turquoise disabled:opacity-70"
             >
               Renuméroter le chapitre ouvert
             </button>
@@ -154,7 +154,7 @@ export function ChapterNumberControls({
           tous les numéros suivants, une semaine à la fois.
         </p>
 
-        <p className="mt-2 text-xs text-parchment/50">
+        <p className="mt-2 text-xs text-parchment/60">
           {anchorIsStored
             ? 'Ancrage enregistré en base.'
             : 'Aucun ancrage enregistré : le site utilise celui du code. Pose-en un pour reprendre la main.'}
@@ -192,7 +192,7 @@ export function ChapterNumberControls({
           </div>
         </div>
 
-        <p className="mt-2 text-xs text-parchment/50">
+        <p className="mt-2 text-xs text-parchment/60">
           L’heure n’est pas demandée : le verrouillage tombe chaque semaine à
           23:59:59, heure de Paris.
         </p>
@@ -204,12 +204,12 @@ export function ChapterNumberControls({
           onClick={() =>
             lancer(() => setChapterAnchorAction(Number(ancreNumero), ancreJour))
           }
-          className="transition-quick mt-3 w-full rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-abyss disabled:opacity-40"
+          className="transition-quick mt-3 w-full rounded-lg bg-treasure px-3 py-2 text-sm font-semibold text-abyss disabled:opacity-70"
         >
           Poser l’ancrage
         </button>
 
-        <p className="mt-2 text-xs text-parchment/45">
+        <p className="mt-2 text-xs text-parchment/60">
           <strong>Sans effet immédiat sur ce que voient les joueurs.</strong>{' '}
           L’ancrage sert à déduire les numéros à venir ; il ne touche ni au
           chapitre déjà ouvert ni à un classement publié — une correction de

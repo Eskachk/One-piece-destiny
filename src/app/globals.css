@@ -5427,3 +5427,108 @@ button[aria-busy='true']:not(.hb-btn)::before {
   }
 }
 
+
+/* ===========================================================================
+   Contraste, passe du 14 septembre — mesurée, pas supposée.
+   ===========================================================================
+
+   Un script a parcouru chaque nœud texte de chaque page (joueur, entrée,
+   Poste de commandement), composé le fond réel — dégradés, voiles, opacité
+   des ancêtres — et calculé le rapport WCAG. Les corrections ci-dessous sont
+   celles qu'il a produites, avec le rapport mesuré avant. Le seuil est 4,5:1
+   (3:1 au-delà de 24 px).
+
+   Les règles sont regroupées ici plutôt que dispersées dans les blocs
+   d'origine : un passage de contrôle se relit d'un bloc, et un prochain
+   audit saura d'un coup d'œil ce qui a déjà été touché. */
+
+/* --- Cartes sur bois -------------------------------------------------------
+   Le bois est sombre (#96633a → #6d4423). Les teintes « atténuées » du
+   parchemin y tombaient à 3,2–3,9:1 ; le rouge d'échec (« VERROUILLÉ ») y
+   était **invisible** : 1,05:1, la même luminance que la planche. */
+.hb-card--wood .hb-legend,
+.hb-card--wood .hb-ink-soft,
+.hb-card--wood .hb-muted {
+  color: #fbeed6; /* 6,2:1 sur le bois moyen, 5,5:1 sur sa planche la plus claire */
+}
+
+.hb-card--wood .hb-ko {
+  color: #ffb3a7; /* 6,2:1 — le rouge reste rouge, mais clair */
+}
+
+.hb-card--wood .hb-ok {
+  color: #9fe8dc;
+}
+
+/* --- Coffre du Yonko (carte royale, fond prune) ----------------------------
+   La quantité du lot (« 10 coffres royaux · 2,50 € l'unité ») gardait son
+   encre brune de parchemin sur la prune : 1,04:1, illisible. Et l'étiquette
+   de rareté, mélangée vers le brun pour le parchemin, n'avait rien à faire
+   sur un fond sombre : là, la couleur pure de la rareté est la bonne. */
+.hb-card--royal .hb-shop__lot {
+  color: #f6e8c0;
+}
+
+.hb-card--royal .hb-shop__rarity {
+  color: var(--rarity, #f5c542);
+}
+
+/* --- Étiquettes de rareté sur parchemin ------------------------------------
+   Le mélange « 70 % rareté, 30 % brun » ne suffisait pas pour l'or (2,15:1)
+   ni pour la braise (3,7:1). Les composants posent maintenant `--rarity-text`,
+   une encre par rareté choisie pour tenir ≥ 4,7:1 sur le parchemin **et** sur
+   l'avis de recherche, plus clair — voir `RARITY_TEXT` dans
+   `domain/collection/rarity.ts`. Le repli reste l'ancien mélange. */
+.hb-rcard__rarity,
+.hb-shop__rarity {
+  color: var(--rarity-text, color-mix(in srgb, var(--rarity, #8ea3bd) 45%, #2a1c07));
+}
+
+/* --- Encre atténuée --------------------------------------------------------
+   #4a5f80 tenait 4,26:1 sur l'avis de recherche, en 10 px. Un cran plus
+   sombre : 5,6:1, et 6,4:1 sur le parchemin. Même correction pour le numéro
+   de série et le lien de parrainage (4,44:1 en 9,9 px). */
+.hb-ink-soft {
+  color: #3f5270;
+}
+
+.hb-serial {
+  color: #6b5538;
+}
+
+/* --- Emplacement vide de l'équipage ----------------------------------------
+   Le « ??? » est décoratif et doit rester en retrait, mais 1,3:1 c'est un
+   fantôme. Et un emplacement désactivé (équipage verrouillé) passait à 55 %
+   d'opacité : « Choisir » tombait à 2,6:1. */
+.hb-slot:disabled {
+  opacity: 0.85;
+}
+
+/* --- Contrôles désactivés --------------------------------------------------
+   WCAG exempte les contrôles inactifs, mais un bouton qu'on ne peut pas lire
+   ne dit pas *pourquoi* il est inactif. 55 % laissait « Ajouter » à 3,1:1 sur
+   l'or ; 72 % le remonte au-dessus de 4,5 tout en le distinguant d'un bouton
+   actif. */
+.hb-btn:disabled {
+  opacity: 0.75;
+}
+
+/* --- Poste de commandement -------------------------------------------------
+   Les pages d'administration sont sur marine, et réutilisent des classes
+   pensées pour le parchemin : le bleu de lien (#0f4f96) y tenait 1,3 à
+   2:1, l'encre atténuée 2,3:1, l'étiquette de filtre 2,2:1. Sur fond sombre,
+   ces encres deviennent claires.
+
+   Ciblé sur `.hb-page`, le conteneur propre aux pages du Poste, et non sur
+   l'île `hq` entière : la page « introuvable » sous `/admin` reste sur
+   parchemin, et un lien clair y serait à son tour illisible (1,35:1, mesuré). */
+[data-island='hq'] .hb-page .hb-accent,
+[data-island='hq'] .hb-page .hb-link {
+  color: #8fd8ff; /* 9,5:1 sur la carte marine */
+}
+
+[data-island='hq'] .hb-page .hb-ink-soft,
+[data-island='hq'] .hb-page .hb-filtres__label,
+[data-island='hq'] .hb-page .hb-muted {
+  color: #bccbdd; /* 8,4:1 */
+}

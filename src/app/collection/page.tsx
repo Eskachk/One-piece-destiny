@@ -15,7 +15,7 @@ import {
 import { getCachedRecurrences } from '@/lib/cache';
 import { CHARACTERS, CHARACTER_INDEX } from '@/data/characters';
 import { allSetsProgress, collectionSummary } from '@/domain/collection/sets';
-import { RARITY_COLOR, rarityRank } from '@/domain/collection/rarity';
+import { RARITY_TEXT, rarityRank } from '@/domain/collection/rarity';
 import { CRAFT_COST } from '@/domain/collection/crafting';
 import { isAllowedAdmin, requireSession } from '@/lib/auth/guards';
 import { lireJoueur } from '@/lib/lectures';
@@ -203,7 +203,7 @@ export default async function CollectionPage() {
                 <li key={rarity} className="hb-tile">
                   <span
                     className="hb-legend block"
-                    style={{ color: RARITY_COLOR[rarity] }}
+                    style={{ color: RARITY_TEXT[rarity] }}
                   >
                     {libelleRarete(t, rarity)}
                   </span>
@@ -277,7 +277,7 @@ export default async function CollectionPage() {
                 </span>
                 <span
                   className="hb-legend mt-0.5 block"
-                  style={{ color: RARITY_COLOR[character.rarity] }}
+                  style={{ color: RARITY_TEXT[character.rarity] }}
                 >
                   {libelleRarete(t, character.rarity)}
                 </span>

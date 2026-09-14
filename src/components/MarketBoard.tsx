@@ -128,7 +128,7 @@ export function MarketBoard({
                       disabled={pending}
                       aria-busy={pending}
                       onClick={() => run(() => cancelListingAction(listing.id))}
-                      className="transition-quick mt-3 w-full rounded-lg border border-danger/40 px-3 py-2 text-sm hb-ko disabled:opacity-40"
+                      className="transition-quick mt-3 w-full rounded-lg border border-danger/40 px-3 py-2 text-sm hb-ko disabled:opacity-70"
                     >
                       {t('mk.cancel')}
                     </button>
@@ -138,7 +138,7 @@ export function MarketBoard({
                       disabled={pending || tooPoor || listing.alreadyOwned}
                       aria-busy={pending}
                       onClick={() => run(() => buyListingAction(listing.id))}
-                      className="transition-quick mt-3 w-full rounded-lg hb-goldfill px-3 py-2 text-sm font-semibold hb-on-gold disabled:opacity-50 disabled:hb-ink-soft"
+                      className="transition-quick mt-3 w-full rounded-lg hb-goldfill px-3 py-2 text-sm font-semibold hb-on-gold disabled:opacity-70 disabled:hb-ink-soft"
                     >
                       {listing.alreadyOwned
                         ? t('mk.owned')
@@ -206,7 +206,7 @@ export function MarketBoard({
                     }),
                   )
                 }
-                className="transition-quick flex-1 rounded-lg hb-goldfill px-3 py-2 text-sm font-semibold hb-on-gold disabled:opacity-40"
+                className="transition-quick flex-1 rounded-lg hb-goldfill px-3 py-2 text-sm font-semibold hb-on-gold disabled:opacity-70"
               >
                 {t('mk.sell.submit')}
               </button>

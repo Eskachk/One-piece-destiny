@@ -135,7 +135,7 @@ export default function PreviewChestPage() {
               attributes={[]}
             />
             <p className="mt-1 text-[10px] leading-tight text-parchment/80">{hero.name}</p>
-            <p className="text-[9px] leading-tight text-parchment/45">
+            <p className="text-[9px] leading-tight text-parchment/60">
               {signatureOf(hero.id)?.note}
             </p>
           </li>
@@ -157,7 +157,7 @@ export default function PreviewChestPage() {
           <li key={c.id} className="rounded-lg border border-turquoise/20 bg-navy/40 p-1">
             <CharacterArt characterId={c.id} rarity={c.rarity} attributes={[]} />
             <p className="mt-1 text-[9px] leading-tight text-parchment/75">{c.name}</p>
-            <p className="text-[8px] leading-tight text-parchment/40">
+            <p className="text-[8px] leading-tight text-parchment/60">
               {signatureOf(c.id) ? 'décrit' : 'repli'}
             </p>
           </li>
@@ -206,7 +206,7 @@ export default function PreviewChestPage() {
                   <span className="isl-name">{ISLANDS[id].name}</span>
                 </div>
               </div>
-              <ul className="mt-1 px-1 text-[11px] text-parchment/55">
+              <ul className="mt-1 px-1 text-[11px] text-parchment/60">
                 {ISLANDS[id].elements.map((element) => (
                   <li key={element}>· {element}</li>
                 ))}

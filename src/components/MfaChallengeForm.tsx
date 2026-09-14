@@ -48,7 +48,7 @@ export function MfaChallengeForm() {
       <button
         type="submit"
         disabled={pending}
-        className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-50"
+        className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-70"
       >
         {pending ? 'Vérification…' : 'Vérifier'}
       </button>

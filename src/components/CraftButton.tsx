@@ -54,7 +54,7 @@ export function CraftButton({
           onClick={craft}
           disabled={pending}
           aria-busy={pending}
-          className="transition-quick mt-1 w-full rounded hb-goldfill px-2 py-1 text-[11px] font-semibold hb-on-gold disabled:opacity-50"
+          className="transition-quick mt-1 w-full rounded hb-goldfill px-2 py-1 text-[11px] font-semibold hb-on-gold disabled:opacity-70"
         >
           {pending ? '…' : t('col.craft')}
         </button>

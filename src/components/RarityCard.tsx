@@ -6,7 +6,7 @@ import { decrireRecurrenceT, libelleAttribut, libelleRarete } from '@/domain/i18
 import type { Rarity } from '@/domain/types';
 import type { Attribute } from '@/domain/collection/attributes';
 import type { Recurrence } from '@/domain/chapter/recurrence';
-import { RARITY_COLOR } from '@/domain/collection/rarity';
+import { RARITY_COLOR, RARITY_TEXT } from '@/domain/collection/rarity';
 import { CharacterArt } from './CharacterArt';
 
 /**
@@ -70,7 +70,10 @@ export function RarityCard({
        * valent à l'œil.
        */
       data-rarete={rarity}
-      style={{ ['--rarity' as string]: RARITY_COLOR[rarity] }}
+      style={{
+        ['--rarity' as string]: RARITY_COLOR[rarity],
+        ['--rarity-text' as string]: RARITY_TEXT[rarity],
+      }}
     >
       <CharacterArt
         characterId={characterId}

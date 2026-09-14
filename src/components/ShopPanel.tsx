@@ -51,6 +51,8 @@ export interface ShopProduct {
   description: string;
   /** Couleur de rareté du personnage vendu, résolue côté serveur. */
   rarityColor: string | null;
+  /** Encre de la rareté sur parchemin — voir `RARITY_TEXT`. */
+  rarityText: string | null;
   rarityLabel: string | null;
   /**
    * Prix avant remise, seulement si le produit est remisé en ce moment.
@@ -194,7 +196,10 @@ export function ShopPanel({
                     .join(' ')}
                   style={
                     product.rarityColor
-                      ? ({ ['--rarity' as string]: product.rarityColor })
+                      ? ({
+                          ['--rarity' as string]: product.rarityColor,
+                          ['--rarity-text' as string]: product.rarityText,
+                        })
                       : undefined
                   }
                 >
@@ -244,7 +249,7 @@ export function ShopPanel({
                     disabled={pending || !enabled}
                     aria-busy={pending}
                     onClick={() => buy(product.id)}
-                    className="hb-btn mt-3 disabled:opacity-40"
+                    className="hb-btn mt-3 disabled:opacity-70"
                   >
                     {pending ? t('shop.wait') : t('shop.buy')}
                   </button>

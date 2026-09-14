@@ -41,7 +41,7 @@ import { RarityCard } from '@/components/RarityCard';
 const ChestScene = dynamic(() => import('./ChestScene'), {
   ssr: false,
   loading: () => (
-    <div className="flex h-full items-center justify-center text-sm text-parchment/40">
+    <div className="flex h-full items-center justify-center text-sm text-parchment/60">
       <PreparingLabel />
     </div>
   ),

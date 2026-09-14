@@ -176,7 +176,7 @@ export function CrewSelector({
                   </>
                 ) : (
                   <>
-                    <span className="text-2xl" style={{ color: 'rgba(20,41,79,.28)' }}>???</span>
+                    <span className="text-2xl" style={{ color: 'rgba(20,41,79,.7)' }}>???</span>
                     <span className="hb-legend mt-2">
                       {t('crew.slot.pick')}
                     </span>

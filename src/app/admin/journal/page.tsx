@@ -89,7 +89,7 @@ export default async function JournalPage({
           defaultValue={q}
           placeholder="Pseudo, adresse e-mail ou identifiant"
           aria-label="Rechercher un compte"
-          className="flex-1 rounded-lg border border-turquoise/25 bg-navy/60 px-3 py-2 text-parchment placeholder:text-parchment/35"
+          className="flex-1 rounded-lg border border-turquoise/25 bg-navy/60 px-3 py-2 text-parchment placeholder:text-parchment/60"
         />
         <button
           type="submit"
@@ -124,31 +124,31 @@ export default async function JournalPage({
             <h2 className="font-display text-2xl text-parchment">{journal.handle}</h2>
             <dl className="mt-3 grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
               <div>
-                <dt className="text-parchment/50">Adresse</dt>
+                <dt className="text-parchment/60">Adresse</dt>
                 <dd className="break-all font-mono text-parchment/90">
                   {journal.email ?? '—'}
                 </dd>
               </div>
               <div>
-                <dt className="text-parchment/50">Inscrit le</dt>
+                <dt className="text-parchment/60">Inscrit le</dt>
                 <dd className="font-mono text-parchment/90">
                   {journal.createdAt ? horodatage(journal.createdAt) : '—'}
                 </dd>
               </div>
               <div>
-                <dt className="text-parchment/50">Adresse vérifiée</dt>
+                <dt className="text-parchment/60">Adresse vérifiée</dt>
                 <dd className={journal.emailVerified ? 'text-turquoise' : 'text-orange'}>
                   {journal.emailVerified ? 'oui' : 'non'}
                 </dd>
               </div>
               <div>
-                <dt className="text-parchment/50">Double facteur</dt>
+                <dt className="text-parchment/60">Double facteur</dt>
                 <dd className={journal.mfaEnabled ? 'text-turquoise' : 'text-parchment/60'}>
                   {journal.mfaEnabled ? 'actif' : 'inactif'}
                 </dd>
               </div>
             </dl>
-            <p className="mt-3 break-all font-mono text-[11px] text-parchment/40">
+            <p className="mt-3 break-all font-mono text-[11px] text-parchment/60">
               {journal.playerId}
             </p>
           </section>
@@ -176,14 +176,14 @@ export default async function JournalPage({
                       className="rounded-lg border border-turquoise/10 bg-abyss/30 px-3 py-2 text-sm"
                     >
                       <div className="flex flex-wrap items-baseline gap-x-3">
-                        <span className="font-mono text-xs text-parchment/45">
+                        <span className="font-mono text-xs text-parchment/60">
                           {horodatage(ligne.at)}
                         </span>
                         <span className="font-mono text-parchment/90">{ligne.action}</span>
                         <span className={`text-xs ${statut.classe}`}>{statut.libelle}</span>
                       </div>
                       {ligne.metadata && Object.keys(ligne.metadata).length > 0 && (
-                        <pre className="mt-1 overflow-x-auto text-[11px] text-parchment/50">
+                        <pre className="mt-1 overflow-x-auto text-[11px] text-parchment/60">
                           {JSON.stringify(ligne.metadata)}
                         </pre>
                       )}
@@ -198,7 +198,7 @@ export default async function JournalPage({
             <h2 className="text-xs uppercase tracking-widest text-parchment/60">
               Tentatives de connexion
             </h2>
-            <p className="mt-1 text-xs text-parchment/45">
+            <p className="mt-1 text-xs text-parchment/60">
               Lues par adresse, pas par compte : une tentative échouée n’a
               justement pas de compte attaché.
             </p>
@@ -212,7 +212,7 @@ export default async function JournalPage({
                     key={`${ligne.at}-${i}`}
                     className="flex flex-wrap items-baseline gap-x-3 text-sm"
                   >
-                    <span className="font-mono text-xs text-parchment/45">
+                    <span className="font-mono text-xs text-parchment/60">
                       {horodatage(ligne.at)}
                     </span>
                     <span className="font-mono text-parchment/70">{ligne.ip ? `origine ${ligne.ip}` : 'origine inconnue'}</span>
