@@ -234,3 +234,79 @@ Le journal anti-abus et le versement passent par `Promise.allSettled` : ni l'un
 ni l'autre ne doit faire échouer la réponse. L'équipage est déjà enregistré en
 base, et répondre « échec » sur un équipage bien verrouillé pousserait le
 joueur à le rejouer — ou à croire qu'il l'a perdu.
+
+---
+
+# 14 septembre 2026 — la production, pages connectées
+
+La mesure du 1ᵉʳ septembre ne regardait que le rendu, sur `/classement`
+anonyme, servi depuis le cache partagé. Elle concluait que « la couche de
+données ne coûte rien ». C'était vrai de cette page-là, et faux de toutes
+les autres : les pages connectées lisent des données **propres au joueur**,
+qu'aucun cache partagé ne peut servir.
+
+## Ce que le tir a montré
+
+Cibles réelles (`https://one-piece-quest.vercel.app`), 10 s par palier, un
+compte sonde (supprimé ensuite), générateur hors de la plateforme.
+
+| clients | page | **avant** req/s · p50 | **après** req/s · p50 |
+|---:|---|---:|---:|
+| 10 | `/login` (anonyme) | 75 · 110 ms | 73 · 110 ms |
+| 10 | `/` (accueil) | **9 · 943 ms** | **31 · 241 ms** |
+| 10 | `/collection` | 11 · 863 ms | 24 · 284 ms |
+| 10 | `/classement` | 72 · 128 ms | 67 · 138 ms |
+| 50 | `/` | 8 · 1 503 ms (20 délais dépassés) | 29 · 563 ms (5) |
+| 50 | `/collection` | 6 · 5 920 ms | 40 · 1 080 ms |
+| 50 | `/classement` | 97 · 347 ms | 103 · 373 ms |
+| 100 | `/` | **0 — tout en délai dépassé** | 40 · 2 122 ms |
+| 100 | `/collection` | **0 — tout en délai dépassé** | 29 · 2 443 ms |
+| 100 | `/classement` | 15 · (35 délais dépassés) | 114 · 633 ms, 0 échec |
+
+## Où était la limite
+
+Pas dans le rendu, pas dans Postgres — les requêtes y prennent 0,1 ms. Dans
+**l'API de la base** : mesurée à nu (une lecture d'une ligne indexée, en
+keep-alive), elle rend **44 requêtes par seconde quel que soit le nombre de
+connexions** (5, 20 ou 50), à 105 ms l'unité au repos. C'est le palier de
+calcul du projet Supabase (offre gratuite, instance Nano), pas le schéma.
+
+Chaque requête est donc prise sur un **budget commun à tous les joueurs**.
+L'accueil en dépensait quatre par affichage, la collection quatre, le marché
+huit, le journal de bord dix : dix pages par seconde, et la file d'attente
+grandissait jusqu'aux délais dépassés.
+
+## Ce qui a été fait
+
+- **Une page, un aller-retour** : trois fonctions SQL (`lire_joueur`,
+  `lire_profil`, `lire_marche`, migration 0038) rendent en un appel tout ce
+  qu'une page lit sur un joueur ; `lib/lectures.ts` les décode vers les
+  mêmes types qu'avant. Le carnet d'annonces du marché passe en cache
+  partagé, purgé à chaque mise en vente, retrait ou achat.
+- **Session relue une fois par minute** au lieu de quatre (la révocation
+  invalide l'entrée, elle n'attend pas ce délai).
+- **Publication par lots** : vingt joueurs en parallèle au lieu d'un après
+  l'autre, scores écrits par paquets de deux cents, cinq minutes accordées à
+  l'action.
+- Délais sur chaque appel sortant (base 10 s, Stripe 15 s, e-mails 10 s),
+  cache d'un jour sur les fichiers de `public/`, écriture manuscrite plus
+  préchargée, `global-error` pour la mise en page racine.
+
+## Capacité, et ce qu'il reste
+
+Avec une requête par page, le budget de 44 requêtes/s donne **environ 40
+pages connectées par seconde**, soit 2 400 par minute. Un joueur actif
+affiche une page toutes les vingt à trente secondes : **quelques centaines
+de joueurs simultanés tiennent ; le millier est à la limite**, et le
+dimanche soir concentre tout le monde sur le classement — dont la partie
+partagée est en cache, mais dont le bilan personnel coûte sa requête.
+
+Le levier suivant n'est plus dans le code : c'est le palier Supabase. L'offre
+Pro (25 $/mois) apporte une instance Micro dédiée, et la latence unitaire
+de l'API (105 à 150 ms aujourd'hui, mesurée par `/api/sante`) tomberait
+avec elle. À refaire ce tir après le changement de palier, avec le script du
+dépôt et le cookie d'un compte de test, pour connaître la nouvelle borne :
+
+```bash
+OPQ_SESSION="…" node scripts/load-test.mjs --url https://one-piece-quest.vercel.app --seconds 10 --paliers 10,50,100 --chemins /,/collection,/classement
+```
