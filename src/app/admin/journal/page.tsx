@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { AdminNav } from '@/components/admin/AdminNav';
 import { requireAdmin } from '@/lib/auth/guards';
 import { accountJournal, findAccounts } from '@/lib/admin/account-journal';
 import { audit } from '@/lib/audit';
@@ -76,17 +77,7 @@ export default async function JournalPage({
       </p>
       <h1 className="font-display text-3xl text-parchment">Journal d’un compte</h1>
 
-      <nav className="mt-4 flex flex-wrap gap-3 text-sm">
-        <Link href="/admin" className="text-turquoise underline">
-          Chapitre
-        </Link>
-        <Link href="/admin/stats" className="text-turquoise underline">
-          Statistiques
-        </Link>
-        <Link href="/admin/fraude" className="text-turquoise underline">
-          Fraude
-        </Link>
-      </nav>
+      <AdminNav courant="/admin/journal" />
 
       {/* Formulaire en GET : la recherche devient une URL, donc un lien qu'on
           garde, qu'on partage et sur lequel on revient. Une action serveur

@@ -58,6 +58,9 @@ export function IslandName({ island }: { island: IslandId }) {
       title={t(contemple ? 'island.contemplate.exit' : 'island.contemplate')}
       onClick={() => setContemple((v) => !v)}
     >
+      <span className="isl-name__oeil" aria-hidden="true">
+        {contemple ? '✕' : '👁'}
+      </span>
       {t(`island.${island}` as MessageKey)}
     </button>
   );

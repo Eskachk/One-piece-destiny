@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { AdminNav } from '@/components/admin/AdminNav';
 import { requireAdmin } from '@/lib/auth/guards';
 import { suspiciousAccounts } from '@/lib/antiabuse/review';
 import { FraudCenter } from '@/components/FraudCenter';
@@ -51,17 +51,7 @@ export default async function FraudPage() {
       </p>
       <h1 className="font-display text-3xl text-parchment">Fraude</h1>
 
-      <nav className="mt-4 flex gap-3 text-sm">
-        <Link href="/admin" className="text-turquoise underline">
-          Chapitre
-        </Link>
-        <Link href="/admin/stats" className="text-turquoise underline">
-          Statistiques
-        </Link>
-        <Link href="/admin/journal" className="text-turquoise underline">
-          Journal
-        </Link>
-      </nav>
+      <AdminNav courant="/admin/fraude" />
 
       <section className="mt-6 rounded-xl border border-turquoise/20 bg-navy/40 p-4">
         <h2 className="text-xs uppercase tracking-widest text-parchment/60">

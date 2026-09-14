@@ -320,8 +320,6 @@ export function HarborScene({
               occupe la hauteur de l'écran — le décor, lui, est posé en bas. Tout
               est en CSS (`.isl-fx`), donc rien n'est ajouté au balisage. */}
           <div className="isl-fx" aria-hidden="true" />
-
-          {island !== 'harbor' && island !== 'hq' && <IslandName island={island} />}
           </>
         )}
 
@@ -406,6 +404,12 @@ export function HarborScene({
       </div>
 
       {/* --- Contenu ------------------------------------------------------ */}
+      {/* Le nom de l'île — et, sur grand écran, le bouton de contemplation.
+          Hors du fond, exprès : le fond est une couche fixe sous le contenu,
+          et un bouton posé dedans recevait le clic… du contenu, qui passe
+          par-dessus. Ici il est au-dessus de tout sauf de la visite guidée. */}
+      {decor && island !== 'harbor' && island !== 'hq' && <IslandName island={island} />}
+
       <main className="harbor__content">
         {variant === 'hero' ? (
           <header className="harbor__header">

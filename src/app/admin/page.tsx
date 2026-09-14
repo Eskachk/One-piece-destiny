@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
+import { AdminNav } from '@/components/admin/AdminNav';
 import { AppearanceImportForm } from '@/components/AppearanceImportForm';
 import { ChapterCorrection } from '@/components/ChapterCorrection';
 import { ChapterSimulator } from '@/components/ChapterSimulator';
@@ -94,17 +94,7 @@ export default async function AdminPage() {
         </p>
         <h1 className="font-display text-3xl text-parchment">Poste de commandement</h1>
 
-      <nav className="mt-4 flex gap-3 text-sm">
-        <Link href="/admin/stats" className="text-turquoise underline">Statistiques</Link>
-        <Link href="/admin/fraude" className="text-turquoise underline">Fraude</Link>
-          <Link href="/admin/journal" className="text-turquoise underline">Journal</Link>
-      </nav>
-
-        <nav className="mt-4 flex gap-3 text-sm">
-          <Link href="/admin/stats" className="text-turquoise underline">Statistiques</Link>
-          <Link href="/admin/fraude" className="text-turquoise underline">Fraude</Link>
-          <Link href="/admin/journal" className="text-turquoise underline">Journal</Link>
-        </nav>
+        <AdminNav courant="/admin" />
 
         <p className="mt-4 rounded-lg border border-turquoise/25 bg-navy/50 p-3 text-sm text-parchment/70">
           Connecté en administrateur —{' '}
@@ -194,6 +184,8 @@ export default async function AdminPage() {
         </p>
         <h1 className="font-display text-3xl text-parchment">Poste de commandement</h1>
       </header>
+
+      <AdminNav courant="/admin" />
 
       <p className="mt-4 flex items-center justify-between rounded-lg border border-turquoise/25 bg-navy/50 p-3 text-sm text-parchment/70">
         <span>

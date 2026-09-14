@@ -2952,10 +2952,16 @@ button[aria-busy='true']:not(.hb-btn)::before {
    =========================================================================== */
 
 .isl-name {
-  position: absolute;
+  /* Fixe et au-dessus du contenu (z 30 : sous la visite guidée à 60, sur la
+     barre d'onglets à 20). Il était dans le fond, en `absolute` sous le
+     contenu : visible, mais le clic tombait sur la page, pas sur lui. */
+  position: fixed;
   top: 0.9rem;
   right: 0.9rem;
-  z-index: 1;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   padding: 0.22rem 0.55rem;
   border: 0;
   border-radius: 0.4rem;
@@ -2965,10 +2971,14 @@ button[aria-busy='true']:not(.hb-btn)::before {
   text-transform: uppercase;
   color: #16304f;
   background: rgba(255, 255, 255, 0.62);
-  /* Inerte par défaut : le fond est en `pointer-events: none`, et l'étiquette
-     avec lui. Le bouton ne s'active que sur grand écran, ci-dessous. */
+  /* Inerte par défaut : sur téléphone c'est une étiquette. Le bouton ne
+     s'active que sur grand écran, ci-dessous. */
   pointer-events: none;
   cursor: default;
+}
+
+.isl-name__oeil {
+  display: none;
 }
 
 /* ---------------------------------------------------------------------------
@@ -2980,11 +2990,20 @@ button[aria-busy='true']:not(.hb-btn)::before {
    la page se retirer, pas disparaître d'un coup. `visibility` suit pour que
    rien ne reste cliquable ni lisible au clavier.
    --------------------------------------------------------------------------- */
-@media (min-width: 900px) and (hover: hover) {
+@media (min-width: 900px) {
   .isl-name {
     pointer-events: auto;
     cursor: pointer;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.72rem;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 2px 10px rgba(9, 26, 45, 0.22);
     transition: background 0.2s ease, transform 0.2s ease;
+  }
+  .isl-name__oeil {
+    display: inline;
+    font-size: 0.9rem;
+    line-height: 1;
   }
   .isl-name:hover {
     background: rgba(255, 255, 255, 0.92);
@@ -3008,9 +3027,7 @@ button[aria-busy='true']:not(.hb-btn)::before {
   html.contemplation .isl-name {
     background: rgba(255, 255, 255, 0.92);
   }
-  html.contemplation .isl-name::after {
-    content: ' ✕';
-  }
+
 }
 
 /* Sur écran étroit, la colonne prend toute la largeur : le nom se glisse
