@@ -195,12 +195,33 @@ export const CATALOG: Record<ProductId, Product> = {
    *
    * Le personnage accordé est lu **ici**, côté serveur. Un identifiant venu du
    * client serait un personnage choisi par le client.
+   *
+   * ## Le prix, mesuré contre les autres chemins vers la même carte
+   *
+   * Un Légendaire nommé a coûté 8,99 €. Mesuré (test « équilibre ») :
+   *
+   *     coffre royal, dans le lot du Yonko   2,50 €  → 1,22 Légendaire+ attendu
+   *     Légendaire au plancher du Marché      4 000 🪙 → 2,66 € via la Bourse
+   *     Shanks nommé                          8,99 €
+   *
+   * Trois fois et demie le prix d'un Légendaire pris au hasard, et plus de
+   * trois fois celui d'un Légendaire acheté au Marché avec des Berries de la
+   * boutique. Le supplément paie le **choix** — un Légendaire précis parmi
+   * quarante-deux — et ce supplément est légitime, mais pas à ce niveau : le
+   * rayon ne se vendait qu'à qui n'avait pas comparé.
+   *
+   * À 5,99 €, le choix coûte un peu plus de deux coffres royaux, et reste
+   * au-dessus de la Bourse (4,99 €) — une étiquette par contenu, jamais deux
+   * fois la même. Le Mythique suit à 8,99 € : dix fois plus rare au coffre
+   * (un royal sur neuf en donne un), il vaut une fois et demie un Légendaire,
+   * et reste bien sous les 24 € que coûte en moyenne un Mythique au hasard
+   * dans le lot du Yonko.
    */
   character_shanks: {
     id: 'character_shanks',
     category: 'CHARACTER',
     label: 'Shanks',
-    priceCents: 899,
+    priceCents: 599,
     currency: 'EUR',
     grants: { berries: 0, chests: 0, characterId: 'shanks' },
     rarity: 'LEGENDARY',
@@ -211,7 +232,7 @@ export const CATALOG: Record<ProductId, Product> = {
     id: 'character_mihawk',
     category: 'CHARACTER',
     label: 'Dracule Mihawk',
-    priceCents: 899,
+    priceCents: 599,
     currency: 'EUR',
     grants: { berries: 0, chests: 0, characterId: 'mihawk' },
     rarity: 'LEGENDARY',
@@ -227,8 +248,8 @@ export const CATALOG: Record<ProductId, Product> = {
    * raccourci.
    *
    * Il coûte plus cher qu'un Légendaire parce qu'il est dix fois plus rare au
-   * coffre — 0,1 % contre 1,2 %. Un même prix pour deux raretés différentes
-   * dirait au joueur que la rareté ne veut rien dire.
+   * coffre — 0,7 % contre 7,7 % par coffre normal. Un même prix pour deux
+   * raretés différentes dirait au joueur que la rareté ne veut rien dire.
    *
    * §25 et §48 restent tenus : la rareté est une valeur de collection. Le
    * moteur de score ne la lit jamais pour accorder des points, et l'y voir
@@ -241,7 +262,7 @@ export const CATALOG: Record<ProductId, Product> = {
     id: 'character_luffy',
     category: 'CHARACTER',
     label: 'Monkey D. Luffy',
-    priceCents: 1299,
+    priceCents: 899,
     currency: 'EUR',
     grants: { berries: 0, chests: 0, characterId: 'luffy' },
     rarity: 'MYTHIC',

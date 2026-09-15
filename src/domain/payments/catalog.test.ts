@@ -320,6 +320,33 @@ describe('rayon personnages', () => {
     }
   });
 
+  it('ne fait pas payer le choix plus de trois coffres royaux', () => {
+    /*
+     * ## Le défaut que ce test attrape
+     *
+     * Un Légendaire nommé a coûté 8,99 € quand un coffre royal — qui en
+     * garantit un, tiré au sort — en coûtait 2,50 dans le lot du Yonko, et
+     * qu'un Légendaire au plancher du Marché revenait à 2,66 € via la Bourse.
+     * Trois fois et demie le prix du hasard pour la certitude : le rayon ne
+     * se vendait qu'à qui n'avait pas comparé.
+     *
+     * Le choix vaut un supplément, pas un multiple. La règle : un Légendaire
+     * nommé ne coûte jamais plus de **trois** coffres royaux, un Mythique pas
+     * plus de **quatre** (un royal sur neuf en donne un, contre plus d'un
+     * Légendaire par royal) — de quoi payer la certitude, pas de quoi la
+     * punir.
+     */
+    const royal = CATALOG.royal_chest;
+    const parCoffreRoyal = royal.priceCents / (royal.grants.royalChests ?? 1);
+    for (const p of personnages) {
+      const plafond = (p.rarity === 'MYTHIC' ? 4 : 3) * parCoffreRoyal;
+      expect(
+        p.priceCents,
+        `${p.id} coûte plus de ${p.rarity === 'MYTHIC' ? 'quatre' : 'trois'} coffres royaux (${parCoffreRoyal / 100} € pièce)`,
+      ).toBeLessThanOrEqual(plafond);
+    }
+  });
+
   it('fait payer le Mythique plus cher que les Légendaires', () => {
     // Il est dix fois plus rare au coffre. Un même prix pour deux raretés
     // dirait au joueur que la rareté ne veut rien dire.
