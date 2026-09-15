@@ -17,6 +17,7 @@ import { requireSession } from '@/lib/auth/guards';
 import * as market from '@/lib/market/repository';
 import { getCachedActiveListings, getCachedRecentSales } from '@/lib/cache';
 import { lireMarche } from '@/lib/lectures';
+import { canBuyOnMarket } from '@/lib/antiabuse/restrictions';
 import { AdBanner } from '@/components/AdBanner';
 import { traduire } from '@/lib/i18n';
 
@@ -72,10 +73,15 @@ export default async function MarketPage() {
   // Deux lectures partagées (annonces, ventes récentes) et une lecture
   // personnelle groupée (`lib/lectures.ts`) : trois allers-retours au lieu
   // de huit.
-  const [listings, sold, moi] = await Promise.all([
+  // L'admission au Marché part avec le reste : elle ne dépend que du joueur.
+  // La dire ici, avant le premier clic, vaut mieux qu'un refus après : un
+  // compte de la veille ou une adresse non confirmée voit pourquoi les boutons
+  // sont fermés, et ce qu'il lui reste à faire.
+  const [listings, sold, moi, admission] = await Promise.all([
     getCachedActiveListings(),
     getCachedRecentSales(),
     lireMarche(session.playerId),
+    canBuyOnMarket(session.playerId),
   ]);
   const { wallet, ownedIds, watchedIds, asks, sales, thresholds } = moi;
 
@@ -141,6 +147,7 @@ export default async function MarketPage() {
           }))}
           sellable={sellable}
           berries={wallet.berries}
+          fermeture={admission.allowed ? null : admission.message}
         />
       </div>
 

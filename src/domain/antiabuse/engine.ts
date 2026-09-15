@@ -4,6 +4,8 @@ import {
   RISK_LEVELS,
   SIGNAL_WEIGHTS,
   VELOCITY,
+  YOUNG_BUYERS_THRESHOLD,
+  YOUNG_BUYER_MS,
   type RiskLevel,
   type SignalName,
 } from './config';
@@ -85,6 +87,11 @@ export interface EconomicTransfer {
   fromStarterChest: boolean;
   /** L'autre partie partage-t-elle le contexte technique du joueur ? */
   counterpartyRelated: boolean;
+  /**
+   * Âge du compte d'en face au moment de l'échange, en millisecondes ; `null`
+   * ou absent quand on ne le connaît pas. Ne sert qu'aux ventes.
+   */
+  counterpartyAgeMs?: number | null;
 }
 
 const DAY = 24 * 60 * 60 * 1000;
@@ -177,6 +184,27 @@ export function assessRisk(input: RiskInput): RiskAssessment {
     add(
       'COMMON_BENEFICIARY',
       `${topBeneficiary[1]} transferts vers un même compte.`,
+    );
+  }
+
+  // L'entonnoir : plusieurs comptes de moins d'une semaine, différents, qui
+  // achètent à ce même vendeur. C'est le trajet de la ferme vu du compte qui
+  // encaisse (§43) : chaque acheteur apporte sa dotation d'arrivée, et le
+  // vendeur les collecte. Trois acheteurs neufs distincts en deux semaines,
+  // ce n'est plus un hasard de calendrier.
+  const acheteursNeufs = new Set(
+    recentOut
+      .filter(
+        (transfer) =>
+          typeof transfer.counterpartyAgeMs === 'number' &&
+          transfer.counterpartyAgeMs < YOUNG_BUYER_MS,
+      )
+      .map((transfer) => transfer.counterpartyId),
+  );
+  if (acheteursNeufs.size >= YOUNG_BUYERS_THRESHOLD) {
+    add(
+      'NEW_ACCOUNT_BUYERS',
+      `${acheteursNeufs.size} acheteurs différents de moins de sept jours.`,
     );
   }
 

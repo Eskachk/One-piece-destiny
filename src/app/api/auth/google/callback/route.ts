@@ -72,8 +72,14 @@ export async function GET(request: Request) {
   const exchange = await exchangeGoogleCode(config, code, verifier);
   if (!exchange.ok) return back('echange');
 
-  const resolved = await resolveGoogleAccount(exchange.identity);
-  if (!resolved.ok) return back('compte');
+  // L'empreinte est calculée avant la résolution : elle sert aussi à
+  // l'inscription (§43), pas seulement à la session.
+  const requestHeaders = await headers();
+  const empreinte =
+    empreinteIp(requestHeaders.get('x-forwarded-for')?.split(',')[0]) ?? undefined;
+
+  const resolved = await resolveGoogleAccount(exchange.identity, { ip: empreinte });
+  if (!resolved.ok) return back(resolved.code ?? 'compte');
 
   // La MFA reste due : un compte administrateur protégé par TOTP ne doit pas
   // pouvoir la contourner en passant par Google.
@@ -83,11 +89,10 @@ export async function GET(request: Request) {
     .eq('id', resolved.userId)
     .maybeSingle();
 
-  const requestHeaders = await headers();
   await createSession(
     resolved.userId,
     {
-      ip: empreinteIp(requestHeaders.get('x-forwarded-for')?.split(',')[0]) ?? undefined,
+      ip: empreinte,
       userAgent: requestHeaders.get('user-agent') ?? undefined,
     },
     { mfaPending: Boolean(account?.mfa_enabled) },

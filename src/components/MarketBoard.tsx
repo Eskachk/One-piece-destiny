@@ -43,10 +43,18 @@ export function MarketBoard({
   listings,
   sellable,
   berries,
+  fermeture = null,
 }: {
   listings: ListingView[];
   sellable: SellableView[];
   berries: number;
+  /**
+   * Pourquoi le Marché est fermé à ce compte (moins de 24 h, adresse non
+   * confirmée, restriction), ou `null` s'il est ouvert. Le serveur l'a déjà
+   * décidé ; ici on le dit, et l'on ferme les boutons plutôt que de laisser
+   * cliquer pour rien.
+   */
+  fermeture?: string | null;
 }) {
   const { t, tradMessage } = useT();
   const [selling, setSelling] = useState<SellableView | null>(null);
@@ -77,6 +85,12 @@ export function MarketBoard({
 
   return (
     <div className="space-y-8">
+      {fermeture && (
+        <p role="status" className="hb-card text-sm">
+          🔒 {tradMessage(fermeture)}
+        </p>
+      )}
+
       {message && (
         <p
           role="status"
@@ -135,8 +149,9 @@ export function MarketBoard({
                   ) : (
                     <button
                       type="button"
-                      disabled={pending || tooPoor || listing.alreadyOwned}
+                      disabled={pending || tooPoor || listing.alreadyOwned || fermeture !== null}
                       aria-busy={pending}
+                      title={fermeture ? tradMessage(fermeture) : undefined}
                       onClick={() => run(() => buyListingAction(listing.id))}
                       className="transition-quick mt-3 w-full rounded-lg hb-goldfill px-3 py-2 text-sm font-semibold hb-on-gold disabled:opacity-70 disabled:hb-ink-soft"
                     >

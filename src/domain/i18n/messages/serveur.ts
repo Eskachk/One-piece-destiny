@@ -63,6 +63,8 @@ export const SERVEUR = {
     'srv.mk.starterLock.other':
       'Les personnages du coffre d’inscription ne s’échangent qu’après {days} jours. Encore {n} jours.',
     'srv.mk.newAccount': 'Le Market s’ouvre 24 h après l’inscription. Encore {n} h.',
+    'srv.mk.unverified':
+      'Le Market demande une adresse e-mail confirmée. Le lien est dans ton profil.',
     'srv.mk.watchInvalid': 'État de surveillance invalide.',
     'srv.mk.thresholdInvalid': 'Seuil invalide.',
 
@@ -142,6 +144,8 @@ export const SERVEUR = {
     'srv.mk.starterLock.one': 'Welcome chest characters can only be traded after {days} days. {n} day to go.',
     'srv.mk.starterLock.other': 'Welcome chest characters can only be traded after {days} days. {n} days to go.',
     'srv.mk.newAccount': 'The Market opens 24 h after sign-up. {n} h to go.',
+    'srv.mk.unverified':
+      'The Market requires a confirmed e-mail address. The link is in your profile.',
     'srv.mk.watchInvalid': 'Invalid watch state.',
     'srv.mk.thresholdInvalid': 'Invalid threshold.',
 

@@ -43,6 +43,12 @@ export const SIGNAL_WEIGHTS = {
   WASH_TRADING: 30,
   /** Le trajet complet coffre d'inscription → Market → même compte. */
   WELCOME_VALUE_FARMING: 30,
+  // Le trajet inverse de la ferme : un compte principal qui **vend** à des
+  // comptes de moins d'une semaine, plusieurs, différents. Chaque acheteur
+  // apporte sa dotation d'arrivée ; le vendeur encaisse. Vu du vendeur, ce
+  // sont des ventes ordinaires à des inconnus ; vu de l'ensemble, c'est un
+  // entonnoir.
+  NEW_ACCOUNT_BUYERS: 25,
 } as const;
 
 export type SignalName = keyof typeof SIGNAL_WEIGHTS;
@@ -111,3 +117,8 @@ export const RAPID_TRANSFER_MS = 2 * HOUR;
  * comptes secondaires au sens des règles du bord.
  */
 export const MAX_ACCOUNTS_PER_PERSON = 2;
+
+/** Âge en deçà duquel un acheteur compte comme « compte neuf » pour le signal `NEW_ACCOUNT_BUYERS`. */
+export const YOUNG_BUYER_MS = 7 * DAY;
+/** Nombre d'acheteurs neufs distincts, sur la fenêtre économique, à partir duquel le signal se lève. */
+export const YOUNG_BUYERS_THRESHOLD = 3;

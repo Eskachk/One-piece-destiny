@@ -193,6 +193,45 @@ describe('moteur de risque — abus (§31)', () => {
     });
     expect(ancien.level).toBe('NORMAL');
   });
+
+  it('voit l’entonnoir : le compte principal qui vend à des comptes neufs', () => {
+    // Le trajet de la ferme vu du compte qui encaisse (§43, §71) : trois
+    // acheteurs différents, tous inscrits depuis moins d'une semaine, chacun
+    // arrivé avec sa dotation d'arrivée. Aucun autre signal ne le voyait :
+    // ni bénéficiaire commun (ce sont des ventes, pas des achats), ni
+    // comptes liés (les connexions diffèrent).
+    const entonnoir = assessRisk({
+      ...base,
+      outgoingTransfers: Array.from({ length: 3 }, (_, i) => ({
+        counterpartyId: `filleul-${i}`,
+        amount: 2_700,
+        at: ago((i + 1) * DAY),
+        heldForMs: 30 * DAY,
+        fromStarterChest: false,
+        counterpartyRelated: false,
+        counterpartyAgeMs: 2 * DAY,
+      })),
+    });
+    expect(entonnoir.signals.map((s) => s.name)).toContain('NEW_ACCOUNT_BUYERS');
+    expect(entonnoir.score).toBeGreaterThanOrEqual(SIGNAL_WEIGHTS.NEW_ACCOUNT_BUYERS);
+  });
+
+  it('ne confond pas l’entonnoir avec un vendeur qui a des clients installés', () => {
+    const marchand = assessRisk({
+      ...base,
+      outgoingTransfers: Array.from({ length: 6 }, (_, i) => ({
+        counterpartyId: `client-${i}`,
+        amount: 2_700,
+        at: ago((i + 1) * DAY),
+        heldForMs: 30 * DAY,
+        fromStarterChest: false,
+        counterpartyRelated: false,
+        // Cinq clients de longue date, un seul compte neuf : rien à signaler.
+        counterpartyAgeMs: i === 0 ? 2 * DAY : 120 * DAY,
+      })),
+    });
+    expect(marchand.signals.map((s) => s.name)).not.toContain('NEW_ACCOUNT_BUYERS');
+  });
 });
 
 describe('score et graduation', () => {

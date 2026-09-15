@@ -63,14 +63,24 @@ trompent sur personne, et n'accusent personne :
    s'échangent pas avant plusieurs jours. La valeur existe, elle est immobile.
    C'est ce qui rend le fermage non rentable, sans qu'un joueur légitime soit
    gêné : personne n'a besoin de revendre sa dotation dans l'heure.
-2. **Délai d'accès au Market.** Un compte neuf ne vend pas.
-3. **Qualification du parrainage.** Le parrain n'est payé que lorsque son
-   filleul verrouille un premier équipage — une étape qu'un compte fabriqué ne
-   franchit pas.
-4. **Provenance des cartes.** Chaque exemplaire porte sa chaîne de
+2. **Délai d'accès au Market, et adresse confirmée.** Un compte neuf
+   n'achète ni ne vend avant 24 h, et un compte sans adresse confirmée ne
+   touche pas au Market. Le délai ne valait d'abord que pour la vente ; or le
+   trajet du fermage est l'**achat** : des comptes fabriqués, dotés de leurs
+   Berries d'arrivée, qui achètent l'annonce d'un compte principal. Fermer
+   l'achat aux comptes neufs et non confirmés coupe ce trajet à sa source.
+3. **Une boîte, un compte.** L'unicité des adresses se juge sur leur forme
+   canonique (`email_canonical`, migration 0045) : `luffy+1@gmail.com`,
+   `luffy+2@gmail.com` et `l.u.f.f.y@gmail.com` sont une seule boîte, donc un
+   seul compte. Sans cela, « adresse confirmée » s'achetait gratuitement, à
+   l'infini, avec une seule boîte Gmail.
+4. **Qualification du parrainage.** Le parrain n'est payé que lorsque son
+   filleul a confirmé son adresse et joué trois chapitres — des étapes qu'un
+   compte fabriqué ne franchit pas sans y passer trois semaines.
+5. **Provenance des cartes.** Chaque exemplaire porte sa chaîne de
    propriétaires. Ce n'est pas une heuristique : « ces quinze cartes viennent
    des coffres d'arrivée de quinze comptes créés le même jour » est un fait.
-5. **Moteur de risque.** Combinaison de signaux techniques, comportementaux et
+6. **Moteur de risque.** Combinaison de signaux techniques, comportementaux et
    économiques.
 
 ## Signaux
@@ -81,7 +91,12 @@ Trois familles. Aucune ne suffit seule.
   d'inscription, cadence d'ouverture de coffres.
 - **Comportementaux** — absence de partie jouée, grappe de filleuls inactifs.
 - **Économiques** — revente immédiate, bénéficiaire commun, échanges
-  circulaires, trajet complet « coffre d'arrivée → Market → compte lié ».
+  circulaires, trajet complet « coffre d'arrivée → Market → compte lié », et
+  l'entonnoir vu du compte qui encaisse : plusieurs acheteurs différents de
+  moins d'une semaine (`NEW_ACCOUNT_BUYERS`). C'est le trajet de la ferme
+  regardé depuis le compte principal, celui que ni « bénéficiaire commun »
+  (ce sont des ventes) ni « comptes liés » (les connexions diffèrent) ne
+  voyaient.
 
 **Règle absolue, vérifiée par un test :** aucun poids de signal n'atteint le
 seuil de restriction. Partager une adresse IP ne peut donc pas, à soi seul,
@@ -149,7 +164,11 @@ Elles sont réelles, et il vaut mieux les écrire :
 
 - **Le rapprochement par IP se contourne** — VPN, partage de connexion mobile,
   réseau différent par compte. C'est pourquoi il ne pèse qu'un signal parmi
-  d'autres, et pourquoi les protections passives comptent davantage.
+  d'autres, et pourquoi les protections passives comptent davantage. Il ne
+  voit pas non plus les comptes d'avant la migration 0043, dont l'adresse
+  d'inscription a été effacée : pour eux, seules les protections passives
+  jouent. Les comptes ouverts par Google portent une empreinte depuis le
+  15 septembre 2026 ; avant, ils n'en avaient aucune.
 - **Un fermier patient passe.** Créer des comptes, attendre le déverrouillage,
   faire jouer un chapitre à chacun, puis transférer : le dispositif ralentit
   cela de plusieurs jours par compte, il ne l'empêche pas. C'est l'objectif

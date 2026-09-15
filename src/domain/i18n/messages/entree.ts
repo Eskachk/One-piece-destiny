@@ -80,6 +80,8 @@ export const ENTREE = {
     'auth.google.incomplet': 'Réponse Google incomplète. Réessaie.',
     'auth.google.echange': 'Google n’a pas confirmé cette connexion.',
     'auth.google.compte': 'Impossible d’ouvrir ce compte.',
+    'auth.google.boite':
+      'Un compte existe déjà pour cette boîte, sous une autre écriture de l’adresse. Connecte-toi avec ton mot de passe, puis confirme ton adresse depuis ton profil.',
     'auth.google.indisponible': 'La connexion Google n’est pas configurée.',
     'auth.google.generic': 'Connexion impossible.',
 
@@ -184,6 +186,8 @@ export const ENTREE = {
     'auth.google.incomplet': 'Incomplete reply from Google. Try again.',
     'auth.google.echange': 'Google did not confirm this sign-in.',
     'auth.google.compte': 'This account could not be opened.',
+    'auth.google.boite':
+      'An account already exists for this mailbox under another spelling of the address. Sign in with your password, then confirm your address from your profile.',
     'auth.google.indisponible': 'Google sign-in is not configured.',
     'auth.google.generic': 'Sign-in failed.',
 

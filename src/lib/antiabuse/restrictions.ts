@@ -16,8 +16,15 @@ import { audit } from '@/lib/audit';
  *
  *   1. **la carte est-elle échangeable ?** Une carte de coffre d'inscription
  *      ne l'est pas avant sept jours. C'est un fait, pas un jugement ;
- *   2. **le compte a-t-il l'âge de vendre ?** Un compte de dix minutes n'a
- *      rien à faire au Market. C'est un fait aussi ;
+ *   2. **le compte a-t-il l'âge du Market, et une adresse confirmée ?** Un
+ *      compte de dix minutes n'a rien à y faire, et un compte dont personne
+ *      n'a jamais relevé la boîte non plus. Deux faits, et ils valent **dans
+ *      les deux sens** : le délai ne s'appliquait qu'à la vente, si bien
+ *      qu'un compte tout neuf pouvait acheter tout de suite. Or c'est
+ *      précisément le sens du fermage : des comptes fabriqués, dotés de
+ *      leurs Berries d'arrivée, qui achètent l'annonce d'un compte principal
+ *      pour lui transférer la valeur. Fermer l'achat aux comptes neufs et
+ *      non confirmés coupe ce trajet à sa source ;
  *   3. **le compte est-il restreint ?** Là seulement intervient le moteur de
  *      risque, et seulement pour limiter l'économie.
  *
@@ -30,6 +37,7 @@ import { audit } from '@/lib/audit';
 export type EconomicRefusal =
   | 'STARTER_CARD_LOCKED'
   | 'ACCOUNT_TOO_NEW'
+  | 'EMAIL_UNVERIFIED'
   | 'RESTRICTED';
 
 export type EconomicDecision =
@@ -37,6 +45,41 @@ export type EconomicDecision =
   | { allowed: false; reason: EconomicRefusal; message: string };
 
 const ALLOWED: EconomicDecision = { allowed: true };
+
+/**
+ * Le compte a-t-il l'âge et l'adresse qu'il faut pour toucher au Market ?
+ *
+ * Commun à la vente et à l'achat. Les deux règles sont annoncées et ne
+ * dépendent d'aucune détection : le message peut donc être précis.
+ */
+function compteAdmisAuMarket(account: {
+  created_at: string;
+  email_verified_at: string | null;
+} | null): EconomicDecision {
+  if (!account) return ALLOWED;
+
+  const now = Date.now();
+  const age = now - new Date(account.created_at).getTime();
+  if (age < MARKET_ACCESS_DELAY_MS) {
+    const hours = Math.ceil((MARKET_ACCESS_DELAY_MS - age) / (60 * 60 * 1000));
+    return {
+      allowed: false,
+      reason: 'ACCOUNT_TOO_NEW',
+      message: `Le Market s’ouvre 24 h après l’inscription. Encore ${hours} h.`,
+    };
+  }
+
+  if (!account.email_verified_at) {
+    return {
+      allowed: false,
+      reason: 'EMAIL_UNVERIFIED',
+      message:
+        'Le Market demande une adresse e-mail confirmée. Le lien est dans ton profil.',
+    };
+  }
+
+  return ALLOWED;
+}
 
 /** Restriction en cours, ou `null`. Lecture indexée, sans calcul. */
 export async function activeRestriction(
@@ -82,7 +125,7 @@ export async function canEnterMarket(
       .maybeSingle(),
     db()
       .from('user_accounts')
-      .select('created_at')
+      .select('created_at, email_verified_at')
       .eq('player_id', playerId)
       .maybeSingle(),
     activeRestriction(playerId),
@@ -105,17 +148,8 @@ export async function canEnterMarket(
     }
   }
 
-  if (account.data) {
-    const age = now - new Date(account.data.created_at).getTime();
-    if (age < MARKET_ACCESS_DELAY_MS) {
-      const hours = Math.ceil((MARKET_ACCESS_DELAY_MS - age) / (60 * 60 * 1000));
-      return {
-        allowed: false,
-        reason: 'ACCOUNT_TOO_NEW',
-        message: `Le Market s’ouvre 24 h après l’inscription. Encore ${hours} h.`,
-      };
-    }
-  }
+  const admission = compteAdmisAuMarket(account.data);
+  if (!admission.allowed) return admission;
 
   if (restriction) {
     // Message générique (§40). Détailler les signaux publierait le mode
@@ -135,7 +169,20 @@ export async function canEnterMarket(
 export async function canBuyOnMarket(
   playerId: string,
 ): Promise<EconomicDecision> {
-  const restriction = await activeRestriction(playerId);
+  if (!isDatabaseConfigured()) return ALLOWED;
+
+  const [account, restriction] = await Promise.all([
+    db()
+      .from('user_accounts')
+      .select('created_at, email_verified_at')
+      .eq('player_id', playerId)
+      .maybeSingle(),
+    activeRestriction(playerId),
+  ]);
+
+  const admission = compteAdmisAuMarket(account.data);
+  if (!admission.allowed) return admission;
+
   if (!restriction) return ALLOWED;
   return { allowed: false, reason: 'RESTRICTED', message: RESTRICTION_MESSAGE };
 }

@@ -176,7 +176,10 @@ async function enrichTransfers(
       .eq('player_id', playerId)
       .in('character_id', [...new Set(rows.map((r) => r.character_id))]),
     db().from('user_accounts').select('signup_ip').eq('player_id', playerId).maybeSingle(),
-    db().from('user_accounts').select('player_id, signup_ip').in('player_id', counterparties),
+    db()
+      .from('user_accounts')
+      .select('player_id, signup_ip, created_at')
+      .in('player_id', counterparties),
   ]);
 
   const myIp = mine.data?.signup_ip ?? null;
@@ -184,6 +187,11 @@ async function enrichTransfers(
     (theirs.data ?? [])
       .filter((row) => myIp !== null && row.signup_ip === myIp)
       .map((row) => row.player_id),
+  );
+  // Date de création de chaque compte d'en face : c'est elle qui dit, pour
+  // une vente, si l'acheteur était un compte neuf.
+  const createdAt = new Map(
+    (theirs.data ?? []).map((row) => [row.player_id, new Date(row.created_at).getTime()]),
   );
 
   // Acquisition la plus récente de chaque personnage par ce joueur.
@@ -208,6 +216,10 @@ async function enrichTransfers(
       heldForMs: origin ? soldAt.getTime() - origin.at.getTime() : null,
       fromStarterChest: origin?.source === 'STARTER_CHEST',
       counterpartyRelated: relatedIds.has(counterpartyId),
+      counterpartyAgeMs:
+        side === 'seller' && createdAt.has(counterpartyId)
+          ? soldAt.getTime() - (createdAt.get(counterpartyId) as number)
+          : null,
     };
   });
 }

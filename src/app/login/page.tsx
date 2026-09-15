@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
  * Volontairement courts et non spécifiques : détailler l'état interne
  * offrirait un oracle pour tester l'existence d'un compte.
  */
-const OAUTH_ERRORS = new Set(['annule', 'etat', 'incomplet', 'echange', 'compte', 'indisponible']);
+const OAUTH_ERRORS = new Set(['annule', 'etat', 'incomplet', 'echange', 'compte', 'boite', 'indisponible']);
 
 export default async function LoginPage({
   searchParams,

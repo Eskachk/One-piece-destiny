@@ -5,6 +5,7 @@ import { db, isDatabaseConfigured } from '@/lib/supabase-admin';
 import { baseUrl } from '@/lib/email/templates';
 import { grantSignupBonus } from '@/lib/social/signup-grant';
 import { fallbackHandle } from '@/domain/player/handle';
+import { canonicalEmail } from '@/domain/auth/email';
 
 /**
  * Connexion par Google (OpenID Connect, flux « authorization code »).
@@ -190,7 +191,7 @@ function decodeIdToken(token: string): IdTokenClaims | null {
 
 export type ResolveResult =
   | { ok: true; userId: string; created: boolean }
-  | { ok: false; error: string };
+  | { ok: false; error: string; code?: 'boite' };
 
 /**
  * Retrouve ou crée le compte correspondant à une identité Google.
@@ -201,11 +202,26 @@ export type ResolveResult =
  *   2. un compte existe avec la même adresse → on **lie**. Sûr uniquement
  *      parce que Google a vérifié l'adresse ; sans cette garantie, ce serait
  *      une prise de contrôle offerte ;
+ *   2 bis. un compte existe avec la même **boîte** sous une autre écriture
+ *      (`luffy+opq@gmail.com` inscrit au formulaire, `luffy@gmail.com` chez
+ *      Google) → on lie aussi, mais seulement si ce compte a confirmé son
+ *      adresse. Sinon, rien ne prouve qu'il appartient à la même personne :
+ *      quelqu'un aurait pu ouvrir `victime+x@…` sans jamais recevoir le
+ *      courriel, et attendre que la victime arrive par Google. On refuse, et
+ *      la création échouerait de toute façon sur l'unicité canonique (0045) ;
  *   3. aucun compte → on en crée un, sans mot de passe. L'utilisateur pourra
  *      en définir un plus tard par « mot de passe oublié ».
+ *
+ * `meta.ip` est l'empreinte d'inscription (§43), la même que celle du
+ * formulaire. Elle manquait ici : un compte ouvert par Google n'avait pas
+ * d'empreinte, donc échappait au plafond de deux comptes par connexion, à la
+ * détection de comptes liés sur le Marché et au refus de parrainage entre
+ * comptes d'une même connexion. C'était le chemin le moins cher pour une
+ * ferme de comptes.
  */
 export async function resolveGoogleAccount(
   identity: GoogleIdentity,
+  meta: { ip?: string } = {},
 ): Promise<ResolveResult> {
   const linked = await db()
     .from('oauth_identities')
@@ -249,6 +265,34 @@ export async function resolveGoogleAccount(
     return { ok: true, userId: existing.data.id, created: false };
   }
 
+  const memeBoite = await db()
+    .from('user_accounts')
+    .select('id, email_verified_at')
+    .eq('email_canonical', canonicalEmail(identity.email))
+    .maybeSingle();
+
+  if (memeBoite.data) {
+    if (!memeBoite.data.email_verified_at) {
+      return {
+        ok: false,
+        code: 'boite',
+        error:
+          'Un compte existe déjà pour cette boîte, sous une autre écriture de l’adresse, et il n’a pas confirmé son adresse. Connecte-toi avec ton mot de passe.',
+      };
+    }
+
+    const { error } = await db().from('oauth_identities').insert({
+      provider: 'google',
+      subject: identity.subject,
+      user_id: memeBoite.data.id,
+      email: identity.email,
+      last_used_at: new Date().toISOString(),
+    });
+    if (error) return { ok: false, error: 'Liaison impossible.' };
+
+    return { ok: true, userId: memeBoite.data.id, created: false };
+  }
+
   // --- Création ------------------------------------------------------------
   // Pseudo de repli, tiré au sort. Il ne reprend rien de l'adresse : le pseudo
   // s'affiche au classement et sur le Market, l'adresse n'a pas à y arriver.
@@ -285,6 +329,8 @@ export async function resolveGoogleAccount(
       password_hash: null,
       player_id: playerId,
       email_verified_at: new Date().toISOString(),
+      // Empreinte d'inscription, comme au formulaire (§43).
+      signup_ip: meta.ip ?? null,
     })
     .select('id')
     .single();
