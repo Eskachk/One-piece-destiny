@@ -5932,3 +5932,96 @@ button[aria-busy='true']:not(.hb-btn)::before {
     translate: none;
   }
 }
+
+/* ===========================================================================
+   Sous le doigt, passe du 15 septembre.
+
+   Mesuré à 375 px de large, page par page, en amenant chaque cible au centre
+   de l'écran et en regardant ce qui répond sous le point de contact. Le
+   constat : les grands boutons vont (44 px et plus), mais les boutons du
+   Poste font 36 à 38 px, les boutons-textes 16, les liens dans le texte 18 à
+   20, les cases à cocher 20, le champ de date 26 avec une police de 12 px
+   (ce qui fait zoomer iOS à la saisie), et « Voir les probabilités » ne
+   tient pas dans un pouce.
+
+   Tout ceci ne s'applique qu'aux écrans tactiles (`pointer: coarse`) : à la
+   souris, la mise en page d'origine reste.
+   --------------------------------------------------------------------------- */
+
+@media (pointer: coarse) {
+  /* Les boutons pleins et les liens-pastilles : 44 px de haut, la taille
+     d'un bout de doigt. Les cases, onglets et pastilles ont leur propre
+     règle plus bas ; les boutons-textes et le nom de l'île ont la leur. */
+  :where(button, [role='button'], input[type='submit'], a.rounded-lg, a.rounded-xl, a.hb-btn):not(
+      .hb-link,
+      .hb-accent,
+      .underline,
+      .hb-nav__item,
+      .hb-pastille,
+      .hb-slot,
+      .hb-pick,
+      .isl-name,
+      .hb-tuto__jamais,
+      .harbor__field *
+    ) {
+    min-height: 44px;
+  }
+
+  /* Le bouton « afficher le mot de passe », dans le champ : 44 px lui aussi,
+     mais sans grandir le champ. */
+  .harbor__field button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Les champs : 44 px, et jamais moins de 16 px de police, sinon iOS zoome
+     la page à la saisie et la laisse zoomée. */
+  :where(input:not([type='checkbox'], [type='radio'], [type='range'], [type='file']), select, textarea) {
+    min-height: 44px;
+    font-size: max(16px, 1em);
+  }
+
+  /* Les cases à cocher : 24 px. La rangée qui les porte reste la vraie cible. */
+  :where(input[type='checkbox'], input[type='radio']) {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  /* Boutons-textes : la zone débordante passe de 8 à 14 px, soit 44 px de
+     haut pour 16 px de texte. */
+  :where(button.hb-link, button.hb-accent, button.underline):not(.hb-btn)::after {
+    inset: -14px -8px;
+  }
+
+  /* Les liens dans le texte (« Mot de passe oublié ? », « Paramètres »,
+     « Retour au classement ») : même zone débordante, sans bouger le texte. */
+  :where(a.hb-link, a.harbor__link, a.hb-accent):not(.hb-tile, .hb-btn) {
+    position: relative;
+  }
+
+  :where(a.hb-link, a.harbor__link, a.hb-accent):not(.hb-tile, .hb-btn)::after {
+    content: '';
+    position: absolute;
+    inset: -12px -6px;
+  }
+
+  /* Pastilles de filtre : 22 px de haut à la souris, 40 sous le doigt. */
+  .hb-pastille {
+    min-height: 2.5rem;
+    padding-inline: 0.7rem;
+  }
+
+  /* Les résumés dépliables (règles de la maison, filtres) : 44 px. */
+  summary,
+  .hb-rule__title,
+  .hb-filtres__resume {
+    min-height: 44px;
+  }
+
+  /* La barre d'onglets : six planches sur 375 px font 52 px de large (41
+     avec l'onglet Admin), collées les unes aux autres, donc sans zone morte
+     entre deux ; on garantit les 52 px de haut. */
+  .hb-nav__item {
+    min-height: 52px;
+  }
+}

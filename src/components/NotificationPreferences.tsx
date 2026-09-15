@@ -50,26 +50,31 @@ export function NotificationPreferences({ initial }: { initial: Preferences }) {
     <section className="rounded-xl hb-surface p-5">
       <h2 className="font-display text-xl hb-ink">{t('pref.title')}</h2>
 
+      {/* La rangée entière est le `<label>` : sous le doigt, une case de
+          vingt pixels à droite d'un texte se rate une fois sur deux, et
+          l'espace entre les deux ne répondait à rien. */}
       <ul className="mt-4 space-y-3">
         {ROWS.map((row) => (
-          <li key={row.key} className="flex items-start justify-between gap-4">
-            <label htmlFor={row.key} className="text-sm hb-ink">
-              {t(`pref.${row.key}`)}
-              {row.hint && (
-                <span className="block text-xs hb-ink-soft">
-                  {t(`pref.${row.key}.hint` as MessageKey)}
-                </span>
-              )}
+          <li key={row.key}>
+            <label className="flex min-h-11 items-start justify-between gap-4 py-1 text-sm hb-ink">
+              <span>
+                {t(`pref.${row.key}`)}
+                {row.hint && (
+                  <span className="block text-xs hb-ink-soft">
+                    {t(`pref.${row.key}.hint` as MessageKey)}
+                  </span>
+                )}
+              </span>
+              <input
+                id={row.key}
+                type="checkbox"
+                checked={preferences[row.key]}
+                disabled={pending}
+                aria-busy={pending}
+                onChange={() => toggle(row.key)}
+                className="mt-1 h-5 w-5 shrink-0 accent-[#f5c542]"
+              />
             </label>
-            <input
-              id={row.key}
-              type="checkbox"
-              checked={preferences[row.key]}
-              disabled={pending}
-              aria-busy={pending}
-              onChange={() => toggle(row.key)}
-              className="mt-1 h-5 w-5 shrink-0 accent-[#f5c542]"
-            />
           </li>
         ))}
       </ul>
