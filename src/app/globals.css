@@ -5207,6 +5207,13 @@ button[aria-busy='true']:not(.hb-btn)::before {
    d'opacité : « Choisir » tombait à 2,6:1. */
 .hb-slot:disabled {
   opacity: 0.85;
+  /* Lisible (le contraste), mais sans ambiguïté : le curseur, la bordure
+     pleine et le fond terne disent « inactif » là où l'opacité seule ne le
+     disait plus. */
+  cursor: not-allowed;
+  border-style: solid;
+  border-color: rgba(109, 68, 35, 0.22);
+  background: linear-gradient(180deg, #f1e9d8 0%, #e6dbc4 100%);
 }
 
 /* --- Contrôles désactivés --------------------------------------------------

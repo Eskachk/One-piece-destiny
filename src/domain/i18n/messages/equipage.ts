@@ -28,6 +28,9 @@ export const EQUIPAGE = {
     'crew.title': 'Choisis ton équipage',
     'crew.subtitle': '3 personnages. Modifiable jusqu’au dimanche 23:59:59.',
     'crew.slot.pick': 'Choisir',
+    'crew.slot.locked': 'Verrouillé',
+    'crew.locked.note':
+      '🔒 Équipage verrouillé pour ce chapitre. Il rouvrira avec le prochain chapitre, une fois les résultats publiés.',
     'crew.risk': 'Risk',
     'crew.risk.aria': 'Niveau de risque de l’équipage',
     'crew.risk.presence': 'Présence {niveau}',
@@ -196,6 +199,9 @@ export const EQUIPAGE = {
     'crew.title': 'Pick your crew',
     'crew.subtitle': '3 characters. Changeable until Sunday 23:59:59.',
     'crew.slot.pick': 'Pick',
+    'crew.slot.locked': 'Locked',
+    'crew.locked.note':
+      '🔒 Crew locked for this chapter. It reopens with the next chapter, once the results are published.',
     'crew.risk': 'Risk',
     'crew.risk.aria': 'Crew risk level',
     'crew.risk.presence': 'Presence {niveau}',

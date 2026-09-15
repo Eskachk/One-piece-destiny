@@ -176,9 +176,13 @@ export function CrewSelector({
                   </>
                 ) : (
                   <>
-                    <span className="text-2xl" style={{ color: 'rgba(20,41,79,.7)' }}>???</span>
+                    <span className="text-2xl" style={{ color: locked ? 'rgba(20,41,79,.35)' : 'rgba(20,41,79,.7)' }}>
+                      {locked ? '🔒' : '???'}
+                    </span>
+                    {/* Un emplacement verrouillé le dit : à opacité pleine, un
+                        « Choisir » inerte passe pour un bouton cassé. */}
                     <span className="hb-legend mt-2">
-                      {t('crew.slot.pick')}
+                      {t(locked ? 'crew.slot.locked' : 'crew.slot.pick')}
                     </span>
                   </>
                 )}
@@ -229,6 +233,12 @@ export function CrewSelector({
             ))}
           </ul>
         </div>
+      )}
+
+      {locked && (
+        <p className="hb-card mt-4 text-sm" role="status">
+          {t('crew.locked.note')}
+        </p>
       )}
 
       {!locked && !authenticated && (
