@@ -8,7 +8,7 @@ export const MARCHE = {
     'mk.title.long': 'Marché de la Grand Line',
     'mk.title': 'Marché',
     'mk.unavailable':
-      'Le Marché repose sur des transactions atomiques en base. Sans configuration Postgres, il est indisponible — plutôt que simulé en mémoire, ce qui donnerait une fausse assurance sur les doubles ventes.',
+      'Le Marché repose sur des transactions atomiques en base. Sans configuration Postgres, il est indisponible, plutôt que simulé en mémoire, ce qui donnerait une fausse assurance sur les doubles ventes.',
     'mk.back': 'Retour à l’équipage',
     'mk.eyebrow': '🏴 Grand Line',
     'mk.fee':
@@ -45,7 +45,7 @@ export const MARCHE = {
     'mk.title.long': 'Grand Line Market',
     'mk.title': 'Market',
     'mk.unavailable':
-      'The Market relies on atomic database transactions. Without a Postgres setup it is unavailable — rather than simulated in memory, which would give false confidence about double sales.',
+      'The Market relies on atomic database transactions. Without a Postgres setup it is unavailable, rather than simulated in memory, which would give false confidence about double sales.',
     'mk.back': 'Back to the crew',
     'mk.eyebrow': '🏴 Grand Line',
     'mk.fee':

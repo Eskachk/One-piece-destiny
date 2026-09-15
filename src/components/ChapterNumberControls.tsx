@@ -89,7 +89,7 @@ export function ChapterNumberControls({
             Le calendrier en est au <strong>chapitre {calendarNumber}</strong>,
             mais le chapitre ouvert est le{' '}
             <strong>{openChapterNumber}</strong>. Poser un ancrage ne touche
-            jamais à un chapitre déjà ouvert — c’est ce bouton qui le corrige,
+            jamais à un chapitre déjà ouvert : c’est ce bouton qui le corrige,
             et c’est lui que voient les joueurs.
           </p>
           <button
@@ -118,7 +118,7 @@ export function ChapterNumberControls({
           <>
             <p className="mt-2 text-sm text-parchment/70">
               Actuellement le <strong>chapitre {openChapterNumber}</strong>.
-              Corrige-le si c’est le mauvais — les joueurs le voient tout de
+              Corrige-le si c’est le mauvais : les joueurs le voient tout de
               suite.
             </p>
             <input
@@ -212,7 +212,7 @@ export function ChapterNumberControls({
         <p className="mt-2 text-xs text-parchment/60">
           <strong>Sans effet immédiat sur ce que voient les joueurs.</strong>{' '}
           L’ancrage sert à déduire les numéros à venir ; il ne touche ni au
-          chapitre déjà ouvert ni à un classement publié — une correction de
+          chapitre déjà ouvert ni à un classement publié : une correction de
           calendrier ne doit pas pouvoir réécrire un résultat. Pour changer le
           numéro affiché maintenant, utilise « Renuméroter » ci-dessus.
         </p>

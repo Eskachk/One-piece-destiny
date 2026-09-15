@@ -166,7 +166,7 @@ async function ouvrirSession(
       .then((c: { error?: { message?: string } }) => c.error?.message ?? '')
       .catch(() => '');
     throw new Error(
-      `Stripe checkout : HTTP ${response.status}${detail ? ` — ${detail}` : ''}`,
+      `Stripe checkout : HTTP ${response.status}${detail ? ` (${detail})` : ''}`,
     );
   }
 
@@ -249,7 +249,7 @@ function stripeProvider(secretKey: string, webhookSecret: string): PaymentProvid
 
         await signalerIncident({
           scope: 'shop:moyens-de-paiement',
-          message: `${messageDe(cause)} — repli sur la carte seule`,
+          message: `${messageDe(cause)}, repli sur la carte seule`,
           metadata: { demandes: methodes },
         });
 

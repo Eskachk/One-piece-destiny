@@ -22,7 +22,7 @@ export async function generateMetadata(): Promise<Metadata> {
   metadataBase: new URL(baseUrl()),
   title: {
     default: 'One Piece Quest',
-    template: '%s — One Piece Quest',
+    template: '%s | One Piece Quest',
   },
   description: t('site.description'),
   openGraph: {

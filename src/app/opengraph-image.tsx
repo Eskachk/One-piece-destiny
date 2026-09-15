@@ -5,7 +5,7 @@ import { ImageResponse } from 'next/og';
 export const runtime = 'nodejs';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
-export const alt = 'One Piece Quest — devine qui apparaîtra dans le prochain chapitre';
+export const alt = 'One Piece Quest : devine qui apparaîtra dans le prochain chapitre';
 
 /**
  * Carte de partage du site.

@@ -96,7 +96,7 @@ export function AppearanceImportForm({
           Personnages présents
         </label>
         <p className="mt-1 text-[11px] hb-ink-soft">
-          Un nom par ligne. Seule la présence compte — inutile de compter les
+          Un nom par ligne. Seule la présence compte, inutile de compter les
           cases.
         </p>
         <button

@@ -46,13 +46,13 @@ const REGLES: readonly Regle[] = [
   },
   {
     motif:
-      /^Pari réussi — plus improbable que (\d+) % du référentiel \(présence (\d+), rareté (\d+), attributs (\d+)\) → \+(\d+)$/,
+      /^Pari réussi [—:] plus improbable que (\d+) % du référentiel \(présence (\d+), rareté (\d+), attributs (\d+)\) → \+(\d+)$/,
     rendre: (t, m) =>
       t('score.riskHit', { rank: m[1], presence: m[2], rarity: m[3], attributes: m[4], n: m[5] }),
   },
   {
     motif:
-      /^Pari manqué mais bien vu — (\d+) % d['’]improbabilité, payée à (\d+) % pour ses liens avec le chapitre → \+(\d+)$/,
+      /^Pari manqué mais bien vu [—:] (\d+) % d['’]improbabilité, payée à (\d+) % pour ses liens avec le chapitre → \+(\d+)$/,
     rendre: (t, m) => t('score.riskNear', { rank: m[1], paid: m[2], n: m[3] }),
   },
   {

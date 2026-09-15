@@ -100,8 +100,9 @@ export function FraudCenter({ accounts }: { accounts: SuspiciousView[] }) {
               <li key={signal.name} className="text-sm text-parchment/80">
                 <span className="font-mono text-[11px] text-turquoise">
                   {signal.name}
-                </span>{' '}
-                — {signal.detail}
+                </span>
+                {' : '}
+                {signal.detail}
               </li>
             ))}
           </ul>

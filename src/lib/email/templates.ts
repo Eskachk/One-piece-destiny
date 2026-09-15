@@ -148,7 +148,7 @@ export function passwordResetEmail(to: string, link: string): EmailMessage {
     footnote: 'Nous ne te demanderons jamais ton mot de passe par e-mail.',
   });
 
-  return { to, subject: 'Réinitialiser ton mot de passe — One Piece Quest', html, text };
+  return { to, subject: 'Réinitialiser ton mot de passe | One Piece Quest', html, text };
 }
 
 export function securityAlertEmail(
@@ -171,7 +171,7 @@ export function securityAlertEmail(
       'Les alertes de sécurité ne peuvent pas être désactivées : elles protègent l’accès à ton compte.',
   });
 
-  return { to, subject: '🔐 Changement de sécurité — One Piece Quest', html, text };
+  return { to, subject: '🔐 Changement de sécurité | One Piece Quest', html, text };
 }
 
 export function crewLockSoonEmail(to: string, chapterNumber: number): EmailMessage {
@@ -186,7 +186,7 @@ export function crewLockSoonEmail(to: string, chapterNumber: number): EmailMessa
     showPreferences: true,
   });
 
-  return { to, subject: `⚠️ Ton équipage se verrouille — chapitre ${chapterNumber}`, html, text };
+  return { to, subject: `⚠️ Ton équipage se verrouille : chapitre ${chapterNumber}`, html, text };
 }
 
 /**
@@ -246,7 +246,7 @@ export function verifyEmailAddressEmail(to: string, link: string): EmailMessage 
     action: { label: 'Confirmer mon adresse', href: link },
   });
 
-  return { to, subject: 'Confirme ton adresse — One Piece Quest', html, text };
+  return { to, subject: 'Confirme ton adresse | One Piece Quest', html, text };
 }
 
 /**

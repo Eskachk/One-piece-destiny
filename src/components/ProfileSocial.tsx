@@ -169,7 +169,7 @@ export function ReferralPanel({
 
       <p className="hb-muted mt-2 text-sm">
         {t('pf.ref.intro.a')} <span className="hb-num">{referredBerries}</span>{' '}
-        {t('pf.ref.intro.b')} <span className="hb-num">{referredBerries / 2}</span>{' '}
+        {t('pf.ref.intro.b')} <span className="hb-num">{referredBerries / 2}</span>
         {t('pf.ref.intro.c')}
       </p>
 
@@ -190,7 +190,7 @@ export function ReferralPanel({
 
       <p className="hb-muted mt-3 text-xs">
         {t('pf.ref.rule.a')} <span className="hb-num">{referrerBerries}</span>{' '}
-        {t('pf.ref.rule.b')} <strong>{t('pf.ref.rule.strong', { n: minChapters })}</strong>{' '}
+        {t('pf.ref.rule.b')} <strong>{t('pf.ref.rule.strong', { n: minChapters })}</strong>
         {t('pf.ref.rule.c', { n: maxRewarded })}
       </p>
 

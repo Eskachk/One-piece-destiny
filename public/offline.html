@@ -16,7 +16,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#071c2c" />
-    <title>Hors ligne — One Piece Quest</title>
+    <title>Hors ligne | One Piece Quest</title>
     <style>
       :root {
         color-scheme: dark;
@@ -73,11 +73,11 @@
     <img src="/icons/icon-192.png" alt="" />
     <h1 data-fr="Le Log Pose ne répond plus" data-en="The Log Pose has gone quiet">Le Log Pose ne répond plus</h1>
     <p
-      data-fr="Aucune connexion réseau. Le jeu a besoin du serveur pour lire ton équipage et le classement de la semaine — reconnecte-toi au réseau, puis réessaie."
-      data-en="No network connection. The game needs the server to read your crew and this week’s leaderboard — reconnect, then try again."
+      data-fr="Aucune connexion réseau. Le jeu a besoin du serveur pour lire ton équipage et le classement de la semaine. Reconnecte-toi au réseau, puis réessaie."
+      data-en="No network connection. The game needs the server to read your crew and this week’s leaderboard. Reconnect, then try again."
     >
       Aucune connexion réseau. Le jeu a besoin du serveur pour lire ton
-      équipage et le classement de la semaine — reconnecte-toi au réseau, puis
+      équipage et le classement de la semaine. Reconnecte-toi au réseau, puis
       réessaie.
     </p>
     <button type="button" onclick="location.reload()" data-fr="Réessayer" data-en="Try again">Réessayer</button>
@@ -89,7 +89,7 @@
         var lang = m && m[1] === 'en' ? 'en' : 'fr';
         if (lang === 'fr') return;
         document.documentElement.lang = lang;
-        document.title = 'Offline — One Piece Quest';
+        document.title = 'Offline | One Piece Quest';
         var nodes = document.querySelectorAll('[data-en]');
         for (var i = 0; i < nodes.length; i++) nodes[i].textContent = nodes[i].getAttribute('data-en');
       })();

@@ -108,7 +108,7 @@ function PageFr() {
 
       <p className="hb-card mt-5 text-sm">
         One Piece Quest est un jeu de pronostics. Il a besoin d’un compte pour
-        savoir à qui appartient un équipage et où te placer au classement — et
+        savoir à qui appartient un équipage et où te placer au classement, et
         de rien de plus. Cette page dit exactement ce qui est enregistré, pour
         quoi faire, et pendant combien de temps.
         <br />
@@ -143,7 +143,7 @@ function PageFr() {
           <li>
             <strong>Mot de passe.</strong> Jamais conservé. La base ne garde
             qu’une empreinte Argon2id, dont on ne peut pas revenir au mot de
-            passe. Personne — l’administrateur compris — ne peut le lire.
+            passe. Personne, l’administrateur compris, ne peut le lire.
           </li>
           <li>
             <strong>Date de naissance.</strong> Uniquement pour vérifier l’âge
@@ -167,7 +167,7 @@ function PageFr() {
             à la création du compte et lors d’événements sensibles (connexion,
             changement de mot de passe, achat), pour une seule chose : détecter
             les comptes multiples et la fraude. Elle ne sert ni à te profiler,
-            ni à te géolocaliser — et ne le pourrait pas.
+            ni à te géolocaliser, et ne le pourrait pas.
           </li>
           <li>
             <strong>Achats.</strong> Si tu achètes des Berries, le paiement est
@@ -217,19 +217,19 @@ function PageFr() {
         </p>
         <ul className="ml-4 list-disc space-y-1">
           <li>
-            <strong>Vercel</strong> — hébergement du site (serveurs en Europe).
+            <strong>Vercel</strong> : hébergement du site (serveurs en Europe).
           </li>
           <li>
-            <strong>Supabase</strong> — base de données.
+            <strong>Supabase</strong> : base de données.
           </li>
           <li>
-            <strong>Google</strong> — connexion Google et régie publicitaire.
+            <strong>Google</strong> : connexion Google et régie publicitaire.
           </li>
           <li>
-            <strong>Stripe</strong> — paiements, si tu en fais.
+            <strong>Stripe</strong> : paiements, si tu en fais.
           </li>
           <li>
-            <strong>Le service d’envoi d’e-mails</strong> — pour les messages du
+            <strong>Le service d’envoi d’e-mails</strong> : pour les messages du
             jeu uniquement.
           </li>
         </ul>
@@ -256,11 +256,11 @@ function PageFr() {
           <Link className="hb-link" href="/parametres">
             tes paramètres
           </Link>{' '}
-          — notifications, apparence, sécurité. Pour le reste, passe par{' '}
+          (notifications, apparence, sécurité). Pour le reste, passe par{' '}
           <Contact libelle="tes paramètres" />.
         </p>
         <p>
-          Si une réponse ne te convient pas, tu peux saisir la CNIL —{' '}
+          Si une réponse ne te convient pas, tu peux saisir la CNIL :{' '}
           <a
             className="hb-link"
             href="https://www.cnil.fr"
@@ -303,7 +303,7 @@ function PageEn() {
 
       <p className="hb-card mt-5 text-sm">
         One Piece Quest is a prediction game. It needs an account to know who a
-        crew belongs to and where to place you on the leaderboard — and nothing
+        crew belongs to and where to place you on the leaderboard, and nothing
         more. This page says exactly what is stored, what for, and for how long.
         <br />
         <span className="hb-ink-soft">Last updated: 7 September 2026.</span>
@@ -335,8 +335,8 @@ function PageEn() {
           </li>
           <li>
             <strong>Password.</strong> Never stored. The database only keeps an
-            Argon2id hash, from which the password cannot be recovered. Nobody —
-            the administrator included — can read it.
+            Argon2id hash, from which the password cannot be recovered. Nobody,
+            the administrator included, can read it.
           </li>
           <li>
             <strong>Date of birth.</strong> Only to check the minimum age and,
@@ -359,7 +359,7 @@ function PageEn() {
             from the same origin. It is taken at account creation and on
             sensitive events (sign-in, password change, purchase), for one
             purpose only: detecting multiple accounts and fraud. It is used
-            neither to profile nor to locate you — and could not be.
+            neither to profile nor to locate you, and could not be.
           </li>
           <li>
             <strong>Purchases.</strong> If you buy Berries, the payment is
@@ -407,19 +407,19 @@ function PageEn() {
         </p>
         <ul className="ml-4 list-disc space-y-1">
           <li>
-            <strong>Vercel</strong> — site hosting (servers in Europe).
+            <strong>Vercel</strong>: site hosting (servers in Europe).
           </li>
           <li>
-            <strong>Supabase</strong> — database.
+            <strong>Supabase</strong>: database.
           </li>
           <li>
-            <strong>Google</strong> — Google sign-in and ad network.
+            <strong>Google</strong>: Google sign-in and ad network.
           </li>
           <li>
-            <strong>Stripe</strong> — payments, if you make any.
+            <strong>Stripe</strong>: payments, if you make any.
           </li>
           <li>
-            <strong>The email delivery service</strong> — for the game’s
+            <strong>The email delivery service</strong>: for the game’s
             messages only.
           </li>
         </ul>
@@ -444,12 +444,12 @@ function PageEn() {
           <Link className="hb-link" href="/parametres">
             your settings
           </Link>{' '}
-          — notifications, appearance, security. For the rest, go through{' '}
+          (notifications, appearance, security). For the rest, go through{' '}
           <Contact libelle="your settings" />.
         </p>
         <p>
           If an answer does not satisfy you, you can refer to the CNIL, the
-          French data protection authority —{' '}
+          French data protection authority:{' '}
           <a
             className="hb-link"
             href="https://www.cnil.fr"

@@ -88,7 +88,7 @@ export function ChapterSimulator() {
               </p>
               <p className="hb-ink">
                 {summary.jackpot
-                  ? `${summary.jackpot.name} — ${summary.jackpot.total} pts`
+                  ? `${summary.jackpot.name} : ${summary.jackpot.total} pts`
                   : '—'}
               </p>
             </div>

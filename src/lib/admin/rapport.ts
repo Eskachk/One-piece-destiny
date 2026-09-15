@@ -89,7 +89,7 @@ function tableau(titre: string, entetes: string[], lignes: Ligne[], vide: string
 export function rendreRapportHtml(stats: AdminStats): string {
   const { joueurs, economie, boutique, marche, collection, jeu, courrier, risque, series } = stats;
   const date = new Date(stats.genere_le);
-  const titre = `One Piece Quest — compte rendu du ${date.toLocaleDateString('fr-FR', {
+  const titre = `One Piece Quest, compte rendu du ${date.toLocaleDateString('fr-FR', {
     day: 'numeric',
     month: 'long',
     year: 'numeric',
@@ -104,9 +104,9 @@ export function rendreRapportHtml(stats: AdminStats): string {
       ['Comptes', number(joueurs.total), `${joueurs.crees_7j} créés sur 7 jours`],
       ['Actifs sur 7 jours', number(joueurs.actifs_7j), `${joueurs.actifs_24h} sur 24 heures`],
       ['Ont déjà joué', number(joueurs.ont_joue), `${pct(joueurs.ont_joue, joueurs.total)} des comptes`],
-      ['Revenu — 30 jours', euros(boutique.revenu_30j), `${boutique.achats_30j} achats`],
-      ['Ventes au marché — 30 jours', number(marche.ventes_30j), `${number(marche.volume_30j)} Berries`],
-      ['Équipages — chapitre en cours', number(jeu.equipes_courant)],
+      ['Revenu (30 jours)', euros(boutique.revenu_30j), `${boutique.achats_30j} achats`],
+      ['Ventes au marché (30 jours)', number(marche.ventes_30j), `${number(marche.volume_30j)} Berries`],
+      ['Équipages (chapitre en cours)', number(jeu.equipes_courant)],
     ])}</section>`,
 
     `<section><h2>2. Les trente derniers jours</h2>
@@ -127,11 +127,11 @@ export function rendreRapportHtml(stats: AdminStats): string {
 
     `<section><h2>3. Joueurs</h2>${tuiles([
       ['Comptes', number(joueurs.total), `${joueurs.google} via Google`],
-      ['Créés — 24 h', number(joueurs.crees_24h)],
-      ['Créés — 7 j', number(joueurs.crees_7j)],
-      ['Créés — 30 j', number(joueurs.crees_30j)],
-      ['Actifs — 24 h', number(joueurs.actifs_24h)],
-      ['Actifs — 7 j', number(joueurs.actifs_7j)],
+      ['Créés (24 h)', number(joueurs.crees_24h)],
+      ['Créés (7 j)', number(joueurs.crees_7j)],
+      ['Créés (30 j)', number(joueurs.crees_30j)],
+      ['Actifs (24 h)', number(joueurs.actifs_24h)],
+      ['Actifs (7 j)', number(joueurs.actifs_7j)],
       ['Adresse vérifiée', number(joueurs.verifies), `${pct(joueurs.verifies, joueurs.total)} des comptes`],
       ['Coffre d’arrivée ouvert', number(joueurs.coffre_arrivee)],
       ['Ont déjà joué', number(joueurs.ont_joue), `${pct(joueurs.ont_joue, joueurs.total)}`],
@@ -145,13 +145,13 @@ export function rendreRapportHtml(stats: AdminStats): string {
       'Aucune progression enregistrée.',
     )}</section>`,
 
-    `<section><h2>4. Boutique — argent réel</h2>${tuiles([
+    `<section><h2>4. Boutique : argent réel</h2>${tuiles([
       ['Revenu total', euros(boutique.revenu_total)],
-      ['Revenu — 30 j', euros(boutique.revenu_30j)],
-      ['Revenu — 7 j', euros(boutique.revenu_7j)],
+      ['Revenu (30 j)', euros(boutique.revenu_30j)],
+      ['Revenu (7 j)', euros(boutique.revenu_7j)],
       ['Achats', number(boutique.achats_total), `${boutique.acheteurs} acheteurs distincts`],
-      ['Conversion — 30 j', pct(boutique.achats_30j, boutique.intentions_30j), `${boutique.achats_30j} payés sur ${boutique.intentions_30j} caisses ouvertes`],
-      ['Échecs — 30 j', number(boutique.echecs_30j)],
+      ['Conversion (30 j)', pct(boutique.achats_30j, boutique.intentions_30j), `${boutique.achats_30j} payés sur ${boutique.intentions_30j} caisses ouvertes`],
+      ['Échecs (30 j)', number(boutique.echecs_30j)],
       ['Panier moyen', boutique.achats_total > 0 ? euros(boutique.revenu_total / boutique.achats_total) : '—'],
       ['Dernier achat', boutique.dernier_achat ? new Date(boutique.dernier_achat).toLocaleDateString('fr-FR') : '—'],
     ])}${tableau(
@@ -161,12 +161,12 @@ export function rendreRapportHtml(stats: AdminStats): string {
       'Aucun achat encaissé.',
     )}</section>`,
 
-    `<section><h2>5. Marché — Berries entre joueurs</h2>${tuiles([
+    `<section><h2>5. Marché : Berries entre joueurs</h2>${tuiles([
       ['Annonces actives', number(marche.annonces_actives)],
-      ['Ventes — 7 j', number(marche.ventes_7j), `${number(marche.volume_7j)} Berries`],
-      ['Ventes — 30 j', number(marche.ventes_30j), `${number(marche.volume_30j)} Berries`],
-      ['Ventes — total', number(marche.ventes_total), `${number(marche.volume_total)} Berries`],
-      ['Prix moyen — 30 j', marche.prix_moyen_30j === null ? '—' : `${number(marche.prix_moyen_30j)} Berries`],
+      ['Ventes (7 j)', number(marche.ventes_7j), `${number(marche.volume_7j)} Berries`],
+      ['Ventes (30 j)', number(marche.ventes_30j), `${number(marche.volume_30j)} Berries`],
+      ['Ventes (total)', number(marche.ventes_total), `${number(marche.volume_total)} Berries`],
+      ['Prix moyen (30 j)', marche.prix_moyen_30j === null ? '—' : `${number(marche.prix_moyen_30j)} Berries`],
       ['Taxe prélevée', `${number(marche.taxe_total)} Berries`],
     ])}${tableau(
       'Personnages les plus vendus',
@@ -226,17 +226,17 @@ export function rendreRapportHtml(stats: AdminStats): string {
     )}</section>`,
 
     `<section><h2>7. Jeu</h2>${tuiles([
-      ['Équipages — chapitre en cours', number(jeu.equipes_courant)],
+      ['Équipages (chapitre en cours)', number(jeu.equipes_courant)],
       ['Réponses aux pronostics', number(jeu.reponses_total)],
       ['Ligues', number(jeu.ligues)],
       ['Commentaires', number(jeu.commentaires)],
     ])}${tableau(
-      'Les plus alignés — chapitre en cours',
+      'Les plus alignés (chapitre en cours)',
       ['Personnage', 'Équipages', 'Part'],
       jeu.plus_alignes_courant.map((a) => [`${nom(a.character_id)} (${rarete(a.character_id)})`, number(a.n), pct(a.n, jeu.equipes_courant)]),
       'Aucun équipage verrouillé.',
     )}${tableau(
-      'Les plus alignés — depuis le début',
+      'Les plus alignés (depuis le début)',
       ['Personnage', 'Équipages'],
       jeu.plus_alignes.map((a) => [`${nom(a.character_id)} (${rarete(a.character_id)})`, number(a.n)]),
       'Aucun équipage verrouillé.',
@@ -258,10 +258,10 @@ export function rendreRapportHtml(stats: AdminStats): string {
       ['E-mails envoyés', number(courrier.envoyes), `${courrier.envoyes_7j} sur 7 j`],
       ['E-mails en attente', number(courrier.en_attente)],
       ['E-mails abandonnés', number(courrier.morts)],
-      ['Notifications — 7 j', number(courrier.notifications_7j), `${courrier.notifications_non_lues} non lues`],
-      ['Risque — à examiner', number(risque.a_examiner)],
-      ['Risque — restreints', number(risque.restreints)],
-      ['Évaluations — 7 j', number(risque.evaluations_7j)],
+      ['Notifications (7 j)', number(courrier.notifications_7j), `${courrier.notifications_non_lues} non lues`],
+      ['Risque (à examiner)', number(risque.a_examiner)],
+      ['Risque (restreints)', number(risque.restreints)],
+      ['Évaluations (7 j)', number(risque.evaluations_7j)],
       ['Faux positifs', number(risque.faux_positifs)],
     ])}</section>`,
   ];
@@ -299,7 +299,7 @@ export function rendreRapportHtml(stats: AdminStats): string {
   <h1>${echapper(titre)}</h1>
   <p class="sous">Généré le ${echapper(date.toLocaleString('fr-FR'))} depuis le poste de commandement. Chiffres calculés par la base à cet instant.</p>
   ${sections.join('\n')}
-  <footer>One Piece Quest — document interne. Les pseudos cités sont ceux du classement public.</footer>
+  <footer>One Piece Quest, document interne. Les pseudos cités sont ceux du classement public.</footer>
 </main>
 </body>
 </html>`;

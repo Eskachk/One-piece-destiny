@@ -15,8 +15,8 @@ describe('détail du score, retraduit', () => {
       'Équipage avec Zoro → +9',
       'Affiliation Straw Hat Pirates (2 présents) → +8',
       'Épéiste partagé → +6',
-      'Pari réussi — plus improbable que 62 % du référentiel (présence 40, rareté 70, attributs 12) → +20',
-      'Pari manqué mais bien vu — 62 % d’improbabilité, payée à 30 % pour ses liens avec le chapitre → +6',
+      'Pari réussi : plus improbable que 62 % du référentiel (présence 40, rareté 70, attributs 12) → +20',
+      'Pari manqué mais bien vu : 62 % d’improbabilité, payée à 30 % pour ses liens avec le chapitre → +6',
       'Pari manqué et sans lien avec le chapitre → +0 (l’improbabilité seule ne rapporte rien)',
       'Choisi par 85 % des joueurs → × 0.62 (un choix que tout le monde fait ne départage personne)',
     ];

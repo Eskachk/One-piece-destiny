@@ -370,7 +370,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   },
   brook: {
     note:
-      'Très grand squelette humanoïde d\'une maigreur extrême, membres filiformes. Crâne allongé, orbites entièrement noires, mâchoire osseuse. Immense coiffure afro noire — l\'élément le plus caractéristique. Costume de musicien : manteau sombre, chemise, cravate, haut-de-forme.',
+      'Très grand squelette humanoïde d\'une maigreur extrême, membres filiformes. Crâne allongé, orbites entièrement noires, mâchoire osseuse. Immense coiffure afro noire, l\'élément le plus caractéristique. Costume de musicien : manteau sombre, chemise, cravate, haut-de-forme.',
     hair: '#171717', cut: 'afro', skin: OS, outfit: '#1d2a45', coat: '#101a2e',
     accessory: '#1b1620',
     frame: 'skeleton',
@@ -1580,7 +1580,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'blanche, avec accessoires d\'hiver. Forme harpie : ailes couvertes de ' +
       'plumes vertes/blanches ou brunes, jambes transformées en serres ' +
       'jaunes. Particularité : énorme contraste entre silhouette féminine et ' +
-      'anatomie d\'oiseau. -- N — R',
+      'anatomie d\'oiseau. -- N à R',
     hair: '#4f8648', cut: 'long', skin: CLAIR, outfit: '#141419',
     face: 'sharp',
     brow: 'calm',
@@ -1767,7 +1767,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'Morphologie : forte corpulence, épaules larges, bras épais et ventre ' +
       'développé. Vêtements : vêtements rustiques principalement bruns, ' +
       'rouges, beige et blancs. Accessoire : cigarette. Particularité : masse ' +
-      'de cheveux orange très caractéristique. -- D — H',
+      'de cheveux orange très caractéristique. -- D à H',
     hair: '#e8832f', cut: 'wavy', skin: CLAIR, outfit: '#6a462a',
     face: 'square',
     head: 'none', mark: 'cigarette', prop: 'none', build: 'broad',
@@ -2026,7 +2026,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   },
   hera: {
     note:
-      'Race/espèce : Homie — nuage d\'orage. Corps : masse de nuage gris- ' +
+      'Race/espèce : Homie, nuage d\'orage. Corps : masse de nuage gris- ' +
       'violet/lavande. Visage : rond, intégré dans le nuage. Yeux : ' +
       'noirs/sombres. Joues : arrondies, donnant une apparence presque ' +
       'enfantine malgré l\'expression agressive. Particularités : petits ' +
@@ -2039,11 +2039,11 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
   },
   zeus: {
     note:
-      'Race/espèce : Homie — nuage vivant. Corps : nuage gris clair/gris- ' +
+      'Race/espèce : Homie, nuage vivant. Corps : nuage gris clair/gris- ' +
       'bleu. Visage : rond, yeux grands, expression naïve. Yeux : noirs. ' +
       'Particularités : petits éclairs jaunes autour du corps. Morphologie : ' +
       'masse nuageuse variable, sans jambes ni bras anatomiques. -- Entités ' +
-      'et formes non humaines — résumé | Personnage | Nature / race | ' +
+      'et formes non humaines, résumé | Personnage | Nature / race | ' +
       'Particularité visuelle dominante | |---|---|---| | Bepo | Mink / ours ' +
       'polaire | Fourrure blanche | | Pekoms | Mink / lion | Crinière brune + ' +
       'carapace de tortue | | Fisher Tiger | Homme-poisson / tigre | Peau ' +
@@ -2128,7 +2128,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'Particularité anatomique : énorme tête de lion attachée/incrustée dans ' +
       'la zone abdominale ; crinière orange/brune, museau beige et yeux ' +
       'jaunes/sombres. Vêtements : kimono principalement jaune, orange, rouge ' +
-      'et brun, ouvert sur le torse. -- I — M',
+      'et brun, ouvert sur le torse. -- I à M',
     hair: '#6a462a', cut: 'spiky', skin: CLAIR, outfit: '#dfc04a',
     extras: ['open-vest', 'mane', 'sash'],
     height: 'tall',
@@ -2678,7 +2678,7 @@ export const SIGNATURES: Readonly<Record<string, Signature>> = {
       'extrêmement bouffants. Yeux : petits. Visage : rond, joues épaisses. ' +
       'Morphologie : très corpulent, ventre important. Vêtements : vêtements ' +
       'aristocratiques blancs/crème, détails dorés. Accessoire : bulle ' +
-      'transparente autour de la tête. -- S — Z',
+      'transparente autour de la tête. -- S à Z',
     hair: '#e2c978', cut: 'wavy', skin: PALE, outfit: '#f0ece2',
     extras: ['high-collar'],
     face: 'round',

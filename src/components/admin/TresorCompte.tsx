@@ -131,7 +131,7 @@ export function TresorCompte({ playerId, tresor }: { playerId: string; tresor: T
         }}
       >
         <h3 className="text-xs uppercase tracking-widest text-parchment/60">
-          Ajuster — en plus ou en moins, jamais sous zéro
+          Ajuster, en plus ou en moins, jamais sous zéro
         </h3>
         <div className="mt-2 grid grid-cols-3 gap-3">
           {(
@@ -154,7 +154,7 @@ export function TresorCompte({ playerId, tresor }: { playerId: string; tresor: T
           ))}
         </div>
         <label className="mt-3 block text-xs text-parchment/70">
-          Motif — obligatoire, journalisé, envoyé au joueur
+          Motif (obligatoire, journalisé, envoyé au joueur)
           <input
             type="text"
             value={motif}

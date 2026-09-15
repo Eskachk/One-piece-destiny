@@ -15,10 +15,10 @@ export const ENTREE = {
     'auth.login.meta': 'Connexion',
     'auth.register.title': 'Embarque',
     'auth.register.tagline': 'Le chapitre est le spectacle.',
-    'auth.register.meta': 'Embarque — crée ton équipage',
+    'auth.register.meta': 'Embarque : crée ton équipage',
     'auth.register.description':
       'Rejoins One Piece Quest : choisis 3 personnages avant dimanche 23:59, marque des points quand ils apparaissent dans le chapitre, et grimpe au classement hebdomadaire. Gratuit.',
-    'auth.register.ogTitle': 'Embarque — One Piece Quest',
+    'auth.register.ogTitle': 'Embarque | One Piece Quest',
     'auth.register.ogDescription':
       'Choisis 3 personnages avant dimanche. Marque des points quand ils apparaissent.',
 
@@ -121,10 +121,10 @@ export const ENTREE = {
     'auth.login.meta': 'Sign in',
     'auth.register.title': 'All aboard',
     'auth.register.tagline': 'The chapter is the show.',
-    'auth.register.meta': 'All aboard — build your crew',
+    'auth.register.meta': 'All aboard: build your crew',
     'auth.register.description':
       'Join One Piece Quest: pick 3 characters before Sunday 23:59, score points when they appear in the chapter, and climb the weekly ranking. Free.',
-    'auth.register.ogTitle': 'All aboard — One Piece Quest',
+    'auth.register.ogTitle': 'All aboard | One Piece Quest',
     'auth.register.ogDescription':
       'Pick 3 characters before Sunday. Score points when they appear.',
 

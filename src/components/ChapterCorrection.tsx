@@ -68,7 +68,7 @@ export function ChapterCorrection({ chapterNumber }: { chapterNumber: number }) 
 
       <div>
         <label htmlFor="reason" className="block text-xs hb-ink-soft">
-          Raison de la correction — elle sera lue par les joueurs
+          Raison de la correction (elle sera lue par les joueurs)
         </label>
         <input
           id="reason"
@@ -81,7 +81,7 @@ export function ChapterCorrection({ chapterNumber }: { chapterNumber: number }) 
 
       <div>
         <label htmlFor="corrected" className="block text-xs hb-ink-soft">
-          Apparitions corrigées — remplacent intégralement les précédentes
+          Apparitions corrigées (remplacent intégralement les précédentes)
         </label>
         <textarea
           id="corrected"

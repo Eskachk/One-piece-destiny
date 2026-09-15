@@ -248,7 +248,7 @@ export function SettingsPanel({
             <strong>{emailVerified ? t('settings.email.ok') : t('settings.email.ko')}</strong>
             {!emailVerified && (
               <>
-                {' — '}
+                {' · '}
                 <Link href="/profil" className="hb-link">
                   {t('settings.email.resend')}
                 </Link>

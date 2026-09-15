@@ -105,7 +105,7 @@ export function TeamLockControls({
   return (
     <div>
       <p className="text-sm text-parchment/75">
-        Chapitre {chapterNumber} —{' '}
+        Chapitre {chapterNumber} :{' '}
         {locked ? (
           <strong className="text-orange">équipages verrouillés</strong>
         ) : (
@@ -198,7 +198,7 @@ export function TeamLockControls({
           <p className="text-sm text-parchment/85">
             Ce chapitre sera jugé en <strong>{scoringVersion}</strong>, alors
             que le moteur courant est le <strong>{currentScoringVersion}</strong>.
-            Un chapitre garde à vie sa version — c’est ce qui permet de
+            Un chapitre garde à vie sa version : c’est ce qui permet de
             recalculer un classement des mois plus tard avec les règles qui
             étaient affichées quand les joueurs ont composé.
           </p>
@@ -223,7 +223,7 @@ export function TeamLockControls({
       <p className="mt-4 text-xs text-parchment/60">
         Aucune équipe n’est touchée : rouvrir laisse les joueurs modifier la
         leur, verrouiller la fige telle qu’elle est. Un chapitre déjà publié
-        refuse tout déplacement — rouvrir des équipes derrière un classement
+        refuse tout déplacement : rouvrir des équipes derrière un classement
         figé serait le moyen le plus simple de fabriquer un tricheur.
       </p>
     </div>

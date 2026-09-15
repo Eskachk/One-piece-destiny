@@ -8,7 +8,7 @@
  */
 export const EQUIPAGE = {
   fr: {
-    'home.meta.title': 'One Piece Quest — le jeu de pronostics du chapitre hebdomadaire',
+    'home.meta.title': 'One Piece Quest, le jeu de pronostics du chapitre hebdomadaire',
     'home.meta.description':
       'Choisis 3 personnages avant dimanche 23:59. Marque des points quand ils apparaissent dans le chapitre. Classement hebdomadaire, collection de cartes et Marché entre joueurs.',
 
@@ -179,7 +179,7 @@ export const EQUIPAGE = {
     'attr.sword': 'Épéiste',
   },
   en: {
-    'home.meta.title': 'One Piece Quest — the weekly chapter prediction game',
+    'home.meta.title': 'One Piece Quest, the weekly chapter prediction game',
     'home.meta.description':
       'Pick 3 characters before Sunday 23:59. Score points when they appear in the chapter. Weekly ranking, card collection and a player-to-player Market.',
 

@@ -198,12 +198,12 @@ function riskScore(
 
     if (present) {
       breakdown.push(
-        `Pari réussi — plus improbable que ${Math.round(rang * 100)} % du référentiel ` +
+        `Pari réussi : plus improbable que ${Math.round(rang * 100)} % du référentiel ` +
           `(${detail}) → +${score}`,
       );
     } else if (score > 0) {
       breakdown.push(
-        `Pari manqué mais bien vu — ${Math.round(rang * 100)} % d'improbabilité, ` +
+        `Pari manqué mais bien vu : ${Math.round(rang * 100)} % d'improbabilité, ` +
           `payée à ${Math.round(justesse * 100)} % pour ses liens avec le chapitre → +${score}`,
       );
     } else {

@@ -54,7 +54,7 @@ export const PROFIL = {
     'pf.ref.share.text': 'Rejoins-moi : tu démarres avec {n} Berries.',
     'pf.ref.intro.a': 'Qui arrive par ton lien démarre avec',
     'pf.ref.intro.b': 'Berries au lieu de',
-    'pf.ref.intro.c': '— débloquées à son premier équipage verrouillé.',
+    'pf.ref.intro.c': ', débloquées à son premier équipage verrouillé.',
     'pf.ref.link.aria': 'Ton lien d’invitation',
     'pf.ref.copied': 'Lien copié ✓',
     'pf.ref.share': 'Partager mon lien',
@@ -63,7 +63,7 @@ export const PROFIL = {
     'pf.ref.rule.b': 'Berries par filleul, une fois qu’il a',
     'pf.ref.rule.strong': 'confirmé son adresse et joué {n} chapitres',
     'pf.ref.rule.c':
-      '— pas à son inscription. Un compte créé pour la forme ne rapporte donc rien, et attendre trois semaines pour rien non plus. Plafond : {n} filleuls récompensés.',
+      ', pas à son inscription. Un compte créé pour la forme ne rapporte donc rien, et attendre trois semaines pour rien non plus. Plafond : {n} filleuls récompensés.',
     'pf.ref.count': '{n} / {max} parrainages récompensés.',
 
     'pf.account': 'Compte',
@@ -82,16 +82,16 @@ export const PROFIL = {
     'age.UNKNOWN': 'Indique ta date de naissance pour accéder aux achats.',
 
     'pref.title': 'Notifications',
-    'pref.weeklyInApp': 'Rendez-vous hebdomadaire — dans l’application',
-    'pref.weeklyEmail': 'Rendez-vous hebdomadaire — par e-mail',
+    'pref.weeklyInApp': 'Rendez-vous hebdomadaire dans l’application',
+    'pref.weeklyEmail': 'Rendez-vous hebdomadaire par e-mail',
     'pref.weeklyEmail.hint': 'Verrouillage, résultats publiés.',
-    'pref.rewardsInApp': 'Récompenses — dans l’application',
-    'pref.rewardsEmail': 'Récompenses — par e-mail',
+    'pref.rewardsInApp': 'Récompenses dans l’application',
+    'pref.rewardsEmail': 'Récompenses par e-mail',
     'pref.marketingEmail': 'Nouveautés et annonces',
     'pref.marketingEmail.hint': 'Désactivé par défaut. Aucun envoi sans ton accord.',
     'pref.saved': 'Préférences enregistrées.',
     'pref.security':
-      'Les alertes de sécurité — mot de passe, double authentification — sont toujours envoyées. Elles protègent l’accès à ton compte et ne peuvent pas être désactivées.',
+      'Les alertes de sécurité (mot de passe, double authentification) sont toujours envoyées. Elles protègent l’accès à ton compte et ne peuvent pas être désactivées.',
 
     'rules.title': 'Règles du bord',
     'rules.intro':
@@ -216,7 +216,7 @@ export const PROFIL = {
     'pf.ref.share.text': 'Join me: you start with {n} Berries.',
     'pf.ref.intro.a': 'Whoever arrives through your link starts with',
     'pf.ref.intro.b': 'Berries instead of',
-    'pf.ref.intro.c': '— unlocked at their first locked crew.',
+    'pf.ref.intro.c': ', unlocked at their first locked crew.',
     'pf.ref.link.aria': 'Your invitation link',
     'pf.ref.copied': 'Link copied ✓',
     'pf.ref.share': 'Share my link',
@@ -225,7 +225,7 @@ export const PROFIL = {
     'pf.ref.rule.b': 'Berries per recruit, once they have',
     'pf.ref.rule.strong': 'confirmed their address and played {n} chapters',
     'pf.ref.rule.c':
-      '— not at sign-up. An account created for show earns nothing, and waiting three weeks for nothing earns nothing either. Cap: {n} rewarded recruits.',
+      ', not at sign-up. An account created for show earns nothing, and waiting three weeks for nothing earns nothing either. Cap: {n} rewarded recruits.',
     'pf.ref.count': '{n} / {max} rewarded referrals.',
 
     'pf.account': 'Account',
@@ -244,16 +244,16 @@ export const PROFIL = {
     'age.UNKNOWN': 'Enter your date of birth to access purchases.',
 
     'pref.title': 'Notifications',
-    'pref.weeklyInApp': 'Weekly rendezvous — in the app',
-    'pref.weeklyEmail': 'Weekly rendezvous — by email',
+    'pref.weeklyInApp': 'Weekly rendezvous in the app',
+    'pref.weeklyEmail': 'Weekly rendezvous by email',
     'pref.weeklyEmail.hint': 'Lock, published results.',
-    'pref.rewardsInApp': 'Rewards — in the app',
-    'pref.rewardsEmail': 'Rewards — by email',
+    'pref.rewardsInApp': 'Rewards in the app',
+    'pref.rewardsEmail': 'Rewards by email',
     'pref.marketingEmail': 'News and announcements',
     'pref.marketingEmail.hint': 'Off by default. Nothing is sent without your consent.',
     'pref.saved': 'Preferences saved.',
     'pref.security':
-      'Security alerts — password, two-factor authentication — are always sent. They protect access to your account and cannot be turned off.',
+      'Security alerts (password, two-factor authentication) are always sent. They protect access to your account and cannot be turned off.',
 
     'rules.title': 'House rules',
     'rules.intro':

@@ -15,7 +15,7 @@ export const BOUTIQUE = {
     'shop.unit.chests': 'coffres',
     'shop.unit.royalChests': 'coffres royaux',
     'shop.closed': 'La boutique n’est pas encore ouverte.',
-    'shop.retour.credite': 'Paiement confirmé — {produit} est ajouté à ton compte.',
+    'shop.retour.credite': 'Paiement confirmé : {produit} est ajouté à ton compte.',
     'shop.retour.attente':
       'Paiement reçu par le prestataire, confirmation en cours. Tes achats apparaîtront d’ici quelques instants ; recharge la page si besoin.',
     'shop.retour.annule': 'Paiement annulé. Rien n’a été débité.',
@@ -23,9 +23,9 @@ export const BOUTIQUE = {
       'En attendant, les Berries gagnées chaque semaine ouvrent exactement les mêmes coffres.',
     'shop.promo.title': 'Offre de lancement sur les coffres.',
     'shop.promo.body.one':
-      'La première semaine seulement — jusqu’au {date}, soit {n} jour restant. Les Berries et les personnages restent au prix habituel, et les probabilités des coffres ne changent pas.',
+      'La première semaine seulement, jusqu’au {date}, soit {n} jour restant. Les Berries et les personnages restent au prix habituel, et les probabilités des coffres ne changent pas.',
     'shop.promo.body.other':
-      'La première semaine seulement — jusqu’au {date}, soit {n} jours restants. Les Berries et les personnages restent au prix habituel, et les probabilités des coffres ne changent pas.',
+      'La première semaine seulement, jusqu’au {date}, soit {n} jours restants. Les Berries et les personnages restent au prix habituel, et les probabilités des coffres ne changent pas.',
     'shop.section.CHEST': 'Coffres',
     'shop.section.CHEST.blurb':
       'Mêmes probabilités que les coffres gagnés en jeu. Le coffre royal ajoute une garantie et sa propre cérémonie.',
@@ -40,7 +40,7 @@ export const BOUTIQUE = {
     'shop.limits.body':
       'Aucun produit de cette page ne donne de points, ne modifie un score, ni n’avantage au classement. La rareté d’un personnage est une valeur de collection : un Commun peut être excellent une semaine donnée, un Légendaire peut ne rien rapporter.',
     'shop.limits.note':
-      'Les probabilités des coffres achetés sont exactement celles des coffres gagnés en jeu — elles sont affichées ci-dessus, au rayon Coffres, et aussi sur la page Collection. Les achats sont réservés aux comptes majeurs et plafonnés par jour.',
+      'Les probabilités des coffres achetés sont exactement celles des coffres gagnés en jeu : elles sont affichées ci-dessus, au rayon Coffres, et aussi sur la page Collection. Les achats sont réservés aux comptes majeurs et plafonnés par jour.',
 
     'product.chest_pack_small': 'Coffre de Gaimon',
     'product.chest_pack_small.desc': 'Composition et probabilités identiques aux coffres gagnés en jeu.',
@@ -69,16 +69,16 @@ export const BOUTIQUE = {
     'shop.unit.chests': 'chests',
     'shop.unit.royalChests': 'royal chests',
     'shop.closed': 'The shop is not open yet.',
-    'shop.retour.credite': 'Payment confirmed — {produit} has been added to your account.',
+    'shop.retour.credite': 'Payment confirmed: {produit} has been added to your account.',
     'shop.retour.attente':
       'Payment received by the provider, confirmation in progress. Your purchase will appear shortly; reload the page if needed.',
     'shop.retour.annule': 'Payment cancelled. Nothing was charged.',
     'shop.closed.meanwhile': 'Meanwhile, the Berries earned every week open exactly the same chests.',
     'shop.promo.title': 'Launch offer on chests.',
     'shop.promo.body.one':
-      'First week only — until {date}, {n} day left. Berries and characters stay at their usual price, and chest odds do not change.',
+      'First week only, until {date}, {n} day left. Berries and characters stay at their usual price, and chest odds do not change.',
     'shop.promo.body.other':
-      'First week only — until {date}, {n} days left. Berries and characters stay at their usual price, and chest odds do not change.',
+      'First week only, until {date}, {n} days left. Berries and characters stay at their usual price, and chest odds do not change.',
     'shop.section.CHEST': 'Chests',
     'shop.section.CHEST.blurb':
       'Same odds as chests earned in the game. The royal chest adds a guarantee and its own ceremony.',
@@ -92,7 +92,7 @@ export const BOUTIQUE = {
     'shop.limits.body':
       'No product on this page gives points, changes a score or helps on the leaderboard. A character’s rarity is a collection value: a Common can be excellent in a given week, a Legendary can earn nothing.',
     'shop.limits.note':
-      'The odds of purchased chests are exactly those of chests earned in the game — they are shown above, in the Chests section, and on the Collection page too. Purchases are reserved for adult accounts and capped per day.',
+      'The odds of purchased chests are exactly those of chests earned in the game: they are shown above, in the Chests section, and on the Collection page too. Purchases are reserved for adult accounts and capped per day.',
 
     'product.chest_pack_small': 'Gaimon’s chest',
     'product.chest_pack_small.desc': 'Same contents and odds as chests earned in the game.',

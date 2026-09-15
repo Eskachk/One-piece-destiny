@@ -97,7 +97,7 @@ export default async function AdminPage() {
         <AdminNav courant="/admin" />
 
         <p className="mt-4 rounded-lg border border-turquoise/25 bg-navy/50 p-3 text-sm text-parchment/70">
-          Connecté en administrateur —{' '}
+          Connecté en administrateur :{' '}
           <span className="text-parchment">{session.email}</span>
         </p>
 
@@ -189,7 +189,7 @@ export default async function AdminPage() {
 
       <p className="mt-4 flex items-center justify-between rounded-lg border border-turquoise/25 bg-navy/50 p-3 text-sm text-parchment/70">
         <span>
-          Connecté en administrateur — <span className="text-parchment">{session.email}</span>
+          Connecté en administrateur : <span className="text-parchment">{session.email}</span>
         </span>
         <span className="text-turquoise">MFA active</span>
       </p>

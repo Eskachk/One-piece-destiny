@@ -206,7 +206,7 @@ function riskScore(
     if (detail.pickRate !== null) {
       parts.push(`peu choisi ${Math.round((1 - detail.pickRate) * 100)}`);
     }
-    breakdown.push(`Pari réussi (part de risque — ${parts.join(', ')}) → +${score}`);
+    breakdown.push(`Pari réussi (part de risque : ${parts.join(', ')}) → +${score}`);
   }
   return score;
 }

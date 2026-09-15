@@ -90,8 +90,8 @@ const RUBRIQUES = [
   { id: 'bref', numero: 1, titre: 'En bref' },
   { id: 'jours', numero: 2, titre: 'Les trente derniers jours' },
   { id: 'joueurs', numero: 3, titre: 'Joueurs' },
-  { id: 'boutique', numero: 4, titre: 'Boutique — argent réel' },
-  { id: 'marche', numero: 5, titre: 'Marché — Berries entre joueurs' },
+  { id: 'boutique', numero: 4, titre: 'Boutique : argent réel' },
+  { id: 'marche', numero: 5, titre: 'Marché : Berries entre joueurs' },
   { id: 'economie', numero: 6, titre: 'Économie et collection' },
   { id: 'jeu', numero: 7, titre: 'Jeu' },
   { id: 'systeme', numero: 8, titre: 'Système' },
@@ -198,7 +198,7 @@ async function JournalIncidents() {
               key={o.scope}
               className="rounded-lg border border-orange/40 bg-orange/10 px-3 py-1 text-xs text-parchment"
             >
-              {o.scope} — <span className="font-mono">{o.n}</span>
+              {o.scope} : <span className="font-mono">{o.n}</span>
             </li>
           ))}
         </ul>
@@ -269,7 +269,7 @@ export default async function AdminStatsPage() {
         <div>
           <h1 className="font-display text-3xl text-parchment">Statistiques</h1>
           <p className="mt-1 text-xs text-parchment/60">
-            Calculées à l’instant — {new Date(stats.genere_le).toLocaleString('fr-FR')}.
+            Calculées à l’instant ({new Date(stats.genere_le).toLocaleString('fr-FR')}).
           </p>
         </div>
         {/* Deux fichiers : le compte rendu complet, qu'on ouvre et qu'on
@@ -300,19 +300,19 @@ export default async function AdminStatsPage() {
       <Section id="bref" note="Six chiffres pour savoir comment va le jeu aujourd’hui. Le détail est dans les rubriques suivantes.">
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
           <Tile label="Comptes" value={number(joueurs.total)} hint={`${joueurs.crees_7j} créés sur 7 j`} />
-          <Tile label="Actifs — 7 j" value={number(joueurs.actifs_7j)} hint={`${joueurs.actifs_24h} sur 24 h`} />
+          <Tile label="Actifs (7 j)" value={number(joueurs.actifs_7j)} hint={`${joueurs.actifs_24h} sur 24 h`} />
           <Tile
             label="Ont déjà joué"
             value={number(joueurs.ont_joue)}
             hint={`${pct(joueurs.ont_joue, joueurs.total)} des comptes`}
           />
-          <Tile label="Revenu — 30 j" value={euros(boutique.revenu_30j)} hint={`${boutique.achats_30j} achats`} />
+          <Tile label="Revenu (30 j)" value={euros(boutique.revenu_30j)} hint={`${boutique.achats_30j} achats`} />
           <Tile
-            label="Ventes au marché — 30 j"
+            label="Ventes au marché (30 j)"
             value={number(marche.ventes_30j)}
             hint={`${number(marche.volume_30j)} Berries`}
           />
-          <Tile label="Équipages — chapitre en cours" value={number(jeu.equipes_courant)} />
+          <Tile label="Équipages (chapitre en cours)" value={number(jeu.equipes_courant)} />
         </div>
       </Section>
 
@@ -343,19 +343,19 @@ export default async function AdminStatsPage() {
         <SousTitre>Arrivées</SousTitre>
         <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Tile label="Comptes" value={number(joueurs.total)} hint={`${joueurs.google} via Google`} />
-          <Tile label="Créés — 24 h" value={number(joueurs.crees_24h)} />
-          <Tile label="Créés — 7 j" value={number(joueurs.crees_7j)} />
-          <Tile label="Créés — 30 j" value={number(joueurs.crees_30j)} hint={`${number(inscriptions30)} sur les 30 derniers jours`} />
+          <Tile label="Créés (24 h)" value={number(joueurs.crees_24h)} />
+          <Tile label="Créés (7 j)" value={number(joueurs.crees_7j)} />
+          <Tile label="Créés (30 j)" value={number(joueurs.crees_30j)} hint={`${number(inscriptions30)} sur les 30 derniers jours`} />
         </div>
 
         <SousTitre>Engagement</SousTitre>
         <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
-          <Tile label="Actifs — 24 h" value={number(joueurs.actifs_24h)} hint="Une session vue" />
-          <Tile label="Actifs — 7 j" value={number(joueurs.actifs_7j)} />
+          <Tile label="Actifs (24 h)" value={number(joueurs.actifs_24h)} hint="Une session vue" />
+          <Tile label="Actifs (7 j)" value={number(joueurs.actifs_7j)} />
           <Tile
             label="Ont déjà joué"
             value={number(joueurs.ont_joue)}
-            hint={`${pct(joueurs.ont_joue, joueurs.total)} — au moins un équipage`}
+            hint={`${pct(joueurs.ont_joue, joueurs.total)}, au moins un équipage`}
           />
           <Tile label="Fidèles" value={number(joueurs.fideles)} hint="Deux chapitres joués ou plus" />
         </div>
@@ -396,7 +396,7 @@ export default async function AdminStatsPage() {
                   key={d.division}
                   className="rounded-lg border border-turquoise/20 px-3 py-1 text-parchment/80"
                 >
-                  {DIVISION_LABEL[d.division as Division] ?? d.division} —{' '}
+                  {DIVISION_LABEL[d.division as Division] ?? d.division} :{' '}
                   <span className="font-mono text-treasure">{number(d.n)}</span>
                 </li>
               ))}
@@ -432,11 +432,11 @@ export default async function AdminStatsPage() {
             hint={`${boutique.acheteurs} ${pluriel(boutique.acheteurs, 'acheteur distinct', 'acheteurs distincts')}`}
           />
           <Tile
-            label="Conversion — 30 j"
+            label="Conversion (30 j)"
             value={pct(boutique.achats_30j, boutique.intentions_30j)}
             hint={`${boutique.achats_30j} payés sur ${boutique.intentions_30j} caisses ouvertes`}
           />
-          <Tile label="Échecs — 30 j" value={number(boutique.echecs_30j)} />
+          <Tile label="Échecs (30 j)" value={number(boutique.echecs_30j)} />
           <Tile
             label="Dernier achat"
             value={
@@ -466,22 +466,22 @@ export default async function AdminStatsPage() {
         <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
           <Tile label="Annonces actives" value={number(marche.annonces_actives)} />
           <Tile
-            label="Ventes — 7 j"
+            label="Ventes (7 j)"
             value={number(marche.ventes_7j)}
             hint={`${number(marche.volume_7j)} Berries`}
           />
           <Tile
-            label="Ventes — 30 j"
+            label="Ventes (30 j)"
             value={number(marche.ventes_30j)}
             hint={`${number(marche.volume_30j)} Berries`}
           />
           <Tile
-            label="Ventes — total"
+            label="Ventes (total)"
             value={number(marche.ventes_total)}
             hint={`${number(marche.volume_total)} Berries`}
           />
           <Tile
-            label="Prix moyen — 30 j"
+            label="Prix moyen (30 j)"
             value={marche.prix_moyen_30j === null ? '—' : `${number(marche.prix_moyen_30j)} 🪙`}
           />
           <Tile
@@ -638,7 +638,7 @@ export default async function AdminStatsPage() {
       {/* --- 7. Jeu ------------------------------------------------------ */}
       <Section id="jeu">
         <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-          <Tile label="Équipages — chapitre en cours" value={number(jeu.equipes_courant)} />
+          <Tile label="Équipages (chapitre en cours)" value={number(jeu.equipes_courant)} />
           <Tile label="Réponses aux pronostics" value={number(jeu.reponses_total)} />
           <Tile label="Ligues" value={number(jeu.ligues)} />
           <Tile label="Commentaires" value={number(jeu.commentaires)} />
@@ -726,7 +726,7 @@ export default async function AdminStatsPage() {
             hint="Après épuisement des tentatives"
           />
           <Tile
-            label="Notifications — 7 j"
+            label="Notifications (7 j)"
             value={number(courrier.notifications_7j)}
             hint={`${number(courrier.notifications_non_lues)} non lues au total`}
           />
@@ -735,7 +735,7 @@ export default async function AdminStatsPage() {
         <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
           <Tile label="À examiner" value={number(risque.a_examiner)} />
           <Tile label="Restreints" value={number(risque.restreints)} />
-          <Tile label="Évaluations — 7 j" value={number(risque.evaluations_7j)} />
+          <Tile label="Évaluations (7 j)" value={number(risque.evaluations_7j)} />
           <Tile
             label="Faux positifs"
             value={number(risque.faux_positifs)}

@@ -121,7 +121,7 @@ export default function PreviewChestPage() {
         ainsi que le dessin dit bien ce que la signature annonce.
       */}
       <h2 className="mt-10 font-display text-2xl text-parchment">
-        Figurines — Légendaires et Mythiques
+        Figurines : Légendaires et Mythiques
       </h2>
       <ul className="mt-4 grid grid-cols-3 gap-2 md:grid-cols-4 xl:grid-cols-6">
         {HEROS.map((hero) => (
@@ -150,7 +150,7 @@ export default function PreviewChestPage() {
         elle-même illisible.
       */}
       <h2 className="mt-10 font-display text-2xl text-parchment">
-        Portraits — Épiques
+        Portraits : Épiques
       </h2>
       <ul className="mt-4 grid grid-cols-4 gap-2 md:grid-cols-6 xl:grid-cols-8">
         {EPIQUES.map((c) => (

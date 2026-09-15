@@ -44,8 +44,8 @@ export default function PreviewIlesPage() {
       <h1 className="font-display text-2xl text-parchment">Les îles, en grand</h1>
       <p className="mt-2 max-w-[60ch] text-xs text-parchment/60">
         Chaque décor à la taille où on le voit en jeu, ciel et sol superposés.
-        Les mouvements sont lents à dessein — un vol traverse en quarante à
-        quatre-vingts secondes — il faut donc regarder un moment.
+        Les mouvements sont lents à dessein : un vol traverse en quarante à
+        quatre-vingts secondes, il faut donc regarder un moment.
       </p>
 
       <div className="mt-8 space-y-10">

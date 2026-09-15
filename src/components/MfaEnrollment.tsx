@@ -41,8 +41,8 @@ export function MfaEnrollment({
             Note-les maintenant et garde-les hors de ton téléphone.{' '}
             <strong className="hb-ink">
               Ils ne seront plus jamais affichés
-            </strong>{' '}
-            — la base n&apos;en conserve que des empreintes. Chacun ne sert
+            </strong>{' : '}
+            la base n&apos;en conserve que des empreintes. Chacun ne sert
             qu&apos;une fois.
           </p>
 

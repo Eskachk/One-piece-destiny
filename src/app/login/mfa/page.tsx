@@ -26,7 +26,7 @@ export default async function MfaChallengePage() {
         Vérification en deux étapes
       </h1>
       <p className="mt-2 text-sm text-parchment/60">
-        Compte administrateur — <span className="text-parchment">{session.email}</span>
+        Compte administrateur : <span className="text-parchment">{session.email}</span>
       </p>
 
       <div className="mt-8">

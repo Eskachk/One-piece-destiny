@@ -175,7 +175,7 @@ export default async function JournalPage({
             {journal.lines.length === 0 ? (
               <p className="mt-3 text-sm text-parchment/60">
                 Aucune ligne. Le compte existe mais n’a déclenché aucune action
-                journalisée — connexion par lien, inscription très récente.
+                journalisée : connexion par lien, inscription très récente.
               </p>
             ) : (
               <ul className="mt-3 space-y-1.5">

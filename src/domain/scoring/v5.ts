@@ -174,7 +174,7 @@ function riskScore(
     // « Pari réussi » serait faux sur un absent : le pari n'a pas abouti, même
     // si le choix comptait. Le libellé le dit.
     breakdown.push(
-      `${present ? 'Pari réussi' : 'Pari tenté'} (part de risque — ${parts.join(', ')}) → +${score}`,
+      `${present ? 'Pari réussi' : 'Pari tenté'} (part de risque : ${parts.join(', ')}) → +${score}`,
     );
   }
   return score;

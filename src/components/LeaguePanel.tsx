@@ -95,7 +95,7 @@ export function LeaguePanel({
       <h2 className="hb-legend">Tes ligues</h2>
       <p className="hb-muted mt-1 text-xs">
         Le même classement, entre gens que tu connais. Une ligue ne rapporte ni
-        Berries ni coffres — seulement un rang.
+        Berries ni coffres, seulement un rang.
       </p>
 
       {ligues.length === 0 && (
@@ -227,8 +227,8 @@ export function LeaguePanel({
 
       {nouveauCode && (
         <p role="status" className="hb-card mt-3 text-sm">
-          Ligue créée. Son code est <span className="hb-num">{nouveauCode}</span>{' '}
-          — partage-le pour qu’on te rejoigne.
+          Ligue créée. Son code est <span className="hb-num">{nouveauCode}</span>.
+          Partage-le pour qu’on te rejoigne.
         </p>
       )}
 

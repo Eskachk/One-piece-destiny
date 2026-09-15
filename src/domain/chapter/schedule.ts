@@ -191,7 +191,7 @@ export function proposeChapter(
       note:
         `La source externe connaît déjà le chapitre ${latestKnown}, soit ${gap} ` +
         `de plus que le calendrier. Si des chapitres sont réellement parus, ` +
-        `corrige l'ancrage — mais n'ouvre pas les prédictions sur un chapitre ` +
+        `corrige l'ancrage, mais n'ouvre pas les prédictions sur un chapitre ` +
         `déjà lisible.`,
     };
   }
@@ -206,7 +206,7 @@ export function proposeChapter(
       confidence: 'STALE',
       note:
         `Source externe figée : elle s'arrête au chapitre ${latestKnown}, soit ` +
-        `${-gap} de retard. Son jeu de données n'est plus alimenté — le ` +
+        `${-gap} de retard. Son jeu de données n'est plus alimenté : le ` +
         `calendrier fait foi, et le titre du chapitre doit être saisi à la main.`,
     };
   }

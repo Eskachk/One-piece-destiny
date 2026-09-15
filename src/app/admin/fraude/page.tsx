@@ -98,7 +98,7 @@ export default async function FraudPage() {
         </h2>
         <p className="mt-2 text-sm text-parchment/60">
           Un score élevé n’est pas une preuve. Ces comptes présentent plusieurs
-          signaux simultanés — la décision reste humaine, et « faux positif »
+          signaux simultanés. La décision reste humaine, et « faux positif »
           est une réponse aussi légitime que « restreindre ».
         </p>
 
