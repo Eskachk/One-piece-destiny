@@ -151,7 +151,7 @@ export function CrewSelector({
   return (
     <section className="mt-8">
       <h2 className="hb-title mt-6" style={{ fontSize: '1.55rem' }}>{t('crew.title')}</h2>
-      <p className="hb-muted mt-1 text-sm">{t('crew.subtitle')}</p>
+      <p className="hb-muted mt-1 text-sm">{t(locked ? 'crew.subtitle.locked' : 'crew.subtitle')}</p>
 
       {/* Les 3 emplacements — l'action avant tout le reste. */}
       <ul className="mt-5 grid grid-cols-3 gap-3 md:grid-cols-6">

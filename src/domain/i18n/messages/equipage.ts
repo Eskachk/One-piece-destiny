@@ -27,6 +27,7 @@ export const EQUIPAGE = {
 
     'crew.title': 'Choisis ton équipage',
     'crew.subtitle': '3 personnages. Modifiable jusqu’au dimanche 23:59:59.',
+    'crew.subtitle.locked': '3 personnages. Verrouillé : les paris sont faits.',
     'crew.slot.pick': 'Choisir',
     'crew.slot.locked': 'Verrouillé',
     'crew.locked.note':
@@ -198,6 +199,7 @@ export const EQUIPAGE = {
 
     'crew.title': 'Pick your crew',
     'crew.subtitle': '3 characters. Changeable until Sunday 23:59:59.',
+    'crew.subtitle.locked': '3 characters. Locked: bets are in.',
     'crew.slot.pick': 'Pick',
     'crew.slot.locked': 'Locked',
     'crew.locked.note':

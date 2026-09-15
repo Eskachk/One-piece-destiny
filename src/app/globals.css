@@ -5626,3 +5626,309 @@ button[aria-busy='true']:not(.hb-btn)::before {
     transform: translateX(170vw);
   }
 }
+
+/* ===========================================================================
+   Affordances, passe du 15 septembre : ce qui se clique se voit, ce qui est
+   fermé se voit aussi.
+
+   Le constat, mesuré page par page en parcourant chaque élément interactif :
+   Tailwind v4 ne met plus la main sur les boutons (`cursor: default`), donc
+   « Ouvrir le coffre », « Acheter », « Chercher » se survolaient comme du
+   texte mort. Les boutons désactivés gardaient le curseur d'un bouton vivant,
+   et une bonne moitié n'avait ni survol ni anneau de focus : cases à cocher,
+   liens du panneau d'administration, boutons-textes.
+
+   Une seule couche, générique et à spécificité nulle (`:where()`), posée
+   après tout le reste : elle donne un plancher à chaque élément, et n'entre en
+   conflit avec aucune règle nommée, qui garde le dernier mot.
+
+   Quatre états, quatre signaux :
+   - cliquable : main, léger relief au survol, enfoncement au clic ;
+   - fermé : curseur barré, gris désaturé, à plat, contour en pointillé ;
+   - en cours : curseur d'attente et rouet (plus haut, « En cours n'est pas
+     interdit ») ;
+   - au clavier : un anneau, encre sur clair, or sur sombre.
+   --------------------------------------------------------------------------- */
+
+/* --- Le curseur ----------------------------------------------------------- */
+
+:where(
+  a[href],
+  button,
+  summary,
+  select,
+  label[for],
+  [role='button'],
+  [role='link'],
+  [role='tab'],
+  [role='switch'],
+  [role='menuitem'],
+  input[type='checkbox'],
+  input[type='radio'],
+  input[type='range'],
+  input[type='file'],
+  input[type='submit'],
+  input[type='button']
+) {
+  cursor: pointer;
+}
+
+/* Une rangée entière qui porte une case : la main sur toute la rangée. */
+:where(label):has(> input[type='checkbox'], > input[type='radio']) {
+  cursor: pointer;
+}
+
+:where(button, input, select, textarea, [role='button']):disabled,
+:where([aria-disabled='true']),
+:where(label):has(input:disabled) {
+  cursor: not-allowed;
+}
+
+:where([aria-busy='true']) {
+  cursor: progress;
+}
+
+/* --- Le clavier ----------------------------------------------------------- */
+
+/* Un anneau pour tout ce qui reçoit le focus, et rien pour un clic à la
+   souris : `:focus-visible` fait la différence. */
+:where(a[href], button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+:where(input[type='checkbox'], input[type='radio']):focus-visible {
+  outline-offset: 2px;
+}
+
+/* Sur le pont sombre du Poste de commandement, l'encre ne se verrait pas. */
+[data-island='hq'] .hb-page :where(a[href], button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline-color: #ffd767;
+}
+
+:where(a, button, input, select, textarea, summary):focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* --- Le survol et le clic ------------------------------------------------- */
+
+:where(button, [role='button'], a[href], summary, select) {
+  transition:
+    filter 120ms ease,
+    scale 90ms ease,
+    translate 120ms ease,
+    box-shadow 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+@media (hover: hover) {
+  /* Un bouton s'éclaire ; un bouton fermé ou occupé ne bouge pas. */
+  :where(button, [role='button'], input[type='submit'], input[type='button']):not(
+      :disabled,
+      [aria-disabled='true'],
+      [aria-busy='true']
+    ):hover {
+    filter: brightness(1.08);
+  }
+
+  /* Les boutons plats (ceux qui ne sont ni `.hb-btn` ni une case, un onglet,
+     une pastille : le doré des coffres, les boutons du Poste) se soulèvent
+     d'un pixel et prennent une ombre. Sans ça, un bouton plat survolé ne
+     changeait que de six pour cent de luminosité, ce qui ne se voit pas sur
+     un écran mal réglé. Les boutons-textes en sont exclus : une ombre sous
+     « Voir les probabilités » ferait tache. */
+  :where(button, [role='button']):not(
+      .hb-btn,
+      .harbor__submit,
+      .hb-slot,
+      .hb-pick,
+      .hb-onglet,
+      .hb-pastille,
+      .hb-nav__item,
+      .hb-royal-btn,
+      .hb-link,
+      .hb-accent,
+      .underline,
+      .hb-tuto__jamais,
+      .harbor__field *,
+      :disabled,
+      [aria-disabled='true'],
+      [aria-busy='true']
+    ):hover {
+    translate: 0 -1px;
+    box-shadow: 0 3px 10px rgba(12, 45, 80, 0.18);
+  }
+
+  /* Un lien dans le texte se souligne plus franchement, et fonce. */
+  :where(a[href]):not(.hb-btn, .hb-nav__item, .hb-tile, .harbor__submit, .harbor__google, .hb-onglet):hover {
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  :where(.hb-link, .harbor__link):hover {
+    color: #093a70;
+  }
+
+  /* Un lien-pastille (les onglets du Poste, « Télécharger le compte rendu »)
+     s'éclaire comme un bouton ; le souligner ferait bavure. */
+  :where(a[href]):is(.rounded-lg, .rounded-xl, .rounded-full, .hb-tile):hover {
+    text-decoration-line: none;
+    filter: brightness(1.08);
+  }
+
+  :where(a.hb-tile):hover {
+    background: rgba(255, 255, 255, 0.88);
+    translate: 0 -1px;
+    box-shadow: 0 4px 10px rgba(12, 45, 80, 0.14);
+  }
+
+  /* Une ligne de classement dont on survole le pseudo se distingue entière :
+     c'est la ligne qu'on va ouvrir. */
+  :where(.hb-row):has(a:hover) {
+    background: rgba(255, 215, 103, 0.4);
+  }
+
+  [data-island='hq'] .hb-page :where(a[href]):is(.rounded-lg, .rounded-xl):not(.bg-treasure):hover {
+    background-color: rgba(47, 168, 164, 0.12);
+  }
+
+  :where(summary):hover {
+    filter: brightness(1.06);
+  }
+
+  /* Le bouton royal a le relief du `.hb-btn` : même enfoncement au survol. */
+  .hb-royal-btn:hover:not(:disabled) {
+    translate: 0 2px;
+    box-shadow:
+      0 3px 0 #9c7a1f,
+      0 7px 14px rgba(12, 45, 80, 0.24);
+  }
+}
+
+/* L'enfoncement au clic, souris ou doigt : c'est le seul retour qu'un écran
+   tactile puisse donner avant la réponse du serveur. */
+:where(button, [role='button'], input[type='submit'], a.hb-tile):not(
+    :disabled,
+    [aria-disabled='true'],
+    [aria-busy='true']
+  ):active {
+  scale: 0.985;
+}
+
+@media (hover: none) {
+  :where(button, [role='button'], a[href]):not(:disabled, [aria-disabled='true']):active {
+    filter: brightness(0.92);
+  }
+}
+
+/* --- L'état fermé --------------------------------------------------------- */
+
+/* Tout bouton fermé : désaturé, à plat, et sans le relief qui promet un clic. */
+:where(button, [role='button'], input[type='submit'], input[type='button']):disabled,
+:where([role='button'])[aria-disabled='true'] {
+  filter: grayscale(0.6);
+  box-shadow: none;
+  translate: none;
+  scale: none;
+}
+
+/* Les grands boutons dorés fermés : le doré est une promesse ; on l'éteint,
+   et le contour en pointillé dit « pas maintenant ». Opaques, pour rester
+   lisibles : le libellé porte souvent la raison (« Déjà verrouillé »). */
+:is(.hb-btn, .harbor__submit, .hb-goldfill, .hb-royal-btn, .hb-btn--ghost):disabled {
+  opacity: 1;
+  background: linear-gradient(180deg, #ebe3d2, #d8cdb5);
+  color: #6b5538;
+  border: 2px dashed rgba(109, 68, 35, 0.42);
+  box-shadow: none;
+  translate: none;
+  filter: none;
+}
+
+/* Un bouton occupé n'est pas un bouton fermé : il garde ses couleurs. */
+:is(.hb-btn, .harbor__submit, .hb-goldfill, .hb-royal-btn, .hb-btn--ghost)[aria-busy='true']:disabled {
+  background: linear-gradient(180deg, #ffd767, var(--color-gold));
+  color: var(--color-ink);
+  border: 2px solid transparent;
+  opacity: 0.9;
+}
+
+.hb-royal-btn[aria-busy='true']:disabled {
+  background: linear-gradient(180deg, #f4dc8a, #d9ae3b);
+  color: #1d1230;
+}
+
+.hb-btn--ghost[aria-busy='true']:disabled {
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--color-ink);
+}
+
+/* Les boutons du Poste (Tailwind : `bg-treasure`, `border-turquoise/40`) :
+   même pointillé, sur fond sombre. */
+[data-island='hq'] .hb-page :where(button):disabled:not([aria-busy='true']) {
+  border: 1px dashed rgba(251, 238, 214, 0.35);
+  background-color: rgba(251, 238, 214, 0.08);
+  background-image: none;
+  color: rgba(251, 238, 214, 0.55);
+  opacity: 1;
+  filter: none;
+}
+
+/* Un champ fermé : grisé, en pointillé, texte tenu lisible. */
+:where(input, select, textarea):disabled {
+  background-color: rgba(120, 110, 90, 0.12);
+  border-style: dashed;
+  color: #5c5245;
+  opacity: 1;
+}
+
+[data-island='hq'] .hb-page :where(input, select, textarea):disabled {
+  background-color: rgba(251, 238, 214, 0.06);
+  color: rgba(251, 238, 214, 0.55);
+}
+
+/* --- Cases et boutons radio ----------------------------------------------- */
+
+:where(input[type='checkbox'], input[type='radio']) {
+  accent-color: #0f4f96;
+}
+
+[data-island='hq'] .hb-page :where(input[type='checkbox'], input[type='radio']) {
+  accent-color: var(--color-treasure);
+}
+
+/* --- Les boutons-textes --------------------------------------------------- */
+
+/* « Voir les probabilités », « Déconnexion », « + un choix » : seize pixels
+   de haut, c'est petit sous un doigt. La zone cliquable déborde de huit pixels
+   au-dessus et en dessous, sans bouger la mise en page. (`::before` est pris
+   par le rouet d'attente.) */
+:where(button.hb-link, button.hb-accent, button.underline):not(.hb-btn) {
+  position: relative;
+}
+
+:where(button.hb-link, button.hb-accent, button.underline):not(.hb-btn)::after {
+  content: '';
+  position: absolute;
+  inset: -8px -4px;
+}
+
+/* --- Animations réduites -------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  :where(button, [role='button'], a[href], summary, select) {
+    transition: none;
+  }
+
+  :where(button, [role='button'], input[type='submit'], a.hb-tile):active {
+    scale: none;
+  }
+
+  :where(a.hb-tile):hover,
+  :where(button, [role='button']):hover {
+    translate: none;
+  }
+}

@@ -168,12 +168,27 @@ export function TresorCompte({ playerId, tresor }: { playerId: string; tresor: T
         <button
           type="submit"
           disabled={pending || vide || motif.trim().length < 8}
+          aria-busy={pending}
+          title={
+            vide
+              ? 'Indique d’abord une quantité, en plus ou en moins.'
+              : motif.trim().length < 8
+                ? 'Le motif doit faire au moins 8 caractères.'
+                : undefined
+          }
           className={`transition-quick mt-3 rounded-lg px-4 py-2 text-sm font-semibold disabled:opacity-70 ${
             reprend ? 'bg-orange text-abyss' : 'bg-treasure text-abyss'
           }`}
         >
           {pending ? 'Un instant…' : reprend ? 'Reprendre' : 'Donner'}
         </button>
+        {!pending && (vide || motif.trim().length < 8) && (
+          <p className="mt-2 text-[11px] text-parchment/60">
+            {vide
+              ? 'Indique une quantité, en plus ou en moins, pour continuer.'
+              : `Motif : encore ${8 - motif.trim().length} caractère${8 - motif.trim().length > 1 ? 's' : ''}.`}
+          </p>
+        )}
         {retour && (
           <p role="status" className={`mt-3 text-sm ${retour.ok ? 'text-turquoise' : 'text-orange'}`}>
             {retour.texte}

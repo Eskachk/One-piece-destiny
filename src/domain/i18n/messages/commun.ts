@@ -55,6 +55,7 @@ export const COMMUN = {
     'settings.identityHint':
       'Il apparaît au classement et sur chaque annonce du Marché. Modifiable une fois par mois.',
     'settings.identitySave': 'Changer mon pseudo',
+    'settings.identity.same': 'Saisis d’abord un pseudo différent.',
     'settings.comfort': 'Confort de lecture',
     'settings.motion': 'Réduire les animations',
     'settings.motionHint':
@@ -120,6 +121,7 @@ export const COMMUN = {
     'settings.identityHint':
       'Shown on the ranking and on every Market listing. Changeable once a month.',
     'settings.identitySave': 'Change my name',
+    'settings.identity.same': 'Type a different name first.',
     'settings.comfort': 'Reading comfort',
     'settings.motion': 'Reduce animations',
     'settings.motionHint':

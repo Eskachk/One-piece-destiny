@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 import { attempt } from './attempt';
 import { migrateOpenChapterEngine, setTeamLockAt } from '@/app/actions/admin';
 
@@ -70,7 +70,14 @@ export function TeamLockControls({
   /** Moteur qu'utiliseraient les chapitres ouverts maintenant. */
   currentScoringVersion: string;
 }) {
-  const [personnalise, setPersonnalise] = useState(() => pourChamp(lockAt));
+  // Le champ est en heure du navigateur : le serveur, en UTC, ne peut pas la
+  // connaître. Il rend donc un champ vide, et le navigateur le remplit une
+  // fois monté. Le calculer des deux côtés faisait diverger le HTML servi de
+  // celui du client, et React rejouait toute la page à l'arrivée.
+  const [personnalise, setPersonnalise] = useState('');
+  useEffect(() => {
+    setPersonnalise(pourChamp(lockAt));
+  }, [lockAt]);
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
   const [pending, startTransition] = useTransition();
 

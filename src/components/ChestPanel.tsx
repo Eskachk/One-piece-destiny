@@ -190,14 +190,22 @@ export function ChestPanel({
           </button>
         ) : (
           <>
+            {/* Fermé faute de coffre, le bouton le dit lui-même : un
+                « Ouvrir un coffre » grisé sans explication se prend pour une
+                panne. */}
             <button
               type="button"
               onClick={() => run(() => openOwnedChestAction('WEEKLY'))}
               disabled={pending || (!unlimited && unopenedChests === 0)}
               aria-busy={pending}
+              title={!unlimited && unopenedChests === 0 ? t('chest.open.none.why') : undefined}
               className="transition-quick w-full rounded-xl hb-goldfill px-4 py-3 font-semibold hb-on-gold disabled:opacity-70 disabled:hb-ink-soft"
             >
-              {pending ? t('chest.wait') : t('chest.open')}
+              {pending
+                ? t('chest.wait')
+                : !unlimited && unopenedChests === 0
+                  ? t('chest.open.none')
+                  : t('chest.open')}
             </button>
 
             {/* Coffre royal : bouton distinct, et seulement s'il y en a un.
@@ -220,10 +228,20 @@ export function ChestPanel({
               onClick={buy}
               disabled={pending || berries < CHEST_PRICE_BERRIES}
               aria-busy={pending}
+              title={
+                berries < CHEST_PRICE_BERRIES
+                  ? t('chest.buy.short', { n: CHEST_PRICE_BERRIES - berries })
+                  : undefined
+              }
               className="transition-quick w-full rounded-xl border hb-border px-4 py-2 text-sm hb-accent disabled:opacity-70"
             >
               {t('chest.buy', { n: CHEST_PRICE_BERRIES })}
             </button>
+            {berries < CHEST_PRICE_BERRIES && (
+              <p className="text-center text-xs hb-ink-soft">
+                {t('chest.buy.short', { n: CHEST_PRICE_BERRIES - berries })}
+              </p>
+            )}
           </>
         )}
       </div>
