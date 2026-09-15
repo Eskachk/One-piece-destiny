@@ -30,6 +30,8 @@ import { AdBanner } from '@/components/AdBanner';
 import { LeaguePanel, type LigueVue } from '@/components/LeaguePanel';
 import { LIGUES_ACTIVES, classer } from '@/domain/league/league';
 import { classementLigue, liguesDe } from '@/lib/league/repository';
+import { chercherJoueurs } from '@/lib/joueurs/public';
+import { RechercheJoueur } from '@/components/RechercheJoueur';
 
 export const dynamic = 'force-dynamic';
 
@@ -62,7 +64,11 @@ const percent = (ratio: number) => `${Math.round(ratio * 100)}%`;
  *   - les scores sont lus tels qu'ils ont été calculés, jamais recalculés à
  *     la consultation (§75).
  */
-export default async function LeaderboardPage() {
+export default async function LeaderboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
   /*
    * Session et chapitre publié partent ensemble.
    *
@@ -71,11 +77,26 @@ export default async function LeaderboardPage() {
    * ajoutait un aller-retour — de 80 à 130 ms depuis la plateforme — sur la
    * page que tout le jeu consulte le dimanche soir, en même temps.
    */
-  const [session, publie, { t, tn }] = await Promise.all([
+  const [session, publie, { t, tn }, { q = '' }] = await Promise.all([
     getAuthenticatedSession(),
     getCachedLatestPublishedChapter(),
     traduire(),
+    searchParams,
   ]);
+
+  /*
+   * Recherche d'un joueur, hors du voile anti-spoiler et présente dans les
+   * trois états de la page : un pseudo se cherche aussi la semaine où rien
+   * n'est encore publié. Réservée aux joueurs connectés, comme le profil
+   * qu'elle ouvre.
+   */
+  const terme = q.trim();
+  const recherche = session ? (
+    <RechercheJoueur
+      terme={terme}
+      resultats={terme.length >= 2 ? await chercherJoueurs(terme) : null}
+    />
+  ) : null;
 
   // Le classement porte sur le dernier chapitre **publié**. S'il n'y en a pas
   // encore, on retombe sur le chapitre en cours pour afficher l'état
@@ -127,6 +148,7 @@ export default async function LeaderboardPage() {
       <HarborScene variant="page" island={islandOf('/classement')}>
         <h1 className="hb-title">{t('lb.title')}</h1>
         <p className="hb-card mt-5 text-sm">{t('lb.noChapter')}</p>
+        {recherche}
         {panneauLigues}
         <AdBanner />
         <Tutorial page="classement" />
@@ -143,6 +165,7 @@ export default async function LeaderboardPage() {
         <p className="hb-card mt-5 text-sm">
           {t('lb.locked', { n: chapter.chapterNumber })}
         </p>
+        {recherche}
         {panneauLigues}
         <AdBanner />
         <Tutorial page="classement" />
@@ -446,7 +469,14 @@ export default async function LeaderboardPage() {
                     <span className="hb-muted mr-2 font-mono">
                       {MEDALS[index] ?? `#${index + 1}`}
                     </span>
-                    {row.handle}
+                    {/* Chaque pseudo mène au profil public — sauf le sien,
+                        qui mène au journal de bord complet. */}
+                    <Link
+                      href={isMine ? '/profil' : `/joueur/${encodeURIComponent(row.handle)}`}
+                      className="hb-link"
+                    >
+                      {row.handle}
+                    </Link>
                   </span>
                   <span className="hb-num text-sm">
                     {row.total}
@@ -471,6 +501,7 @@ export default async function LeaderboardPage() {
         La section n'apparaît qu'aux joueurs connectés : une ligue est
         attachée à un compte.
       */}
+      {recherche}
       {panneauLigues}
 
       <Link href="/" className="hb-link mt-6 block text-center text-sm">

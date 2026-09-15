@@ -129,6 +129,19 @@ export function ChestPanel({
           </ul>
 
           <p className="mt-3 text-xs hb-ink-soft">{t('chest.starter.note')}</p>
+
+          {/* Des coffres achetés ou gagnés **avant** d'avoir ouvert celui
+              d'inscription restaient invisibles : le panneau ne montrait que
+              le coffre de bienvenue, et un joueur qui venait de payer croyait
+              son achat perdu. Ils sont annoncés ici, avec ce qui les libère. */}
+          {(unopenedChests > 0 || royalChests > 0) && (
+            <p className="mt-2 rounded-lg border hb-border hb-hi px-3 py-2 text-xs hb-ink">
+              {t('chest.reserve', {
+                chests: tn('chest.reserve.chests', unopenedChests),
+                royal: tn('chest.reserve.royal', royalChests),
+              })}
+            </p>
+          )}
         </>
       ) : (
         <>

@@ -852,3 +852,117 @@ export async function answerQuestionAdminAction(
   revalidatePath('/admin');
   return { ok: true, message: 'Bonne réponse enregistrée.' };
 }
+
+/**
+ * Ajuste le trésor d'un compte : Berries, coffres, coffres royaux.
+ *
+ * ## Pourquoi cette action existe
+ *
+ * Un bug de duplication finit toujours par exister. Le jour où il arrive, il
+ * faut pouvoir reprendre ce qui a été dupliqué — et, à l'inverse, rendre à un
+ * joueur ce qu'un incident lui a coûté. Jusqu'ici, l'un comme l'autre
+ * passaient par du SQL à la main dans la console de la base : rien de
+ * journalisé, rien d'annoncé au joueur, et une erreur de frappe sans filet.
+ *
+ * ## Les garde-fous
+ *
+ *   — **relatif, jamais absolu** : on donne ou on reprend un nombre, on ne
+ *     fixe pas un solde. Deux administrateurs qui corrigent en même temps ne
+ *     s'écrasent pas ;
+ *   — **jamais sous zéro**, en base, dans une seule transaction
+ *     (`ajuster_tresor`, migration 0044) ;
+ *   — **un motif obligatoire**, qui va dans le journal d'audit avec l'avant et
+ *     l'après, et dans une notification au joueur : un solde qui change sans
+ *     explication est exactement ce qui fait perdre confiance ;
+ *   — session récente exigée, comme pour la publication : c'est une action
+ *     qui touche à ce que les joueurs possèdent.
+ *
+ * Les cartes ne s'ajustent pas ici : une carte a un numéro de série et un
+ * historique de propriété, la reprendre est une opération de marché.
+ */
+export async function ajusterTresorAction(
+  playerId: unknown,
+  delta: unknown,
+  motif: unknown,
+): Promise<AdminActionResult> {
+  await assertSameOrigin();
+  const session = await requireAdmin();
+
+  if (requiresReauthentication(session)) {
+    return {
+      ok: false,
+      error: 'Ressaisis ton mot de passe avant de toucher à un trésor (session trop ancienne).',
+    };
+  }
+
+  const cible = z.string().uuid().safeParse(playerId);
+  if (!cible.success) return { ok: false, error: 'Joueur inconnu.' };
+
+  // Bornes larges mais finies : un million de Berries, mille coffres. Au-delà,
+  // c'est une faute de frappe, pas une correction.
+  const entier = (max: number) => z.coerce.number().int().min(-max).max(max);
+  const ajustement = z
+    .object({
+      berries: entier(1_000_000),
+      chests: entier(1_000),
+      royalChests: entier(1_000),
+    })
+    .safeParse(delta);
+  if (!ajustement.success) return { ok: false, error: 'Quantités invalides.' };
+
+  const { berries, chests, royalChests } = ajustement.data;
+  if (berries === 0 && chests === 0 && royalChests === 0) {
+    return { ok: false, error: 'Rien à ajuster : toutes les quantités sont à zéro.' };
+  }
+
+  const raison = z.string().trim().min(8).max(300).safeParse(motif);
+  if (!raison.success) {
+    return { ok: false, error: 'Un motif d’au moins huit caractères est obligatoire.' };
+  }
+
+  const { data: joueur } = await db()
+    .from('players')
+    .select('id, handle')
+    .eq('id', cible.data)
+    .maybeSingle();
+  if (!joueur) return { ok: false, error: 'Joueur inconnu.' };
+
+  const { ajusterTresor } = await import('@/lib/admin/tresor');
+  const { avant, apres } = await ajusterTresor(joueur.id, { berries, chests, royalChests });
+
+  await audit({
+    playerId: session.playerId,
+    action: 'admin.tresor_ajuste',
+    status: 'SUCCESS',
+    metadata: {
+      subject: joueur.id,
+      handle: joueur.handle,
+      delta: { berries, chests, royalChests },
+      avant,
+      apres,
+      motif: raison.data,
+    },
+  });
+
+  // Le joueur est prévenu, avec le motif. Une clé par ajustement : deux
+  // corrections le même jour sont deux messages, pas un.
+  const signe = (n: number) => (n > 0 ? `+${n}` : `${n}`);
+  const parts = [
+    berries !== 0 && `${signe(berries)} Berries`,
+    chests !== 0 && `${signe(chests)} coffre${Math.abs(chests) > 1 ? 's' : ''}`,
+    royalChests !== 0 && `${signe(royalChests)} coffre${Math.abs(royalChests) > 1 ? 's' : ''} royal${Math.abs(royalChests) > 1 ? 'aux' : ''}`,
+  ].filter(Boolean);
+  await social.notify(joueur.id, {
+    dedupeKey: `admin-tresor:${joueur.id}:${Date.now()}`,
+    kind: 'TREASURE_ADJUSTED',
+    title: 'Ajustement de ton trésor par l’équipe',
+    body: `${parts.join(', ')}. Motif : ${raison.data}`,
+    href: '/collection',
+  });
+
+  revalidatePath('/admin/journal');
+  return {
+    ok: true,
+    message: `Trésor de ${joueur.handle} ajusté : ${parts.join(', ')}. Solde : ${apres.berries} Berries, ${apres.unopened_chests} coffres, ${apres.royal_chests} royaux.`,
+  };
+}

@@ -16,6 +16,7 @@ const ALL_KINDS: NotificationKind[] = [
   'CHAPTER_CORRECTED',
   'REWARD_RECEIVED',
   'SECURITY_ALERT',
+  'TREASURE_ADJUSTED',
 ];
 
 describe('préférences de notification', () => {

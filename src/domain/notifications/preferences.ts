@@ -64,6 +64,9 @@ export const CATEGORY_OF: Record<NotificationKind, NotificationCategory> = {
   CHAPTER_CORRECTED: 'WEEKLY',
   REWARD_RECEIVED: 'REWARDS',
   SECURITY_ALERT: 'SECURITY',
+  // Un solde qui change à la main : le joueur doit toujours en être informé,
+  // comme d'un événement de sécurité — ce n'est pas une préférence.
+  TREASURE_ADJUSTED: 'SECURITY',
 };
 
 export function isMandatory(category: NotificationCategory): boolean {

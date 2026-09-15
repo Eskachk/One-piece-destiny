@@ -181,6 +181,8 @@ const ROUTES: readonly (readonly [string, IslandId])[] = [
   ['/market', 'wano'],
   ['/boutique', 'drum'],
   ['/profil', 'sabaody'],
+  // Le profil public d'un autre joueur : même île que le sien.
+  ['/joueur', 'sabaody'],
   ['/parametres', 'dressrosa'],
   ['/admin', 'hq'],
 ];

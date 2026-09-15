@@ -19,7 +19,9 @@ export type NotificationKind =
   | 'RESULTS_READY'
   | 'CHAPTER_CORRECTED'
   | 'REWARD_RECEIVED'
-  | 'SECURITY_ALERT';
+  | 'SECURITY_ALERT'
+  /** Le Poste de commandement a touché au trésor du joueur, avec un motif. */
+  | 'TREASURE_ADJUSTED';
 
 export interface NotificationDraft {
   kind: NotificationKind;

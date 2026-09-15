@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { AdminNav } from '@/components/admin/AdminNav';
 import { requireAdmin } from '@/lib/auth/guards';
 import { accountJournal, findAccounts } from '@/lib/admin/account-journal';
+import { tresorDuCompte } from '@/lib/admin/tresor';
+import { TresorCompte } from '@/components/admin/TresorCompte';
 import { audit } from '@/lib/audit';
 import { Nav } from '@/components/Nav';
 
@@ -57,7 +59,10 @@ export default async function JournalPage({
   // Un seul résultat : on l'ouvre directement. Chercher un pseudo exact puis
   // devoir cliquer dessus est une étape pour rien.
   const cible = id ?? (candidats.length === 1 ? candidats[0].playerId : null);
-  const journal = cible ? await accountJournal(cible) : null;
+  // Le journal et le trésor partent ensemble : deux lectures indépendantes.
+  const [journal, tresor] = cible
+    ? await Promise.all([accountJournal(cible), tresorDuCompte(cible)])
+    : [null, null];
 
   // Consulter l'activité d'un joueur est une action d'administration comme une
   // autre : elle laisse une trace au même titre qu'une restriction de compte.
@@ -151,7 +156,16 @@ export default async function JournalPage({
             <p className="mt-3 break-all font-mono text-[11px] text-parchment/60">
               {journal.playerId}
             </p>
+            <p className="mt-2 text-xs">
+              <Link href={`/joueur/${encodeURIComponent(journal.handle)}`} className="text-turquoise underline">
+                Voir le profil public
+              </Link>
+            </p>
           </section>
+
+          {/* Ce que le compte détient, et de quoi le corriger. Réservé à
+              cette page : le profil public n'en montre rien. */}
+          {tresor && <TresorCompte playerId={journal.playerId} tresor={tresor} />}
 
           <section className="mt-6 rounded-xl border border-turquoise/20 bg-navy/40 p-5">
             <h2 className="text-xs uppercase tracking-widest text-parchment/60">

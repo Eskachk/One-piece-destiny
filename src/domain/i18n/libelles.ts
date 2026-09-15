@@ -22,8 +22,14 @@ export const libellePresence = (t: Traducteur, niveau: string) =>
 export const libelleTri = (t: Traducteur, tri: string) =>
   t(`filters.sort.${tri}` as MessageKey);
 
+/**
+ * Les équipages (`crew-<nom>`) sont des attributs **dynamiques**, dérivés des
+ * affiliations : leur nom est un nom propre, le même dans les deux langues,
+ * et aucun dictionnaire ne les connaît. Les passer au traducteur affichait
+ * la clé brute — « attr.crew-Chapeau de Paille » — sur chaque carte.
+ */
 export const libelleAttribut = (t: Traducteur, id: string) =>
-  t(`attr.${id}` as MessageKey);
+  id.startsWith('crew-') ? id.slice('crew-'.length) : t(`attr.${id}` as MessageKey);
 
 export const libelleSet = (t: Traducteur, id: string) => t(`set.${id}` as MessageKey);
 
